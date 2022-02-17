@@ -42,14 +42,8 @@
       { "anonymous": "always", "named": "never", "asyncArrow": "always" }
     ],
     "import/prefer-default-export": "off",
-    "react/require-default-props": [
-      "error",
-      { "ignoreFunctionalComponents": true }
-    ],
-    "max-len": [
-      "error",
-      { "code": 90, "ignoreStrings": true, "comments": 120 }
-    ],
+    "react/require-default-props": ["error", { "ignoreFunctionalComponents": true }],
+    "max-len": ["error", { "code": 90, "ignoreStrings": true, "comments": 120 }],
     "react/button-has-type": "off",
     "comma-dangle": [
       2,
