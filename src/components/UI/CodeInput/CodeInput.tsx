@@ -2,10 +2,13 @@ import React, { CSSProperties } from 'react';
 
 type Props = {
   sx?: CSSProperties;
-  value: string;
+  value?: string;
+  fieldsCount?: number;
   onChange: (value: string) => void;
 };
 
-export function CodeInput({ sx, value, onChange }: Props) {
+export function CodeInput({
+  sx, value, onChange, fieldsCount = 4,
+}: Props) {
   return <div>CodeInput</div>;
 }
