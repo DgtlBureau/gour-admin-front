@@ -1,12 +1,13 @@
-import React, { ChangeEventHandler, FocusEventHandler, ReactNode } from 'react';
+import React, { ChangeEventHandler, FocusEventHandler } from 'react';
 import MUIInput from '@mui/material/Input';
 import MUIFormControl from '@mui/material/FormControl';
 import MUIInputLabel from '@mui/material/InputLabel';
 
 type Props = {
   value: unknown;
-  id: string;
+  id?: string;
   label?: string;
+  name: string;
   variant?: 'standard' | 'outlined' | 'filled' | undefined;
   type: string;
   onChange: ChangeEventHandler<HTMLInputElement>;
@@ -14,12 +15,26 @@ type Props = {
 };
 
 export function Input({
-  value, id, onChange, onFocus, label, variant, type,
+  value,
+  id,
+  onChange,
+  onFocus,
+  label,
+  variant,
+  type,
+  name,
 }: Props) {
   return (
     <MUIFormControl variant={variant}>
-      {label && <MUIInputLabel htmlFor={id}>{label}</MUIInputLabel>}
-      <MUIInput value={value} id={id} onChange={onChange} onFocus={onFocus} type={type} />
+      {label && id && <MUIInputLabel htmlFor={id}>{label}</MUIInputLabel>}
+      <MUIInput
+        value={value}
+        id={id}
+        onChange={onChange}
+        name={name}
+        onFocus={onFocus}
+        type={type}
+      />
     </MUIFormControl>
   );
 }
