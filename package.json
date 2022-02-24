@@ -15,6 +15,7 @@
     "@types/node": "~16.11.25",
     "@types/react": "~17.0.39",
     "@types/react-dom": "~17.0.11",
+    "formik": "^2.2.9",
     "normalize.css": "~8.0.1",
     "react": "~17.0.2",
     "react-dom": "~17.0.2",
@@ -23,7 +24,8 @@
     "runtypes": "~6.5.1",
     "sass": "~1.49.7",
     "typescript": "~4.5.5",
-    "web-vitals": "~2.1.4"
+    "web-vitals": "~2.1.4",
+    "yup": "^0.32.11"
   },
   "scripts": {
     "start": "react-app-rewired start",
