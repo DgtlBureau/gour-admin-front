@@ -1,0 +1,17 @@
+.form {
+  display: flex;
+  flex-direction: column;
+
+  width: 520px;
+  padding: 60px;
+
+  .input {
+    margin-bottom: 12px;
+  }
+
+  .error{
+    margin-top: 12px;
+
+    color: red;
+  }
+}

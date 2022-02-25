@@ -7,33 +7,40 @@ type Props = {
   value: unknown;
   id?: string;
   label?: string;
+  type: string;
   name: string;
   variant?: 'standard' | 'outlined' | 'filled' | undefined;
-  type: string;
+  className?: string;
+  isError?: boolean;
   onChange: ChangeEventHandler<HTMLInputElement>;
   onFocus?: FocusEventHandler<HTMLInputElement>;
+  onBlur?: FocusEventHandler<HTMLInputElement>;
 };
 
 export function Input({
   value,
   id,
-  onChange,
-  onFocus,
   label,
   variant,
   type,
   name,
+  className,
+  isError,
+  onChange,
+  onFocus,
+  onBlur,
 }: Props) {
   return (
-    <MUIFormControl variant={variant}>
+    <MUIFormControl className={className} variant={variant} error={isError}>
       {label && id && <MUIInputLabel htmlFor={id}>{label}</MUIInputLabel>}
       <MUIInput
-        value={value}
         id={id}
-        onChange={onChange}
-        name={name}
-        onFocus={onFocus}
         type={type}
+        name={name}
+        value={value}
+        onChange={onChange}
+        onFocus={onFocus}
+        onBlur={onBlur}
       />
     </MUIFormControl>
   );

@@ -17,7 +17,7 @@ export const userApi = commonApi.injectEndpoints({
         url: '/auth/signin',
         method: 'POST',
         body,
-        runtimeType: RuntimeTokens,
+        // runtimeType: RuntimeTokens, // TO DO
       }),
     }),
     refresh: builder.query<Tokens, void>({
