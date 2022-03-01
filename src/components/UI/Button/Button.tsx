@@ -2,7 +2,7 @@ import React, { ElementType, ReactNode } from 'react';
 import MUIButton from '@mui/material/Button';
 
 type Props = {
-  variant: 'text' | 'outlined' | 'contained' | undefined;
+  variant?: 'text' | 'outlined' | 'contained';
   children: ReactNode;
   type?: 'button' | 'submit' | 'reset';
   onCLick?: () => void;
