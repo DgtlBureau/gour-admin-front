@@ -45,7 +45,7 @@ export function CommentTextarea({
         maxRows={maxRows}
         defaultValue={defaultValue}
         placeholder={placeholder}
-        sx={style}
+        sx={sx}
       />
       <IconButton
         onClick={onClick}
