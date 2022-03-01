@@ -1,8 +1,8 @@
 import React, { ChangeEventHandler, CSSProperties, FocusEventHandler } from 'react';
-import { Button } from '../Button/Button';
+import { Box } from '@mui/material';
+import SendIcon from '@mui/icons-material/Send';
+import { IconButton } from '../IconButton/IconButton';
 import { Textarea } from '../Textarea/Textarea';
-
-import s from './CommentTextarea.module.scss';
 
 type Props = {
   minRows?: number;
@@ -14,7 +14,7 @@ type Props = {
   onChange: ChangeEventHandler<HTMLTextAreaElement>;
   onBlur?: ChangeEventHandler<HTMLTextAreaElement>;
   onFocus?: FocusEventHandler<HTMLTextAreaElement>;
-  onClick?(): void;
+  onClick: () => void;
 };
 
 export function CommentTextarea({
@@ -29,8 +29,14 @@ export function CommentTextarea({
   onBlur,
   onFocus,
 }: Props) {
+  const boxSx: CSSProperties = {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  };
+
   return (
-    <div className={s.commentTextarea}>
+    <Box sx={boxSx}>
       <Textarea
         onChange={onChange}
         onBlur={onBlur}
@@ -41,9 +47,9 @@ export function CommentTextarea({
         placeholder={placeholder}
         sx={style}
       />
-      <Button onCLick={onClick} variant={buttonVariant}>
+      <IconButton onClick={onClick} component="span">
         Отправить
-      </Button>
-    </div>
+      </IconButton>
+    </Box>
   );
 }
