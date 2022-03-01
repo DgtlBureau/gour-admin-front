@@ -1,12 +1,33 @@
-import { SxProps } from '@mui/material';
-import React from 'react';
+import React, { CSSProperties } from 'react';
+import ReactCodeInput, { InputModeTypes } from 'react-code-input';
 
 type Props = {
-  sx?: SxProps;
-  value: string;
+  name: string;
+  sx?: CSSProperties;
+  value?: string;
+  fieldsCount?: number;
+  type?: 'number' | 'text' | 'password' | 'tel' | undefined;
+  inputMode?: InputModeTypes;
   onChange: (value: string) => void;
 };
 
-export function CodeInput({ sx, value, onChange }: Props) {
-  return <div>CodeInput</div>;
+export function CodeInput({
+  name,
+  sx,
+  value,
+  onChange,
+  fieldsCount = 4,
+  type = 'text',
+  inputMode = 'numeric',
+}: Props) {
+  return (
+    <ReactCodeInput
+      name={name}
+      value={value}
+      onChange={onChange}
+      type={type}
+      fields={fieldsCount}
+      inputMode={inputMode}
+    />
+  );
 }
