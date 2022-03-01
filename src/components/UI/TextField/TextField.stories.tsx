@@ -2,15 +2,15 @@ import React from 'react';
 
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
-import { Input } from './Input';
+import { TextField } from './TextField';
 
 export default {
-  title: 'Input',
-  component: Input,
-} as ComponentMeta<typeof Input>;
+  title: 'TextField',
+  component: TextField,
+} as ComponentMeta<typeof TextField>;
 
-const Template: ComponentStory<typeof Input> = function (args) {
-  return <Input {...args} />;
+const Template: ComponentStory<typeof TextField> = function (args) {
+  return <TextField {...args} />;
 };
 
 export const DefaultState = Template.bind({});
