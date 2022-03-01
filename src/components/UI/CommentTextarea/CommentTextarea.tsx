@@ -1,6 +1,6 @@
 import React, { ChangeEventHandler, CSSProperties, FocusEventHandler } from 'react';
 import { Box } from '@mui/material';
-import SendIcon from '@mui/icons-material/Send';
+import Send from '@mui/icons-material/Send';
 import { IconButton } from '../IconButton/IconButton';
 import { Textarea } from '../Textarea/Textarea';
 
@@ -33,6 +33,7 @@ export function CommentTextarea({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+    rowGap: '10px',
   };
 
   return (
@@ -47,8 +48,15 @@ export function CommentTextarea({
         placeholder={placeholder}
         sx={style}
       />
-      <IconButton onClick={onClick} component="span">
-        Отправить
+      <IconButton
+        onClick={onClick}
+        size="large"
+        type="button"
+        disabled={false}
+        color="default"
+        component="span"
+      >
+        <Send />
       </IconButton>
     </Box>
   );
