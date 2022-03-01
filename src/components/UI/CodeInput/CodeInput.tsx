@@ -1,7 +1,8 @@
-import React, { CSSProperties } from 'react';
+import { SxProps } from '@mui/material';
+import React from 'react';
 
 type Props = {
-  sx?: CSSProperties;
+  sx?: SxProps;
   value: string;
   onChange: (value: string) => void;
 };
