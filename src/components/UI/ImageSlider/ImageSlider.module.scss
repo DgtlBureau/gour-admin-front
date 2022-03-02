@@ -1,0 +1,37 @@
+.slider {
+  max-width: 580px;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+
+  .full {
+    height: 500px;
+    width: 100%;
+  
+    object-fit: cover;
+  }
+}
+
+.scroll {
+  display: flex;
+  overflow: scroll;
+
+  max-width: 580px;
+  padding: 7px 0;
+
+  .small {
+    cursor: pointer;
+
+    border: none;
+    padding: 0;
+    margin-right: 14px;
+
+    img {
+      height: 80px;
+      width: 90px;
+
+      object-fit: cover;
+    }
+  }
+}
+
+
