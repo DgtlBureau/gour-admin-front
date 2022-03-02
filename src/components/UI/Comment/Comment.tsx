@@ -7,10 +7,10 @@ import grayStarIcon from '../../../assets/icons/comment/stars/gray-star.svg';
 import s from './Comment.module.scss';
 
 export type CommentProps = {
-    title: string;
-    grade: number;
-    date: string;
-    text: string;
+  title: string;
+  grade: number;
+  date: string;
+  text: string;
 };
 
 export function Comment({
