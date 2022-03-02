@@ -1,13 +1,25 @@
 .slider {
-  max-width: 580px;
+  width: 100%;
   margin-left: 0 !important;
   margin-right: 0 !important;
+
+  @media (min-width: 995px) {
+    max-width: 580px;
+  }
 
   .full {
     height: 500px;
     width: 100%;
   
     object-fit: cover;
+
+    @media (max-width: 500px) {
+      height: 400px;
+    }
+
+    @media (max-width: 400px) {
+      height: 300px;
+    }
   }
 }
 
