@@ -5,24 +5,19 @@ type Props = {
   variant: 'text' | 'outlined' | 'contained' | undefined;
   children: ReactNode;
   type?: 'button' | 'submit' | 'reset';
-  onCLick?: () => void;
+  onClick?: () => void;
   disabled?: boolean;
   component?: ElementType;
 };
 
 export function Button({
-  variant,
-  children,
-  type,
-  onCLick,
-  disabled,
-  component,
+  variant, children, type, onClick, disabled, component,
 }: Props) {
   return (
     <MUIButton
       type={type}
       disabled={disabled}
-      onClick={onCLick}
+      onClick={onClick}
       variant={variant}
       component={component || 'button'}
     >
