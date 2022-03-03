@@ -1,8 +1,8 @@
 import React from 'react';
-import { Card, CardContent } from '@mui/material';
+import { Card, CardContent, Rating } from '@mui/material';
 
+import lightStarIcon from '../../../assets/icons/comment/stars/light-star.svg';
 import blueStarIcon from '../../../assets/icons/comment/stars/blue-star.svg';
-import grayStarIcon from '../../../assets/icons/comment/stars/gray-star.svg';
 
 import s from './Comment.module.scss';
 
@@ -25,15 +25,15 @@ export function Comment({
         <span className={s.title}>{title}</span>
 
         <div className={s.grade_n_date}>
-          {
-            Array.from({ length: 5 }, (_, i) => (
-              <img
-                src={i < grade ? blueStarIcon : grayStarIcon}
-                className={s.star}
-                alt=""
-              />
-            ))
-          }
+          <Rating
+            className={s.stars}
+            value={grade}
+            precision={0.5}
+            size="small"
+            readOnly
+            icon={<img src={blueStarIcon} alt="" />}
+            emptyIcon={<img src={lightStarIcon} alt="" />}
+          />
           <span className={s.date}>{date}</span>
         </div>
 
