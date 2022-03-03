@@ -5,7 +5,7 @@ import { ProductInformation, ProductInformationProps } from './ProductInformatio
 
 export default {
   component: ProductInformation,
-  title: 'src/components/UI/ProductInformation',
+  title: 'ProductInformation',
 } as Meta;
 
 const Template: ComponentStory<typeof ProductInformation> = function (
@@ -15,6 +15,21 @@ const Template: ComponentStory<typeof ProductInformation> = function (
 };
 
 export const DefaultProductInformation = Template.bind({});
-const props: Partial<ProductInformationProps> = {};
+const props: Partial<ProductInformationProps> = {
+  rating: 3.7,
+  gradesCount: 345,
+  commentsCount: 34,
+  characteristics: {
+    'Жирность на 100г': '37г',
+    Страна: 'Италия',
+    Вид: 'Твёрдый',
+    'Категория сыра': 'Свежий',
+    Молоко: 'Коровье',
+    'Наличие сычужного фермента': 'Да',
+    'Тип корочки': 'С белой плесенью',
+    Выдержка: 'Без выдержки',
+  },
+  onClickComments: () => console.log('clickComments'),
+};
 
 DefaultProductInformation.args = props;
