@@ -39,9 +39,15 @@ export function ImageSlider({ images }: ImageSliderProps) {
       <div className={s.scroll}>
         {
           images.map((image, i) => (
-            <button className={s.small} onClick={() => slideTo(i)}>
+            <div
+              role="button"
+              className={s.small}
+              onClick={() => slideTo(i)}
+              onKeyPress={undefined}
+              tabIndex={0}
+            >
               <img src={image.small} alt="" />
-            </button>
+            </div>
           ))
         }
       </div>

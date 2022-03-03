@@ -33,8 +33,6 @@
   .small {
     cursor: pointer;
 
-    border: none;
-    padding: 0;
     margin-right: 14px;
 
     img {
@@ -43,6 +41,10 @@
 
       object-fit: cover;
     }
+  }
+
+  .small:last-child {
+    margin-right: 0;
   }
 }
 
