@@ -8,7 +8,9 @@ export default {
   title: 'src/components/UI/ImageSlider',
 } as Meta;
 
-const Template: ComponentStory<typeof ImageSlider> = (args: ImageSliderProps) => <ImageSlider {...args} />;
+const Template: ComponentStory<typeof ImageSlider> = function (args: ImageSliderProps) {
+  return <ImageSlider {...args} />;
+};
 export const DefaultImageSlider = Template.bind({});
 const props: Partial<ImageSliderProps> = {};
 

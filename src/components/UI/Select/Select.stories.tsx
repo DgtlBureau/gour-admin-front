@@ -31,5 +31,5 @@ DefaultState.args = {
       value: 'option 3',
     },
   ],
-  style: { width: 150 },
+  sx: { width: 150 },
 };

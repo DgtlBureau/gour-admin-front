@@ -1,7 +1,12 @@
-import React, { CSSProperties } from 'react';
+import React from 'react';
 import MUISelect from '@mui/material/Select';
 import {
-  Box, FormControl, InputLabel, MenuItem, SelectChangeEvent,
+  Box,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  SelectChangeEvent,
+  SxProps,
 } from '@mui/material';
 
 type SelectItem = {
@@ -15,14 +20,12 @@ type Props = {
   label: string;
   onChange: (e: SelectChangeEvent) => void;
   items: SelectItem[];
-  style: CSSProperties;
+  sx: SxProps;
 };
 
-export function Select({
-  id, value, onChange, label, items, style,
-}: Props) {
+export function Select({ id, value, onChange, label, items, sx }: Props) {
   return (
-    <Box sx={style}>
+    <Box sx={sx}>
       <FormControl fullWidth>
         <InputLabel id={id}>{label}</InputLabel>
         <MUISelect labelId={id} id={id} value={value} label={label} onChange={onChange}>
