@@ -45,7 +45,11 @@ export const baseQueryWithReauthAndCheckRuntimeTypes: BaseQueryFn<
   }
 
   try {
-    if (args.runtimeType && !checkRuntimeType(result.data, args.runtimeType)) {
+    if (
+      args.runtimeType &&
+      result.data &&
+      !checkRuntimeType(result.data, args.runtimeType)
+    ) {
       throw new RuntimeTypeError('runtime type error');
     }
   } catch (error) {

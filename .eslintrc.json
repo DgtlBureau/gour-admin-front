@@ -30,6 +30,7 @@
     }
   },
   "rules": {
+    "no-param-reassign": ["error", { "props": false }],
     "operator-linebreak": ["error", "after"],
     "object-curly-newline": "off",
     "no-shadow": "off",
@@ -37,7 +38,9 @@
     "func-names": ["error", "as-needed"],
     "import/no-named-as-default": 0,
     "no-void": 0,
-    "linebreak-style": ["error", "windows"],
+    "linebreak-style": 0,
+    "global-require": 0,
+    "eslint linebreak-style": [0, "error", "windows"],
     "react/jsx-filename-extension": [0],
     "import/extensions": "off",
     "semi": ["error", "always"],
