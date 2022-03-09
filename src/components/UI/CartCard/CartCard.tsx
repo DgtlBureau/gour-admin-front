@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  Card as MUICard,
+  Card,
   CardContent,
   CardActions,
   CardMedia,
@@ -38,7 +38,7 @@ export function CartCard({
   const decreaseWeight = () => onEdit('decrease');
 
   return (
-    <MUICard className={s.card}>
+    <Card className={s.card}>
       <CardMedia
         className={s.image}
         component="img"
@@ -69,16 +69,16 @@ export function CartCard({
 
         <CardActions className={s.actions}>
           <div className={s.actions__left}>
-            <Button variant="text" onCLick={onElect}>
+            <Button variant="text" onClick={onElect}>
               В избранное
             </Button>
-            <Button variant="text" onCLick={onDelete}>
+            <Button variant="text" onClick={onDelete}>
               Удалить
             </Button>
           </div>
 
           <div className={s.edit}>
-            <Button onCLick={decreaseWeight}>
+            <Button onClick={decreaseWeight}>
               <img src={minusIcon} alt="" />
             </Button>
 
@@ -87,12 +87,12 @@ export function CartCard({
               {' г'}
             </span>
 
-            <Button onCLick={increaseWeight}>
+            <Button onClick={increaseWeight}>
               <img src={plusIcon} alt="" />
             </Button>
           </div>
         </CardActions>
       </div>
-    </MUICard>
+    </Card>
   );
 }

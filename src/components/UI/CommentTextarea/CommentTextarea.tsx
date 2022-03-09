@@ -1,6 +1,6 @@
-import { SxProps } from '@mui/material';
+import { SxProps, Box } from '@mui/material';
 import React, { ChangeEventHandler, CSSProperties, FocusEventHandler } from 'react';
-import { Box } from '@mui/material';
+
 import Send from '@mui/icons-material/Send';
 import { IconButton } from '../IconButton/IconButton';
 import { Textarea } from '../Textarea/Textarea';
