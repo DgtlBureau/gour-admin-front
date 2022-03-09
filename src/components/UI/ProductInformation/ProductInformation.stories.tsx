@@ -29,7 +29,6 @@ const props: Partial<ProductInformationProps> = {
     'Тип корочки': 'С белой плесенью',
     Выдержка: 'Без выдержки',
   },
-  onClickComments: () => console.log('clickComments'),
 };
 
 DefaultProductInformation.args = props;

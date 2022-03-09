@@ -57,7 +57,7 @@ export function ProductInformation({
 
       {
         Object.keys(characteristics).map(key => (
-          <div className={s.characteristic}>
+          <div key={key} className={s.characteristic}>
             <span>{key}</span>
             <div className={s.divider} />
             <span className={s.value}>{characteristics[key]}</span>
