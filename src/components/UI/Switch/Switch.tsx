@@ -1,7 +1,6 @@
-import React, {
-  ChangeEvent, CSSProperties, InputHTMLAttributes, ReactNode,
-} from 'react';
+import React, { ChangeEvent, InputHTMLAttributes, ReactNode } from 'react';
 import MUISwitch from '@mui/material/Switch';
+import { SxProps } from '@mui/material';
 
 type Props = {
   checked?: boolean;
@@ -19,7 +18,7 @@ type Props = {
   onChange: (event: ChangeEvent<HTMLInputElement>, checked: boolean) => void;
   disabled?: boolean;
   disableRipple?: boolean;
-  sx?: CSSProperties;
+  sx?: SxProps;
   checkedIcon?: ReactNode;
   icon?: ReactNode;
   id?: string;

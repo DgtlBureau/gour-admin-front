@@ -1,5 +1,6 @@
 import React, { ChangeEventHandler, CSSProperties, FocusEventHandler } from 'react';
 import MUITextareaAutosize from '@mui/material/TextareaAutosize';
+import { SxProps } from '@mui/material';
 
 type Props = {
   maxRows?: number;
