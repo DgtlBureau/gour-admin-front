@@ -5,7 +5,7 @@ import { ImageSlider, ImageSliderProps } from './ImageSlider';
 
 export default {
   component: ImageSlider,
-  title: 'src/components/UI/ImageSlider',
+  title: 'ImageSlider',
 } as Meta;
 
 const Template: ComponentStory<typeof ImageSlider> = function (args: ImageSliderProps) {
