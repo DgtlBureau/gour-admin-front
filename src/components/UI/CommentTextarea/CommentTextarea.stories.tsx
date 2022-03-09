@@ -19,6 +19,6 @@ DefaultState.args = {
   minRows: 10,
   maxRows: 15,
   placeholder: 'Super text',
-  style: { color: '#333' },
+  sx: { color: '#333' },
   defaultValue: 'value',
 };

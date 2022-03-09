@@ -1,28 +1,35 @@
 import React, { ElementType, ReactNode } from 'react';
 import MUIButton from '@mui/material/Button';
+import { SxProps } from '@mui/material';
 
 type Props = {
   variant?: 'text' | 'outlined' | 'contained';
   children: ReactNode;
   type?: 'button' | 'submit' | 'reset';
-  onCLick?: () => void;
+  onClick?: () => void;
   disabled?: boolean;
   component?: ElementType;
+  fullWidth?: boolean;
+  sx?: SxProps;
 };
 
 export function Button({
-  variant,
+  variant = 'contained',
   children,
   type,
-  onCLick,
+  onClick,
   disabled,
   component,
+  fullWidth,
+  sx,
 }: Props) {
   return (
     <MUIButton
+      sx={sx}
+      fullWidth={fullWidth}
       type={type}
       disabled={disabled}
-      onClick={onCLick}
+      onClick={onClick}
       variant={variant}
       component={component || 'button'}
     >

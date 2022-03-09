@@ -19,5 +19,4 @@ DefaultState.args = {
   size: 'small',
   color: 'primary',
   defaultChecked: true,
-  onChange: (event, checked) => console.log(checked, event),
 };

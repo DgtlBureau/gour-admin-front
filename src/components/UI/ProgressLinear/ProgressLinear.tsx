@@ -1,5 +1,6 @@
-import React, { CSSProperties } from 'react';
+import React from 'react';
 import MUILinearProgress from '@mui/material/LinearProgress';
+import { SxProps } from '@mui/material';
 
 type Props = {
   color?:
@@ -14,12 +15,10 @@ type Props = {
   value?: number;
   variant: 'buffer' | 'determinate' | 'indeterminate' | 'query';
   valueBuffer?: number;
-  sx?: CSSProperties;
+  sx?: SxProps;
 };
 
-export function ProgressLinear({
-  color, sx, value, valueBuffer, variant,
-}: Props) {
+export function ProgressLinear({ color, sx, value, valueBuffer, variant }: Props) {
   return (
     <MUILinearProgress
       color={color}
