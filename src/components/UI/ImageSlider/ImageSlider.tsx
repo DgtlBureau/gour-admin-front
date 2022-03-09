@@ -15,7 +15,7 @@ export type ImageSliderProps = {
 };
 
 export function ImageSlider({ images }: ImageSliderProps) {
-  const [slider, setSlider] = useState<SwiperCore>();
+  const [slider, setSlider] = useState<SwiperCore | null>(null);
 
   const slideTo = (i: number) => slider?.slideTo(i);
 
@@ -29,7 +29,7 @@ export function ImageSlider({ images }: ImageSliderProps) {
       >
         {
           images.map(image => (
-            <SwiperSlide>
+            <SwiperSlide key={image.full}>
               <img src={image.full} className={s.full} alt="" />
             </SwiperSlide>
           ))
@@ -40,6 +40,7 @@ export function ImageSlider({ images }: ImageSliderProps) {
         {
           images.map((image, i) => (
             <div
+              key={image.small}
               role="button"
               className={s.small}
               onClick={() => slideTo(i)}
