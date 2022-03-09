@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
@@ -9,10 +9,9 @@ export default {
   component: PhoneInput,
 } as ComponentMeta<typeof PhoneInput>;
 
-const Template: ComponentStory<typeof PhoneInput> = function (args) {
-  return <PhoneInput {...args} />;
+const Template: ComponentStory<typeof PhoneInput> = function () {
+  const [value, setValue] = useState('');
+  return <PhoneInput value={value} onChange={e => setValue(e.target.value)} />;
 };
 
 export const DefaultState = Template.bind({});
-
-DefaultState.args = {};

@@ -1,5 +1,6 @@
-import React, { CSSProperties } from 'react';
+import React from 'react';
 import MUICircularProgress from '@mui/material/CircularProgress';
+import { SxProps } from '@mui/material';
 
 type Props = {
   color?:
@@ -15,7 +16,7 @@ type Props = {
   disableShrink?: boolean;
   thickness?: number;
   value?: number;
-  sx?: CSSProperties;
+  sx?: SxProps;
   variant?: 'determinate' | 'indeterminate';
 };
 
