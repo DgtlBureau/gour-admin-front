@@ -7,11 +7,11 @@ import {
 } from '@mui/material';
 import classNames from 'classnames';
 
-import { Button } from '../UI/Button/Button';
-import plusIcon from '../../assets/icons/cart/plus.svg';
-import minusIcon from '../../assets/icons/cart/minus.svg';
+import { Button } from '../Button/Button';
+import plusIcon from '../../../assets/icons/cart/plus.svg';
+import minusIcon from '../../../assets/icons/cart/minus.svg';
 
-import s from './Card.module.scss';
+import s from './CartCard.module.scss';
 
 type Props = {
   title: string;
@@ -24,7 +24,7 @@ type Props = {
   onEdit: (action: 'increase' | 'decrease') => void;
 }
 
-export function Card({
+export function CartCard({
   title,
   price,
   amount,
@@ -34,6 +34,9 @@ export function Card({
   onDelete,
   onEdit,
 }: Props) {
+  const increaseWeight = () => onEdit('increase');
+  const decreaseWeight = () => onEdit('decrease');
+
   return (
     <MUICard className={s.card}>
       <CardMedia
@@ -50,10 +53,16 @@ export function Card({
 
           <div className={s.price__wrapper}>
             <span className={classNames(s.price, discount && s.discounted)}>
-              {`${(discount ? Math.round(price * (1 - discount)) : price)} ₽`}
+              {(discount ? Math.round(price * (1 - discount)) : price)}
+              {' ₽'}
             </span>
             {
-              discount && <span className={s.price__old}>{`${price} ₽`}</span>
+              discount && (
+                <span className={s.price__old}>
+                  {price}
+                  {' ₽'}
+                </span>
+              )
             }
           </div>
         </CardContent>
@@ -69,13 +78,16 @@ export function Card({
           </div>
 
           <div className={s.edit}>
-            <Button onCLick={() => onEdit('decrease')}>
+            <Button onCLick={decreaseWeight}>
               <img src={minusIcon} alt="" />
             </Button>
 
-            <span className={s.edit__text}>{`${amount} г`}</span>
+            <span className={s.edit__text}>
+              {amount}
+              {' г'}
+            </span>
 
-            <Button onCLick={() => onEdit('increase')}>
+            <Button onCLick={increaseWeight}>
               <img src={plusIcon} alt="" />
             </Button>
           </div>
