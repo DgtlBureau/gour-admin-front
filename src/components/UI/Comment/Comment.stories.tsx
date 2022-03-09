@@ -8,7 +8,9 @@ export default {
   title: 'src/components/UI/Comment',
 } as Meta;
 
-const Template: ComponentStory<typeof Comment> = (args: CommentProps) => <Comment {...args} />;
+const Template: ComponentStory<typeof Comment> = function (args: CommentProps) {
+  return <Comment {...args} />;
+};
 export const DefaultComment = Template.bind({});
 const props: Partial<CommentProps> = {};
 
