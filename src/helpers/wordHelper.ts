@@ -1,4 +1,4 @@
-export function getWordCounterText(count: number, variations: string[]) {
+export function getDeclensionWordByCount(count: number, variations: string[]) {
   switch (count % 10) {
     case 1:
       if (count === 11) {

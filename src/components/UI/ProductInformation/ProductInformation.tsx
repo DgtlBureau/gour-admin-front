@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { Rating } from '@mui/material';
 
-import { getWordCounterText } from '../../../helpers/wordHelper';
+import { getDeclensionWordByCount } from '../../../helpers/wordHelper';
 
 import lightStarIcon from '../../../assets/icons/comment/stars/light-star.svg';
 import grayStarIcon from '../../../assets/icons/comment/stars/gray-star.svg';
@@ -14,7 +14,10 @@ export type ProductInformationProps = {
   rating: number;
   gradesCount: number;
   commentsCount: number;
-  characteristics: Record<string, string>;
+  characteristics: {
+    label: string;
+    value: string;
+  }[];
   onClickComments(): void;
 };
 
@@ -25,8 +28,8 @@ export function ProductInformation({
   characteristics,
   onClickComments,
 }: ProductInformationProps) {
-  const gradesCountText = getWordCounterText(gradesCount, ['оценок', 'оценка', 'оценки']);
-  const commentsCountText = getWordCounterText(commentsCount, ['отзывов', 'отзыв', 'отзыва']);
+  const gradesCountText = getDeclensionWordByCount(gradesCount, ['оценок', 'оценка', 'оценки']);
+  const commentsCountText = getDeclensionWordByCount(commentsCount, ['отзывов', 'отзыв', 'отзыва']);
 
   return (
     <div className={s.info}>
@@ -56,11 +59,11 @@ export function ProductInformation({
       </div>
 
       {
-        Object.keys(characteristics).map(key => (
-          <div key={key} className={s.characteristic}>
-            <span>{key}</span>
+        characteristics.map(characteristic => (
+          <div key={characteristic.label} className={s.characteristic}>
+            <span>{characteristic.label}</span>
             <div className={s.divider} />
-            <span className={s.value}>{characteristics[key]}</span>
+            <span className={s.value}>{characteristic.value}</span>
           </div>
         ))
       }
