@@ -1,0 +1,35 @@
+.card {
+  max-width: 380px;
+
+  box-shadow: none !important;
+
+  .content {
+    background-color: #EBEBEB;
+
+    * {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .total {
+      font-weight: 700;
+      font-size: 18px;
+    }
+
+    .footnote {
+      margin-top: 10px;
+
+      font-size: 15px;
+
+      color: #778192;
+    }
+
+    .discount {
+      color: red;
+    }
+
+    &:last-child {
+      padding-bottom: 16px;
+    }
+  }
+}
