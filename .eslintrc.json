@@ -31,6 +31,7 @@
   },
   "rules": {
     "operator-linebreak": ["error", "after"],
+    "object-curly-newline": "off",
     "no-shadow": "off",
     "@typescript-eslint/no-shadow": ["error"],
     "func-names": ["error", "as-needed"],
@@ -50,7 +51,7 @@
     ],
     "import/prefer-default-export": "off",
     "react/require-default-props": ["error", { "ignoreFunctionalComponents": true }],
-    "max-len": ["error", { "code": 90, "ignoreStrings": true, "comments": 120 }],
+    "max-len": ["error", { "code": 120, "ignoreStrings": true, "comments": 120 }],
     "react/button-has-type": "off",
     "comma-dangle": [
       2,

@@ -12,6 +12,7 @@ const Template: ComponentStory<typeof ImageSlider> = function (args: ImageSlider
   return <ImageSlider {...args} />;
 };
 export const DefaultImageSlider = Template.bind({});
+
 const props: Partial<ImageSliderProps> = {
   images: [
     {

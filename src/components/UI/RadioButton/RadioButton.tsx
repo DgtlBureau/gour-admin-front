@@ -1,5 +1,6 @@
-import React, { ChangeEvent, CSSProperties, ReactNode } from 'react';
+import React, { ChangeEvent, ReactNode } from 'react';
 import MUIRadio from '@mui/material/Radio';
+import { SxProps } from '@mui/material';
 
 type Props = {
   checked?: boolean;
@@ -15,7 +16,7 @@ type Props = {
     | undefined;
   defaultChecked?: boolean;
   onChange: (event: ChangeEvent<HTMLInputElement>, checked: boolean) => void;
-  sx?: CSSProperties;
+  sx?: SxProps;
   checkedIcon?: ReactNode;
   icon?: ReactNode;
   id?: string;
