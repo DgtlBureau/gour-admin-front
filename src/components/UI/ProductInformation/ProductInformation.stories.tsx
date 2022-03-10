@@ -15,6 +15,7 @@ const Template: ComponentStory<typeof ProductInformation> = function (
 };
 
 export const DefaultProductInformation = Template.bind({});
+
 const props: Partial<ProductInformationProps> = {
   rating: 3.7,
   gradesCount: 345,

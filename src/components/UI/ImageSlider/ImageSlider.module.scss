@@ -1,0 +1,51 @@
+.slider {
+  width: 100%;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+
+  @media (min-width: 995px) {
+    max-width: 580px;
+  }
+
+  .full {
+    height: 500px;
+    width: 100%;
+  
+    object-fit: cover;
+
+    @media (max-width: 500px) {
+      height: 400px;
+    }
+
+    @media (max-width: 400px) {
+      height: 300px;
+    }
+  }
+}
+
+.scroll {
+  display: flex;
+  overflow: scroll;
+
+  max-width: 580px;
+  padding: 7px 0;
+
+  .small {
+    cursor: pointer;
+
+    margin-right: 14px;
+
+    img {
+      height: 80px;
+      width: 90px;
+
+      object-fit: cover;
+    }
+  }
+
+  .small:last-child {
+    margin-right: 0;
+  }
+}
+
+

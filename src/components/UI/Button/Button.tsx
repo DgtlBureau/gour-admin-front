@@ -3,7 +3,7 @@ import MUIButton from '@mui/material/Button';
 import { SxProps } from '@mui/material';
 
 type Props = {
-  variant?: 'text' | 'outlined' | 'contained' | undefined;
+  variant?: 'text' | 'outlined' | 'contained';
   children: ReactNode;
   type?: 'button' | 'submit' | 'reset';
   onClick?: () => void;
