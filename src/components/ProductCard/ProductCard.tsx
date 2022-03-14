@@ -13,12 +13,12 @@ import {
 
 import HeartIcon from '@mui/icons-material/Favorite';
 
-import starIcon from '../../../assets/icons/stars/gray-star.svg';
-import cartIcon from '../../../assets/icons/cart.svg';
-import bucketIcon from '../../../assets/icons/bucket.svg';
-import plusIcon from '../../../assets/icons/plus.svg';
-import minusIcon from '../../../assets/icons/minus.svg';
-import arrowIcon from '../../../assets/icons/arrow.svg';
+import starIcon from '../../assets/icons/stars/gray-star.svg';
+import cartIcon from '../../assets/icons/cart.svg';
+import bucketIcon from '../../assets/icons/bucket.svg';
+import plusIcon from '../../assets/icons/plus.svg';
+import minusIcon from '../../assets/icons/minus.svg';
+import arrowIcon from '../../assets/icons/arrow.svg';
 
 import s from './ProductCard.module.scss';
 
@@ -36,7 +36,7 @@ const listItemSx = {
 export type Weight = {
   value: number;
   unit: 'г' | 'кг';
-}
+};
 
 export type ProductCardProps = {
   title: string;
@@ -56,7 +56,7 @@ export type ProductCardProps = {
   onEdit: (id: number) => void;
   onElect: () => void;
   onDetail: () => void;
-}
+};
 
 export function ProductCard(props: ProductCardProps) {
   const {
@@ -144,25 +144,21 @@ export function ProductCard(props: ProductCardProps) {
       <CardActions className={classNames(s.actions, inCart && s.deployed)}>
         <div className={s.docket}>
           <div className={s.weight_n_discount}>
-            {
-              discount && (
-                <>
-                  <span className={s.old_price}>
-                    {total}
-                    ₽
-                  </span>
-                  {!inCart && ' / '}
-                </>
-              )
-            }
-            {
-              !inCart && (
-                <span className={s.weight}>
-                  {currentWeight.value}
-                  {currentWeight.unit}
+            {discount && (
+              <>
+                <span className={s.old_price}>
+                  {total}
+                  ₽
                 </span>
-              )
-            }
+                {!inCart && ' / '}
+              </>
+            )}
+            {!inCart && (
+              <span className={s.weight}>
+                {currentWeight.value}
+                {currentWeight.unit}
+              </span>
+            )}
           </div>
 
           <div className={s.total}>
@@ -170,94 +166,80 @@ export function ProductCard(props: ProductCardProps) {
               {discount ? total * (1 - discount) : total}
               ₽
             </span>
-            {
-              !inCart && (
-                <>
-                  <IconButton onClick={openList}>
-                    <img src={arrowIcon} alt="" />
-                  </IconButton>
+            {!inCart && (
+              <>
+                <IconButton onClick={openList}>
+                  <img src={arrowIcon} alt="" />
+                </IconButton>
 
-                  <Menu
-                    anchorEl={anchorEl}
-                    open={!!anchorEl}
-                    onClose={closeList}
-                    anchorOrigin={{
-                      vertical: 'bottom',
-                      horizontal: 'center',
-                    }}
-                    transformOrigin={{
-                      vertical: 'top',
-                      horizontal: 'center',
-                    }}
-                  >
-                    {weights.map((weight, i) => (
-                      <MenuItem
-                        key={`${weight.value}${weight.unit}`}
-                        selected={i === weightId}
-                        onClick={() => selectWeight(i)}
-                        sx={listItemSx}
-                      >
-                        <span>
-                          {weight.value}
-                          {weight.unit}
-                          {' / '}
-                          {discount ? getCost(weight) * (1 - discount) : getCost(weight)}
+                <Menu
+                  anchorEl={anchorEl}
+                  open={!!anchorEl}
+                  onClose={closeList}
+                  anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'center',
+                  }}
+                  transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'center',
+                  }}
+                >
+                  {weights.map((weight, i) => (
+                    <MenuItem
+                      key={`${weight.value}${weight.unit}`}
+                      selected={i === weightId}
+                      onClick={() => selectWeight(i)}
+                      sx={listItemSx}
+                    >
+                      <span>
+                        {weight.value}
+                        {weight.unit}
+                        {' / '}
+                        {discount ? getCost(weight) * (1 - discount) : getCost(weight)}
+                        ₽
+                      </span>
+                      {discount && (
+                        <span style={listOldPriceSx}>
+                          {getCost(weight)}
                           ₽
                         </span>
-                        {
-                          discount && (
-                            <span style={listOldPriceSx}>
-                              {getCost(weight)}
-                              ₽
-                            </span>
-                          )
-                        }
-                      </MenuItem>
-                    ))}
-                  </Menu>
-                </>
-              )
-            }
+                      )}
+                    </MenuItem>
+                  ))}
+                </Menu>
+              </>
+            )}
           </div>
         </div>
 
         <div className={s.cart}>
-          {
-            !inCart ? (
-              <IconButton onClick={onAdd}>
-                <img src={cartIcon} alt="" />
-              </IconButton>
-            ) : (
-              <Grid container>
-                <Grid item xs={4}>
-                  <IconButton
-                    className={s.remove}
-                    onClick={decreaseWeight}
-                  >
-                    <img src={weightId === 0 ? bucketIcon : minusIcon} alt="" />
-                  </IconButton>
-                </Grid>
-
-                <Grid item xs={4}>
-                  {currentWeight.value}
-                  {currentWeight.unit}
-                </Grid>
-
-                <Grid item xs={4}>
-                  {
-                    (weightId + 1 !== weights.length) && (
-                      <IconButton
-                        className={s.add}
-                        onClick={increaseWeight}
-                      >
-                        <img src={plusIcon} alt="" />
-                      </IconButton>
-                    )
-                  }
-                </Grid>
+          {!inCart ? (
+            <IconButton onClick={onAdd}>
+              <img src={cartIcon} alt="" />
+            </IconButton>
+          ) : (
+            <Grid container>
+              <Grid item xs={4}>
+                <IconButton className={s.remove} onClick={decreaseWeight}>
+                  <img src={weightId === 0 ? bucketIcon : minusIcon} alt="" />
+                </IconButton>
               </Grid>
-            )
-          }
+
+              <Grid item xs={4}>
+                {currentWeight.value}
+                {currentWeight.unit}
+              </Grid>
+
+              <Grid item xs={4}>
+                {weightId + 1 !== weights.length && (
+                  <IconButton className={s.add} onClick={increaseWeight}>
+                    <img src={plusIcon} alt="" />
+                  </IconButton>
+                )}
+              </Grid>
+            </Grid>
+          )}
         </div>
       </CardActions>
     </Card>

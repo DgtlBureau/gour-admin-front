@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { ComponentStory, Meta } from '@storybook/react';
 import { ProductCard, Weight } from './ProductCard';
 
-import russiaIcon from '../../../assets/icons/countries/russia.svg';
+import russiaIcon from '../../assets/icons/countries/russia.svg';
 
 export default {
   component: ProductCard,
@@ -35,7 +35,8 @@ const WEIGHTS = [
 
 const PRICE = 350;
 
-const PREVIEW_SRC = 'https://posta-magazine.ru/wp-content/uploads/2020/01/l_main_goatcheese-places_posta-magazine.jpg';
+const PREVIEW_SRC =
+  'https://posta-magazine.ru/wp-content/uploads/2020/01/l_main_goatcheese-places_posta-magazine.jpg';
 
 const Template: ComponentStory<typeof ProductCard> = function () {
   const [weightId, setWeightId] = useState(0);
