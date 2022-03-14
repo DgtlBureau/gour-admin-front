@@ -25,33 +25,31 @@ export function ProductPreview({
       <Grid item xs>
         <img src={imageSrc} alt="" />
       </Grid>
-      <Grid className={s.text} item xs>
+      <Grid className={s.info} item xs>
         <span>{title}</span>
       </Grid>
-      <Grid className={s.text} item xs>
+      <Grid className={s.info} item xs>
         <span>{category}</span>
       </Grid>
-      <Grid className={s.text} item xs>
+      <Grid className={s.info} item xs>
         <span>{price}</span>
       </Grid>
-      <Grid item xs>
-        <div className={s.actions}>
-          <div
-            tabIndex={0}
-            role="button"
-            onKeyPress={undefined}
-            onClick={onDelete}
-          >
-            Удалить
-          </div>
-          <div
-            tabIndex={0}
-            role="button"
-            onKeyPress={undefined}
-            onClick={onEdit}
-          >
-            Редактировать
-          </div>
+      <Grid item xs className={s.actions}>
+        <div
+          tabIndex={0}
+          role="button"
+          onKeyPress={undefined}
+          onClick={onDelete}
+        >
+          Удалить
+        </div>
+        <div
+          tabIndex={0}
+          role="button"
+          onKeyPress={undefined}
+          onClick={onEdit}
+        >
+          Редактировать
         </div>
       </Grid>
     </Grid>
