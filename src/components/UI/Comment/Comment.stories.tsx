@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { ComponentStory, Meta } from '@storybook/react';
-import { Comment, CommentProps } from './Comment';
+import { Comment } from './Comment';
 
 export default {
   component: Comment,
@@ -23,4 +23,4 @@ const props: Partial<CommentProps> = {
   text: 'Я подавился этим сыром и умер, поэтому 3, не очень приятно.',
 };
 
-DefaultComment.args = props;
+DefaultComment.args = {};

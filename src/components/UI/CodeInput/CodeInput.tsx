@@ -22,6 +22,7 @@ export function CodeInput({
 }: Props) {
   return (
     <ReactCodeInput
+      style={sx}
       name={name}
       value={value}
       onChange={onChange}
