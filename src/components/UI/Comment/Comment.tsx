@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { Card, CardContent, Rating } from '@mui/material';
 
 import lightStarIcon from '../../../assets/icons/comment/stars/light-star.svg';
