@@ -1,22 +1,32 @@
-import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React from 'react';
+import { Header } from '../../components/Header/Header';
 import { Button } from '../../components/UI/Button/Button';
-import { useHeaderContent } from '../../hooks/useHeaderContent';
+import { Path } from '../../constants/routes';
+import { useTo } from '../../hooks/useTo';
+
+type Props = {
+  onClick: () => void;
+};
+
+function RightContent({ onClick }: Props) {
+  return <Button onClick={onClick}>Создать категорию</Button>;
+}
 
 function ListCategoriesView() {
-  const navigate = useNavigate();
-  const { setHeaderContent } = useHeaderContent();
+  const to = useTo();
 
   const handleClick = () => {
-    navigate('/categories/create');
+    to(Path.CATEGORIES, 'create');
   };
 
-  useEffect(() => {
-    setHeaderContent(<Button onClick={handleClick}>Добавить категорию</Button>);
-    return () => setHeaderContent(null);
-  }, []);
-
-  return <div>Список категорий</div>;
+  return (
+    <div>
+      <Header
+        leftTitle="Категории"
+        rightContent={<RightContent onClick={handleClick} />}
+      />
+    </div>
+  );
 }
 
 export default ListCategoriesView;

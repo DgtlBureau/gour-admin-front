@@ -1,22 +1,45 @@
-import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React from 'react';
 import { Button } from '../../components/UI/Button/Button';
-import { useHeaderContent } from '../../hooks/useHeaderContent';
+import { Path } from '../../constants/routes';
+import { useTo } from '../../hooks/useTo';
+import { Header } from '../../components/Header/Header';
+
+type Props = {
+  onUploadClick: () => void;
+  onCreateClick: () => void;
+};
+
+function RightContent({ onUploadClick, onCreateClick }: Props) {
+  return (
+    <>
+      <Button variant="outlined" onClick={onUploadClick} sx={{ marginRight: '10px' }}>
+        Выгрузить базу для 1с
+      </Button>
+      <Button onClick={onCreateClick}>Добавить товар</Button>
+    </>
+  );
+}
 
 function ListGoodsView() {
-  const navigate = useNavigate();
-  const { setHeaderContent } = useHeaderContent();
+  const to = useTo();
 
-  const handleClick = () => {
-    navigate('/goods/create');
+  const onCreateClick = () => {
+    to(Path.GOODS, 'create');
+  };
+  const onUploadClick = () => {
+    console.log('uploading');
   };
 
-  useEffect(() => {
-    setHeaderContent(<Button onClick={handleClick}>Добавить товар</Button>);
-    return () => setHeaderContent(null);
-  }, []);
-
-  return <div>Список товаров</div>;
+  return (
+    <div>
+      <Header
+        leftTitle="Товары"
+        rightContent={
+          <RightContent onCreateClick={onCreateClick} onUploadClick={onUploadClick} />
+        }
+      />
+    </div>
+  );
 }
 
 export default ListGoodsView;

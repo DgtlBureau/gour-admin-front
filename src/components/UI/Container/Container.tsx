@@ -1,17 +1,10 @@
-import React, { ReactNode } from 'react';
-import { SxProps } from '@mui/material';
-import MUIContainer from '@mui/material/Container';
+import React, { CSSProperties, ReactNode } from 'react';
 
 type Props = {
-  sx?: SxProps;
-  maxWidth?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+  sx?: CSSProperties;
   children: ReactNode;
 };
 
-export function Container({ maxWidth, sx, children }: Props) {
-  return (
-    <MUIContainer sx={sx} maxWidth={maxWidth}>
-      {children}
-    </MUIContainer>
-  );
+export function Container({ sx, children }: Props) {
+  return <div style={sx}>{children}</div>;
 }

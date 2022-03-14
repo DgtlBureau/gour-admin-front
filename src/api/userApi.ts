@@ -1,7 +1,7 @@
 import { commonApi } from './commonApi';
-import { RuntimeUser, User } from '../@types/entities/User';
+import { User } from '../@types/entities/User';
 import { SignInDto } from '../@types/dto/signin.dto';
-import { RuntimeTokens, Tokens } from '../@types/dto/tokens.dto';
+import { Tokens } from '../@types/dto/tokens.dto';
 import { ForgotPasswordDto } from '../@types/dto/forgot-password.dto';
 import { RestorePasswordDto } from '../@types/dto/restore-password.dto';
 
@@ -11,14 +11,12 @@ export const userApi = commonApi.injectEndpoints({
       query: () => ({
         url: '/auth/currentUser',
         method: 'GET',
-        runtimeType: RuntimeUser,
       }),
     }),
     refresh: builder.query<Tokens, void>({
       query: () => ({
         url: '/auth/refresh',
         method: 'POST',
-        runtimeType: RuntimeTokens,
       }),
     }),
     signout: builder.mutation<void, void>({
@@ -32,7 +30,6 @@ export const userApi = commonApi.injectEndpoints({
         url: '/auth/signin',
         method: 'POST',
         body,
-        runtimeType: RuntimeTokens,
       }),
     }),
     forgotPassword: builder.mutation<void, ForgotPasswordDto>({

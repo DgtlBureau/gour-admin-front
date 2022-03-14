@@ -1,7 +1,12 @@
 import React from 'react';
+import { Header } from '../../components/Header/Header';
 
 function ListReviewsView() {
-  return <div>Список отзывов</div>;
+  return (
+    <div>
+      <Header leftTitle="Отзывы" />
+    </div>
+  );
 }
 
 export default ListReviewsView;

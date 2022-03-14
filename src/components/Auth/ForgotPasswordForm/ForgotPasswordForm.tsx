@@ -61,7 +61,7 @@ export function AuthForgotPasswordForm({ onSubmit, isLoading }: Props) {
             Отправить
           </Button>
           <p>
-            <Link to="/auth/signin">Я не забыл пароль)</Link>
+            <Link to="/auth/signin">Я не забыл пароль =]</Link>
           </p>
         </Box>
       </form>

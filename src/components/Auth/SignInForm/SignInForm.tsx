@@ -45,9 +45,14 @@ export function AuthSignInForm({ onSubmit, isLoading }: Props) {
 
   const isDisabledBtn = isLoading;
 
+  const submitHandler = (data: SignInDto) => {
+    onSubmit(data);
+    values.setValue('password', '');
+  };
+
   return (
     <FormProvider {...values}>
-      <form onSubmit={values.handleSubmit(onSubmit)}>
+      <form onSubmit={values.handleSubmit(submitHandler)}>
         <Box sx={boxSx}>
           <Typography sx={sxTitle}>Вход</Typography>
           <HFTextField sx={sxInput} name="login" label="Логин" />

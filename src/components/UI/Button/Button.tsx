@@ -36,9 +36,9 @@ export function Button({
       variant={variant}
       component={component || 'button'}
     >
-      {children}
-&nbsp;
       {isLoading ? <ProgressCircular size={15} /> : ''}
+      &nbsp;
+      {children}
     </MUIButton>
   );
 }

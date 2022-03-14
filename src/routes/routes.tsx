@@ -28,7 +28,9 @@ import EditReviewView from '../view/Reviews/Edit';
 import ListCitiesView from '../view/Cities/List';
 import CreateCityView from '../view/Cities/Create';
 import EditCityView from '../view/Cities/Edit';
+import ListRegistrationsView from '../view/Registration/List';
 import AuthRestorePasswordView from '../view/Auth/RestorePassword';
+import { Path } from '../constants/routes';
 
 const AuthLayout = lazy(() => import('../layouts/AuthLayout'));
 const MainLayout = lazy(() => import('../layouts/MainLayout'));
@@ -36,17 +38,17 @@ const PrivateLayout = lazy(() => import('../layouts/PrivateLayout'));
 
 export function Routing() {
   const mainRoutes = {
-    path: '/',
+    path: Path.HOME,
     element: <MainLayout />,
     children: [
-      { path: '*', element: <Navigate to="/404" /> },
-      { path: '/', element: <Navigate to="goods" /> },
-      { path: '404', element: <PageNotFoundView /> },
+      { path: '*', element: <Navigate to={Path.ERROR_PAGE} /> },
+      { path: Path.HOME, element: <Navigate to={Path.GOODS} /> },
+      { path: Path.ERROR_PAGE, element: <PageNotFoundView /> },
     ],
   };
 
   const authRoutes = {
-    path: 'auth',
+    path: Path.AUTH,
     element: (
       <RequirePublic>
         <AuthLayout />
@@ -62,7 +64,7 @@ export function Routing() {
   };
 
   const goodsRoutes = {
-    path: 'goods',
+    path: Path.GOODS,
     element: (
       <RequireAuth>
         <PrivateLayout />
@@ -76,7 +78,7 @@ export function Routing() {
   };
 
   const categoriesRoutes = {
-    path: 'categories',
+    path: Path.CATEGORIES,
     element: (
       <RequireAuth>
         <PrivateLayout />
@@ -90,7 +92,7 @@ export function Routing() {
   };
 
   const stocksRoutes = {
-    path: 'stocks',
+    path: Path.STOCKS,
     element: (
       <RequireAuth>
         <PrivateLayout />
@@ -104,7 +106,7 @@ export function Routing() {
   };
 
   const pagesRoutes = {
-    path: 'pages',
+    path: Path.PAGES,
     element: (
       <RequireAuth>
         <PrivateLayout />
@@ -117,8 +119,18 @@ export function Routing() {
     ],
   };
 
+  const registrationsRoutes = {
+    path: Path.REGISTRATION,
+    element: (
+      <RequireAuth>
+        <PrivateLayout />
+      </RequireAuth>
+    ),
+    children: [{ path: '', element: <ListRegistrationsView /> }],
+  };
+
   const usersRoutes = {
-    path: 'users',
+    path: Path.USERS,
     element: (
       <RequireAuth>
         <PrivateLayout />
@@ -132,7 +144,7 @@ export function Routing() {
   };
 
   const reviewsRoutes = {
-    path: 'reviews',
+    path: Path.REVIEWS,
     element: (
       <RequireAuth>
         <PrivateLayout />
@@ -146,7 +158,7 @@ export function Routing() {
   };
 
   const citiesRoutes = {
-    path: 'cities',
+    path: Path.CITIES,
     element: (
       <RequireAuth>
         <PrivateLayout />
@@ -169,6 +181,7 @@ export function Routing() {
     usersRoutes,
     reviewsRoutes,
     pagesRoutes,
+    registrationsRoutes,
   ]);
 
   return <Suspense fallback="loading..🔧">{routing}</Suspense>;
