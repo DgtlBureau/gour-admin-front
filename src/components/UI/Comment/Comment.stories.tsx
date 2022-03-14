@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { ComponentStory, Meta } from '@storybook/react';
-import { Comment } from './Comment';
+import { Comment, CommentProps } from './Comment';
 
 export default {
   component: Comment,
