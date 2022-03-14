@@ -4,7 +4,7 @@ import { SxProps } from '@mui/material';
 import { ProgressCircular } from '../ProgressCircular/ProgressCircular';
 
 type Props = {
-  variant?: 'text' | 'outlined' | 'contained' | undefined;
+  variant?: 'text' | 'outlined' | 'contained';
   children: ReactNode;
   isLoading?: boolean;
   type?: 'button' | 'submit' | 'reset';

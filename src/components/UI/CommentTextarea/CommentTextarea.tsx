@@ -2,6 +2,8 @@ import React, { ChangeEventHandler, CSSProperties, FocusEventHandler } from 'rea
 import { Box } from '@mui/material';
 
 import Send from '@mui/icons-material/Send';
+
+import { Box } from '../Box/Box';
 import { IconButton } from '../IconButton/IconButton';
 import { Textarea } from '../Textarea/Textarea';
 
