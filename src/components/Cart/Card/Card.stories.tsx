@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
-import { CartCard } from './CartCard';
+import { CartCard } from './Card';
 
 export default {
   title: 'CartCard',

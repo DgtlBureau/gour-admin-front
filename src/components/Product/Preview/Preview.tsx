@@ -1,7 +1,7 @@
 import React from 'react';
 import { Grid } from '@mui/material';
 
-import s from './ProductPreview.module.scss';
+import s from './Preview.module.scss';
 
 export type ProductPreviewProps = {
   title: string;
@@ -10,7 +10,7 @@ export type ProductPreviewProps = {
   imageSrc: string;
   onDelete: () => void;
   onEdit: () => void;
-}
+};
 
 export function ProductPreview({
   title,
@@ -35,20 +35,10 @@ export function ProductPreview({
         <span>{price}</span>
       </Grid>
       <Grid item xs className={s.actions}>
-        <div
-          tabIndex={0}
-          role="button"
-          onKeyPress={undefined}
-          onClick={onDelete}
-        >
+        <div tabIndex={0} role="button" onKeyPress={undefined} onClick={onDelete}>
           Удалить
         </div>
-        <div
-          tabIndex={0}
-          role="button"
-          onKeyPress={undefined}
-          onClick={onEdit}
-        >
+        <div tabIndex={0} role="button" onKeyPress={undefined} onClick={onEdit}>
           Редактировать
         </div>
       </Grid>

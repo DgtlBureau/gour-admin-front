@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
-import { CartInfo } from './CartInfo';
+import { CartInfo } from './Info';
 
 export default {
   title: 'CartInfo',

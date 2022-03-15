@@ -1,9 +1,9 @@
 import React from 'react';
 import { Card, CardContent } from '@mui/material';
 
-import { getDeclensionWordByCount } from '../../../helpers/wordHelper';
+import { getDeclensionWordByCount } from '../../../utils/wordHelper';
 
-import s from './CartInfo.module.scss';
+import s from './Info.module.scss';
 
 type CartInfoProps = {
   count: number;
@@ -11,16 +11,14 @@ type CartInfoProps = {
   price: number;
   delivery: number;
   discount: number;
-}
+};
 
-export function CartInfo({
-  count,
-  weight,
-  price,
-  delivery,
-  discount,
-}: CartInfoProps) {
-  const productsCountText = getDeclensionWordByCount(count, ['товаров', 'товар', 'товара']);
+export function CartInfo({ count, weight, price, delivery, discount }: CartInfoProps) {
+  const productsCountText = getDeclensionWordByCount(count, [
+    'товаров',
+    'товар',
+    'товара',
+  ]);
 
   return (
     <Card className={s.card}>

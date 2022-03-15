@@ -1,8 +1,8 @@
 import React, { ReactNode } from 'react';
 
-import { Button } from '../Button/Button';
+import { Button } from '../../UI/Button/Button';
 
-import s from './EmptyCart.module.scss';
+import s from './Empty.module.scss';
 
 const btnSx = {
   marginTop: '16px',
@@ -20,16 +20,18 @@ type Props = {
     label: string;
     onClick: () => void;
   };
-}
+};
 
-export function EmptyCart({ title, children, btn }: Props) {
+export function CartEmpty({ title, children, btn }: Props) {
   return (
     <div className={s.notice}>
       <span className={s.title}>{title}</span>
       <div className={s.description}>{children}</div>
-      {
-        btn && <Button sx={btnSx} onClick={btn.onClick}>{btn.label}</Button>
-      }
+      {btn && (
+        <Button sx={btnSx} onClick={btn.onClick}>
+          {btn.label}
+        </Button>
+      )}
     </div>
   );
 }

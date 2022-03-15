@@ -13,7 +13,6 @@ export function RequirePublic({ children }: { children: JSX.Element }) {
   const location = useLocation<State>();
   const isAuth = useSelector(selectIsAuth);
   const path = location.state?.from.pathname || Path.HOME;
-  console.log('RequirePublic', path);
 
   if (isAuth) {
     return <Navigate to={path} state={{ from: location }} replace />;

@@ -2,13 +2,13 @@ import React from 'react';
 import classNames from 'classnames';
 import { Rating } from '@mui/material';
 
-import { getDeclensionWordByCount } from '../../../helpers/wordHelper';
+import { getDeclensionWordByCount } from '../../../utils/wordHelper';
 
 import lightStarIcon from '../../../assets/icons/comment/stars/light-star.svg';
 import grayStarIcon from '../../../assets/icons/comment/stars/gray-star.svg';
 import commentIcon from '../../../assets/icons/comment/comment.svg';
 
-import s from './ProductInformation.module.scss';
+import s from './Information.module.scss';
 
 export type ProductInformationProps = {
   rating: number;
@@ -28,8 +28,16 @@ export function ProductInformation({
   characteristics,
   onClickComments,
 }: ProductInformationProps) {
-  const gradesCountText = getDeclensionWordByCount(gradesCount, ['оценок', 'оценка', 'оценки']);
-  const commentsCountText = getDeclensionWordByCount(commentsCount, ['отзывов', 'отзыв', 'отзыва']);
+  const gradesCountText = getDeclensionWordByCount(gradesCount, [
+    'оценок',
+    'оценка',
+    'оценки',
+  ]);
+  const commentsCountText = getDeclensionWordByCount(commentsCount, [
+    'отзывов',
+    'отзыв',
+    'отзыва',
+  ]);
 
   return (
     <div className={s.info}>
@@ -58,15 +66,13 @@ export function ProductInformation({
         </div>
       </div>
 
-      {
-        characteristics.map(characteristic => (
-          <div key={characteristic.label} className={s.characteristic}>
-            <span>{characteristic.label}</span>
-            <div className={s.divider} />
-            <span className={s.value}>{characteristic.value}</span>
-          </div>
-        ))
-      }
+      {characteristics.map(characteristic => (
+        <div key={characteristic.label} className={s.characteristic}>
+          <span>{characteristic.label}</span>
+          <div className={s.divider} />
+          <span className={s.value}>{characteristic.value}</span>
+        </div>
+      ))}
     </div>
   );
 }

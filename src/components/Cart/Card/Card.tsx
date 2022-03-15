@@ -1,17 +1,12 @@
 import React from 'react';
-import {
-  Card,
-  CardContent,
-  CardActions,
-  CardMedia,
-} from '@mui/material';
+import { Card, CardContent, CardActions, CardMedia } from '@mui/material';
 import classNames from 'classnames';
 
-import { Button } from '../Button/Button';
+import { Button } from '../../UI/Button/Button';
 import plusIcon from '../../../assets/icons/cart/plus.svg';
 import minusIcon from '../../../assets/icons/cart/minus.svg';
 
-import s from './CartCard.module.scss';
+import s from './Card.module.scss';
 
 type Props = {
   title: string;
@@ -22,7 +17,7 @@ type Props = {
   onElect: () => void;
   onDelete: () => void;
   onEdit: (action: 'increase' | 'decrease') => void;
-}
+};
 
 export function CartCard({
   title,
@@ -39,31 +34,23 @@ export function CartCard({
 
   return (
     <Card className={s.card}>
-      <CardMedia
-        className={s.image}
-        component="img"
-        image={productImg}
-      />
+      <CardMedia className={s.image} component="img" image={productImg} />
 
       <div className={s.info}>
         <CardContent className={s.content}>
-          <span className={s.title}>
-            {title}
-          </span>
+          <span className={s.title}>{title}</span>
 
           <div className={s.price__wrapper}>
             <span className={classNames(s.price, discount && s.discounted)}>
-              {(discount ? Math.round(price * (1 - discount)) : price)}
+              {discount ? Math.round(price * (1 - discount)) : price}
               {' ₽'}
             </span>
-            {
-              discount && (
-                <span className={s.price__old}>
-                  {price}
-                  {' ₽'}
-                </span>
-              )
-            }
+            {discount && (
+              <span className={s.price__old}>
+                {price}
+                {' ₽'}
+              </span>
+            )}
           </div>
         </CardContent>
 
