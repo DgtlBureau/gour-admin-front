@@ -1,5 +1,5 @@
 import React from 'react';
-import { Pagination as MUIPagination } from '@mui/material';
+import MUIPagination from '@mui/material/Pagination';
 
 type Props = {
   page: number;
