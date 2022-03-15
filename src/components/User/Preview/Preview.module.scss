@@ -1,0 +1,28 @@
+.preview {
+  max-width: 1070px;
+
+  .item {
+    height: 92px;
+    padding: 0 14px;
+  
+    .info {
+      display: flex;
+      align-items: center;
+
+      .role {
+        padding: 6px;
+        border-radius: 6px;
+        background-color: #EBEBEB;
+      }
+    }
+  }
+
+  .header {
+    height: 50px;
+
+    border: 1px solid #EBEBEB;
+    border-radius: 4px;
+
+    color: #778192;
+  }
+}
