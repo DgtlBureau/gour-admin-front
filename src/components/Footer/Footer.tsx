@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import NextLink from 'next/link';
 import { Divider } from '@mui/material';
 
@@ -154,7 +154,7 @@ export function Footer() {
       <Box sx={sx.info}>
         {
           links.info.map((link, i) => (
-            <>
+            <Fragment key={link.path}>
               <NextLink href={link.path} passHref>
                 <a
                   href="replace"
@@ -175,7 +175,7 @@ export function Footer() {
                   />
                 )
               }
-            </>
+            </Fragment>
           ))
         }
       </Box>
