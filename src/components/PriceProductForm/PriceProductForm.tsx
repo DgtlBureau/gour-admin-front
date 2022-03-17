@@ -84,26 +84,8 @@ export function PriceProductForm({
   onSubmit,
 }: PriceProductFormProps) {
   const defaultValues = {
+    ...prices,
     withDiscount: false,
-    discount: prices.discount,
-
-    iRub: prices.iRub,
-    iEuro: prices.iEuro,
-    iDollar: prices.iDollar,
-    iYuan: prices.iYuan,
-    iDirhams: prices.iDirhams,
-
-    oRub: prices.oRub,
-    oEuro: prices.oEuro,
-    oDollar: prices.oDollar,
-    oYuan: prices.oYuan,
-    oDirhams: prices.oDirhams,
-
-    eRub: prices.eRub,
-    eEuro: prices.eEuro,
-    eDollar: prices.eDollar,
-    eYuan: prices.eYuan,
-    eDirhams: prices.eDirhams,
   };
 
   const [withDiscount, setWithDiscount] = useState(prices.withDiscount);
