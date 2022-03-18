@@ -18,7 +18,7 @@ export function CreateCommentBlock({ onCreate }: CreateCommentBlockProps) {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    onCreate(formData);
+    if (formData.grade !== 0) onCreate(formData);
   };
 
   const onChange = (name: string, value: string | number) => {
@@ -72,7 +72,11 @@ export function CreateCommentBlock({ onCreate }: CreateCommentBlockProps) {
               name="text"
               onChange={e => onChange('text', e.target.value)}
             />
-            <Button sx={{ margin: '15px 0 0 0' }} type="submit">
+            <Button
+              sx={{ margin: '15px 0 0 0' }}
+              type="submit"
+              disabled={formData.grade === 0}
+            >
               Оставить отзыв
             </Button>
           </Grid>
