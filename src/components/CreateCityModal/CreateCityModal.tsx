@@ -36,7 +36,9 @@ export function CreateCityModal({ defaultValues, onSave, onCancel }: Props) {
             <Button type="submit" sx={{ margin: '0 10px 0 0' }}>
               Сохранить
             </Button>
-            <Button variant="outlined">Отменить</Button>
+            <Button variant="outlined" onClick={onCancel}>
+              Отменить
+            </Button>
           </Box>
         </Box>
       </form>
