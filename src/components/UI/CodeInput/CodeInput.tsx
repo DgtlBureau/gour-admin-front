@@ -1,8 +1,6 @@
 import React, { CSSProperties } from 'react';
 import ReactCodeInput, { InputModeTypes } from 'react-code-input';
 
-import s from './CodeInput.module.scss';
-
 type Props = {
   name: string;
   sx?: CSSProperties;
@@ -23,15 +21,14 @@ export function CodeInput({
   inputMode = 'numeric',
 }: Props) {
   return (
-    <div className={s.codeInput} style={sx}>
-      <ReactCodeInput
-        name={name}
-        value={value}
-        onChange={onChange}
-        type={type}
-        fields={fieldsCount}
-        inputMode={inputMode}
-      />
-    </div>
+    <ReactCodeInput
+      style={sx}
+      name={name}
+      value={value}
+      onChange={onChange}
+      type={type}
+      fields={fieldsCount}
+      inputMode={inputMode}
+    />
   );
 }

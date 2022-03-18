@@ -1,6 +1,6 @@
 import React, { ChangeEventHandler, CSSProperties, FocusEventHandler } from 'react';
-import { Box } from '@mui/material';
 import Send from '@mui/icons-material/Send';
+import { Box } from '../Box/Box';
 import { IconButton } from '../IconButton/IconButton';
 import { Textarea } from '../Textarea/Textarea';
 
@@ -8,8 +8,7 @@ type Props = {
   minRows?: number;
   maxRows?: number;
   placeholder?: string;
-  buttonVariant?: 'text' | 'outlined' | 'contained';
-  style?: CSSProperties;
+  sx?: CSSProperties;
   defaultValue?: string;
   onChange: ChangeEventHandler<HTMLTextAreaElement>;
   onBlur?: ChangeEventHandler<HTMLTextAreaElement>;
@@ -21,9 +20,8 @@ export function CommentTextarea({
   minRows,
   maxRows,
   placeholder,
-  style,
+  sx,
   defaultValue,
-  buttonVariant,
   onClick,
   onChange,
   onBlur,
@@ -46,7 +44,7 @@ export function CommentTextarea({
         maxRows={maxRows}
         defaultValue={defaultValue}
         placeholder={placeholder}
-        sx={style}
+        sx={sx}
       />
       <IconButton
         onClick={onClick}

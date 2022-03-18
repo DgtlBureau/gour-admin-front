@@ -5,19 +5,14 @@ import s from './Header.module.scss';
 
 type Props = {
   leftTitle: string;
-  rightContent: ReactNode;
+  rightContent?: ReactNode;
 };
 
 export function Header({ leftTitle, rightContent }: Props) {
   return (
     <MUIAppBar className={s.bar} position="static">
       <Toolbar className={s.wrapper}>
-        <Typography
-          variant="h5"
-          color="black"
-          component="div"
-          sx={{ flexGrow: 1 }}
-        >
+        <Typography variant="h5" color="black" component="div" sx={{ flexGrow: 1 }}>
           {leftTitle}
         </Typography>
         {rightContent}
