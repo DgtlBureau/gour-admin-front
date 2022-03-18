@@ -4,26 +4,21 @@ import { Box } from '@mui/material';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Typography } from '../UI/Typography/Typography';
-import { TextField } from '../UI/TextField/TextField';
 import { Button } from '../UI/Button/Button';
 import { CreateCityDto } from '../../@types/dto/create-city.dto';
 import schema from './validation';
 import { HFTextField } from '../HookForm/HFTextField';
 
 type Props = {
-  engName: string;
-  rusName: string;
+  defaultValues: CreateCityDto;
   onSave: SubmitHandler<CreateCityDto>;
   onCancel: () => void;
 };
 
-export function CreateCityModal({ engName, rusName, onSave, onCancel }: Props) {
+export function CreateCityModal({ defaultValues, onSave, onCancel }: Props) {
   const values = useForm<CreateCityDto>({
     resolver: yupResolver(schema),
-    defaultValues: {
-      rusName,
-      engName,
-    },
+    defaultValues: { ...defaultValues },
   });
 
   const submitHandler = (data: CreateCityDto) => {

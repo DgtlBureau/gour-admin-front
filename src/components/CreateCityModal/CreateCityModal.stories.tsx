@@ -14,8 +14,6 @@ const Template: ComponentStory<typeof CreateCityModal> = function (args) {
 };
 
 export const DefaultState = Template.bind({});
-// TODO: добавить все варианты отображения
 DefaultState.args = {
-  engName: 'Moscow',
-  rusName: 'Москва',
+  defaultValues: { engName: 'Moscow', rusName: 'Москва' },
 };
