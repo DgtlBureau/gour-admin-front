@@ -18,7 +18,7 @@ type Props = {
 export function CreateCityModal({ defaultValues, onSave, onCancel }: Props) {
   const values = useForm<CreateCityDto>({
     resolver: yupResolver(schema),
-    defaultValues: { ...defaultValues },
+    defaultValues,
   });
 
   const submitHandler = (data: CreateCityDto) => {
