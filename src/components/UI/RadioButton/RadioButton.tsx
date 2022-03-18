@@ -15,13 +15,14 @@ type Props = {
     | 'warning'
     | undefined;
   defaultChecked?: boolean;
-  onChange: (event: ChangeEvent<HTMLInputElement>, checked: boolean) => void;
+  onChange?: (event: ChangeEvent<HTMLInputElement>, checked: boolean) => void;
   sx?: SxProps;
   checkedIcon?: ReactNode;
   icon?: ReactNode;
   id?: string;
   disabled?: boolean;
   disableRipple?: boolean;
+  value?: string;
 };
 
 export function RadioButton({
@@ -35,11 +36,13 @@ export function RadioButton({
   id,
   onChange,
   size,
+  value,
   sx,
 }: Props) {
   return (
     <MUIRadio
       checked={checked}
+      value={value}
       checkedIcon={checkedIcon}
       defaultChecked={defaultChecked}
       disabled={disabled}

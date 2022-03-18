@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { SignInDto } from '../../@types/dto/signin.dto';
+import { SignInDto } from '../../@types/dto/auth/signin.dto';
 import { NotificationType } from '../../@types/entities/Notification';
 import { useSigninMutation } from '../../api/userApi';
 import { AuthSignInForm } from '../../components/Auth/SignInForm/SignInForm';

@@ -7,7 +7,7 @@ import { HFTextField } from '../../HookForm/HFTextField';
 
 import schema from './validation';
 import { Typography } from '../../UI/Typography/Typography';
-import { RestorePasswordDto } from '../../../@types/dto/restore-password.dto';
+import { RestorePasswordDto } from '../../../@types/dto/auth/restore-password.dto';
 
 const boxSx = {
   display: 'flex',

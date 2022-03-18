@@ -7,7 +7,7 @@ import { Box } from '../../UI/Box/Box';
 import { HFTextField } from '../../HookForm/HFTextField';
 
 import schema from './validation';
-import { SignInDto } from '../../../@types/dto/signin.dto';
+import { SignInDto } from '../../../@types/dto/auth/signin.dto';
 import { Typography } from '../../UI/Typography/Typography';
 
 const boxSx = {

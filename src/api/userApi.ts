@@ -1,9 +1,9 @@
 import { commonApi } from './commonApi';
 import { User } from '../@types/entities/User';
-import { SignInDto } from '../@types/dto/signin.dto';
-import { Tokens } from '../@types/dto/tokens.dto';
-import { ForgotPasswordDto } from '../@types/dto/forgot-password.dto';
-import { RestorePasswordDto } from '../@types/dto/restore-password.dto';
+import { SignInDto } from '../@types/dto/auth/signin.dto';
+import { Tokens } from '../@types/dto/auth/tokens.dto';
+import { ForgotPasswordDto } from '../@types/dto/auth/forgot-password.dto';
+import { RestorePasswordDto } from '../@types/dto/auth/restore-password.dto';
 
 export const userApi = commonApi.injectEndpoints({
   endpoints: builder => ({

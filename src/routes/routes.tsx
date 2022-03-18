@@ -3,9 +3,9 @@ import { Navigate, useRoutes } from 'react-router-dom';
 import AuthSignInView from '../view/Auth/SignIn';
 import AuthForgotPasswordView from '../view/Auth/ForgotPassword';
 import PageNotFoundView from '../view/PageNotFound/PageNotFound';
-import EditGoodView from '../view/Goods/Edit';
-import CreateGoodView from '../view/Goods/Create';
-import ListGoodsView from '../view/Goods/List';
+import EditProductView from '../view/Products/Edit';
+import CreateProductView from '../view/Products/Create';
+import ListProductsView from '../view/Products/List';
 import ListCategoriesView from '../view/Categories/List';
 import CreateCategoryView from '../view/Categories/Create';
 import EditCategoryView from '../view/Categories/Edit';
@@ -63,7 +63,7 @@ export function Routing() {
     ],
   };
 
-  const goodsRoutes = {
+  const productsRoutes = {
     path: Path.GOODS,
     element: (
       <RequireAuth>
@@ -71,9 +71,9 @@ export function Routing() {
       </RequireAuth>
     ),
     children: [
-      { path: '', element: <ListGoodsView /> },
-      { path: 'create', element: <CreateGoodView /> },
-      { path: ':id', element: <EditGoodView /> },
+      { path: '', element: <ListProductsView /> },
+      { path: 'create', element: <CreateProductView /> },
+      { path: ':id', element: <EditProductView /> },
     ],
   };
 
@@ -173,7 +173,7 @@ export function Routing() {
 
   const routing = useRoutes([
     authRoutes,
-    goodsRoutes,
+    productsRoutes,
     categoriesRoutes,
     mainRoutes,
     stocksRoutes,
