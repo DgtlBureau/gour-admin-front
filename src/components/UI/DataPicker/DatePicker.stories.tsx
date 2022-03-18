@@ -2,15 +2,15 @@ import React from 'react';
 
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
-import { DataPicker } from './DataPicker';
+import { DatePicker } from './DatePicker';
 
 export default {
   title: 'DataPicker',
-  component: DataPicker,
-} as ComponentMeta<typeof DataPicker>;
+  component: DatePicker,
+} as ComponentMeta<typeof DatePicker>;
 
-const Template: ComponentStory<typeof DataPicker> = function (args) {
-  return <DataPicker {...args} />;
+const Template: ComponentStory<typeof DatePicker> = function (args) {
+  return <DatePicker {...args} />;
 };
 
 export const DefaultState = Template.bind({});

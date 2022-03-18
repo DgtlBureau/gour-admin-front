@@ -1,12 +1,12 @@
 import React from 'react';
 
-import DatePicker from '@mui/lab/DatePicker';
+import MUIDatePicker from '@mui/lab/DatePicker';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import ruLocale from 'date-fns/locale/ru';
 
-import { SxProps, TextField, TextFieldProps } from '@mui/material';
+import { SxProps, TextField } from '@mui/material';
 
 type Props = {
   value?: string;
@@ -17,7 +17,7 @@ type Props = {
   onChange: () => void;
 };
 
-export function DataPicker({
+export function DatePicker({
   value,
   label,
   onChange,
@@ -26,7 +26,7 @@ export function DataPicker({
 }: Props) {
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns} locale={locale}>
-      <DatePicker
+      <MUIDatePicker
         mask="__.__.____"
         label={label}
         value={value}
