@@ -16,14 +16,15 @@ type Props = {
   onCancel: () => void;
 };
 
+const wrapperBoxStyles: CSSProperties = {
+  maxWidth: '690px',
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+};
+
 export function ConfirmReviewModal({ comment, onConfirm, onCancel }: Props) {
-  const wrapperBoxStyles: CSSProperties = {
-    maxWidth: '690px',
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-  };
   return (
     <Box sx={wrapperBoxStyles}>
       <Typography sx={{ margin: '0 0 10px 0' }} variant="body1">
@@ -38,7 +39,12 @@ export function ConfirmReviewModal({ comment, onConfirm, onCancel }: Props) {
         <Button type="button" variant="contained" onClick={onConfirm}>
           принять
         </Button>
-        <Button sx={{ margin: '0 0 0 10px' }} type="button" variant="outlined" onClick={onCancel}>
+        <Button
+          sx={{ margin: '0 0 0 10px' }}
+          type="button"
+          variant="outlined"
+          onClick={onCancel}
+        >
           отклонить
         </Button>
       </Box>
