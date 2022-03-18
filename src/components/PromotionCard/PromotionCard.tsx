@@ -6,31 +6,33 @@ import { Typography } from '../UI/Typography/Typography';
 type Props = {
   title: string;
   image: string;
-  onClickMore(): void;
+  onMoreCLick(): void;
 };
 
-export function PromotionCard({ title, image, onClickMore }: Props) {
-  const wrapperBoxSx: CSSProperties = {
-    width: '285px',
-    height: '156px',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
-    backgroundColor: '#EBEBEB;',
-    borderRadius: '8px',
-    overflow: 'hidden',
-    backgroundImage: 'image',
-    backgroundSize: 'cover',
-    backgroundRepeat: 'no-repeat',
-    backgroundPosition: 'center',
-    padding: '26px 18px 13px 18px',
-  };
+const wrapperBoxSx: CSSProperties = {
+  width: '285px',
+  height: '156px',
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'space-between',
+  alignItems: 'flex-start',
+  backgroundColor: '#EBEBEB;',
+  borderRadius: '8px',
+  overflow: 'hidden',
+  backgroundImage: 'image',
+  backgroundSize: 'cover',
+  backgroundRepeat: 'no-repeat',
+  backgroundPosition: 'center',
+  padding: '26px 18px 13px 18px',
+};
 
+export function PromotionCard({ title, image, onMoreCLick }: Props) {
   return (
-    <Box sx={wrapperBoxSx}>
+    <Box sx={{ ...wrapperBoxSx, backgroundImage: image ? `url(${image})` : 'none' }}>
       <Typography variant="subtitle1">{title}</Typography>
-      <Button size="small" onClick={onClickMore}>подробнее</Button>
+      <Button size="small" onClick={onMoreCLick}>
+        подробнее
+      </Button>
     </Box>
   );
 }
