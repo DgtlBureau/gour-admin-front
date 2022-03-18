@@ -1,14 +1,26 @@
 import React, { ReactNode } from 'react';
-import { Link as MUILink } from '@mui/material';
+import { Link as MUILink, SxProps } from '@mui/material';
 
 type Props = {
   children: ReactNode;
-  path: string;
+  path?: string;
+  underline?: 'none' | 'hover' | 'always';
   className?: string;
+  sx?: SxProps;
 }
 
-export function Link({ children, path, className }: Props) {
+export function Link(props: Props) {
+  const { children, path, underline = 'always', className, sx } = props;
+
   return (
-    <MUILink href={path || '#'} className={className}>{children}</MUILink>
+    <MUILink
+      href={path || '#'}
+      underline={underline}
+      className={className}
+      sx={sx}
+    >
+      {children}
+    </MUILink>
+
   );
 }
