@@ -1,9 +1,9 @@
 import { createApi } from '@reduxjs/toolkit/dist/query/react';
-import { baseQueryWithReauthAndCheckRuntimeTypes } from '../http/baseQuery';
+import { baseQueryWithReauth } from '../http/baseQuery';
 
 export const commonApi = createApi({
   reducerPath: 'commonApi',
-  baseQuery: baseQueryWithReauthAndCheckRuntimeTypes,
+  baseQuery: baseQueryWithReauth,
   tagTypes: ['Common'],
   endpoints: () => ({}),
 });

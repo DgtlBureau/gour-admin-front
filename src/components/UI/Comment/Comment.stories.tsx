@@ -23,4 +23,4 @@ const props: Partial<CommentProps> = {
   text: 'Я подавился этим сыром и умер, поэтому 3, не очень приятно.',
 };
 
-DefaultComment.args = props;
+DefaultComment.args = {};
