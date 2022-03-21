@@ -1,24 +1,27 @@
 import React from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { FormControlLabel, FormLabel, RadioGroup } from '@mui/material';
+import { FormControlLabel, FormLabel } from '@mui/material';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
-import { productFormId } from '../BasicSettingsForm/BasicSettingsForm';
 
 import schema from './validationCheese';
 import { ProductFilterCheeseFormDto } from '../../../@types/dto/form/product-filters.dto';
 import { HFSelect } from '../../HookForm/HFSelect';
 import { HFRadioGroup } from '../../HookForm/HFRadioGroup';
 import { RadioButton } from '../../UI/RadioButton/RadioButton';
+import { toSelectOptions } from '../../../utils/toSelectOptions';
 
 type Props = {
   onSubmit: SubmitHandler<ProductFilterCheeseFormDto>;
+  defaultValues?: ProductFilterCheeseFormDto;
 };
 
-export function ProductFilterFormCheese({ onSubmit }: Props) {
+export function ProductFilterFormCheese({ onSubmit, defaultValues }: Props) {
   const values = useForm<ProductFilterCheeseFormDto>({
     resolver: yupResolver(schema),
+    mode: 'onBlur',
     defaultValues: {
-      rennet: true,
+      ...defaultValues,
+      rennet: defaultValues?.rennet !== undefined ? defaultValues.rennet : true,
     },
   });
 
@@ -36,11 +39,9 @@ export function ProductFilterFormCheese({ onSubmit }: Props) {
     ],
   };
 
-  const toSelectOptions = (arr: string[]) => arr.map(c => ({ value: c, label: c }));
-
   return (
     <FormProvider {...values}>
-      <form id={productFormId} onSubmit={values.handleSubmit(onSubmit)}>
+      <form onSubmit={values.handleSubmit(onSubmit)}>
         <HFSelect
           placeholder="Категория сыра"
           name="category"

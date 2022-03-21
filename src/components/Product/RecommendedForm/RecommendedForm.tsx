@@ -1,10 +1,8 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { useForm, SubmitHandler, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Box } from '../../UI/Box/Box';
 import { HFTextField } from '../../HookForm/HFTextField';
-import { Typography } from '../../UI/Typography/Typography';
 
 import schema from './validation';
 import { ProductRecommendedFormDto } from '../../../@types/dto/form/product-recommended.dto';
@@ -31,6 +29,7 @@ export const productFormId = 'product-form';
 export function ProductRecommendedForm({ onSubmit, defaultValues }: Props) {
   const values = useForm<ProductRecommendedFormDto>({
     resolver: yupResolver(schema),
+    mode: 'onBlur',
     defaultValues,
   });
 

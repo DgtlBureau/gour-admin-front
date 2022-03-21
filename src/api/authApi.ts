@@ -5,7 +5,7 @@ import { Tokens } from '../@types/dto/auth/tokens.dto';
 import { ForgotPasswordDto } from '../@types/dto/auth/forgot-password.dto';
 import { RestorePasswordDto } from '../@types/dto/auth/restore-password.dto';
 
-export const userApi = commonApi.injectEndpoints({
+export const authApi = commonApi.injectEndpoints({
   endpoints: builder => ({
     getCurrentUser: builder.query<User, void>({
       query: () => ({
@@ -55,4 +55,4 @@ export const {
   useSignoutMutation,
   useForgotPasswordMutation,
   useRestorePasswordMutation,
-} = userApi;
+} = authApi;

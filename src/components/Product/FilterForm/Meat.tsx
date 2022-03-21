@@ -1,20 +1,22 @@
 import React from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
-import { productFormId } from '../BasicSettingsForm/BasicSettingsForm';
 
 import schema from './validationMeat';
 import { ProductFilterMeatFormDto } from '../../../@types/dto/form/product-filters.dto';
 import { HFSelect } from '../../HookForm/HFSelect';
+import { toSelectOptions } from '../../../utils/toSelectOptions';
 
 type Props = {
   onSubmit: SubmitHandler<ProductFilterMeatFormDto>;
+  defaultValues?: ProductFilterMeatFormDto;
 };
 
-export function ProductFilterFormMeat({ onSubmit }: Props) {
+export function ProductFilterFormMeat({ onSubmit, defaultValues }: Props) {
   const values = useForm<ProductFilterMeatFormDto>({
     resolver: yupResolver(schema),
-    defaultValues: {},
+    mode: 'onBlur',
+    defaultValues,
   });
 
   const { country, productType, processingType, meatType, timeOfOrigin } = {
@@ -37,11 +39,9 @@ export function ProductFilterFormMeat({ onSubmit }: Props) {
     ],
   };
 
-  const toSelectOptions = (arr: string[]) => arr.map(c => ({ value: c, label: c }));
-
   return (
     <FormProvider {...values}>
-      <form id={productFormId} onSubmit={values.handleSubmit(onSubmit)}>
+      <form onSubmit={values.handleSubmit(onSubmit)}>
         <HFSelect
           placeholder="Тип мяса"
           name="meatType"

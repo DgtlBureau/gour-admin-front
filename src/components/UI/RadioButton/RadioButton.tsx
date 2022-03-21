@@ -22,7 +22,7 @@ type Props = {
   id?: string;
   disabled?: boolean;
   disableRipple?: boolean;
-  value?: string;
+  value?: string | boolean;
 };
 
 export function RadioButton({

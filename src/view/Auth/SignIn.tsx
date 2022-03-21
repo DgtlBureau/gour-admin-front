@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { SignInDto } from '../../@types/dto/auth/signin.dto';
 import { NotificationType } from '../../@types/entities/Notification';
-import { useSigninMutation } from '../../api/userApi';
+import { useSigninMutation } from '../../api/authApi';
 import { AuthSignInForm } from '../../components/Auth/SignInForm/SignInForm';
 import { Path } from '../../constants/routes';
 import { useAppDispatch } from '../../hooks/store';

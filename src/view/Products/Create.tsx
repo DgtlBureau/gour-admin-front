@@ -6,10 +6,7 @@ import {
 } from '../../@types/dto/form/product-filters.dto';
 import { ProductRecommendedFormDto } from '../../@types/dto/form/product-recommended.dto';
 import { Header } from '../../components/Header/Header';
-import {
-  ProductBasicSettingsForm,
-  productFormId,
-} from '../../components/Product/BasicSettingsForm/BasicSettingsForm';
+import { ProductBasicSettingsForm } from '../../components/Product/BasicSettingsForm/BasicSettingsForm';
 import { ProductFilterForm } from '../../components/Product/FilterForm/FilterForm';
 import { ProductRecommendedForm } from '../../components/Product/RecommendedForm/RecommendedForm';
 import { TabPanel } from '../../components/Tabs/TabPanel';
@@ -25,7 +22,7 @@ type Props = {
 function RightContent({ onCancelHandler }: Props) {
   return (
     <>
-      <Button type="submit" form={productFormId} sx={{ marginRight: '10px' }}>
+      <Button type="submit" sx={{ marginRight: '10px' }}>
         Сохранить
       </Button>
       <Button variant="outlined" onClick={onCancelHandler}>
@@ -59,7 +56,6 @@ function CreateProductView() {
   const [activeTabId, setActiveTabId] = useState(1);
 
   const onCancelHandler = () => to(Path.GOODS);
-
   const onSubmitBasicSettingsForm = (data: ProductBasicSettingsFormDto) => {
     console.log(data);
   };

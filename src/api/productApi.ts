@@ -7,7 +7,7 @@ import { ProductGradeCreateDto } from '../@types/dto/product/create-grade.dto';
 import { ProductGetOneDto } from '../@types/dto/product/get-one.dto';
 import { ProductGetListDto } from '../@types/dto/product/get-list.dto';
 
-export const productsApi = commonApi.injectEndpoints({
+export const productApi = commonApi.injectEndpoints({
   endpoints: builder => ({
     getById: builder.query<Product, ProductGetOneDto>({
       query: ({ id, ...params }) => ({
@@ -16,7 +16,7 @@ export const productsApi = commonApi.injectEndpoints({
         params,
       }),
     }),
-    getAll: builder.query<Product, ProductGetListDto>({
+    getAll: builder.query<Product[], ProductGetListDto>({
       query: params => ({
         url: `${Path.GOODS}`,
         method: 'GET',
@@ -38,8 +38,8 @@ export const productsApi = commonApi.injectEndpoints({
       }),
     }),
     update: builder.mutation<void, ProductUpdateDto>({
-      query: body => ({
-        url: `${Path.GOODS}/${body.id}`,
+      query: ({ id, ...body }) => ({
+        url: `${Path.GOODS}/${id}`,
         method: 'POST',
         body,
       }),
@@ -60,4 +60,4 @@ export const {
   useGetByIdQuery,
   useGetAllQuery,
   useUpdateMutation,
-} = productsApi;
+} = productApi;

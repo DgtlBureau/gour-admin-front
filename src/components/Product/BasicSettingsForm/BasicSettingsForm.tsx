@@ -1,5 +1,4 @@
 import React, { CSSProperties } from 'react';
-import { Link } from 'react-router-dom';
 import { useForm, SubmitHandler, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FormControlLabel, FormLabel } from '@mui/material';
@@ -7,7 +6,6 @@ import { Box } from '../../UI/Box/Box';
 import { HFTextField } from '../../HookForm/HFTextField';
 import { HFSelect } from '../../HookForm/HFSelect';
 import { HFTextarea } from '../../HookForm/HFTextarea';
-import { Typography } from '../../UI/Typography/Typography';
 import schema from './validation';
 import { ProductBasicSettingsFormDto } from '../../../@types/dto/form/product-basic-settings.dto';
 import { RadioButton } from '../../UI/RadioButton/RadioButton';
@@ -25,12 +23,13 @@ type Props = {
   isLoading?: boolean;
 };
 
-export const productFormId = 'product-form';
-
 export function ProductBasicSettingsForm({ onSubmit, defaultValues }: Props) {
   const values = useForm<ProductBasicSettingsFormDto>({
     resolver: yupResolver(schema),
-    defaultValues,
+    mode: 'onBlur',
+    defaultValues: {
+      isIndexed: defaultValues?.isIndexed !== undefined ? defaultValues?.isIndexed : true,
+    },
   });
 
   const submitHandler = (data: ProductBasicSettingsFormDto) => {
@@ -39,7 +38,7 @@ export function ProductBasicSettingsForm({ onSubmit, defaultValues }: Props) {
 
   return (
     <FormProvider {...values}>
-      <form id={productFormId} onSubmit={values.handleSubmit(submitHandler)}>
+      <form onSubmit={values.handleSubmit(submitHandler)}>
         <Box>
           <HFTextField name="title" label="Название" sx={inputSx} />
 
