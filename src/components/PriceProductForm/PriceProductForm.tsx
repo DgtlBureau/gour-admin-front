@@ -1,58 +1,51 @@
 import React, { useState } from 'react';
+import { FormLabel, FormControlLabel, RadioGroup } from '@mui/material';
 import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 import schema from './validation';
-import { Button } from '../UI/Button/Button';
 import { Box } from '../UI/Box/Box';
+import { Button } from '../UI/Button/Button';
 import { Typography } from '../UI/Typography/Typography';
+import { RadioButton } from '../UI/RadioButton/RadioButton';
 import { HFTextField } from '../HookForm/HFTextField';
-import { HFRadioGroup } from '../HookForm/HFRadioGroup';
 
-const sxDiscount = {
-  display: 'flex',
-  alignItems: 'center',
-  marginBottom: '20px',
-};
-
-const sxPrices = {
-  display: 'flex',
-};
-
-const sxFields = {
-  paddingRight: '20px',
-};
-
-const sxInput = {
-  maxWidth: '320px',
-};
-
-const sxPriceInput = {
-  ...sxInput,
-  marginBottom: '10px',
-};
-
-const sxRadio = {
-  marginRight: '20px',
-};
-
-const sxTitle = {
-  marginBottom: '10px',
-};
-
-const discountOptions = [
-  {
-    label: 'Да',
-    value: true,
+const sx = {
+  discount: {
+    display: 'flex',
+    alignItems: 'center',
+    marginBottom: '20px',
   },
-  {
-    label: 'Нет',
-    value: false,
+  prices: {
+    display: 'flex',
   },
-];
+  fields: {
+    paddingRight: '20px',
+  },
+  input: {
+    maxWidth: '320px',
+  },
+  priceInput: {
+    maxWidth: '320px',
+    marginBottom: '10px',
+  },
+  radioGroup: {
+    marginRight: '20px',
+  },
+  radios: {
+    display: 'flex',
+  },
+  radio: {
+    '&.Mui-checked': {
+      color: '#25262D',
+    },
+  },
+  title: {
+    marginBottom: '10px',
+  },
+};
 
 export type PriceFields = {
-  withDiscount: boolean;
   discount?: string;
 
   iRub: string;
@@ -83,37 +76,53 @@ export function PriceProductForm({
   prices,
   onSubmit,
 }: PriceProductFormProps) {
-  const defaultValues = {
-    ...prices,
-    withDiscount: false,
-  };
-
-  const [withDiscount, setWithDiscount] = useState(prices.withDiscount);
+  const [withDiscount, setWithDiscount] = useState(!!prices.discount);
 
   const values = useForm<PriceFields>({
-    defaultValues,
+    defaultValues: prices,
+    mode: 'onBlur',
     resolver: yupResolver(schema),
   });
 
   const submitHandler = (data: PriceFields) => onSubmit(data);
 
-  const changeWithDiscount = (value: string) => setWithDiscount(value === 'true');
+  const enableDiscount = () => setWithDiscount(true);
+  const disableDiscount = () => setWithDiscount(false);
 
   return (
     <FormProvider {...values}>
       <form onSubmit={values.handleSubmit(submitHandler)}>
-        <Box sx={sxDiscount}>
-          <HFRadioGroup
-            sx={sxRadio}
-            options={discountOptions}
-            label="Скидка на товар"
-            name="withDiscount"
-            onChange={changeWithDiscount}
-          />
+        <Box sx={sx.discount}>
+          <RadioGroup sx={sx.radioGroup}>
+            <FormLabel>Скидка на товар</FormLabel>
+            <Box sx={sx.radios}>
+              <FormControlLabel
+                label="Да"
+                control={(
+                  <RadioButton
+                    sx={sx.radio}
+                    checked={withDiscount}
+                    onChange={enableDiscount}
+                  />
+                )}
+              />
+              <FormControlLabel
+                label="Нет"
+                value="false"
+                control={(
+                  <RadioButton
+                    sx={sx.radio}
+                    checked={!withDiscount}
+                    onChange={disableDiscount}
+                  />
+                )}
+              />
+            </Box>
+          </RadioGroup>
           {
             withDiscount && (
               <HFTextField
-                sx={sxInput}
+                sx={sx.input}
                 defaultValue={prices.discount}
                 label="Размер скидки"
                 name="discount"
@@ -126,41 +135,41 @@ export function PriceProductForm({
           </Button>
         </Box>
 
-        <Box sx={sxPrices}>
-          <Box sx={sxFields}>
-            <Typography variant="body1" sx={sxTitle}>
+        <Box sx={sx.prices}>
+          <Box sx={sx.fields}>
+            <Typography variant="body1" sx={sx.title}>
               Физическое лицо
             </Typography>
 
-            <HFTextField sx={sxPriceInput} label="Цена Рубли" name="iRub" />
-            <HFTextField sx={sxPriceInput} label="Цена Евро" name="iEuro" />
-            <HFTextField sx={sxPriceInput} label="Цена Доллар" name="iDollar" />
-            <HFTextField sx={sxPriceInput} label="Цена Юани" name="iYuan" />
-            <HFTextField sx={sxPriceInput} label="Цена Дирхамы" name="iDirhams" />
+            <HFTextField sx={sx.priceInput} label="Цена Рубли" name="iRub" />
+            <HFTextField sx={sx.priceInput} label="Цена Евро" name="iEuro" />
+            <HFTextField sx={sx.priceInput} label="Цена Доллар" name="iDollar" />
+            <HFTextField sx={sx.priceInput} label="Цена Юани" name="iYuan" />
+            <HFTextField sx={sx.priceInput} label="Цена Дирхамы" name="iDirhams" />
           </Box>
 
-          <Box sx={sxFields}>
-            <Typography variant="body1" sx={sxTitle}>
+          <Box sx={sx.fields}>
+            <Typography variant="body1" sx={sx.title}>
               Организатор коллективной закупки
             </Typography>
 
-            <HFTextField sx={sxPriceInput} label="Цена Рубли" name="oRub" />
-            <HFTextField sx={sxPriceInput} label="Цена Евро" name="oEuro" />
-            <HFTextField sx={sxPriceInput} label="Цена Доллар" name="oDollar" />
-            <HFTextField sx={sxPriceInput} label="Цена Юани" name="oYuan" />
-            <HFTextField sx={sxPriceInput} label="Цена Дирхамы" name="oDirhams" />
+            <HFTextField sx={sx.priceInput} label="Цена Рубли" name="oRub" />
+            <HFTextField sx={sx.priceInput} label="Цена Евро" name="oEuro" />
+            <HFTextField sx={sx.priceInput} label="Цена Доллар" name="oDollar" />
+            <HFTextField sx={sx.priceInput} label="Цена Юани" name="oYuan" />
+            <HFTextField sx={sx.priceInput} label="Цена Дирхамы" name="oDirhams" />
           </Box>
 
-          <Box sx={sxFields}>
-            <Typography variant="body1" sx={sxTitle}>
+          <Box sx={sx.fields}>
+            <Typography variant="body1" sx={sx.title}>
               Юридическое лицо
             </Typography>
 
-            <HFTextField sx={sxPriceInput} label="Цена Рубли" name="eRub" />
-            <HFTextField sx={sxPriceInput} label="Цена Евро" name="eEuro" />
-            <HFTextField sx={sxPriceInput} label="Цена Доллар" name="eDollar" />
-            <HFTextField sx={sxPriceInput} label="Цена Юани" name="eYuan" />
-            <HFTextField sx={sxPriceInput} label="Цена Дирхамы" name="eDirhams" />
+            <HFTextField sx={sx.priceInput} label="Цена Рубли" name="eRub" />
+            <HFTextField sx={sx.priceInput} label="Цена Евро" name="eEuro" />
+            <HFTextField sx={sx.priceInput} label="Цена Доллар" name="eDollar" />
+            <HFTextField sx={sx.priceInput} label="Цена Юани" name="eYuan" />
+            <HFTextField sx={sx.priceInput} label="Цена Дирхамы" name="eDirhams" />
           </Box>
         </Box>
       </form>
