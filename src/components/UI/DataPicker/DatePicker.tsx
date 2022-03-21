@@ -13,6 +13,8 @@ type Props = {
   label?: string;
   locale?: Locale;
   sx?: SxProps;
+  isError?: boolean;
+  helperText?: string;
   fullWidth?: boolean;
   onChange: () => void;
 };
@@ -22,6 +24,8 @@ export function DatePicker({
   label,
   onChange,
   locale = ruLocale,
+  isError,
+  helperText,
   ...inputProps
 }: Props) {
   return (
@@ -31,7 +35,14 @@ export function DatePicker({
         label={label}
         value={value}
         onChange={onChange}
-        renderInput={params => <TextField {...params} {...inputProps} />}
+        renderInput={params => (
+          <TextField
+            {...params}
+            {...inputProps}
+            error={isError}
+            helperText={helperText}
+          />
+        )}
       />
     </LocalizationProvider>
   );
