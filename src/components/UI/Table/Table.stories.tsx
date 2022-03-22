@@ -11,37 +11,6 @@ export default {
   component: Table,
 } as ComponentMeta<typeof Table>;
 
-const rows = [
-  { cells: [<Button>test</Button>, <Chip label="Chip Filled" />, 'value3', 'value4'] },
-  { cells: ['value1', 'value2', 'value3', 'value4'] },
-  { cells: ['value1', 'value2', 'value3', 'value4'] },
-  {
-    cells: [
-      <Button>test</Button>,
-      <Chip label="Chdqwdqwdip Filled" />,
-      'valueqwdqwd3',
-      'valuqsccqcqe4',
-    ],
-  },
-  { cells: ['value1', 'value2', 'value3', 'value4'] },
-  {
-    cells: [
-      <Button>dqwwqdqwdd</Button>,
-      <Chip label="Chip Filled" />,
-      'value3',
-      'value4',
-    ],
-  },
-  {
-    cells: [
-      <Button>teswqdwqdqwdqwdwqdwqdt</Button>,
-      <Chip label="Cdqwdqwdwqdhip Filled" />,
-      'value3',
-      'value4',
-    ],
-  },
-];
-
 const rowTitles = ['test1', 'test2', 'test3', 'test4'];
 
 const Template: ComponentStory<typeof Table> = function (args) {
@@ -59,7 +28,7 @@ const Template: ComponentStory<typeof Table> = function (args) {
   return (
     <Table
       {...args}
-      rows={rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)}
+      rows={[]}
       page={page}
       rowsPerPageOptions={[2, 5, 10]}
       rowsPerPage={rowsPerPage}
