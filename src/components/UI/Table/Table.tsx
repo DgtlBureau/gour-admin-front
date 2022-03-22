@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ChangeEvent, ReactNode } from 'react';
 import MUITable from '@mui/material/Table';
 import MUITableBody from '@mui/material/TableBody';
 import MUITableCell from '@mui/material/TableCell';
@@ -9,7 +9,7 @@ import Paper from '@mui/material/Paper';
 import { TablePagination } from '@mui/material';
 
 type Cell = {
-  cells: React.ReactNode[];
+  cells: ReactNode[];
 };
 
 type Props = {
@@ -19,7 +19,7 @@ type Props = {
   rowsPerPage: number;
   rowsPerPageOptions: number[];
   onPageChange: (event: unknown, newPage: number) => void;
-  onRowsPerPageChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onRowsPerPageChange: (event: ChangeEvent<HTMLInputElement>) => void;
 };
 
 export function Table({
@@ -37,7 +37,9 @@ export function Table({
         <MUITableHead>
           <MUITableRow>
             {rowTitleList.map(rowTitle => (
-              <MUITableCell align="left">{rowTitle}</MUITableCell>
+              <MUITableCell key={rowTitle} align="left">
+                {rowTitle}
+              </MUITableCell>
             ))}
           </MUITableRow>
         </MUITableHead>
@@ -45,7 +47,9 @@ export function Table({
           {rows.map(row => (
             <MUITableRow>
               {row.cells.map(cell => (
-                <MUITableCell align="left">{cell}</MUITableCell>
+                <MUITableCell key={cell?.toString()} align="left">
+                  {cell}
+                </MUITableCell>
               ))}
             </MUITableRow>
           ))}
