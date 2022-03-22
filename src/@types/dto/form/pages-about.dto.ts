@@ -1,7 +1,7 @@
-export type PagesAboutDto = Readonly<{
+export type PagesAboutFormDto = Readonly<{
   pageTitle: string;
   description: string;
-  indexation: 'yes' | 'no';
+  isIndexed: boolean;
   title: string;
   metaTitle: string;
   keywords: string;

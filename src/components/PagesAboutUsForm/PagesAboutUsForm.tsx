@@ -7,22 +7,24 @@ import { Button } from '../UI/Button/Button';
 import { HFTextField } from '../HookForm/HFTextField';
 import schema from './validation';
 import { HFRadioGroup } from '../HookForm/HFRadioGroup';
-import { PagesAboutDto } from '../../@types/dto/form/pages-about.dto';
+import { PagesAboutFormDto } from '../../@types/dto/form/pages-about.dto';
 
 type Props = {
-  defaultValues: PagesAboutDto;
-  onSave: SubmitHandler<PagesAboutDto>;
+  defaultValues: PagesAboutFormDto;
+  onSubmit: SubmitHandler<PagesAboutFormDto>;
   onCancel: () => void;
 };
 
-export function PagesAboutUsForm({ defaultValues, onSave, onCancel }: Props) {
-  const values = useForm<PagesAboutDto>({
+export function PagesAboutUsForm({ defaultValues, onSubmit, onCancel }: Props) {
+  const values = useForm<PagesAboutFormDto>({
     resolver: yupResolver(schema),
-    defaultValues,
+    defaultValues: {
+      isIndexed: defaultValues?.isIndexed !== undefined ? defaultValues?.isIndexed : true,
+    },
   });
 
-  const submitHandler = (data: PagesAboutDto) => {
-    onSave(data);
+  const submitHandler = (data: PagesAboutFormDto) => {
+    onSubmit(data);
   };
 
   return (
@@ -37,9 +39,9 @@ export function PagesAboutUsForm({ defaultValues, onSave, onCancel }: Props) {
           </Grid>
           <Grid item xs={8}>
             <FormLabel>Индексация</FormLabel>
-            <HFRadioGroup name="indexation">
-              <FormControlLabel value="yes" control={<Radio />} label="Да" />
-              <FormControlLabel value="no" control={<Radio />} label="Нет" />
+            <HFRadioGroup name="isIndexed">
+              <FormControlLabel value control={<Radio />} label="Да" />
+              <FormControlLabel value={false} control={<Radio />} label="Нет" />
             </HFRadioGroup>
           </Grid>
 
@@ -48,7 +50,7 @@ export function PagesAboutUsForm({ defaultValues, onSave, onCancel }: Props) {
               <HFTextField label="metaTitle" name="metaTitle" />
             </Grid>
             <Grid item xs={4}>
-              <HFTextField label="metaDescriptoin" name="metaDescriptoin" />
+              <HFTextField label="metaDescription" name="metaDescription" />
             </Grid>
             <Grid item xs={4}>
               <HFTextField label="metaKeywords" name="metaKeywords" />
@@ -58,7 +60,9 @@ export function PagesAboutUsForm({ defaultValues, onSave, onCancel }: Props) {
             <Button type="submit" sx={{ margin: '0 10px 0 0' }}>
               Сохранить
             </Button>
-            <Button variant="outlined">Отменить</Button>
+            <Button variant="outlined" onClick={onCancel}>
+              Отменить
+            </Button>
           </Grid>
         </Grid>
       </form>
