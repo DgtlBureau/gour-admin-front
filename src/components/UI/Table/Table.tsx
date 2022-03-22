@@ -8,13 +8,13 @@ import MUITableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { TablePagination } from '@mui/material';
 
-type Cell = {
+type Row = {
   cells: ReactNode[];
 };
 
 type Props = {
   rowTitleList: string[];
-  rows: Cell[];
+  rows: Row[];
   page: number;
   rowsPerPage: number;
   rowsPerPageOptions: number[];
@@ -44,8 +44,8 @@ export function Table({
           </MUITableRow>
         </MUITableHead>
         <MUITableBody>
-          {rows.map(row => (
-            <MUITableRow>
+          {rows.map((row, i) => (
+            <MUITableRow key={JSON.stringify(row)}>
               {row.cells.map(cell => (
                 <MUITableCell key={cell?.toString()} align="left">
                   {cell}
