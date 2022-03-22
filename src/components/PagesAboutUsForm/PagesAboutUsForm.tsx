@@ -7,30 +7,21 @@ import { Button } from '../UI/Button/Button';
 import { HFTextField } from '../HookForm/HFTextField';
 import schema from './validation';
 import { HFRadioGroup } from '../HookForm/HFRadioGroup';
-
-type Page = {
-  pageTitle: string;
-  description: string;
-  indexation: 'yes' | 'no';
-  title: string;
-  metaTitle: string;
-  keywords: string;
-  metaKeywords: string;
-};
+import { PagesAboutDto } from '../../@types/dto/form/pages-about.dto';
 
 type Props = {
-  defaultValues: Page;
-  onSave: SubmitHandler<Page>;
+  defaultValues: PagesAboutDto;
+  onSave: SubmitHandler<PagesAboutDto>;
   onCancel: () => void;
 };
 
 export function PagesAboutUsForm({ defaultValues, onSave, onCancel }: Props) {
-  const values = useForm<Page>({
+  const values = useForm<PagesAboutDto>({
     resolver: yupResolver(schema),
     defaultValues,
   });
 
-  const submitHandler = (data: Page) => {
+  const submitHandler = (data: PagesAboutDto) => {
     onSave(data);
   };
 
