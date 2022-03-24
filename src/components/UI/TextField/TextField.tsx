@@ -8,6 +8,7 @@ type Props = {
   label?: string;
   sx?: SxProps;
   name?: string;
+  multiline?: boolean;
   variant?: 'standard' | 'outlined' | 'filled' | undefined;
   isError?: boolean;
   type?: string;
@@ -23,6 +24,7 @@ export function TextField({
   onChange,
   onFocus,
   label,
+  multiline,
   variant,
   type = 'text',
   isError,
@@ -41,6 +43,7 @@ export function TextField({
       variant={variant}
       onChange={onChange}
       name={name}
+      multiline={multiline}
       onFocus={onFocus}
       type={type}
       helperText={helperText}

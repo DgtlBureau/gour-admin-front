@@ -6,6 +6,7 @@ import { TextField } from '../UI/TextField/TextField';
 type Props = {
   name: string;
   defaultValue?: string;
+  multiline?: boolean;
   label?: string;
   type?: string;
   sx?: SxProps;
