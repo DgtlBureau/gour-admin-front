@@ -59,7 +59,7 @@ const Template: ComponentStory<typeof Table> = function (args) {
   return (
     <Table
       {...args}
-      rows={[]}
+      rows={rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)}
       page={page}
       rowsPerPageOptions={[2, 5, 10]}
       rowsPerPage={rowsPerPage}
