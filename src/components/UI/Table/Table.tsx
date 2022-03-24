@@ -9,6 +9,7 @@ import Paper from '@mui/material/Paper';
 import { TablePagination } from '@mui/material';
 
 type Row = {
+  id: number;
   cells: ReactNode[];
 };
 
@@ -31,6 +32,10 @@ export function Table({
   onPageChange,
   onRowsPerPageChange,
 }: Props) {
+  const shownRows =
+    rowsPerPage > 0 ?
+      rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) :
+      rows;
   return (
     <MUITableContainer component={Paper}>
       <MUITable sx={{ minWidth: 650 }} aria-label="simple table">
@@ -44,8 +49,8 @@ export function Table({
           </MUITableRow>
         </MUITableHead>
         <MUITableBody>
-          {rows.map((row, i) => (
-            <MUITableRow key={JSON.stringify(row)}>
+          {shownRows.map(row => (
+            <MUITableRow key={row.id}>
               {row.cells.map(cell => (
                 <MUITableCell key={cell?.toString()} align="left">
                   {cell}
