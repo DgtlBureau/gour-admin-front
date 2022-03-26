@@ -41,8 +41,10 @@ export function UploadImage({
   });
 
   const [loadedFile, setLoadedFile] = useState<string | ArrayBuffer | null>(null);
+  const [fileEvent, setFileEvent] = useState<ChangeEvent<HTMLInputElement> | null>(null);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setFileEvent(event);
     onChange(event);
     const { files } = event.target;
 
@@ -50,15 +52,20 @@ export function UploadImage({
 
     const fr = new FileReader();
 
-    fr.readAsDataURL(files[0]);
-
     fr.addEventListener('load', () => {
       setLoadedFile(fr.result);
     });
+
+    fr.readAsDataURL(files[0]);
   };
 
   const handleDelete = () => {
     setLoadedFile(null);
+
+    if (fileEvent) {
+      fileEvent.target.value = '';
+      onChange(fileEvent);
+    }
   };
 
   return (
