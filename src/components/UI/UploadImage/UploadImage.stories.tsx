@@ -17,5 +17,6 @@ export const DefaultState = Template.bind({});
 
 DefaultState.args = {
   id: 'uploadImage',
+  label: 'test upload',
   allowedFileTypes: ['image/jpeg', 'image/png'],
 };
