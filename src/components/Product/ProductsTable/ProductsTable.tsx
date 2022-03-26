@@ -23,5 +23,5 @@ export type ProductsTableProps = {
 };
 
 export function ProductsTable(props: ProductsTableProps) {
-    return <div>ProductsTable</div>
+  return <div>ProductsTable</div>;
 }
