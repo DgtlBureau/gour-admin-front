@@ -10,7 +10,8 @@ function generateStock(
   title: string,
   startDate: string,
   endDate: string,
-  status: string
+  status: string,
+  isActual: boolean
 ) {
   return {
     image,
@@ -19,6 +20,7 @@ function generateStock(
     endDate,
     status,
     id,
+    isActual,
   };
 }
 
@@ -41,13 +43,14 @@ DefaultState.args = {
       'title 1',
       '22.02.2022',
       '22.03.2022',
-      'active'
+      'active',
+      true
     ),
-    generateStock(2, 'image', 'title 1', '22.02.2022', '22.03.2022', 'active'),
-    generateStock(3, 'image', 'title 1', '22.02.2022', '22.03.2022', 'active'),
-    generateStock(4, 'image', 'title 1', '22.02.2022', '22.03.2022', 'active'),
-    generateStock(5, 'image', 'title 1', '22.02.2022', '22.03.2022', 'active'),
-    generateStock(6, 'image', 'title 1', '22.02.2022', '22.03.2022', 'active'),
-    generateStock(7, 'image', 'title 1', '22.02.2022', '22.03.2022', 'active'),
+    generateStock(2, 'image', 'title 1', '22.02.2022', '22.03.2022', 'active', true),
+    generateStock(3, 'image', 'Прошедшая', '22.02.2022', '22.03.2022', 'active', false),
+    generateStock(4, 'image', 'Прошедшая', '22.02.2022', '22.03.2022', 'active', false),
+    generateStock(5, 'image', 'title 1', '22.02.2022', '22.03.2022', 'active', true),
+    generateStock(6, 'image', 'Прошедшая', '22.02.2022', '22.03.2022', 'active', false),
+    generateStock(7, 'image', 'title 1', '22.02.2022', '22.03.2022', 'active', true),
   ],
 };
