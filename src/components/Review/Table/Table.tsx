@@ -10,7 +10,19 @@ type Comment = {
   text: string;
   productName: string;
   date: string;
+  isConfirmed: boolean;
 };
+
+const tabsOptions = [
+  {
+    id: 'waitingForApprove',
+    label: 'Ждут подтверждения',
+  },
+  {
+    id: 'approved',
+    label: 'Подтверждены',
+  },
+];
 
 type Props = {
   comments: Comment[];
@@ -31,6 +43,12 @@ export function ReviewTable({ comments, onClickFullReview }: Props) {
   const [page, setPage] = useState<number>(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
+  const [selectedTabId, setSelectedTabId] = useState<string>('waitingForApprove');
+
+  const isConfirmed = selectedTabId !== 'waitingForApprove';
+
+  const changeTab = (id: string) => setSelectedTabId(id);
+
   const handleChangePage = (_: unknown, newPage: number) => {
     setPage(newPage);
   };
@@ -42,35 +60,39 @@ export function ReviewTable({ comments, onClickFullReview }: Props) {
     setPage(0);
   };
 
-  const row = comments.map(comment => {
-    const { id, ...rest } = comment;
-    const cells = Object.keys(rest).map(key => {
-      switch (key) {
-        case 'text':
-          return (
-            <Stack
-              onClick={() => {
-                onClickFullReview(id);
-              }}
-            >
-              <Typography sx={commentTextSx} variant="body1">
-                {rest.text}
-              </Typography>
-            </Stack>
-          );
-        default:
-          return rest[key as keyof Omit<Comment, 'id'>];
-      }
+  const row = comments
+    .filter(comment => comment.isConfirmed === isConfirmed)
+    .map(comment => {
+      const cells = [
+        comment.authorName,
+        <Stack
+          onClick={() => {
+            onClickFullReview(comment.id);
+          }}
+        >
+          <Typography sx={commentTextSx} variant="body1">
+            {comment.text}
+          </Typography>
+        </Stack>,
+        comment.productName,
+        comment.date,
+      ];
+      return {
+        id: comment.id,
+        cells,
+      };
     });
-    return {
-      id: comment.id,
-      cells,
-    };
-  });
+
+  const tabs = {
+    selectedId: selectedTabId,
+    options: tabsOptions,
+    onChange: changeTab,
+  };
 
   return (
     <Table
       rowTitleList={tableHeader}
+      tabs={tabs}
       rows={row}
       page={page}
       rowsPerPage={rowsPerPage}

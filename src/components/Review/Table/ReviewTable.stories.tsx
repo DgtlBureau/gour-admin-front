@@ -18,7 +18,8 @@ function generateComment(
   authorName: string,
   text: string,
   productName: string,
-  date: string
+  date: string,
+  isConfirmed: boolean,
 ) {
   return {
     id,
@@ -26,6 +27,7 @@ function generateComment(
     text,
     productName,
     date,
+    isConfirmed,
   };
 }
 
@@ -38,14 +40,15 @@ DefaultState.args = {
       'Misha Barulin',
       'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Distinctio pariatur eaque dolor sunt, quia, doloremque tempore dicta eius, laudantium nostrum maxime saepe. Est doloremque perferendis recusandae minima nesciunt quidem quod.',
       'test',
-      '22.03.2022'
+      '22.03.2022',
+      true,
     ),
-    generateComment(2, 'Kirill Zolkin', 'long long test long log', 'test', '19.03.2022'),
-    generateComment(3, 'Вася Пупкин', 'test', 'test', '22.03.2022'),
-    generateComment(4, 'Тест Тестов', 'lobg lobg test', 'test', '19.03.2022'),
-    generateComment(5, 'Оченьочень Длинноеимя', 'test', 'test', '22.03.2022'),
-    generateComment(6, 'Kirill Zolkin', 'lobg lobg test', 'test', '19.03.2022'),
-    generateComment(7, 'Misha Barulin', 'test', 'test', '22.03.2022'),
-    generateComment(8, 'Kirill Zolkin', 'lobg lobg test', 'test', '19.03.2022'),
+    generateComment(2, 'Kirill Zolkin', 'long long test long log', 'test', '19.03.2022', true),
+    generateComment(3, 'Вася Пупкин', 'НЕ ПОДТВЕРЖДЕННЫЙ', 'test', '22.03.2022', false),
+    generateComment(4, 'Тест Тестов', 'НЕ ПОДТВЕРЖДЕННЫЙ', 'test', '19.03.2022', false),
+    generateComment(5, 'Оченьочень Длинноеимя', 'test', 'test', '22.03.2022', true),
+    generateComment(6, 'Kirill Zolkin', 'lobg lobg test', 'test', '19.03.2022', true),
+    generateComment(7, 'Misha Barulin', 'НЕ ПОДТВЕРЖДЕННЫЙ', 'test', '22.03.2022', false),
+    generateComment(8, 'Kirill Zolkin', 'lobg lobg test', 'test', '19.03.2022', true),
   ],
 };
