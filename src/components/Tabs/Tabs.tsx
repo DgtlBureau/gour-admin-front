@@ -1,7 +1,7 @@
 import React from 'react';
 import { Tabs as MUITabs, Tab } from '@mui/material';
 
-type Props = {
+export type TabsProps = {
   selectedId: number;
   options: {
     id: number;
@@ -14,7 +14,7 @@ export function Tabs({
   selectedId,
   options,
   onChange,
-}: Props) {
+}: TabsProps) {
   return (
     <MUITabs value={selectedId} onChange={(_, newValue: number) => onChange(newValue)}>
       {

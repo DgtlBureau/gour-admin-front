@@ -12,10 +12,11 @@ export default {
 } as ComponentMeta<typeof Table>;
 
 const rows = [
-  { cells: [<Button>test</Button>, <Chip label="Chip Filled" />, 'value3', 'value4'] },
-  { cells: ['value1', 'value2', 'value3', 'value4'] },
-  { cells: ['value1', 'value2', 'value3', 'value4'] },
+  { id: 0, cells: [<Button>test</Button>, <Chip label="Chip Filled" />, 'value3', 'value4'] },
+  { id: 1, cells: ['value1', 'value2', 'value3', 'value4'] },
+  { id: 2, cells: ['value1', 'value2', 'value3', 'value4'] },
   {
+    id: 3,
     cells: [
       <Button>test</Button>,
       <Chip label="Chdqwdqwdip Filled" />,
@@ -23,8 +24,9 @@ const rows = [
       'valuqsccqcqe4',
     ],
   },
-  { cells: ['value1', 'value2', 'value3', 'value4'] },
+  { id: 4, cells: ['value1', 'value2', 'value3', 'value4'] },
   {
+    id: 5,
     cells: [
       <Button>dqwwqdqwdd</Button>,
       <Chip label="Chip Filled" />,
@@ -33,6 +35,7 @@ const rows = [
     ],
   },
   {
+    id: 6,
     cells: [
       <Button>teswqdwqdqwdqwdwqdwqdt</Button>,
       <Chip label="Cdqwdqwdwqdhip Filled" />,
@@ -59,7 +62,7 @@ const Template: ComponentStory<typeof Table> = function (args) {
   return (
     <Table
       {...args}
-      rows={rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)}
+      rows={rows}
       page={page}
       rowsPerPageOptions={[2, 5, 10]}
       rowsPerPage={rowsPerPage}

@@ -1,14 +1,16 @@
-import React from "react";
+import React from 'react';
 
-import {ComponentStory, Meta} from "@storybook/react";
-import {ProductsTable, ProductsTableProps} from "./ProductsTable";
+import { ComponentStory, Meta } from '@storybook/react';
+import { ProductsTable, ProductsTableProps } from './ProductsTable';
 
 export default {
-    component: ProductsTable,
-    title: "src/components/Product/ProductsTable",
+  component: ProductsTable,
+  title: 'src/components/Product/ProductsTable',
 } as Meta;
 
-const Template: ComponentStory<typeof ProductsTable> = (args: ProductsTableProps) => <ProductsTable {...args} />;
+const Template: ComponentStory<typeof ProductsTable> = function (args: ProductsTableProps) {
+  return <ProductsTable {...args} />;
+};
 export const DefaultProductsTable = Template.bind({});
 const props: Partial<ProductsTableProps> = {};
 
