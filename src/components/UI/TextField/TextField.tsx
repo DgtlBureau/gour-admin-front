@@ -14,6 +14,7 @@ type Props = {
   multiline?: boolean;
   onChange?: ChangeEventHandler<HTMLInputElement>;
   onFocus?: FocusEventHandler<HTMLInputElement>;
+  onBlur?: FocusEventHandler<HTMLInputElement>;
   helperText?: string;
 };
 
@@ -23,6 +24,7 @@ export function TextField({
   sx,
   onChange,
   onFocus,
+  onBlur,
   label,
   variant,
   type = 'text',
@@ -43,8 +45,10 @@ export function TextField({
       multiline={multiline}
       variant={variant}
       onChange={onChange}
+      onBlur={onBlur}
       name={name}
       onFocus={onFocus}
+      onBlur={onBlur}
       type={type}
       helperText={helperText}
       {...props}

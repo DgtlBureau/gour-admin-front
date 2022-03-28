@@ -1,5 +1,5 @@
 import React from 'react';
-import { useForgotPasswordMutation } from '../../api/userApi';
+import { useForgotPasswordMutation } from '../../api/authApi';
 import { AuthForgotPasswordForm } from '../../components/Auth/ForgotPasswordForm/ForgotPasswordForm';
 
 function AuthForgotPasswordView() {

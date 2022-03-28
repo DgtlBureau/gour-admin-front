@@ -1,5 +1,5 @@
 import React from 'react';
-import { useRestorePasswordMutation } from '../../api/userApi';
+import { useRestorePasswordMutation } from '../../api/authApi';
 import { AuthRestorePasswordForm } from '../../components/Auth/RestorePasswordForm/RestorePasswordForm';
 
 function AuthRestorePasswordView() {

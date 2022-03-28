@@ -22,7 +22,7 @@ function RightContent({ onSaveClick, onCancelHandler }: Props) {
   );
 }
 
-function CreateGoodView() {
+function EditProductView() {
   const to = useTo();
 
   const onCancelHandler = () => {
@@ -35,7 +35,7 @@ function CreateGoodView() {
   return (
     <div>
       <Header
-        leftTitle="Создание товара"
+        leftTitle="Редактирование товара"
         rightContent={
           <RightContent onSaveClick={onSaveClick} onCancelHandler={onCancelHandler} />
         }
@@ -44,4 +44,4 @@ function CreateGoodView() {
   );
 }
 
-export default CreateGoodView;
+export default EditProductView;
