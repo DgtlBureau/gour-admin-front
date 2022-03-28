@@ -8,6 +8,7 @@ type Props = {
   children: ReactNode;
   isLoading?: boolean;
   type?: 'button' | 'submit' | 'reset';
+  size?: 'small' | 'medium' | 'large';
   onClick?: () => void;
   disabled?: boolean;
   component?: ElementType;
@@ -25,6 +26,7 @@ export function Button({
   component,
   fullWidth,
   isLoading = false,
+  size,
   sx,
   form,
 }: Props) {
@@ -37,6 +39,7 @@ export function Button({
       disabled={disabled}
       onClick={onClick}
       variant={variant}
+      size={size}
       component={component || 'button'}
     >
       {isLoading ? <ProgressCircular size={15} /> : ''}

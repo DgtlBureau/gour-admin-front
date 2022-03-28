@@ -18,6 +18,8 @@ const textareaSx: CSSProperties = {
 };
 
 type Props = {
+  name?: string;
+  value?: string;
   maxRows?: number;
   minRows?: number;
   sx?: CSSProperties;
@@ -31,6 +33,8 @@ type Props = {
 };
 
 export function Textarea({
+  name,
+  value,
   maxRows,
   minRows = 1,
   sx,
@@ -44,6 +48,8 @@ export function Textarea({
 }: Props) {
   return (
     <MUITextareaAutosize
+      name={name}
+      value={value}
       onChange={onChange}
       onBlur={onBlur}
       onFocus={onFocus}

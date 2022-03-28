@@ -30,6 +30,7 @@ export function TextField({
   isError,
   helperText,
   name,
+  ...props
 }: Props) {
   return (
     <MUITextField
@@ -46,6 +47,7 @@ export function TextField({
       onFocus={onFocus}
       type={type}
       helperText={helperText}
+      {...props}
     />
   );
 }
