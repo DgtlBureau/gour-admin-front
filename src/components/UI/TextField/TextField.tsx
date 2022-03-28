@@ -45,6 +45,7 @@ export function TextField({
       onBlur={onBlur}
       name={name}
       onFocus={onFocus}
+      onBlur={onBlur}
       type={type}
       helperText={helperText}
       {...props}
