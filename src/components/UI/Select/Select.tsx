@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactSelect, { OnChangeValue } from 'react-select';
+import { SxProps } from '@mui/material';
 import { Typography } from '../Typography/Typography';
 
 export type SelectOption<V = string> = {
@@ -17,6 +18,7 @@ type Props<V, isMulti extends boolean> = {
   isDisabled?: boolean;
   placeholder?: string;
   label?: string;
+  sx?: SxProps;
 };
 
 export function Select<V, isMulti extends boolean>({

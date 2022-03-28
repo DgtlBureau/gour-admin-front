@@ -15,6 +15,7 @@ const textareaSx: CSSProperties = {
   color: 'rgba(0, 0, 0, 0.87)',
   overflow: 'auto',
   resize: 'none',
+  boxSizing: 'border-box',
 };
 
 type Props = {
