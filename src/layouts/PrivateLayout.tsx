@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
-import { useSignoutMutation } from '../api/userApi';
+import { useSignoutMutation } from '../api/authApi';
 import Notifications from '../components/Notifications/Notifications';
 import Sidebar, {
   SidebarLinkedItem,

@@ -87,13 +87,6 @@ export function ProductBasicSettingsForm({ onSubmit, defaultValues }: Props) {
               ))
             }
           </Grid>
-
-          {/* delete later */}
-          <Grid item xs={12}>
-            <Button type="submit">
-              Сохранить
-            </Button>
-          </Grid>
         </Grid>
       </form>
     </FormProvider>
