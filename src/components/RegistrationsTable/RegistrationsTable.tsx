@@ -21,11 +21,11 @@ const sx = {
 
 const tabsOptions = [
   {
-    id: 0,
+    id: 'waitForApprove',
     label: 'Ждут подтверждения',
   },
   {
-    id: 1,
+    id: 'approved',
     label: 'Подтверждены',
   },
 ];
@@ -36,26 +36,26 @@ type User = {
   phone: string;
   role: string;
   isConfirmed: boolean;
-}
+};
 
 export type RegistrationsTableProps = {
   users: User[];
   onAccept: (id: number) => void;
   onDelete: (id: number) => void;
-}
+};
 
 export function RegistrationsTable({
   users,
   onAccept,
   onDelete,
 }: RegistrationsTableProps) {
-  const [selectedId, setSelectedId] = useState(0);
+  const [selectedId, setSelectedId] = useState<string>('waitForApprove');
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  const isConfirmed = selectedId !== 0;
+  const isConfirmed = selectedId !== 'waitForApprove';
 
-  const changeTab = (id: number) => setSelectedId(id);
+  const changeTab = (id: string) => setSelectedId(id);
 
   const changePage = (_: unknown, newPage: number) => setPage(newPage);
 
@@ -66,24 +66,22 @@ export function RegistrationsTable({
 
   const rows = users
     .filter(user => user.isConfirmed === isConfirmed)
-    .map((user, i) => (
-      {
-        id: i,
-        cells: [
-          user.name,
-          user.phone,
-          <Typography sx={sx.role}>{user.role}</Typography>,
-          <>
-            <IconButton component="button" onClick={() => onDelete(user.id)}>
-              <img src={busketIcon} alt="" />
-            </IconButton>
-            <IconButton component="button" onClick={() => onAccept(user.id)}>
-              <img src={checkIcon} alt="" />
-            </IconButton>
-          </>,
-        ],
-      }
-    ));
+    .map((user, i) => ({
+      id: i,
+      cells: [
+        user.name,
+        user.phone,
+        <Typography sx={sx.role}>{user.role}</Typography>,
+        <>
+          <IconButton component="button" onClick={() => onDelete(user.id)}>
+            <img src={busketIcon} alt="" />
+          </IconButton>
+          <IconButton component="button" onClick={() => onAccept(user.id)}>
+            <img src={checkIcon} alt="" />
+          </IconButton>
+        </>,
+      ],
+    }));
 
   const tabs = {
     selectedId,
