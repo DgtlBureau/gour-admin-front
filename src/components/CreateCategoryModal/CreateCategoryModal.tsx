@@ -5,23 +5,23 @@ import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Typography } from '../UI/Typography/Typography';
 import { Button } from '../UI/Button/Button';
-import { CreateCategoryDto } from '../../@types/dto/create-category.dto';
+import { TranslatableStringDto } from '../../@types/dto/translatable-string.dto';
 import schema from './validation';
 import { HFTextField } from '../HookForm/HFTextField';
 
 type Props = {
-  defaultValues: CreateCategoryDto;
-  onSave: SubmitHandler<CreateCategoryDto>;
+  defaultValues: TranslatableStringDto;
+  onSave: SubmitHandler<TranslatableStringDto>;
   onCancel: () => void;
 };
 
 export function CreateCategoryModal({ defaultValues, onSave, onCancel }: Props) {
-  const values = useForm<CreateCategoryDto>({
+  const values = useForm<TranslatableStringDto>({
     resolver: yupResolver(schema),
     defaultValues,
   });
 
-  const submitHandler = (data: CreateCategoryDto) => {
+  const submitHandler = (data: TranslatableStringDto) => {
     onSave(data);
   };
 
@@ -36,7 +36,9 @@ export function CreateCategoryModal({ defaultValues, onSave, onCancel }: Props) 
             <Button type="submit" sx={{ margin: '0 10px 0 0' }}>
               Сохранить
             </Button>
-            <Button variant="outlined">Отменить</Button>
+            <Button variant="outlined" onClick={onCancel}>
+              Отменить
+            </Button>
           </Box>
         </Box>
       </form>
