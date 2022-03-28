@@ -35,25 +35,25 @@ function RightContent({ onCancelHandler }: Props) {
 function CreateProductView() {
   const tabs = [
     {
-      id: 1,
+      id: 'settings',
       label: 'Основные настройки',
     },
     {
-      id: 2,
+      id: 'prices',
       label: 'Цены',
     },
     {
-      id: 3,
+      id: 'filters',
       label: 'Фильтры',
     },
     {
-      id: 4,
+      id: 'recommended_products',
       label: 'Рекомендуемые товары',
     },
   ];
 
   const to = useTo();
-  const [activeTabId, setActiveTabId] = useState(1);
+  const [activeTabId, setActiveTabId] = useState('settings');
 
   const onCancelHandler = () => to(Path.GOODS);
   const onSubmitBasicSettingsForm = (data: ProductBasicSettingsFormDto) => {
@@ -70,7 +70,7 @@ function CreateProductView() {
     console.log(data);
   };
 
-  const tabsHandler = (id: number) => setActiveTabId(id);
+  const tabsHandler = (id: string) => setActiveTabId(id);
 
   return (
     <div>
@@ -79,16 +79,16 @@ function CreateProductView() {
         rightContent={<RightContent onCancelHandler={onCancelHandler} />}
       />
       <Tabs options={tabs} selectedId={activeTabId} onChange={tabsHandler} />
-      <TabPanel value={activeTabId} index={1}>
+      <TabPanel value={activeTabId} index="settings">
         <ProductBasicSettingsForm onSubmit={onSubmitBasicSettingsForm} />
       </TabPanel>
-      <TabPanel value={activeTabId} index={2}>
+      <TabPanel value={activeTabId} index="prices">
         {/* <ProductBasicSettingsForm onSubmit={onSaveHandler} /> */}
       </TabPanel>
-      <TabPanel value={activeTabId} index={3}>
+      <TabPanel value={activeTabId} index="filters">
         <ProductFilterForm type="meat" onSubmit={onSubmitFilterForm} />
       </TabPanel>
-      <TabPanel value={activeTabId} index={4}>
+      <TabPanel value={activeTabId} index="recommended_products">
         <ProductRecommendedForm onSubmit={onSubmitRecommended} />
       </TabPanel>
     </div>

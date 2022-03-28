@@ -6,7 +6,7 @@ type Props = {
   name: string;
   defaultValue?: string;
   children: ReactNode;
-  sx: SxProps;
+  sx?: SxProps;
 };
 
 export function HFRadioGroup({ name, defaultValue, children, sx }: Props) {
