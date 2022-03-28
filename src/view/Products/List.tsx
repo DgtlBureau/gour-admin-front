@@ -20,7 +20,7 @@ function RightContent({ onUploadClick, onCreateClick }: Props) {
   );
 }
 
-function ListGoodsView() {
+function ListProductsView() {
   const to = useTo();
 
   const onCreateClick = () => {
@@ -42,4 +42,4 @@ function ListGoodsView() {
   );
 }
 
-export default ListGoodsView;
+export default ListProductsView;

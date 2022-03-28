@@ -1,5 +1,6 @@
 import { useNavigate, NavigateOptions, generatePath, Params } from 'react-router-dom';
 import { Path } from '../constants/routes';
+import { getQueryParamsStr } from '../utils/getQueryParamsStr';
 
 type Options = {
   params?: Params;
@@ -10,12 +11,6 @@ type Options = {
 
 export const useTo = () => {
   const navigate = useNavigate();
-
-  const getQueryParamsStr = (query: Params) => {
-    const queryKeys = Object.keys(query);
-    // eslint-disable-next-line
-    return queryKeys.reduce((acc, p) => (acc += `${p}=${query[p]}&`), '?');
-  };
 
   const to = (basePath: Path, path?: string, options?: Options) => {
     const base = basePath[0] === '/' ? basePath : `/${basePath}`;

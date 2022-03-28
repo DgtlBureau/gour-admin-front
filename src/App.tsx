@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useGetCurrentUserQuery } from './api/userApi';
+import { useGetCurrentUserQuery } from './api/authApi';
 import { useAppDispatch } from './hooks/store';
 import { Routing } from './routes/routes';
 import { setIsAuth, setIsFetching } from './store/slices/authSlice';
