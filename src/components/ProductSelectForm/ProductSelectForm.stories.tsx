@@ -1,16 +1,20 @@
-import React from "react";
+import React from 'react';
+import { ComponentStory, Meta } from '@storybook/react';
 
-import {ComponentStory, Meta} from "@storybook/react";
-import {ProductSelectForm, ProductSelectFormProps} from "./ProductSelectForm";
+import { ProductSelectForm, ProductSelectFormProps } from './ProductSelectForm';
 
 export default {
-    component: ProductSelectForm,
-    title: "src/components/ProductSelectForm",
+  component: ProductSelectForm,
+  title: 'ProductSelectForm',
 } as Meta;
 
-const Template: ComponentStory<typeof ProductSelectForm> = (args: ProductSelectFormProps) =>
-    <ProductSelectForm {...args} />;
+const Template: ComponentStory<typeof ProductSelectForm> = function (args: ProductSelectFormProps) {
+  return <ProductSelectForm {...args} />;
+};
 export const DefaultProductSelectForm = Template.bind({});
-const props: Partial<ProductSelectFormProps> = {};
+
+const props: Partial<ProductSelectFormProps> = {
+
+};
 
 DefaultProductSelectForm.args = props;

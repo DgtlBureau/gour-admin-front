@@ -3,11 +3,11 @@ import { useForm, SubmitHandler, FormProvider } from 'react-hook-form';
 import { FormControlLabel, FormLabel, Radio, Grid } from '@mui/material';
 import { yupResolver } from '@hookform/resolvers/yup';
 
-import { Button } from '../../UI/Button/Button';
 import { HFTextField } from '../../HookForm/HFTextField';
 import { HFSelect } from '../../HookForm/HFSelect';
 import { HFTextarea } from '../../HookForm/HFTextarea';
 import { HFRadioGroup } from '../../HookForm/HFRadioGroup';
+import { HFUploadPhoto } from '../../HookForm/HFUploadPhoto';
 import { ProductBasicSettingsFormDto } from '../../../@types/dto/form/product-basic-settings.dto';
 import schema from './validation';
 
@@ -61,6 +61,33 @@ export function ProductBasicSettingsForm({ onSubmit, defaultValues }: Props) {
               name="category"
               placeholder="Сыр"
             />
+          </Grid>
+
+          <Grid container item xs={12}>
+            <Grid item xs={4}>
+              <HFUploadPhoto
+                id="firstImage"
+                name="firstImage"
+                label="Фото 1"
+                allowedFileTypes={['image/jpeg', 'image/png', 'image/webp']}
+              />
+            </Grid>
+            <Grid item xs={4}>
+              <HFUploadPhoto
+                id="secondImage"
+                name="secondImage"
+                label="Фото 2"
+                allowedFileTypes={['image/jpeg', 'image/png', 'image/webp']}
+              />
+            </Grid>
+            <Grid item xs={4}>
+              <HFUploadPhoto
+                id="thirdImage"
+                name="thirdImage"
+                label="Фото 3"
+                allowedFileTypes={['image/jpeg', 'image/png', 'image/webp']}
+              />
+            </Grid>
           </Grid>
 
           <Grid item xs={8}>
