@@ -21,11 +21,11 @@ const sx = {
 
 const tabsOptions = [
   {
-    id: 'waitForApprove',
+    id: 'waitingForApproval',
     label: 'Ждут подтверждения',
   },
   {
-    id: 'approved',
+    id: 'Approved',
     label: 'Подтверждены',
   },
 ];
@@ -49,11 +49,11 @@ export function RegistrationsTable({
   onAccept,
   onDelete,
 }: RegistrationsTableProps) {
-  const [selectedId, setSelectedId] = useState<string>('waitForApprove');
+  const [selectedId, setSelectedId] = useState<string>('waitingForApproval');
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  const isConfirmed = selectedId !== 'waitForApprove';
+  const isConfirmed = selectedId !== 'waitingForApproval';
 
   const changeTab = (id: string) => setSelectedId(id);
 

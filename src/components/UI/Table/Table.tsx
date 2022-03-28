@@ -55,25 +55,22 @@ export function Table({
   onRowsPerPageChange,
 }: Props) {
   const shownRows =
-    rowsPerPage > 0 ?
-      rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) :
-      rows;
+    rowsPerPage > 0
+      ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+      : rows;
 
-  const getDisplayedRowsLabel = ({ from, to, count }: LabelDisplayedRowsArgs) => (
-    `${from}–${to} из ${count !== -1 ? count : `больше, чем ${to}`}`
-  );
+  const getDisplayedRowsLabel = ({ from, to, count }: LabelDisplayedRowsArgs) =>
+    `${from}–${to} из ${count !== -1 ? count : `больше, чем ${to}`}`;
 
   return (
     <Paper>
-      {
-        tabs && (
-          <Tabs
-            selectedId={tabs.selectedId}
-            options={tabs.options}
-            onChange={tabs.onChange}
-          />
-        )
-      }
+      {tabs && (
+        <Tabs
+          selectedId={tabs.selectedId}
+          options={tabs.options}
+          onChange={tabs.onChange}
+        />
+      )}
       <MUITableContainer>
         <MUITable sx={{ minWidth: 650 }} aria-label="simple table">
           <MUITableHead sx={sx.head}>
