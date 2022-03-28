@@ -13,6 +13,7 @@ type Props = {
   type?: string;
   onChange?: ChangeEventHandler<HTMLInputElement>;
   onFocus?: FocusEventHandler<HTMLInputElement>;
+  onBlur?: FocusEventHandler<HTMLInputElement>;
   helperText?: string;
 };
 
@@ -22,6 +23,7 @@ export function TextField({
   sx,
   onChange,
   onFocus,
+  onBlur,
   label,
   variant,
   type = 'text',
@@ -40,6 +42,7 @@ export function TextField({
       id={id}
       variant={variant}
       onChange={onChange}
+      onBlur={onBlur}
       name={name}
       onFocus={onFocus}
       type={type}

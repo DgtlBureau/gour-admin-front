@@ -14,22 +14,21 @@ const Template: ComponentStory<typeof Select> = function (args) {
 };
 
 export const DefaultState = Template.bind({});
+
 DefaultState.args = {
-  id: 'select',
-  label: 'Select option',
-  items: [
+  value: '1',
+  options: [
     {
       label: 'Опция 1',
-      value: 'option 1',
+      value: '1',
     },
     {
       label: 'Опция 2',
-      value: 'option 2',
+      value: '2',
     },
     {
       label: 'Опция 3',
-      value: 'option 3',
+      value: '3',
     },
   ],
-  sx: { width: 150 },
 };
