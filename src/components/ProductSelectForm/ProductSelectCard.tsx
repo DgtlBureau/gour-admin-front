@@ -1,5 +1,5 @@
 import { Card, CardActions, CardContent, CardMedia } from '@mui/material';
-import React from 'react';
+import React, { ReactElement } from 'react';
 import { Box } from '../UI/Box/Box';
 import { Button } from '../UI/Button/Button';
 import { Typography } from '../UI/Typography/Typography';
@@ -7,6 +7,7 @@ import { Typography } from '../UI/Typography/Typography';
 type Props = {
   image: string;
   title: string;
+  searchQuery: string;
   isSelected: boolean;
   onSelect: () => void;
 };
@@ -22,7 +23,28 @@ const sx = {
   },
 };
 
-export function ProductSelectCard({ image, title, isSelected, onSelect }: Props) {
+export function ProductSelectCard({
+  image,
+  title,
+  isSelected,
+  searchQuery,
+  onSelect,
+}: Props) {
+  function getMarkStringByValue(value: string): ReactElement | string {
+    const query: string = searchQuery.toLowerCase();
+    const pos: number = value.toLowerCase().search(query);
+    const { length } = query;
+
+    if (pos === -1) return value;
+    return (
+      <>
+        {value.slice(0, pos)}
+        <mark>{value.slice(pos, pos + length)}</mark>
+        {value.slice(pos + length)}
+      </>
+    );
+  }
+
   return (
     <Card sx={{ width: '100%', cursor: 'pointer' }} onClick={onSelect}>
       <CardMedia component="img" alt="green iguana" height="140" image={image} />
@@ -41,7 +63,7 @@ export function ProductSelectCard({ image, title, isSelected, onSelect }: Props)
       </Box>
       <CardContent>
         <Typography sx={sx.cardText} variant="body1">
-          {title}
+          {getMarkStringByValue(title)}
         </Typography>
       </CardContent>
     </Card>

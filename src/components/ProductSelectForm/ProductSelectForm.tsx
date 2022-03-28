@@ -3,9 +3,17 @@ import React, { useEffect, useState } from 'react';
 import { Grid, Stack } from '@mui/material';
 import { ProductSelectCard } from './ProductSelectCard';
 
-import s from './ProductSelectForm.module.scss';
 import { Tabs } from '../Tabs/Tabs';
 import { Typography } from '../UI/Typography/Typography';
+import { TextField } from '../UI/TextField/TextField';
+
+type Product = {
+  id: number;
+  title: string;
+  image: string;
+  category: string;
+  characteristics: Record<string, string>;
+};
 
 export type ProductSelectFormProps = {
   selected: number[];
@@ -22,20 +30,15 @@ export type ProductSelectFormProps = {
       label: string;
     }[];
   }[];
-  products: {
-    id: number;
-    title: string;
-    image: string;
-    category: string;
-    characteristics: Record<string, string>;
-  }[];
+  products: Product[];
   onChange(selected: number[]): void;
 };
 
 export function ProductSelectForm({ products, categories }: ProductSelectFormProps) {
   const [selectedProductsId, setSelectedProductsId] = useState<number[]>([]);
+  const [searchQuery, setSearchQuery] = useState<string>('');
   const [selectedTabId, setSelectedTabId] = useState<string>('All');
-  const [filteredProducts, setFilteredProducts] = useState(products);
+  const [filteredProducts, setFilteredProducts] = useState<Product[]>(products);
 
   const tabOptions = [
     {
@@ -70,21 +73,37 @@ export function ProductSelectForm({ products, categories }: ProductSelectFormPro
     onChange: setSelectedTabId,
   };
 
+  const filterProductsByTab = (productsList: Product[], tabId: string) => productsList.filter((product: Product) => {
+    switch (tabId) {
+      case 'selected':
+        return isProductSelected(product.id);
+      default:
+        return product.category === tabId || tabId === 'All';
+    }
+  });
+
+  // TODO: убрать, подраться с ес линтом
+  // eslint-disable-next-line
+  const searchProductsByQuery = (productsList: Product[], query: string) => productsList.filter((product: Product) => product.title.toLowerCase().includes(query));
+
   useEffect(() => {
-    setFilteredProducts(
-      products.filter(product => {
-        switch (selectedTabId) {
-          case 'selected':
-            return isProductSelected(product.id);
-          default:
-            return product.category === selectedTabId || selectedTabId === 'All';
-        }
-      })
-    );
-  }, [products, selectedTabId]);
+    const query = searchQuery.trim().toLowerCase();
+    const filteredByTabProducts = filterProductsByTab(products, selectedTabId);
+    if (query) return setFilteredProducts(searchProductsByQuery(filteredByTabProducts, query));
+    return setFilteredProducts(filteredByTabProducts);
+  }, [products, searchQuery, selectedTabId]);
 
   return (
     <Stack>
+      <Grid container spacing={2}>
+        <Grid item xs={4}>
+          <TextField
+            label="Поиск"
+            value={searchQuery}
+            onChange={e => setSearchQuery(e.target.value)}
+          />
+        </Grid>
+      </Grid>
       {tabs && (
         <Tabs
           selectedId={tabs.selectedId}
@@ -93,12 +112,15 @@ export function ProductSelectForm({ products, categories }: ProductSelectFormPro
         />
       )}
       <Grid sx={{ margin: '10px 0 0 0' }} container spacing={2}>
-        {!filteredProducts.length && <Typography variant="h5">Список пуст</Typography>}
+        {!filteredProducts.length && (
+          <Typography variant="h5">Товары не найдены</Typography>
+        )}
         {filteredProducts.map(product => (
           <Grid item lg={3} key={product.id}>
             <ProductSelectCard
               image={product.image}
               title={product.title}
+              searchQuery={searchQuery}
               isSelected={isProductSelected(product.id)}
               onSelect={() => {
                 handleProductClick(product.id);
