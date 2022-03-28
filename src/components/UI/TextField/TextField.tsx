@@ -11,6 +11,7 @@ type Props = {
   variant?: 'standard' | 'outlined' | 'filled' | undefined;
   isError?: boolean;
   type?: string;
+  multiline?: boolean;
   onChange?: ChangeEventHandler<HTMLInputElement>;
   onFocus?: FocusEventHandler<HTMLInputElement>;
   onBlur?: FocusEventHandler<HTMLInputElement>;
@@ -27,9 +28,11 @@ export function TextField({
   label,
   variant,
   type = 'text',
+  multiline,
   isError,
   helperText,
   name,
+  ...props
 }: Props) {
   return (
     <MUITextField
@@ -39,13 +42,16 @@ export function TextField({
       value={value}
       error={isError}
       id={id}
+      multiline={multiline}
       variant={variant}
       onChange={onChange}
+      onBlur={onBlur}
       name={name}
       onFocus={onFocus}
       onBlur={onBlur}
       type={type}
       helperText={helperText}
+      {...props}
     />
   );
 }

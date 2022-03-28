@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactSelect, { OnChangeValue } from 'react-select';
 import { SxProps } from '@mui/material';
-
 import { Typography } from '../Typography/Typography';
 
 export type SelectOption<V = string> = {

@@ -8,11 +8,13 @@ type Props = {
   children: ReactNode;
   isLoading?: boolean;
   type?: 'button' | 'submit' | 'reset';
+  size?: 'small' | 'medium' | 'large';
   onClick?: () => void;
   disabled?: boolean;
   component?: ElementType;
   fullWidth?: boolean;
   sx?: SxProps;
+  form?: string | number;
 };
 
 export function Button({
@@ -24,16 +26,20 @@ export function Button({
   component,
   fullWidth,
   isLoading = false,
+  size,
   sx,
+  form,
 }: Props) {
   return (
     <MUIButton
       sx={sx}
+      form={form}
       fullWidth={fullWidth}
       type={type}
       disabled={disabled}
       onClick={onClick}
       variant={variant}
+      size={size}
       component={component || 'button'}
     >
       {isLoading ? <ProgressCircular size={15} /> : ''}

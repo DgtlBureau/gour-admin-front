@@ -30,6 +30,7 @@
     }
   },
   "rules": {
+    "import/no-cycle": "off",
     "no-param-reassign": ["error", { "props": false }],
     "operator-linebreak": ["error", "after"],
     "object-curly-newline": "off",
