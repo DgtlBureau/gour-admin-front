@@ -11,32 +11,28 @@ export default {
 
 const OPTIONS = [
   {
-    id: 0,
+    id: 'tab0',
     label: 'Tab 0',
   },
   {
-    id: 1,
+    id: 'tab1',
     label: 'Tab 1',
   },
   {
-    id: 2,
+    id: 'tab2',
     label: 'Tab 2',
   },
   {
-    id: 3,
+    id: 'tab3',
     label: 'Tab 3',
   },
 ];
 
 const Template: ComponentStory<typeof Tabs> = function () {
-  const [selectedId, setSelectedId] = useState(0);
+  const [selectedId, setSelectedId] = useState<string>('tab0');
 
   return (
-    <Tabs
-      selectedId={selectedId}
-      options={OPTIONS}
-      onChange={id => setSelectedId(id)}
-    />
+    <Tabs selectedId={selectedId} options={OPTIONS} onChange={id => setSelectedId(id)} />
   );
 };
 

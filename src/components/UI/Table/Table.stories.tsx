@@ -65,7 +65,7 @@ const Template: ComponentStory<typeof Table> = function (args) {
   return (
     <Table
       {...args}
-      rows={rows}
+      rows={[]}
       page={page}
       rowsPerPageOptions={[2, 5, 10]}
       rowsPerPage={rowsPerPage}
