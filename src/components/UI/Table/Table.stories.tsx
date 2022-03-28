@@ -12,7 +12,10 @@ export default {
 } as ComponentMeta<typeof Table>;
 
 const rows = [
-  { id: 0, cells: [<Button>test</Button>, <Chip label="Chip Filled" />, 'value3', 'value4'] },
+  {
+    id: 0,
+    cells: [<Button>test</Button>, <Chip label="Chip Filled" />, 'value3', 'value4'],
+  },
   { id: 1, cells: ['value1', 'value2', 'value3', 'value4'] },
   { id: 2, cells: ['value1', 'value2', 'value3', 'value4'] },
   {
@@ -62,7 +65,7 @@ const Template: ComponentStory<typeof Table> = function (args) {
   return (
     <Table
       {...args}
-      rows={rows}
+      rows={[]}
       page={page}
       rowsPerPageOptions={[2, 5, 10]}
       rowsPerPage={rowsPerPage}
