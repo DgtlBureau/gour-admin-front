@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { FormControlLabel, FormLabel, Grid, Radio } from '@mui/material';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
@@ -9,22 +9,33 @@ import schema from './validation';
 import { HFRadioGroup } from '../HookForm/HFRadioGroup';
 import { PagesAboutFormDto } from '../../@types/dto/form/pages-about.dto';
 
+export type FormDataType = 'main' | 'about' | 'delivery' | 'policy';
+
 type Props = {
+  type: FormDataType;
   defaultValues: PagesAboutFormDto;
-  onSubmit: SubmitHandler<PagesAboutFormDto>;
-  onCancel: () => void;
+  onSubmit: (type: FormDataType, data: PagesAboutFormDto) => void;
 };
 
-export function PagesAboutUsForm({ defaultValues, onSubmit, onCancel }: Props) {
+export function PagesAboutUsForm({ defaultValues, type, onSubmit }: Props) {
   const values = useForm<PagesAboutFormDto>({
     resolver: yupResolver(schema),
     defaultValues: {
+      ...defaultValues,
       isIndexed: defaultValues?.isIndexed !== undefined ? defaultValues?.isIndexed : true,
     },
   });
 
   const submitHandler = (data: PagesAboutFormDto) => {
-    onSubmit(data);
+    onSubmit(type, data);
+  };
+
+  useEffect(() => {
+    values.reset(defaultValues);
+  }, [defaultValues]);
+
+  const handleCancel = () => {
+    values.reset(defaultValues);
   };
 
   return (
@@ -60,7 +71,7 @@ export function PagesAboutUsForm({ defaultValues, onSubmit, onCancel }: Props) {
             <Button type="submit" sx={{ margin: '0 10px 0 0' }}>
               Сохранить
             </Button>
-            <Button variant="outlined" onClick={onCancel}>
+            <Button variant="outlined" onClick={handleCancel}>
               Отменить
             </Button>
           </Grid>

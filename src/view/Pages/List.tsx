@@ -1,29 +1,93 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { PagesAboutFormDto } from '../../@types/dto/form/pages-about.dto';
 import { Header } from '../../components/Header/Header';
-import { Button } from '../../components/UI/Button/Button';
-import { Path } from '../../constants/routes';
-import { useTo } from '../../hooks/useTo';
+import {
+  FormDataType,
+  PagesAboutUsForm,
+} from '../../components/PagesAboutUsForm/PagesAboutUsForm';
+import { Tabs } from '../../components/Tabs/Tabs';
 
-type Props = {
-  onCreateClick: () => void;
+type TabOptionsType = {
+  id: FormDataType;
+  label: string;
 };
 
-function RightContent({ onCreateClick }: Props) {
-  return <Button onClick={onCreateClick}>Создать страницу</Button>;
-}
+const defaultValues = {
+  main: {
+    title: 'Главная',
+    description: 'string',
+    isIndexed: false,
+    metaTitle: '123123123',
+    keywords: '123123123',
+    metaKeywords: '123123123213',
+  },
+  about: {
+    title: 'О нас',
+    description: 'string',
+    isIndexed: false,
+    metaTitle: '123123123',
+    keywords: '123123123',
+    metaKeywords: '123123123213',
+  },
+  delivery: {
+    title: 'Доставка и оплата',
+    description: 'string',
+    isIndexed: false,
+    metaTitle: '123123123',
+    keywords: '123123123',
+    metaKeywords: '123123123213',
+  },
+  policy: {
+    title: 'Политика',
+    description: 'string',
+    isIndexed: false,
+    metaTitle: '123123123',
+    keywords: '123123123',
+    metaKeywords: '123123123213',
+  },
+};
+
+const tabsOptions: TabOptionsType[] = [
+  {
+    id: 'main',
+    label: 'Главная',
+  },
+  {
+    id: 'about',
+    label: 'О компании',
+  },
+  {
+    id: 'delivery',
+    label: 'Доставка и оплата',
+  },
+  {
+    id: 'policy',
+    label: 'Политика конфиденциальности',
+  },
+];
 
 function ListPagesView() {
-  const to = useTo();
+  const [activeTabId, setActiveTabId] = useState<FormDataType>('main');
 
-  const onCreateClick = () => {
-    to(Path.PAGES, 'create');
+  const handleChangeTab = (tabId: FormDataType) => {
+    setActiveTabId(tabId);
   };
+
+  const handleSubmit = (type: FormDataType, data: PagesAboutFormDto) => {
+    console.log(type, data);
+    // запрос на бек
+  };
+
+  const formValues = defaultValues[activeTabId];
 
   return (
     <div>
-      <Header
-        leftTitle="Акции"
-        rightContent={<RightContent onCreateClick={onCreateClick} />}
+      <Header leftTitle="Страницы" />
+      <Tabs options={tabsOptions} selectedId={activeTabId} onChange={handleChangeTab} />
+      <PagesAboutUsForm
+        type={activeTabId}
+        defaultValues={formValues}
+        onSubmit={handleSubmit}
       />
     </div>
   );
