@@ -1,23 +1,23 @@
-import { Stack } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
+
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Box } from '../../UI/Box/Box';
 import { IconButton } from '../../UI/IconButton/IconButton';
 import { Table } from '../../UI/Table/Table';
+import { ProductTableDto } from '../../../@types/dto/table/products.dto';
 
 export type ProductsTableProps = {
-  products: {
-    id: number;
-    image: string;
-    title: string;
-    category: string;
-    cost: number;
-  }[];
+  products: ProductTableDto[];
   categories: {
     label: string;
     value: string;
   }[];
+  page: number;
+  rowsCount: number,
+  onChangePage: (_: unknown, newPage: number) => void;
+  rowsPerPage: number;
+  onChangeRowsPerPage: (rowPerPage: number) => void;
   onEdit(id: number): void;
   onRemove(id: number): void;
 };
@@ -25,12 +25,15 @@ export type ProductsTableProps = {
 export function ProductsTable({
   products,
   categories,
+  page,
+  rowsCount,
+  rowsPerPage,
+  onChangePage,
+  onChangeRowsPerPage,
   onEdit,
   onRemove,
 }: ProductsTableProps) {
   const [selectedId, setSelectedId] = useState<string>('all');
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
 
   const tabsOptions = [
     {
@@ -45,13 +48,6 @@ export function ProductsTable({
 
   const changeTab = (id: string) => setSelectedId(id);
 
-  const changePage = (_: unknown, newPage: number) => setPage(newPage);
-
-  const changeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
-  };
-
   const rows = products
     .filter(product => product.category === selectedId || selectedId === 'all')
     .map((product, i) => ({
@@ -60,10 +56,10 @@ export function ProductsTable({
         <Box sx={{ maxWidth: '144px', height: '60px', overflow: 'hidden' }}>
           <img style={{ height: '100%' }} src={product.image} alt="promotion" />
         </Box>,
-        product.title,
+        product.id,
         categories.find(category => category.value === product.category)?.label ||
           'нет категории',
-        product.cost,
+        product.price,
         <Box>
           <IconButton onClick={() => onEdit(product.id)} component="symbol">
             <EditIcon />
@@ -89,9 +85,10 @@ export function ProductsTable({
         rows={rows}
         rowsPerPage={rowsPerPage}
         page={page}
-        rowsPerPageOptions={[5, 10, 25]}
-        onPageChange={changePage}
-        onRowsPerPageChange={changeRowsPerPage}
+        rowsCount={rowsCount}
+        rowsPerPageOptions={[2, 5, 10, 25]}
+        onPageChange={onChangePage}
+        onRowsPerPageChange={event => onChangeRowsPerPage(+event.target.value)}
       />
     </Box>
   );

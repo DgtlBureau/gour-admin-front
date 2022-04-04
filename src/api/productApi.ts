@@ -16,7 +16,7 @@ export const productApi = commonApi.injectEndpoints({
         params,
       }),
     }),
-    getAll: builder.query<Product[], ProductGetListDto>({
+    getAllProducts: builder.query<Product[], ProductGetListDto>({
       query: params => ({
         url: `${Path.GOODS}`,
         method: 'GET',
@@ -58,6 +58,6 @@ export const {
   useDeleteMutation,
   useCreateMutation,
   useGetByIdQuery,
-  useGetAllQuery,
+  useGetAllProductsQuery,
   useUpdateMutation,
 } = productApi;
