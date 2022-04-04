@@ -1,4 +1,4 @@
-export type ClientGetListDto = Readonly<{
+export type UserGetListDto = Readonly<{
   filter?: {
     isApproved: boolean;
   };

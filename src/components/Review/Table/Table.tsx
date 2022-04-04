@@ -15,11 +15,11 @@ type Comment = {
 
 const tabsOptions = [
   {
-    id: 'waitingForApprove',
+    value: 'waitingForApprove',
     label: 'Ждут подтверждения',
   },
   {
-    id: 'approved',
+    value: 'approved',
     label: 'Подтверждены',
   },
 ];
@@ -43,11 +43,11 @@ export function ReviewTable({ comments, onClickFullReview }: Props) {
   const [page, setPage] = useState<number>(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  const [selectedTabId, setSelectedTabId] = useState<string>('waitingForApprove');
+  const [value, setValue] = useState<string>('waitingForApprove');
 
-  const isConfirmed = selectedTabId !== 'waitingForApprove';
+  const isConfirmed = value !== 'waitingForApprove';
 
-  const changeTab = (id: string) => setSelectedTabId(id);
+  const changeTab = (val: string) => setValue(val);
 
   const handleChangePage = (_: unknown, newPage: number) => {
     setPage(newPage);
@@ -84,7 +84,7 @@ export function ReviewTable({ comments, onClickFullReview }: Props) {
     });
 
   const tabs = {
-    selectedId: selectedTabId,
+    value,
     options: tabsOptions,
     onChange: changeTab,
   };

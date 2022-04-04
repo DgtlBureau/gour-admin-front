@@ -1,10 +1,12 @@
 import { Product } from './Product';
-import { ClientRole } from './ClientRole';
+import { UserRole } from './UserRole';
 
-export type Client = {
+export interface IUser {
   apiUserUuid: string;
-  role: ClientRole;
+  name: string;
+  phone: string;
+  role: UserRole;
   isApproved: boolean;
   additionalInfo: Record<string, string | number>;
   favorites: Product[];
-};
+}
