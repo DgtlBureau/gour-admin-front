@@ -1,14 +1,16 @@
-import React from "react";
+import React from 'react';
 
-import {ComponentStory, Meta} from "@storybook/react";
-import {UsersTable, UsersTableProps} from "./UsersTable";
+import { ComponentStory, Meta } from '@storybook/react';
+import { UsersTable, UsersTableProps } from './UsersTable';
 
 export default {
-    component: UsersTable,
-    title: "src/components/UsersTable",
+  component: UsersTable,
+  title: 'src/components/UsersTable',
 } as Meta;
 
-const Template: ComponentStory<typeof UsersTable> = (args: UsersTableProps) => <UsersTable {...args} />;
+const Template: ComponentStory<typeof UsersTable> = function (args: UsersTableProps) {
+  return <UsersTable {...args} />;
+};
 export const DefaultUsersTable = Template.bind({});
 const props: Partial<UsersTableProps> = {};
 

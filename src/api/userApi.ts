@@ -1,24 +1,24 @@
 import { commonApi } from './commonApi';
 import { Path } from '../constants/routes';
-import { ClientCreateDto } from '../@types/dto/client/create.dto';
-import { Client } from '../@types/entities/Client';
-import { ClientGetListDto } from '../@types/dto/client/get-list.dto';
+import { UserCreateDto } from '../@types/dto/user/create.dto';
+import { UserGetListDto } from '../@types/dto/user/get-list.dto';
+import { IUser } from '../@types/entities/IUser';
 
-export const clientApi = commonApi.injectEndpoints({
+export const userApi = commonApi.injectEndpoints({
   endpoints: builder => ({
-    getById: builder.query<Client, number>({
+    getById: builder.query<IUser, number>({
       query: id => ({
         url: `${Path.USERS}/${id}`,
         method: 'GET',
       }),
     }),
-    getAll: builder.query<Client[], ClientGetListDto>({
+    getAll: builder.query<IUser[], UserGetListDto>({
       query: () => ({
         url: Path.USERS,
         method: 'GET',
       }),
     }),
-    create: builder.mutation<void, ClientCreateDto>({
+    createUser: builder.mutation<void, UserCreateDto>({
       query: body => ({
         url: Path.USERS,
         method: 'POST',
@@ -34,5 +34,9 @@ export const clientApi = commonApi.injectEndpoints({
   }),
 });
 
-export const { useDeleteMutation, useCreateMutation, useGetAllQuery, useGetByIdQuery } =
-  clientApi;
+export const {
+  useDeleteMutation,
+  useCreateUserMutation,
+  useGetAllQuery,
+  useGetByIdQuery,
+} = userApi;

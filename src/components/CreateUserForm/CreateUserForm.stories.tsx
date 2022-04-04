@@ -14,10 +14,6 @@ const Template: ComponentStory<typeof CreateUserForm> = function (args: CreateUs
 export const DefaultCreateUserForm = Template.bind({});
 
 const props: Partial<CreateUserFormProps> = {
-  user: {
-    role: 'admin',
-    email: '',
-  },
 };
 
 DefaultCreateUserForm.args = props;

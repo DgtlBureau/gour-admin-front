@@ -1,21 +1,24 @@
 import React from 'react';
+
 import { Header } from '../../components/Header/Header';
 import { Button } from '../../components/UI/Button/Button';
+import { CreateUserForm } from '../../components/CreateUserForm/CreateUserForm';
+import { useCreateUserMutation } from '../../api/userApi';
+import { UserCreateDto } from '../../@types/dto/user/create.dto';
 import { Path } from '../../constants/routes';
 import { useTo } from '../../hooks/useTo';
 
 type Props = {
-  onSaveClick: () => void;
-  onCancelHandler: () => void;
+  onCancel: () => void;
 };
 
-function RightContent({ onSaveClick, onCancelHandler }: Props) {
+function RightContent({ onCancel }: Props) {
   return (
     <>
-      <Button onClick={onSaveClick} sx={{ marginRight: '10px' }}>
+      <Button form="createUserForm" type="submit" sx={{ marginRight: '10px' }}>
         Сохранить
       </Button>
-      <Button variant="outlined" onClick={onCancelHandler}>
+      <Button variant="outlined" onClick={onCancel}>
         Отмена
       </Button>
     </>
@@ -23,23 +26,24 @@ function RightContent({ onSaveClick, onCancelHandler }: Props) {
 }
 
 function CreateUserView() {
+  const [createUser] = useCreateUserMutation();
   const to = useTo();
 
-  const onCancelHandler = () => {
+  const cancel = () => {
     to(Path.USERS);
   };
-  const onSaveClick = () => {
-    console.log('Save');
-  };
+
+  const submit = (data: UserCreateDto) => createUser(data);
 
   return (
     <div>
       <Header
         leftTitle="Добавление пользователя"
         rightContent={
-          <RightContent onSaveClick={onSaveClick} onCancelHandler={onCancelHandler} />
+          <RightContent onCancel={cancel} />
         }
       />
+      <CreateUserForm onSubmit={submit} />
     </div>
   );
 }
