@@ -35,25 +35,25 @@ function RightContent({ onCancelHandler }: Props) {
 function CreateProductView() {
   const tabs = [
     {
-      id: 'settings',
+      value: 'settings',
       label: 'Основные настройки',
     },
     {
-      id: 'prices',
+      value: 'prices',
       label: 'Цены',
     },
     {
-      id: 'filters',
+      value: 'filters',
       label: 'Фильтры',
     },
     {
-      id: 'recommended_products',
+      value: 'recommended_products',
       label: 'Рекомендуемые товары',
     },
   ];
 
   const to = useTo();
-  const [activeTabId, setActiveTabId] = useState('settings');
+  const [tabValue, setTabValue] = useState('settings');
 
   const onCancelHandler = () => to(Path.GOODS);
   const onSubmitBasicSettingsForm = (data: ProductBasicSettingsFormDto) => {
@@ -70,7 +70,7 @@ function CreateProductView() {
     console.log(data);
   };
 
-  const tabsHandler = (id: string) => setActiveTabId(id);
+  const tabsHandler = (id: string) => setTabValue(id);
 
   return (
     <div>
@@ -78,17 +78,17 @@ function CreateProductView() {
         leftTitle="Создание товара"
         rightContent={<RightContent onCancelHandler={onCancelHandler} />}
       />
-      <Tabs options={tabs} selectedId={activeTabId} onChange={tabsHandler} />
-      <TabPanel value={activeTabId} index="settings">
+      <Tabs options={tabs} value={tabValue} onChange={tabsHandler} />
+      <TabPanel value={tabValue} index="settings">
         <ProductBasicSettingsForm onSubmit={onSubmitBasicSettingsForm} />
       </TabPanel>
-      <TabPanel value={activeTabId} index="prices">
+      <TabPanel value={tabValue} index="prices">
         {/* <ProductBasicSettingsForm onSubmit={onSaveHandler} /> */}
       </TabPanel>
-      <TabPanel value={activeTabId} index="filters">
+      <TabPanel value={tabValue} index="filters">
         <ProductFilterForm type="meat" onSubmit={onSubmitFilterForm} />
       </TabPanel>
-      <TabPanel value={activeTabId} index="recommended_products">
+      <TabPanel value={tabValue} index="recommended_products">
         <ProductRecommendedForm onSubmit={onSubmitRecommended} />
       </TabPanel>
     </div>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
@@ -8,17 +8,15 @@ function generateStock(
   id: number,
   image: string,
   title: string,
-  startDate: string,
-  endDate: string,
-  status: string,
+  start: string,
+  end: string,
   isActual: boolean
 ) {
   return {
     image,
     title,
-    startDate,
-    endDate,
-    status,
+    start,
+    end,
     id,
     isActual,
   };
@@ -43,14 +41,13 @@ DefaultState.args = {
       'title 1',
       '22.02.2022',
       '22.03.2022',
-      'active',
       true
     ),
-    generateStock(2, 'image', 'title 1', '22.02.2022', '22.03.2022', 'active', true),
-    generateStock(3, 'image', 'Прошедшая', '22.02.2022', '22.03.2022', 'active', false),
-    generateStock(4, 'image', 'Прошедшая', '22.02.2022', '22.03.2022', 'active', false),
-    generateStock(5, 'image', 'title 1', '22.02.2022', '22.03.2022', 'active', true),
-    generateStock(6, 'image', 'Прошедшая', '22.02.2022', '22.03.2022', 'active', false),
-    generateStock(7, 'image', 'title 1', '22.02.2022', '22.03.2022', 'active', true),
+    generateStock(2, 'image', 'title 1', '22.02.2022', '22.03.2022', true),
+    generateStock(3, 'image', 'Прошедшая', '22.02.2022', '22.03.2022', false),
+    generateStock(4, 'image', 'Прошедшая', '22.02.2022', '22.03.2022', false),
+    generateStock(5, 'image', 'title 1', '22.02.2022', '22.03.2022', true),
+    generateStock(6, 'image', 'Прошедшая', '22.02.2022', '22.03.2022', false),
+    generateStock(7, 'image', 'title 1', '22.02.2022', '22.03.2022', true),
   ],
 };

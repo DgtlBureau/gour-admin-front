@@ -1,48 +1,51 @@
 import React, { ChangeEvent, useState } from 'react';
+
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-import { Chip } from '@mui/material';
+
 import { Box } from '../../UI/Box/Box';
+import { Typography } from '../../UI/Typography/Typography';
 import { IconButton } from '../../UI/IconButton/IconButton';
 import { Table } from '../../UI/Table/Table';
 
+import sx from './Table.styles';
+
 const tabsOptions = [
   {
-    id: 'All',
+    value: 'All',
     label: 'Все',
   },
   {
-    id: 'Actual',
+    value: 'Actual',
     label: 'Актуальные',
   },
   {
-    id: 'Past',
+    value: 'Past',
     label: 'Прошедшие',
   },
 ];
 
-type Stock = {
+export type Stock = {
   id: number;
   image: string;
   title: string;
-  startDate: string;
-  endDate: string;
-  status: string;
+  start: string;
+  end: string;
   isActual: boolean;
 };
 
-type StockActions = {
+type RowActionsProps = {
   onEdit: () => void;
   onDelete: () => void;
 };
 
-type Props = {
+type StockTableProps = {
   stocksList: Stock[];
   onEdit: (stockId: number) => void;
   onDelete: (stockId: number) => void;
 };
 
-function RowActions({ onDelete, onEdit }: StockActions) {
+function RowActions({ onDelete, onEdit }: RowActionsProps) {
   return (
     <Box>
       <IconButton onClick={onEdit} component="symbol">
@@ -55,16 +58,16 @@ function RowActions({ onDelete, onEdit }: StockActions) {
   );
 }
 
-export function StockTable({ stocksList, onEdit, onDelete }: Props) {
+export function StockTable({ stocksList, onEdit, onDelete }: StockTableProps) {
   const [page, setPage] = useState<number>(0);
-  const [selectedTabId, setSelectedTabId] = useState<string>('All');
+  const [value, setValue] = useState<string>('All');
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  const changeTab = (id: string) => setSelectedTabId(id);
+  const changeTab = (val: string) => setValue(val);
 
   const rows = stocksList
     .filter(stock => {
-      switch (selectedTabId) {
+      switch (value) {
         case 'Actual':
           return stock.isActual;
         case 'Past':
@@ -73,42 +76,35 @@ export function StockTable({ stocksList, onEdit, onDelete }: Props) {
           return true;
       }
     })
-    .map(stock => {
-      const row = Object.keys(stock).map(key => {
-        switch (key) {
-          case 'image':
-            return (
-              <Box sx={{ maxWidth: '144px', height: '60px', overflow: 'hidden' }}>
-                <img style={{ height: '100%' }} src={stock.image} alt="promotion" />
-              </Box>
-            );
-          case 'isActual':
-            return null;
-          case 'id':
-            return (
-              <RowActions
-                onDelete={() => {
-                  onDelete(stock.id);
-                }}
-                onEdit={() => {
-                  onEdit(stock.id);
-                }}
-              />
-            );
-          case 'status':
-            return <Chip label={stock.status} />;
-          default:
-            return stock[key as keyof Stock];
-        }
-      });
-      return { id: stock.id, cells: row };
-    });
+    .map(stock => ({
+      id: stock.id,
+      cells: [
+        <Box sx={sx.stockImg}>
+          <img src={stock.image} alt="promotion" />
+        </Box>,
+        stock.title,
+        stock.start,
+        stock.end,
+        <Typography
+          variant="body1"
+          sx={{ ...sx.status, ...(stock.isActual ? sx.actual : sx.past) }}
+        >
+          {stock.isActual ? 'Актуальное' : 'Прошедшие'}
+        </Typography>,
+        <RowActions
+          onDelete={() => {
+            onDelete(stock.id);
+          }}
+          onEdit={() => {
+            onEdit(stock.id);
+          }}
+        />,
+      ],
+    }));
 
-  const handleChangePage = (_: unknown, newPage: number) => {
-    setPage(newPage);
-  };
+  const сhangePage = (_: unknown, newPage: number) => setPage(newPage);
 
-  const handleChangeRowsPerPage = (
+  const сhangeRowsPerPage = (
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     setRowsPerPage(+event.target.value);
@@ -116,7 +112,7 @@ export function StockTable({ stocksList, onEdit, onDelete }: Props) {
   };
 
   const tabs = {
-    selectedId: selectedTabId,
+    value,
     options: tabsOptions,
     onChange: changeTab,
   };
@@ -136,8 +132,8 @@ export function StockTable({ stocksList, onEdit, onDelete }: Props) {
       page={page}
       rowsPerPage={rowsPerPage}
       rowsPerPageOptions={[5, 10, 20]}
-      onPageChange={handleChangePage}
-      onRowsPerPageChange={handleChangeRowsPerPage}
+      onPageChange={сhangePage}
+      onRowsPerPageChange={сhangeRowsPerPage}
     />
   );
 }

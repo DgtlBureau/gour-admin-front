@@ -2,19 +2,19 @@ import React from 'react';
 import { Tabs as MUITabs, Tab } from '@mui/material';
 
 export type TabsProps = {
-  selectedId: string;
+  value: string;
   options: {
-    id: string;
+    value: string;
     label: string;
   }[];
-  onChange: (id: string) => void;
+  onChange: (val: string) => void;
 };
 
-export function Tabs({ selectedId, options, onChange }: TabsProps) {
+export function Tabs({ value, options, onChange }: TabsProps) {
   return (
-    <MUITabs value={selectedId} onChange={(_, newValue: string) => onChange(newValue)}>
+    <MUITabs value={value} onChange={(_, newValue: string) => onChange(newValue)}>
       {options.map(option => (
-        <Tab label={option.label} value={option.id} key={option.id} />
+        <Tab label={option.label} value={option.value} key={option.value} />
       ))}
     </MUITabs>
   );

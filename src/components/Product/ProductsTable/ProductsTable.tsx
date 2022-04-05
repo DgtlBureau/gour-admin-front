@@ -28,22 +28,22 @@ export function ProductsTable({
   onEdit,
   onRemove,
 }: ProductsTableProps) {
-  const [selectedId, setSelectedId] = useState<string>('all');
+  const [value, setValue] = useState<string>('all');
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
   const tabsOptions = [
     {
-      id: 'all',
+      value: 'all',
       label: 'Все',
     },
     ...categories.map(category => ({
-      id: category.value,
+      value: category.value,
       label: category.label,
     })),
   ];
 
-  const changeTab = (id: string) => setSelectedId(id);
+  const changeTab = (val: string) => setValue(val);
 
   const changePage = (_: unknown, newPage: number) => setPage(newPage);
 
@@ -53,7 +53,7 @@ export function ProductsTable({
   };
 
   const rows = products
-    .filter(product => product.category === selectedId || selectedId === 'all')
+    .filter(product => product.category === value || value === 'all')
     .map((product, i) => ({
       id: i,
       cells: [
@@ -76,7 +76,7 @@ export function ProductsTable({
     }));
 
   const tabs = {
-    selectedId,
+    value,
     options: tabsOptions,
     onChange: changeTab,
   };

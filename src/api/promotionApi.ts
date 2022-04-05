@@ -12,7 +12,7 @@ export const promotionApi = commonApi.injectEndpoints({
         method: 'GET',
       }),
     }),
-    getAll: builder.query<Promotion[], void>({
+    getAllPromotions: builder.query<Promotion[], void>({
       query: () => ({
         url: Path.STOCKS,
         method: 'GET',
@@ -45,6 +45,6 @@ export const {
   useDeleteMutation,
   useCreateMutation,
   useUpdateMutation,
-  useGetAllQuery,
+  useGetAllPromotionsQuery,
   useGetByIdQuery,
 } = promotionApi;
