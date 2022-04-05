@@ -7,6 +7,7 @@ import { ProductsTable } from '../../components/Product/ProductsTable/ProductsTa
 import { useGetAllProductsQuery } from '../../api/productApi';
 import { ProgressLinear } from '../../components/UI/ProgressLinear/ProgressLinear';
 import { ProductTableDto } from '../../@types/dto/table/products.dto';
+import { Typography } from '../../components/UI/Typography/Typography';
 
 type Props = {
   onUploadClick: () => void;
@@ -33,6 +34,7 @@ function ListProductsView() {
     data: products = [],
     isFetching,
     isLoading,
+    isError,
   } = useGetAllProductsQuery({
     withSimilarProducts: false,
     withMeta: false,
@@ -50,7 +52,7 @@ function ListProductsView() {
       price: product.price.rub, // TODO: смена валюты
     }));
 
-    setLoadedProducts(prevList => ([...prevList, ...formattedProducts]));
+    setLoadedProducts(prevList => [...prevList, ...formattedProducts]);
   }, [products]);
 
   const to = useTo();
@@ -85,7 +87,10 @@ function ListProductsView() {
         }
       />
       {isLoading && <ProgressLinear variant="indeterminate" />}
-      {!isLoading && (
+      {!isLoading && isError && (
+        <Typography variant="h5">Произошла ошибка, повторите попытку позже</Typography>
+      )}
+      {!isLoading && !isError && (
         <ProductsTable
           products={loadedProducts}
           categories={[]}
