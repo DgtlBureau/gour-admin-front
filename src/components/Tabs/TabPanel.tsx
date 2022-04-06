@@ -3,8 +3,8 @@ import { Box } from '../UI/Box/Box';
 
 interface Props {
   children?: React.ReactNode;
-  index: number;
-  value: number;
+  index: string;
+  value: string;
 }
 
 export function TabPanel({ children, value, index, ...other }: Props) {

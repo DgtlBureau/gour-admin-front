@@ -20,7 +20,6 @@ type Props = {
     | 'inherit'
     | undefined;
   children: ReactNode;
-  color?: string;
   sx?: SxProps;
   color?: string;
 };
