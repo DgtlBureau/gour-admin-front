@@ -5,7 +5,7 @@ import { UsersTable, UsersTableProps } from './UsersTable';
 
 export default {
   component: UsersTable,
-  title: 'UsersTable',
+  title: 'components/UsersTable',
 } as Meta;
 
 const Template: ComponentStory<typeof UsersTable> = function (args: UsersTableProps) {
