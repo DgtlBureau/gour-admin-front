@@ -25,17 +25,17 @@ export const userApi = commonApi.injectEndpoints({
         body,
       }),
     }),
-    delete: builder.mutation<void, number>({
+    deleteUser: builder.mutation<void, number>({
       query: id => ({
         url: `${Path.USERS}/${id}`,
-        method: 'POST',
+        method: 'DELETE',
       }),
     }),
   }),
 });
 
 export const {
-  useDeleteMutation,
+  useDeleteUserMutation,
   useCreateMutation,
   useGetAllUsersQuery,
   useGetByIdQuery,

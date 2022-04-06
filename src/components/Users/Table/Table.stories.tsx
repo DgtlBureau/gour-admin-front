@@ -14,57 +14,47 @@ const Template: ComponentStory<typeof UsersTable> = function (args: UsersTablePr
 export const DefaultUsersTable = Template.bind({});
 
 const props: Partial<UsersTableProps> = {
-  // users: [
-  //   {
-  //     id: 0,
-  //     name: 'Саша',
-  //     phone: '123456789',
-  //     role: 'Организатор коллективной закупки',
-  //     isConfirmed: true,
-  //   },
-  //   {
-  //     id: 1,
-  //     name: 'Паша',
-  //     phone: '123456789',
-  //     role: 'Физическое лицо',
-  //     isConfirmed: true,
-  //   },
-  //   {
-  //     id: 2,
-  //     name: 'Лёша',
-  //     phone: '123456789',
-  //     role: 'Юридическое лицо',
-  //     isConfirmed: false,
-  //   },
-  //   {
-  //     id: 3,
-  //     name: 'Света',
-  //     phone: '123456789',
-  //     role: 'Юридическое лицо',
-  //     isConfirmed: true,
-  //   },
-  //   {
-  //     id: 4,
-  //     name: 'Артур',
-  //     phone: '123456789',
-  //     role: 'Физическое лицо',
-  //     isConfirmed: false,
-  //   },
-  //   {
-  //     id: 5,
-  //     name: 'Женя',
-  //     phone: '123456789',
-  //     role: 'Юридическое лицо',
-  //     isConfirmed: false,
-  //   },
-  //   {
-  //     id: 6,
-  //     name: 'Семён',
-  //     phone: '123456789',
-  //     role: 'Юридическое лицо',
-  //     isConfirmed: false,
-  //   },
-  // ],
+  users: [
+    {
+      id: 0,
+      apiUserUuid: '0',
+      name: 'Саша',
+      phone: '123456789',
+      role: {
+        title: 'admin',
+        key: 'ADMIN',
+      },
+      isApproved: true,
+      additionalInfo: {},
+      favorites: [],
+    },
+    {
+      id: 1,
+      apiUserUuid: '1',
+      name: 'Лёша',
+      phone: '123456789',
+      role: {
+        title: 'admin',
+        key: 'ADMIN',
+      },
+      isApproved: false,
+      additionalInfo: {},
+      favorites: [],
+    },
+    {
+      id: 2,
+      apiUserUuid: '2',
+      name: 'Паша',
+      phone: '123456789',
+      role: {
+        title: 'moderator',
+        key: 'MODERATOR',
+      },
+      isApproved: true,
+      additionalInfo: {},
+      favorites: [],
+    },
+  ],
 };
 
 DefaultUsersTable.args = props;

@@ -2,6 +2,7 @@ import { Product } from './Product';
 import { UserRole } from './UserRole';
 
 export interface IUser {
+  id: number;
   apiUserUuid: string;
   name: string;
   phone: string;
