@@ -1,8 +1,9 @@
 import React, { ReactElement } from 'react';
 
 import { Card, CardContent, CardMedia } from '@mui/material';
-import { Box } from '../UI/Box/Box';
-import { Typography } from '../UI/Typography/Typography';
+import { Box } from '../../UI/Box/Box';
+import { Typography } from '../../UI/Typography/Typography';
+import { getFoundStringPosition } from './SelectCardHelper';
 
 type Props = {
   image: string;
@@ -23,17 +24,10 @@ const sx = {
   },
 };
 
-export function ProductSelectCard({
-  image,
-  title,
-  isSelected,
-  searchQuery,
-  onSelect,
-}: Props) {
-  function getMarkStringByValue(value: string): ReactElement | string {
-    const query: string = searchQuery.toLowerCase();
-    const pos: number = value.toLowerCase().search(query);
-    const { length } = query;
+export function SelectCard({ image, title, isSelected, searchQuery, onSelect }: Props) {
+  const getMarkStringByValue = (value: string): ReactElement | string => {
+    const pos = getFoundStringPosition(searchQuery, value);
+    const { length } = searchQuery;
 
     if (pos === -1) return value;
     return (
@@ -43,7 +37,7 @@ export function ProductSelectCard({
         {value.slice(pos + length)}
       </>
     );
-  }
+  };
 
   return (
     <Card sx={{ width: '100%', cursor: 'pointer' }} onClick={onSelect}>
