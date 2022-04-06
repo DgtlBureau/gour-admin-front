@@ -22,7 +22,6 @@ type Props = {
   children: ReactNode;
   color?: string;
   sx?: SxProps;
-  color?: string;
 };
 
 export function Typography({ variant = 'h4', children, color, sx }: Props) {
