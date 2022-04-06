@@ -16,6 +16,7 @@ const Template: ComponentStory<typeof Select> = function (args) {
 export const DefaultState = Template.bind({});
 
 DefaultState.args = {
+  label: 'Select option',
   value: '1',
   options: [
     {

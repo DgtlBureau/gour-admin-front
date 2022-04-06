@@ -5,12 +5,15 @@ import { ProductSelectForm, ProductSelectFormProps } from './ProductSelectForm';
 
 export default {
   component: ProductSelectForm,
-  title: 'ProductSelectForm',
+  title: 'src/components/ProductSelectForm',
 } as Meta;
 
-const Template: ComponentStory<typeof ProductSelectForm> = function (args: ProductSelectFormProps) {
+const Template: ComponentStory<typeof ProductSelectForm> = function (
+  args: ProductSelectFormProps
+) {
   return <ProductSelectForm {...args} />;
 };
+
 export const DefaultProductSelectForm = Template.bind({});
 
 const props: Partial<ProductSelectFormProps> = {

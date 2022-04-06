@@ -5,11 +5,11 @@ import { Controller, useFormContext } from 'react-hook-form';
 type Props = {
   name: string;
   defaultValue?: string;
-  sx?: SxProps;
   children: ReactNode;
+  sx?: SxProps;
 };
 
-export function HFRadioGroup({ name, defaultValue, sx, children }: Props) {
+export function HFRadioGroup({ name, defaultValue, children, sx }: Props) {
   const { control } = useFormContext();
 
   return (

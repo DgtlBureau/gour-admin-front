@@ -6,7 +6,16 @@ export type ProductSelectFormProps = {
     categories: {
         title: string;
         id: number
-    }[]
+    }[];
+    characteristics: {
+        key: string;
+        label: string;
+        category: number;
+        values: {
+          key: string;
+          label: string;
+        }[];
+    }[];
     products: {
         title: string;
         image: string;
