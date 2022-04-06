@@ -14,7 +14,7 @@ export type ProductsTableProps = {
     value: string;
   }[];
   page: number;
-  rowsCount: number,
+  rowsCount: number;
   onChangePage: (_: unknown, newPage: number) => void;
   rowsPerPage: number;
   onChangeRowsPerPage: (rowPerPage: number) => void;

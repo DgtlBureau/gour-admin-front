@@ -30,30 +30,31 @@ function ListProductsView() {
   const [rowsPerPage, setRowsPerPage] = useState<number>(2);
   const [loadedProducts, setLoadedProducts] = useState<ProductTableDto[]>([]);
 
-  const {
-    data: products = [],
-    isFetching,
-    isLoading,
-    isError,
-  } = useGetAllProductsQuery({
-    withSimilarProducts: false,
-    withMeta: false,
-    withRoleDiscount: false,
-    // length: rowsPerPage,
-    // offset: rowsPerPage * page,
-  });
+  const { data, isLoading, isError } = useGetAllProductsQuery(
+    {
+      withSimilarProducts: false,
+      withMeta: false,
+      withRoleDiscount: false,
+      length: rowsPerPage,
+      offset: rowsPerPage * page,
+    },
+    {
+      skip: loadedProducts.length >= rowsPerPage * (page + 1),
+    }
+  );
 
   useEffect(() => {
-    const formattedProducts = products.map(product => ({
+    if (!data) return;
+
+    const newProduct = data.products.map(product => ({
       id: product.id,
-      image: product.images[0].small,
+      image: product.images[0]?.small || '',
       title: product.title?.ru || '', // TODO: смена языка
-      category: product.category.title.ru, // TODO: смена языка
+      category: product.category?.title.ru, // TODO: смена языка
       price: product.price.rub, // TODO: смена валюты
     }));
-
-    setLoadedProducts(prevList => [...prevList, ...formattedProducts]);
-  }, [products]);
+    setLoadedProducts(prevList => [...prevList, ...newProduct]);
+  }, [data?.products]);
 
   const to = useTo();
 
@@ -95,7 +96,7 @@ function ListProductsView() {
           products={loadedProducts}
           categories={[]}
           page={page}
-          rowsCount={8}
+          rowsCount={data?.totalCount || 0}
           rowsPerPage={rowsPerPage}
           onChangePage={handleChangePage}
           onChangeRowsPerPage={handleChangeRowsPerPage}

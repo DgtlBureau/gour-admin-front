@@ -1,3 +1,4 @@
+import { FetchBaseQueryMeta } from '@reduxjs/toolkit/dist/query';
 import { commonApi } from './commonApi';
 import { Path } from '../constants/routes';
 import { Product } from '../@types/entities/Product';
@@ -16,12 +17,22 @@ export const productApi = commonApi.injectEndpoints({
         params,
       }),
     }),
-    getAllProducts: builder.query<Product[], ProductGetListDto>({
+    getAllProducts: builder.query<
+      { products: Product[]; totalCount: number },
+      ProductGetListDto
+    >({
       query: params => ({
         url: `${Path.GOODS}`,
         method: 'GET',
         params,
       }),
+      transformResponse(products: Product[], { response }: FetchBaseQueryMeta) {
+        const totalCount = response?.headers.get('X-Total-Count') || 0;
+        return {
+          products,
+          totalCount: +totalCount,
+        };
+      },
     }),
     create: builder.mutation<void, ProductCreateDto>({
       query: body => ({
