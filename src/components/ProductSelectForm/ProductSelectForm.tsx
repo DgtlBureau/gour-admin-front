@@ -73,7 +73,7 @@ export function ProductSelectForm({
   ];
 
   const handleProductClick = (productId: number) => {
-    const isProductSelected = !!selectedProductsId.find(id => id === productId);
+    const isProductSelected = selectedProductsId.includes(productId);
 
     if (isProductSelected) {
       const newSelectedProductsList = selectedProductsId.filter(id => id !== productId);
@@ -87,7 +87,7 @@ export function ProductSelectForm({
     setSelectValues({});
   };
 
-  const isProductSelected = (productId: number) => !!selectedProductsId.find(id => id === productId);
+  const isProductSelected = (productId: number) => selectedProductsId.includes(productId);
 
   const filterProductsByTab = (productsList: Product[], tabId: string) => productsList.filter((product: Product) => {
     switch (tabId) {
@@ -105,16 +105,8 @@ export function ProductSelectForm({
     productsList: Product[],
     selectsValues: Record<string, string | undefined>
   ) => {
-    // const selectKeys = Object.keys(selectsValues);
     const filerFunction = (product: Product) => {
       const selects = product.characteristics.map(characteristic => {
-        // const selectedCharacteristic = selectKeys.find(key => key === characteristic.key);
-
-        // if (!selectedCharacteristic) return false;
-        // if (!selectValues[selectedCharacteristic]) return true;
-        console.log('Все значения:', selectValues);
-        console.log('Значение сейчас:', `${characteristic.key} ${characteristic.value}`);
-
         if (selectValues[characteristic.key]) return selectValues[characteristic.key] === characteristic.value;
 
         return true;
