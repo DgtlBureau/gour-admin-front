@@ -25,28 +25,29 @@ const sx = {
 };
 
 type Props = {
-  onSubmit: SubmitHandler<ProductBasicSettingsFormDto>;
+  categories: {
+    value: string;
+    label: string;
+  }[],
   defaultValues?: ProductBasicSettingsFormDto;
-  isLoading?: boolean;
+  onSubmit: SubmitHandler<ProductBasicSettingsFormDto>;
 };
 
-export function ProductBasicSettingsForm({ onSubmit, defaultValues }: Props) {
+export function ProductBasicSettingsForm({ categories, defaultValues, onSubmit }: Props) {
   const values = useForm<ProductBasicSettingsFormDto>({
     resolver: yupResolver(schema),
     mode: 'onBlur',
     defaultValues: {
       ...defaultValues,
-      isIndexed: defaultValues?.isIndexed !== undefined ? defaultValues?.isIndexed : true,
+      isIndexed: defaultValues?.isIndexed ?? true,
     },
   });
 
-  const submitHandler = (data: ProductBasicSettingsFormDto) => {
-    onSubmit(data);
-  };
+  const submit = (data: ProductBasicSettingsFormDto) => onSubmit(data);
 
   return (
     <FormProvider {...values}>
-      <form onSubmit={values.handleSubmit(submitHandler)}>
+      <form onSubmit={values.handleSubmit(submit)}>
         <Grid container spacing={2}>
           <Grid item xs={8}>
             <HFTextField name="title" label="Название" sx={sx.input} />
@@ -54,12 +55,9 @@ export function ProductBasicSettingsForm({ onSubmit, defaultValues }: Props) {
 
           <Grid item xs={4}>
             <HFSelect
-              options={[
-                { value: 'cheese', label: 'Cыр' },
-                { value: 'meat', label: 'Mясо' },
-              ]}
+              options={categories}
               name="category"
-              placeholder="Сыр"
+              placeholder="Выберите категорию"
             />
           </Grid>
 

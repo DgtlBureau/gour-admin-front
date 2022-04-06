@@ -18,9 +18,21 @@ const defaultValues = {
   metaKeywords: '',
 } as ProductBasicSettingsFormDto;
 
+const categories = [
+  {
+    value: 'cheese',
+    label: 'Сыр',
+  },
+  {
+    value: 'meat',
+    label: 'Мясо',
+  },
+];
+
 const Template: ComponentStory<typeof ProductBasicSettingsForm> = function () {
   return (
     <ProductBasicSettingsForm
+      categories={categories}
       defaultValues={defaultValues}
       onSubmit={data => console.log(data)}
     />
