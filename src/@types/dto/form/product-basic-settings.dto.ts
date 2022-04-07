@@ -1,6 +1,7 @@
 export type ProductBasicSettingsFormDto = Readonly<{
-  category: 'meat' | 'cheese';
+  category: number;
   title: string;
+  description: string;
   metaTitle: string;
   metaDescription: string;
   isIndexed: boolean;

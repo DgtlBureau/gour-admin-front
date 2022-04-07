@@ -12,9 +12,9 @@ export const categoryApi = commonApi.injectEndpoints({
         method: 'GET',
       }),
     }),
-    getAll: builder.query<Category[], void>({
+    getAllCategories: builder.query<Category[], void>({
       query: () => ({
-        url: Path.CATEGORY,
+        url: Path.CATEGORIES,
         method: 'GET',
       }),
     }),
@@ -45,6 +45,6 @@ export const {
   useDeleteMutation,
   useCreateMutation,
   useUpdateMutation,
-  useGetAllQuery,
+  useGetAllCategoriesQuery,
   useGetByIdQuery,
 } = categoryApi;

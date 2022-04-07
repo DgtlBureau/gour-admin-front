@@ -34,7 +34,7 @@ export const productApi = commonApi.injectEndpoints({
         };
       },
     }),
-    create: builder.mutation<void, ProductCreateDto>({
+    createProduct: builder.mutation<void, ProductCreateDto>({
       query: body => ({
         url: Path.GOODS,
         method: 'POST',
@@ -67,7 +67,7 @@ export const productApi = commonApi.injectEndpoints({
 export const {
   useCreateGradeMutation,
   useDeleteMutation,
-  useCreateMutation,
+  useCreateProductMutation,
   useGetByIdQuery,
   useGetAllProductsQuery,
   useUpdateMutation,

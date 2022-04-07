@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FormLabel, FormControlLabel, RadioGroup } from '@mui/material';
-import { useForm, FormProvider } from 'react-hook-form';
+import { useForm, FormProvider, FieldError } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 import schema from './validation';
 import { Box } from '../UI/Box/Box';
-import { Button } from '../UI/Button/Button';
 import { Typography } from '../UI/Typography/Typography';
 import { RadioButton } from '../UI/RadioButton/RadioButton';
 import { HFTextField } from '../HookForm/HFTextField';
+import { ProductPriceFormDto } from '../../@types/dto/form/product-price.dto';
 
 const sx = {
   discount: {
@@ -45,53 +45,50 @@ const sx = {
   },
 };
 
-export type PriceFields = {
-  discount?: string;
-
-  iRub: string;
-  iEuro: string;
-  iDollar: string;
-  iYuan: string;
-  iDirhams: string;
-
-  oRub: string;
-  oEuro: string;
-  oDollar: string;
-  oYuan: string;
-  oDirhams: string;
-
-  eRub: string;
-  eEuro: string;
-  eDollar: string;
-  eYuan: string;
-  eDirhams: string;
-}
-
 export type PriceProductFormProps = {
-  prices: PriceFields;
-  onSubmit: (data: PriceFields) => void;
-}
+  defaultValues: ProductPriceFormDto;
+  onChange: (data: ProductPriceFormDto) => void;
+  onError: (errors: Record<string, FieldError | undefined>) => void;
+};
 
 export function PriceProductForm({
-  prices,
-  onSubmit,
+  defaultValues,
+  onError,
+  onChange,
 }: PriceProductFormProps) {
-  const [withDiscount, setWithDiscount] = useState(!!prices.discount);
+  const [withDiscount, setWithDiscount] = useState(!!defaultValues.discount);
 
-  const values = useForm<PriceFields>({
-    defaultValues: prices,
-    mode: 'onBlur',
+  const values = useForm<ProductPriceFormDto>({
     resolver: yupResolver(schema),
+    mode: 'onBlur',
+    defaultValues,
   });
 
-  const submitHandler = (data: PriceFields) => onSubmit(data);
+  useEffect(() => {
+    values.reset(defaultValues);
+  }, [defaultValues]);
+
+  const changeHandler = () => {
+    onChange(values.getValues());
+  };
+
+  const submitHandler = (data: ProductPriceFormDto) => {
+    onChange(data);
+  };
+  useEffect(() => {
+    onError(values.formState.errors);
+  }, [values.formState.errors]);
 
   const enableDiscount = () => setWithDiscount(true);
   const disableDiscount = () => setWithDiscount(false);
 
   return (
     <FormProvider {...values}>
-      <form onSubmit={values.handleSubmit(submitHandler)}>
+      <form
+        id="productPriceForm"
+        onSubmit={values.handleSubmit(submitHandler)}
+        onChange={changeHandler}
+      >
         <Box sx={sx.discount}>
           <RadioGroup sx={sx.radioGroup}>
             <FormLabel>Скидка на товар</FormLabel>
@@ -119,20 +116,14 @@ export function PriceProductForm({
               />
             </Box>
           </RadioGroup>
-          {
-            withDiscount && (
-              <HFTextField
-                sx={sx.input}
-                defaultValue={prices.discount}
-                label="Размер скидки"
-                name="discount"
-              />
-            )
-          }
-          {/* delete later */}
-          <Button variant="text" type="submit" sx={{ marginLeft: '20px', height: '28px' }}>
-            Сохранить
-          </Button>
+          {withDiscount && (
+            <HFTextField
+              sx={sx.input}
+              defaultValue={`${defaultValues.discount}`}
+              label="Размер скидки"
+              name="discount"
+            />
+          )}
         </Box>
 
         <Box sx={sx.prices}>
@@ -143,9 +134,6 @@ export function PriceProductForm({
 
             <HFTextField sx={sx.priceInput} label="Цена Рубли" name="iRub" />
             <HFTextField sx={sx.priceInput} label="Цена Евро" name="iEuro" />
-            <HFTextField sx={sx.priceInput} label="Цена Доллар" name="iDollar" />
-            <HFTextField sx={sx.priceInput} label="Цена Юани" name="iYuan" />
-            <HFTextField sx={sx.priceInput} label="Цена Дирхамы" name="iDirhams" />
           </Box>
 
           <Box sx={sx.fields}>
@@ -155,9 +143,6 @@ export function PriceProductForm({
 
             <HFTextField sx={sx.priceInput} label="Цена Рубли" name="oRub" />
             <HFTextField sx={sx.priceInput} label="Цена Евро" name="oEuro" />
-            <HFTextField sx={sx.priceInput} label="Цена Доллар" name="oDollar" />
-            <HFTextField sx={sx.priceInput} label="Цена Юани" name="oYuan" />
-            <HFTextField sx={sx.priceInput} label="Цена Дирхамы" name="oDirhams" />
           </Box>
 
           <Box sx={sx.fields}>
@@ -167,9 +152,6 @@ export function PriceProductForm({
 
             <HFTextField sx={sx.priceInput} label="Цена Рубли" name="eRub" />
             <HFTextField sx={sx.priceInput} label="Цена Евро" name="eEuro" />
-            <HFTextField sx={sx.priceInput} label="Цена Доллар" name="eDollar" />
-            <HFTextField sx={sx.priceInput} label="Цена Юани" name="eYuan" />
-            <HFTextField sx={sx.priceInput} label="Цена Дирхамы" name="eDirhams" />
           </Box>
         </Box>
       </form>

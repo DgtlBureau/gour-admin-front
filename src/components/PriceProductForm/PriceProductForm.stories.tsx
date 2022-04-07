@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { ComponentStory, Meta } from '@storybook/react';
 
-import { PriceProductForm, PriceFields } from './PriceProductForm';
+import { FieldError } from 'react-hook-form';
+import { PriceProductForm } from './PriceProductForm';
+import { ProductPriceFormDto } from '../../@types/dto/form/product-price.dto';
 
 export default {
   component: PriceProductForm,
@@ -9,15 +11,16 @@ export default {
 } as Meta;
 
 const Template: ComponentStory<typeof PriceProductForm> = function () {
-  const [prices, setPrices] = useState({} as PriceFields);
+  const [prices, setPrices] = useState({} as ProductPriceFormDto);
 
-  const submit = (data: PriceFields) => {
+  const submit = (data: ProductPriceFormDto) => {
     setPrices(data);
     console.log(data);
   };
+  const handleError = (errors: Record<string, FieldError | undefined>) => console.log(errors);
 
   return (
-    <PriceProductForm prices={prices} onSubmit={submit} />
+    <PriceProductForm onError={handleError} defaultValues={prices} onChange={submit} />
   );
 };
 

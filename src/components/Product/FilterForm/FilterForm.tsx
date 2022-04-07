@@ -5,19 +5,20 @@ import {
   ProductFilterCheeseFormDto,
   ProductFilterMeatFormDto,
 } from '../../../@types/dto/form/product-filters.dto';
+import { useGetAllCategoriesQuery } from '../../../api/categoryApi';
 import { ProductFilterFormCheese } from './Cheese';
 import { ProductFilterFormMeat } from './Meat';
 
 type Props = {
   type: 'cheese' | 'meat';
-  onSubmit: SubmitHandler<ProductFilterMeatFormDto | ProductFilterCheeseFormDto>;
+  onChange: SubmitHandler<ProductFilterMeatFormDto | ProductFilterCheeseFormDto>;
 };
 
-export function ProductFilterForm({ type, onSubmit }: Props) {
+export function ProductFilterForm({ type, onChange }: Props) {
   return (
     <>
-      {type === 'cheese' && <ProductFilterFormCheese onSubmit={onSubmit} />}
-      {type === 'meat' && <ProductFilterFormMeat onSubmit={onSubmit} />}
+      {type === 'cheese' && <ProductFilterFormCheese onSubmit={onChange} />}
+      {type === 'meat' && <ProductFilterFormMeat onSubmit={onChange} />}
     </>
   );
 }
