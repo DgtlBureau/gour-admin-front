@@ -36,7 +36,7 @@ export const userApi = commonApi.injectEndpoints({
         body,
       }),
     }),
-    deleteUser: builder.mutation<void, number>({
+    deleteUser: builder.mutation<void, string>({
       query: id => ({
         url: `${USERS_API_PATH}/${id}`,
         method: 'DELETE',

@@ -45,9 +45,9 @@ function ListUsersView() {
 
   const handlerCreateClick = () => to(Path.USERS, 'create');
 
-  const handlerDeleteClick = (id: number) => deleteUser(id);
+  const handlerDeleteClick = (id: string) => deleteUser(id);
 
-  const handlerConfirmClick = (id: number) => console.log(id);
+  const handlerConfirmClick = (id: string) => console.log(id);
 
   return (
     <div>
