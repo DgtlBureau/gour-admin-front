@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { Header } from '../../components/Header/Header';
 import { Button } from '../../components/UI/Button/Button';
 import { Typography } from '../../components/UI/Typography/Typography';
 import { UsersTable } from '../../components/Users/Table/Table';
+import { Modal } from '../../components/UI/Modal/Modal';
 import { Path } from '../../constants/routes';
 import { useTo } from '../../hooks/useTo';
 import { useGetAllUsersQuery, useDeleteUserMutation } from '../../api/userApi';
@@ -29,39 +30,65 @@ const categories = [
   },
 ];
 
-type Props = {
+type RightContentProps = {
   onCreateClick: () => void;
 };
 
-function RightContent({ onCreateClick }: Props) {
+type ModalActionsProps = {
+  onCancel: () => void;
+  onDelete: () => void;
+};
+
+function RightContent({ onCreateClick }: RightContentProps) {
   return <Button onClick={onCreateClick}>Добавить пользователя</Button>;
+}
+
+function DeleteModalActions({ onCancel, onDelete }: ModalActionsProps) {
+  return (
+    <>
+      <Button size="small" onClick={onCancel} sx={{ marginRight: '10px' }}>Отмена</Button>
+      <Button variant="outlined" size="small" onClick={onDelete}>Удалить</Button>
+    </>
+  );
 }
 
 function ListUsersView() {
   const { data } = useGetAllUsersQuery({});
-  const [deleteUser] = useDeleteUserMutation();
+  const [deleteUserById] = useDeleteUserMutation();
+
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [userDeleteId, setUserDeleteId] = useState(-1);
 
   const to = useTo();
 
-  const handlerCreateClick = () => to(Path.USERS, 'create');
+  const goToUserCreate = () => to(Path.USERS, 'create');
 
-  const handlerDeleteClick = (id: number) => deleteUser(id);
+  const confirmUser = (id: number) => console.log(id);
 
-  const handlerConfirmClick = (id: number) => console.log(id);
+  const deleteUser = () => deleteUserById(userDeleteId);
+
+  const openDeleteModal = (id: number) => {
+    setIsDeleting(true);
+    setUserDeleteId(id);
+  };
+  const closeDeleteModal = () => {
+    setIsDeleting(false);
+    setUserDeleteId(-1);
+  };
 
   return (
     <div>
       <Header
         leftTitle="Пользователи"
-        rightContent={<RightContent onCreateClick={handlerCreateClick} />}
+        rightContent={<RightContent onCreateClick={goToUserCreate} />}
       />
       {
         data ? (
           <UsersTable
             users={data}
             categories={categories}
-            onDelete={handlerDeleteClick}
-            onConfirm={handlerConfirmClick}
+            onDelete={openDeleteModal}
+            onConfirm={confirmUser}
           />
         ) : (
           <Typography variant="body1">
@@ -69,6 +96,13 @@ function ListUsersView() {
           </Typography>
         )
       }
+      <Modal
+        title="Удаление пользователя"
+        description="Вы действительно хотите удалить пользователя?"
+        isOpen={isDeleting}
+        actions={<DeleteModalActions onCancel={closeDeleteModal} onDelete={deleteUser} />}
+        onClose={closeDeleteModal}
+      />
     </div>
   );
 }
