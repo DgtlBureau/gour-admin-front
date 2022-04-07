@@ -63,8 +63,8 @@ export function UsersTable({
     id: i,
     cells: [
       user.name,
-      user.phone,
-      <Typography variant="body1" sx={sx.role}>{user.role.title}</Typography>,
+      user.login,
+      <Typography variant="body1" sx={sx.role}>{user.role.key}</Typography>,
       <>
         <IconButton component="button" onClick={() => ({})}>
           <img src={busketIcon} alt="" />
