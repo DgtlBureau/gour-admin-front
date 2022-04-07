@@ -77,7 +77,7 @@ export function UsersTable({
     <Box>
       <Table
         tabs={tabs}
-        rowTitleList={['Имя Фамилия', 'Телефон', 'Роль', 'Действие']}
+        rowTitleList={['Имя Фамилия', 'Логин', 'Роль', 'Действие']}
         rows={rows}
         rowsPerPage={rowsPerPage}
         page={page}
