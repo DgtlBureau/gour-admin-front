@@ -5,6 +5,7 @@ import { Table } from '../../UI/Table/Table';
 import { IconButton } from '../../UI/IconButton/IconButton';
 import { Typography } from '../../UI/Typography/Typography';
 import { IUser } from '../../../@types/entities/IUser';
+import { Options } from '../../../constants/tabs';
 
 import busketIcon from '../../../assets/icons/table/busket.svg';
 import checkIcon from '../../../assets/icons/table/check.svg';
@@ -18,33 +19,23 @@ const sx = {
   },
 };
 
-const tabsOptions = [
-  {
-    value: 'all',
-    label: 'Все',
-  },
-  {
-    value: 'ADMIN',
-    label: 'Админ',
-  },
-  {
-    value: 'MODERATOR',
-    label: 'Модератор',
-  },
-  {
-    value: 'CLIENT',
-    label: 'Клиент',
-  },
-];
-
 export type UsersTableProps = {
   users: IUser[];
+  categories: {
+    value: string,
+    label: string,
+  }[];
+  onDelete: (id: number) => void;
+  onConfirm: (id: number) => void;
 };
 
 export function UsersTable({
   users,
+  categories,
+  onDelete,
+  onConfirm,
 }: UsersTableProps) {
-  const [tabsValue, setTabsValue] = useState<string>('all');
+  const [tabsValue, setTabsValue] = useState<string>(Options.ALL);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
@@ -57,7 +48,7 @@ export function UsersTable({
     setPage(0);
   };
 
-  const filteredUsers = tabsValue === 'all' ? users : users.filter(user => user.role.key === tabsValue);
+  const filteredUsers = tabsValue === Options.ALL ? users : users.filter(user => user.role.key === tabsValue);
 
   const rows = filteredUsers.map((user, i) => ({
     id: i,
@@ -66,10 +57,10 @@ export function UsersTable({
       user.login,
       <Typography variant="body1" sx={sx.role}>{user.role.key}</Typography>,
       <>
-        <IconButton component="button" onClick={() => ({})}>
+        <IconButton component="button" onClick={() => onDelete(user.id)}>
           <img src={busketIcon} alt="" />
         </IconButton>
-        <IconButton component="button" onClick={() => ({})}>
+        <IconButton component="button" onClick={() => onConfirm(user.id)}>
           <img src={checkIcon} alt="" />
         </IconButton>
       </>,
@@ -78,7 +69,7 @@ export function UsersTable({
 
   const tabs = {
     value: tabsValue,
-    options: tabsOptions,
+    options: categories,
     onChange: changeTab,
   };
 
