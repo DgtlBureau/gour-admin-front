@@ -16,43 +16,34 @@ export const DefaultUsersTable = Template.bind({});
 const props: Partial<UsersTableProps> = {
   users: [
     {
-      id: 0,
-      apiUserUuid: '0',
+      uuid: '0',
       name: 'Саша',
-      phone: '123456789',
+      login: '123456789',
       role: {
-        title: 'admin',
+        uuid: 'admin',
         key: 'ADMIN',
       },
       isApproved: true,
-      additionalInfo: {},
-      favorites: [],
     },
     {
-      id: 1,
-      apiUserUuid: '1',
+      uuid: '1',
       name: 'Лёша',
-      phone: '123456789',
+      login: '123456789',
       role: {
-        title: 'admin',
+        uuid: 'admin',
         key: 'ADMIN',
       },
-      isApproved: false,
-      additionalInfo: {},
-      favorites: [],
+      isApproved: true,
     },
     {
-      id: 2,
-      apiUserUuid: '2',
+      uuid: '2',
       name: 'Паша',
-      phone: '123456789',
+      login: '123456789',
       role: {
-        title: 'moderator',
+        uuid: 'moderator',
         key: 'MODERATOR',
       },
       isApproved: true,
-      additionalInfo: {},
-      favorites: [],
     },
   ],
 };

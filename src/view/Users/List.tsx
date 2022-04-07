@@ -57,23 +57,23 @@ function ListUsersView() {
   const [deleteUserById] = useDeleteUserMutation();
 
   const [isDeleting, setIsDeleting] = useState(false);
-  const [userDeleteId, setUserDeleteId] = useState(-1);
+  const [userDeleteId, setUserDeleteId] = useState('');
 
   const to = useTo();
 
   const goToUserCreate = () => to(Path.USERS, 'create');
 
-  const confirmUser = (id: number) => console.log(id);
+  const confirmUser = (uuid: string) => console.log(uuid);
 
   const deleteUser = () => deleteUserById(userDeleteId);
 
-  const openDeleteModal = (id: number) => {
+  const openDeleteModal = (uuid: string) => {
     setIsDeleting(true);
-    setUserDeleteId(id);
+    setUserDeleteId(uuid);
   };
   const closeDeleteModal = () => {
     setIsDeleting(false);
-    setUserDeleteId(-1);
+    setUserDeleteId('');
   };
 
   return (

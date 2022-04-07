@@ -25,8 +25,8 @@ export type UsersTableProps = {
     value: string,
     label: string,
   }[];
-  onDelete: (id: number) => void;
-  onConfirm: (id: number) => void;
+  onDelete: (uuid: string) => void;
+  onConfirm: (uuid: string) => void;
 };
 
 export function UsersTable({
@@ -54,13 +54,13 @@ export function UsersTable({
     id: i,
     cells: [
       user.name,
-      user.phone,
-      <Typography variant="body1" sx={sx.role}>{user.role.title}</Typography>,
+      user.login,
+      <Typography variant="body1" sx={sx.role}>{user.role.key}</Typography>,
       <>
-        <IconButton component="button" onClick={() => onDelete(user.id)}>
+        <IconButton component="button" onClick={() => onDelete(user.uuid)}>
           <img src={busketIcon} alt="" />
         </IconButton>
-        <IconButton component="button" onClick={() => onConfirm(user.id)}>
+        <IconButton component="button" onClick={() => onConfirm(user.uuid)}>
           <img src={checkIcon} alt="" />
         </IconButton>
       </>,
