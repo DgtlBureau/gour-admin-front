@@ -41,12 +41,12 @@ export type ProductSelectFormProps = {
 };
 
 const TAB_ALL = {
-  id: 'all',
+  value: 'all',
   label: 'Все',
 };
 
 const TAB_SELECTED = {
-  id: 'selected',
+  value: 'selected',
   label: 'Выбранные товары',
 };
 
@@ -68,7 +68,7 @@ export function ProductSelectForm({
   const tabOptions = [
     ...defaultTabs,
     ...categories.map(category => ({
-      id: category.value,
+      value: category.value,
       label: category.label,
     })),
   ];
@@ -115,7 +115,7 @@ export function ProductSelectForm({
         </Grid>
       </Grid>
 
-      <Tabs selectedId={selectedTabKey} options={tabOptions} onChange={handleChangeTab} />
+      <Tabs value={selectedTabKey} options={tabOptions} onChange={handleChangeTab} />
       <SelectsList
         characteristics={filteredCharacteristics}
         selectValues={selectValues}
