@@ -6,7 +6,7 @@ import { Category } from '../@types/entities/Category';
 
 export const categoryApi = commonApi.injectEndpoints({
   endpoints: builder => ({
-    getById: builder.query<Category, number>({
+    getCategoryById: builder.query<Category, number>({
       query: id => ({
         url: `${Path.CATEGORY}/${id}`,
         method: 'GET',
@@ -18,21 +18,21 @@ export const categoryApi = commonApi.injectEndpoints({
         method: 'GET',
       }),
     }),
-    create: builder.mutation<void, CategoryCreateDto>({
+    createCategory: builder.mutation<void, CategoryCreateDto>({
       query: body => ({
         url: Path.CATEGORY,
         method: 'POST',
         body,
       }),
     }),
-    update: builder.mutation<void, CategoryUpdateDto>({
+    updateCategory: builder.mutation<void, CategoryUpdateDto>({
       query: ({ id, ...body }) => ({
         url: `${Path.CATEGORY}/${id}`,
         method: 'POST',
         body,
       }),
     }),
-    delete: builder.mutation<void, number>({
+    deleteCategory: builder.mutation<void, number>({
       query: id => ({
         url: `${Path.CATEGORY}/${id}`,
         method: 'POST',
@@ -42,9 +42,9 @@ export const categoryApi = commonApi.injectEndpoints({
 });
 
 export const {
-  useDeleteMutation,
-  useCreateMutation,
-  useUpdateMutation,
+  useDeleteCategoryMutation,
+  useCreateCategoryMutation,
+  useUpdateCategoryMutation,
   useGetAllCategoriesQuery,
-  useGetByIdQuery,
+  useGetCategoryByIdQuery,
 } = categoryApi;
