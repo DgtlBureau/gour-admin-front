@@ -25,7 +25,7 @@ function generateStock(
 }
 
 export default {
-  title: 'Stock/Table',
+  title: 'Tables/Stock',
   component: StockTable,
 } as ComponentMeta<typeof StockTable>;
 

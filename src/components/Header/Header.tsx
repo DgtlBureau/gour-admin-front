@@ -1,7 +1,15 @@
 import React, { ReactNode } from 'react';
 import { Toolbar, Typography, AppBar as MUIAppBar } from '@mui/material';
 
-import s from './Header.module.scss';
+const sx = {
+  bar: {
+    background: 'none',
+    boxShadow: 'none',
+  },
+  wrapper: {
+    padding: 0,
+  },
+};
 
 type Props = {
   leftTitle: string;
@@ -10,8 +18,8 @@ type Props = {
 
 export function Header({ leftTitle, rightContent }: Props) {
   return (
-    <MUIAppBar className={s.bar} position="static">
-      <Toolbar className={s.wrapper}>
+    <MUIAppBar sx={sx.bar} position="static">
+      <Toolbar sx={sx.wrapper}>
         <Typography variant="h5" color="black" component="div" sx={{ flexGrow: 1 }}>
           {leftTitle}
         </Typography>

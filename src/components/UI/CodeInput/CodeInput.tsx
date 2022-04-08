@@ -1,6 +1,21 @@
 import React, { CSSProperties } from 'react';
 import ReactCodeInput, { InputModeTypes } from 'react-code-input';
 
+import { defaultTheme } from '../../../themes';
+
+const inputSx = {
+  border: '1px solid lightgrey',
+  borderRadius: '4px',
+  margin: '4px',
+  paddingLeft: '8px',
+  width: '36px',
+  height: '42px',
+  fontSize: '32px',
+  boxSizing: 'border-box',
+  color: defaultTheme.palette.text.primary,
+  outlineColor: defaultTheme.palette.accent.main,
+};
+
 type Props = {
   name: string;
   sx?: CSSProperties;
@@ -29,6 +44,7 @@ export function CodeInput({
       type={type}
       fields={fieldsCount}
       inputMode={inputMode}
+      inputStyle={inputSx as CSSProperties}
     />
   );
 }

@@ -5,7 +5,7 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { TextField } from './TextField';
 
 export default {
-  title: 'TextField',
+  title: 'UI/TextField',
   component: TextField,
 } as ComponentMeta<typeof TextField>;
 

@@ -5,7 +5,7 @@ import { InfoBlock } from './InfoBlock';
 
 export default {
   component: InfoBlock,
-  title: 'InfoBlock',
+  title: 'UI/InfoBlock',
 } as Meta;
 
 const DEFAULT_TEXT = 'Добавьте ещё товаров на 1330 ₽ для бесплатной доставки по Москве и Санкт-Петербургу';

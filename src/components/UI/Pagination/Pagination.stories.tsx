@@ -5,7 +5,7 @@ import { Pagination } from './Pagination';
 
 export default {
   component: Pagination,
-  title: 'Pagination',
+  title: 'UI/Pagination',
 } as Meta;
 
 const Template: ComponentStory<typeof Pagination> = function () {

@@ -9,7 +9,7 @@ import MUITableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { TablePagination, LabelDisplayedRowsArgs } from '@mui/material';
 
-import { Tabs, TabsProps } from '../../Tabs/Tabs';
+import { Tabs, TabsProps } from '../Tabs/Tabs';
 
 const sx = {
   head: {
@@ -21,7 +21,6 @@ const sx = {
   headCell: {
     fontSize: '12px',
     fontWeight: 600,
-    color: '#757575',
   },
   bodyCell: {
     fontSize: '14px',
