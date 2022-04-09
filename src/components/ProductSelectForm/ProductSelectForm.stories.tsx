@@ -131,11 +131,11 @@ const props: Partial<ProductSelectFormProps> = {
   ],
   categories: [
     {
-      value: 'cheese',
+      value: 1,
       label: 'Сыры',
     },
     {
-      value: 'meat',
+      value: 2,
       label: 'Мясо',
     },
   ],

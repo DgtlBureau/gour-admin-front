@@ -7,6 +7,7 @@ import {
 } from '../../@types/dto/form/product-filters.dto';
 import { ProductPriceFormDto } from '../../@types/dto/form/product-price.dto';
 import { ProductCreateDto } from '../../@types/dto/product/create.dto';
+import { useGetAllCategoriesQuery } from '../../api/categoryApi';
 import { useCreateProductMutation, useGetAllProductsQuery } from '../../api/productApi';
 import { Header } from '../../components/Header/Header';
 import { PriceProductForm } from '../../components/PriceProductForm/PriceProductForm';
@@ -74,6 +75,7 @@ const tabs = [
 
 function CreateProductView() {
   const [createProduct] = useCreateProductMutation();
+  const { data: categories = [] } = useGetAllCategoriesQuery();
 
   const to = useTo();
   const [activeTabId, setActiveTabId] = useState('settings');
@@ -139,7 +141,8 @@ function CreateProductView() {
       similarProducts: fullFormState.productSelect || [],
     };
 
-    await createProduct(newProduct);
+    // await createProduct(newProduct);
+    // to(Path.GOODS);
   };
 
   const handleError = (errors: Record<string, FieldError | undefined>) => {
@@ -192,9 +195,14 @@ function CreateProductView() {
       id: product.id,
       title: product.title.ru,
       image: product.images[0]?.small || '',
-      category: product.category?.title?.ru || '',
+      category: `${product.category?.id}` || '',
       characteristics: [],
     })) || [];
+
+  const selectCategoryOptions = categories.map(category => ({
+    value: category.id,
+    label: category.title.ru,
+  }));
 
   return (
     <div>
@@ -207,6 +215,7 @@ function CreateProductView() {
       <Tabs options={tabs} selectedId={activeTabId} onChange={tabsHandler} />
       <TabPanel value={activeTabId} index="settings">
         <ProductBasicSettingsForm
+          categories={selectCategoryOptions}
           defaultValues={fullFormState.basicSettings}
           onChange={handleChangeBasicSettingsForm}
           onError={handleError}
@@ -238,7 +247,7 @@ function CreateProductView() {
         <ProductSelectForm
           isLoading={isProductsLoading}
           selected={fullFormState.productSelect || []}
-          categories={[]}
+          categories={selectCategoryOptions}
           characteristics={[]}
           products={recommendedProduct}
           onChange={onChangeRecommended}

@@ -1,4 +1,4 @@
-import React, { FormEvent, FormEventHandler, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useForm, FormProvider, FieldError } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FormControlLabel, FormLabel, Grid } from '@mui/material';
@@ -9,16 +9,25 @@ import schema from './validation';
 import { ProductBasicSettingsFormDto } from '../../../@types/dto/form/product-basic-settings.dto';
 import { RadioButton } from '../../UI/RadioButton/RadioButton';
 import { HFRadioGroup } from '../../HookForm/HFRadioGroup';
-import { useGetAllCategoriesQuery } from '../../../api/categoryApi';
+import { Category } from '../../../@types/entities/Category';
 
 type Props = {
   defaultValues?: ProductBasicSettingsFormDto;
   isLoading?: boolean;
+  categories: {
+    value: number;
+    label: string;
+  }[];
   onError: (errors: Record<string, FieldError | undefined>) => void;
   onChange: (data: ProductBasicSettingsFormDto) => void;
 };
 
-export function ProductBasicSettingsForm({ onChange, onError, defaultValues }: Props) {
+export function ProductBasicSettingsForm({
+  onChange,
+  onError,
+  defaultValues,
+  categories,
+}: Props) {
   const values = useForm<ProductBasicSettingsFormDto>({
     resolver: yupResolver(schema),
     mode: 'onBlur',
@@ -38,17 +47,9 @@ export function ProductBasicSettingsForm({ onChange, onError, defaultValues }: P
   useEffect(() => {
     onError(values.formState.errors);
   }, [values.formState.errors]);
-
   const changeHandler = () => {
     onChange(values.getValues());
   };
-
-  const { data: categories = [] } = useGetAllCategoriesQuery();
-
-  const selectCategoryOptions = categories.map(category => ({
-    value: category.id,
-    label: category.title.ru,
-  }));
 
   return (
     <FormProvider {...values}>
@@ -62,11 +63,7 @@ export function ProductBasicSettingsForm({ onChange, onError, defaultValues }: P
             <HFTextField name="title" label="Название" />
           </Grid>
           <Grid item md={4}>
-            <HFSelect
-              options={selectCategoryOptions}
-              name="category"
-              placeholder="Категория"
-            />
+            <HFSelect options={categories} name="category" placeholder="Категория" />
           </Grid>
           <Grid item md={12}>
             <HFTextarea name="description" placeholder="Описание" />
