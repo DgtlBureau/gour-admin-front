@@ -11,14 +11,31 @@ import { ProductFilterFormMeat } from './Meat';
 
 type Props = {
   type: 'cheese' | 'meat';
-  onChange: SubmitHandler<ProductFilterMeatFormDto | ProductFilterCheeseFormDto>;
+  onChange: (
+    data: ProductFilterMeatFormDto | ProductFilterCheeseFormDto,
+    type: 'meat' | 'cheese'
+  ) => void;
+  cheeseDefaultValues?: ProductFilterCheeseFormDto;
+  meatDefaultValues?: ProductFilterMeatFormDto;
 };
 
-export function ProductFilterForm({ type, onChange }: Props) {
+export function ProductFilterForm({
+  type,
+  onChange,
+  cheeseDefaultValues,
+  meatDefaultValues,
+}: Props) {
   return (
     <>
-      {type === 'cheese' && <ProductFilterFormCheese onSubmit={onChange} />}
-      {type === 'meat' && <ProductFilterFormMeat onSubmit={onChange} />}
+      {type === 'cheese' && (
+        <ProductFilterFormCheese
+          defaultValues={cheeseDefaultValues}
+          onChange={onChange}
+        />
+      )}
+      {type === 'meat' && (
+        <ProductFilterFormMeat defaultValues={meatDefaultValues} onChange={onChange} />
+      )}
     </>
   );
 }

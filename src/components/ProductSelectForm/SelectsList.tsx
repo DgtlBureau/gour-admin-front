@@ -10,11 +10,7 @@ type Props = {
   setSelectValues: Dispatch<SetStateAction<Record<string, string | undefined>>>;
 };
 
-export function SelectsList({
-  characteristics,
-  selectValues,
-  setSelectValues,
-}: Props) {
+export function SelectsList({ characteristics, selectValues, setSelectValues }: Props) {
   const handleChangeSelect = (
     newValue: SingleValue<SelectOption<string>>,
     characteristicKey: string

@@ -6,14 +6,16 @@ import {
   ProductFilterMeatFormDto,
 } from '../../@types/dto/form/product-filters.dto';
 import { ProductPriceFormDto } from '../../@types/dto/form/product-price.dto';
-import { ProductRecommendedFormDto } from '../../@types/dto/form/product-recommended.dto';
 import { ProductCreateDto } from '../../@types/dto/product/create.dto';
-import { useCreateProductMutation } from '../../api/productApi';
+import { useCreateProductMutation, useGetAllProductsQuery } from '../../api/productApi';
 import { Header } from '../../components/Header/Header';
 import { PriceProductForm } from '../../components/PriceProductForm/PriceProductForm';
 import { ProductBasicSettingsForm } from '../../components/Product/BasicSettingsForm/BasicSettingsForm';
 import { ProductFilterForm } from '../../components/Product/FilterForm/FilterForm';
-import { ProductRecommendedForm } from '../../components/Product/RecommendedForm/RecommendedForm';
+import {
+  Product,
+  ProductSelectForm,
+} from '../../components/ProductSelectForm/ProductSelectForm';
 import { TabPanel } from '../../components/Tabs/TabPanel';
 import { Tabs } from '../../components/Tabs/Tabs';
 import { Button } from '../../components/UI/Button/Button';
@@ -28,7 +30,9 @@ type Props = {
 type FullFormType = {
   basicSettings: ProductBasicSettingsFormDto;
   priceSettings: ProductPriceFormDto;
-  productFilter?: ProductFilterCheeseFormDto | ProductFilterMeatFormDto;
+  cheeseCategories?: ProductFilterCheeseFormDto;
+  meatCategories?: ProductFilterMeatFormDto;
+  productSelect?: number[];
 };
 
 function RightContent({ onSaveHandler, onCancelHandler }: Props) {
@@ -74,11 +78,17 @@ function CreateProductView() {
   const to = useTo();
   const [activeTabId, setActiveTabId] = useState('settings');
 
+  const { data: productsData, isLoading: isProductsLoading = false } =
+    useGetAllProductsQuery(
+      { withSimilarProducts: false, withMeta: false, withRoleDiscount: false },
+      { skip: activeTabId !== 'recommended_products' }
+    );
+
   const onCancelHandler = () => to(Path.GOODS);
 
   const [fullFormState, setFullFormState] = useState<FullFormType>({
     basicSettings: {
-      category: 0,
+      category: 304,
       title: '',
       description: '',
       metaTitle: '',
@@ -94,13 +104,22 @@ function CreateProductView() {
       eRub: 0,
       eEuro: 0,
     },
+    productSelect: [],
   });
 
   const [fullFormErrors, setFullFormErrors] = useState<
     Record<string, FieldError | undefined>
   >({});
 
+  useEffect(() => {
+    console.log(fullFormErrors);
+  }, [fullFormErrors]);
+
   const onSubmit = async () => {
+    const characteristics =
+      fullFormState.basicSettings.category === 233 ?
+        fullFormState.cheeseCategories :
+        fullFormState.meatCategories;
     const newProduct: ProductCreateDto = {
       title: {
         en: '',
@@ -115,9 +134,9 @@ function CreateProductView() {
         rub: fullFormState.priceSettings.iRub,
         eur: fullFormState.priceSettings.iEuro,
       },
-      characteristics: {},
+      characteristics: characteristics || {},
       category: fullFormState.basicSettings.category,
-      similarProducts: [],
+      similarProducts: fullFormState.productSelect || [],
     };
 
     await createProduct(newProduct);
@@ -128,7 +147,17 @@ function CreateProductView() {
   };
 
   const handleChangeBasicSettingsForm = (data: ProductBasicSettingsFormDto) => {
-    setFullFormState(prevState => ({ ...prevState, basicSettings: data }));
+    setFullFormState(prevState => {
+      if (prevState.basicSettings.category !== data.category) {
+        return {
+          ...prevState,
+          basicSettings: data,
+          cheeseCategories: undefined,
+          meatCategories: undefined,
+        };
+      }
+      return { ...prevState, basicSettings: data };
+    });
   };
 
   const onChangePrice = (data: ProductPriceFormDto) => {
@@ -136,16 +165,36 @@ function CreateProductView() {
   };
 
   const onChangeFilterForm = (
-    data: ProductFilterCheeseFormDto | ProductFilterMeatFormDto
+    data: ProductFilterCheeseFormDto | ProductFilterMeatFormDto,
+    type: 'meat' | 'cheese'
   ) => {
-    console.log(data);
+    if (type === 'cheese') {
+      setFullFormState(prevState => ({
+        ...prevState,
+        cheeseCategories: data as ProductFilterCheeseFormDto,
+      }));
+    } else {
+      setFullFormState(prevState => ({
+        ...prevState,
+        meatCategories: data as ProductFilterMeatFormDto,
+      }));
+    }
   };
 
-  const onSubmitRecommended = (data: ProductRecommendedFormDto) => {
-    console.log(data);
+  const onChangeRecommended = (recommendedIds: number[]) => {
+    setFullFormState(prevState => ({ ...prevState, productSelect: recommendedIds }));
   };
 
   const tabsHandler = (id: string) => setActiveTabId(id);
+
+  const recommendedProduct: Product[] =
+    productsData?.products.map(product => ({
+      id: product.id,
+      title: product.title.ru,
+      image: product.images[0]?.small || '',
+      category: product.category?.title?.ru || '',
+      characteristics: [],
+    })) || [];
 
   return (
     <div>
@@ -171,10 +220,29 @@ function CreateProductView() {
         />
       </TabPanel>
       <TabPanel value={activeTabId} index="filters">
-        <ProductFilterForm type="meat" onChange={onChangeFilterForm} />
+        {fullFormState.basicSettings.category === 233 ? (
+          <ProductFilterForm
+            type="meat"
+            meatDefaultValues={fullFormState.meatCategories}
+            onChange={onChangeFilterForm}
+          />
+        ) : (
+          <ProductFilterForm
+            type="cheese"
+            cheeseDefaultValues={fullFormState.cheeseCategories}
+            onChange={onChangeFilterForm}
+          />
+        )}
       </TabPanel>
       <TabPanel value={activeTabId} index="recommended_products">
-        <ProductRecommendedForm onSubmit={onSubmitRecommended} />
+        <ProductSelectForm
+          isLoading={isProductsLoading}
+          selected={fullFormState.productSelect || []}
+          categories={[]}
+          characteristics={[]}
+          products={recommendedProduct}
+          onChange={onChangeRecommended}
+        />
       </TabPanel>
     </div>
   );

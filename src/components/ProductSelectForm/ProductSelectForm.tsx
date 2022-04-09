@@ -7,6 +7,7 @@ import { ProductSelectList } from './CardsList';
 import { SelectsList } from './SelectsList';
 import { Tabs } from '../Tabs/Tabs';
 import { isProductSelected, filterByAllParams } from './productSelectHelper';
+import { ProgressLinear } from '../UI/ProgressLinear/ProgressLinear';
 
 export type Product = {
   id: number;
@@ -38,6 +39,7 @@ export type ProductSelectFormProps = {
   characteristics: Characteristic[];
   products: Product[];
   onChange(selected: number[]): void;
+  isLoading?: boolean;
 };
 
 const TAB_ALL = {
@@ -56,8 +58,11 @@ export function ProductSelectForm({
   products,
   categories,
   characteristics,
+  selected,
+  onChange,
+  isLoading,
 }: ProductSelectFormProps) {
-  const [selectedProductIds, setSelectedProductIds] = useState<number[]>([]);
+  const [selectedProductIds, setSelectedProductIds] = useState<number[]>(selected);
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [selectedTabKey, setSelectedTabKey] = useState<string>('all');
   const [filteredProducts, setFilteredProducts] = useState<Product[]>(products);
@@ -72,6 +77,10 @@ export function ProductSelectForm({
       label: category.label,
     })),
   ];
+
+  useEffect(() => {
+    onChange(selectedProductIds);
+  }, [selectedProductIds]);
 
   const handleProductClick = (productId: number) => {
     if (isProductSelected(productId, selectedProductIds)) {
@@ -95,6 +104,10 @@ export function ProductSelectForm({
   const filteredCharacteristics = characteristics.filter(
     characteristic => characteristic.category === selectedTabKey || characteristic.category === 'all'
   );
+
+  if (isLoading) {
+    return <ProgressLinear variant="query" />;
+  }
 
   return (
     <Stack>

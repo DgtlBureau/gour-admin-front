@@ -9,7 +9,7 @@ export type ProductCreateDto = Readonly<{
   images: ImageDto[];
   price: PriceDto;
   meta?: PageMetaDto;
-  characteristics: Record<string, string | number>;
+  characteristics: Record<string, string | number | boolean>;
   moyskladCode?: number;
   category: number;
   similarProducts?: number[];

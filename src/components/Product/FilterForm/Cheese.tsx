@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FormControlLabel, FormLabel } from '@mui/material';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
@@ -11,11 +11,11 @@ import { RadioButton } from '../../UI/RadioButton/RadioButton';
 import { toSelectOptions } from '../../../utils/toSelectOptions';
 
 type Props = {
-  onSubmit: SubmitHandler<ProductFilterCheeseFormDto>;
+  onChange: (data: ProductFilterCheeseFormDto, type: 'cheese') => void;
   defaultValues?: ProductFilterCheeseFormDto;
 };
 
-export function ProductFilterFormCheese({ onSubmit, defaultValues }: Props) {
+export function ProductFilterFormCheese({ onChange, defaultValues }: Props) {
   const values = useForm<ProductFilterCheeseFormDto>({
     resolver: yupResolver(schema),
     mode: 'onBlur',
@@ -24,6 +24,10 @@ export function ProductFilterFormCheese({ onSubmit, defaultValues }: Props) {
       rennet: defaultValues?.rennet !== undefined ? defaultValues.rennet : true,
     },
   });
+
+  useEffect(() => {
+    values.reset(defaultValues);
+  }, [defaultValues]);
 
   const { categories, crustType, milk, timeOfOrigin, country } = {
     categories: ['Свежий', 'Мягкий', 'Полутвёрдый', 'Твёрдый', 'Голубой с плесенью'],
@@ -39,9 +43,17 @@ export function ProductFilterFormCheese({ onSubmit, defaultValues }: Props) {
     ],
   };
 
+  const handleChange = () => {
+    onChange(values.getValues(), 'cheese');
+  };
+
   return (
     <FormProvider {...values}>
-      <form onSubmit={values.handleSubmit(onSubmit)}>
+      <form
+        onBlur={() => {
+          handleChange();
+        }}
+      >
         <HFSelect
           placeholder="Категория сыра"
           name="category"

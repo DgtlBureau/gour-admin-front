@@ -54,7 +54,7 @@ export function ProductBasicSettingsForm({ onChange, onError, defaultValues }: P
     <FormProvider {...values}>
       <form
         id="productPriceForm"
-        onChange={changeHandler}
+        onBlur={changeHandler}
         onSubmit={values.handleSubmit(submitHandler)}
       >
         <Grid container spacing={2}>
