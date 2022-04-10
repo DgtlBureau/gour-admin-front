@@ -21,11 +21,12 @@ type Props = {
     | undefined;
   children: ReactNode;
   sx?: SxProps;
+  color?: string;
 };
 
-export function Typography({ variant = 'h4', children, sx }: Props) {
+export function Typography({ variant = 'h4', children, color, sx }: Props) {
   return (
-    <MUITypography sx={sx} variant={variant}>
+    <MUITypography sx={sx} color={color} variant={variant}>
       {children}
     </MUITypography>
   );

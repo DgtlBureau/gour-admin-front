@@ -12,8 +12,10 @@ type Props = {
   variant?: 'standard' | 'outlined' | 'filled' | undefined;
   isError?: boolean;
   type?: string;
+  multiline?: boolean;
   onChange?: ChangeEventHandler<HTMLInputElement>;
   onFocus?: FocusEventHandler<HTMLInputElement>;
+  onBlur?: FocusEventHandler<HTMLInputElement>;
   helperText?: string;
 };
 
@@ -23,10 +25,12 @@ export function TextField({
   sx,
   onChange,
   onFocus,
+  onBlur,
   label,
   multiline,
   variant,
   type = 'text',
+  multiline,
   isError,
   helperText,
   name,
@@ -40,8 +44,10 @@ export function TextField({
       value={value}
       error={isError}
       id={id}
+      multiline={multiline}
       variant={variant}
       onChange={onChange}
+      onBlur={onBlur}
       name={name}
       multiline={multiline}
       onFocus={onFocus}

@@ -14,6 +14,7 @@ type Props = {
   component?: ElementType;
   fullWidth?: boolean;
   sx?: SxProps;
+  form?: string | number;
 };
 
 export function Button({
@@ -27,10 +28,12 @@ export function Button({
   isLoading = false,
   size,
   sx,
+  form,
 }: Props) {
   return (
     <MUIButton
       sx={sx}
+      form={form}
       fullWidth={fullWidth}
       type={type}
       disabled={disabled}
