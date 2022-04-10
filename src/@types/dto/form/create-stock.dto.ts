@@ -4,7 +4,8 @@ export type CreateStockFormDto = Readonly<{
   startDate: Date;
   endDate: Date;
   stockPercent: string;
-  metaTitle: string;
-  metaDescription: string;
-  metaKeywords: string;
+  productIdList: number[];
+  metaTitle?: string;
+  metaDescription?: string;
+  metaKeywords?: string;
 }>;
