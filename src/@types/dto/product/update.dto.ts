@@ -3,10 +3,9 @@ import { PageMetaDto } from '../page-meta.dto';
 import { PriceDto } from '../price.dto';
 import { TranslatableStringDto } from '../translatable-string.dto';
 
-export type ProductUpdateDto = Readonly<
-  {
+export type ProductUpdateDto = Readonly<{
     id: number;
-  } & Partial<{
+} & Partial<{
     title: TranslatableStringDto;
     description: TranslatableStringDto;
     images: ImageDto[];
@@ -16,5 +15,9 @@ export type ProductUpdateDto = Readonly<
     moyskladCode?: number;
     category: number;
     similarProducts?: number[];
-  }>
->;
+    roleDiscounts?: {
+        role: number;
+        rub?: number;
+        eur?: number;
+    }[];
+}>>;

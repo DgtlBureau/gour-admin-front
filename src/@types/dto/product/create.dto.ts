@@ -13,4 +13,9 @@ export type ProductCreateDto = Readonly<{
   moyskladCode?: number;
   category: number;
   similarProducts?: number[];
+  roleDiscounts?: {
+    role: number;
+    rub?: number;
+    eur?: number;
+  }[];
 }>;
