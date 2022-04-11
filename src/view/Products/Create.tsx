@@ -74,20 +74,18 @@ const tabs = [
 ];
 
 function CreateProductView() {
+  const [language, setLanguage] = useState<'ru' | 'en'>('ru');
   const [createProduct] = useCreateProductMutation();
   const { data: categories = [] } = useGetAllCategoriesQuery();
 
   const to = useTo();
   const [activeTabId, setActiveTabId] = useState('settings');
-
   const { data: productsData, isLoading: isProductsLoading = false } =
     useGetAllProductsQuery(
       { withSimilarProducts: false, withMeta: false, withRoleDiscount: false },
       { skip: activeTabId !== 'recommended_products' }
     );
-
   const onCancelHandler = () => to(Path.GOODS);
-
   const [fullFormState, setFullFormState] = useState<FullFormType>({
     basicSettings: {
       categoryKey: 'cheese',
@@ -109,7 +107,6 @@ function CreateProductView() {
     },
     productSelect: [],
   });
-
   const onSubmit = async () => {
     const {
       basicSettings,
@@ -159,7 +156,6 @@ function CreateProductView() {
 
     await createProduct(newProduct);
   };
-
   const handleChangeBasicSettingsForm = (data: ProductBasicSettingsFormDto) => {
     setFullFormState(prevState => {
       if (prevState.basicSettings.categoryKey !== data.categoryKey) {
@@ -173,11 +169,9 @@ function CreateProductView() {
       return { ...prevState, basicSettings: data };
     });
   };
-
   const onChangePrice = (data: ProductPriceFormDto) => {
     setFullFormState(prevState => ({ ...prevState, priceSettings: data }));
   };
-
   const onChangeFilterForm = (
     data: ProductFilterCheeseFormDto | ProductFilterMeatFormDto,
     type: 'meat' | 'cheese'
@@ -194,11 +188,9 @@ function CreateProductView() {
       }));
     }
   };
-
   const onChangeRecommended = (recommendedIds: number[]) => {
     setFullFormState(prevState => ({ ...prevState, productSelect: recommendedIds }));
   };
-
   const tabsHandler = (id: string) => setActiveTabId(id);
 
   const recommendedProduct: Product[] =

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { FormLabel, FormControlLabel, RadioGroup } from '@mui/material';
-import { useForm, FormProvider, FieldError } from 'react-hook-form';
+import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 import schema from './validation';

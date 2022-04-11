@@ -17,11 +17,8 @@ const Template: ComponentStory<typeof PriceProductForm> = function () {
     setPrices(data);
     console.log(data);
   };
-  const handleError = (errors: Record<string, FieldError | undefined>) => console.log(errors);
 
-  return (
-    <PriceProductForm onError={handleError} defaultValues={prices} onChange={submit} />
-  );
+  return <PriceProductForm defaultValues={prices} onChange={submit} />;
 };
 
 export const DefaultPriceProductForm = Template.bind({});
