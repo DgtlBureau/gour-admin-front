@@ -115,5 +115,5 @@
     "react-app-rewired": "~2.2.1",
     "webpack": "~5.69.0"
   },
-  "proxy": "https://gour-admin.devshift.ru/"
+  "proxy": "https://gour-store.devshift.ru/"
 }

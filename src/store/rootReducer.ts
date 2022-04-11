@@ -5,7 +5,7 @@ import { promotionApi } from '../api/promotionApi';
 import { authApi } from '../api/authApi';
 import authSlice from './slices/authSlice';
 import { clientApi } from '../api/clientApi';
-import {cityApi} from "../api/cityApi";
+import { cityApi } from '../api/cityApi';
 
 export const rootReducer = combineReducers({
   auth: authSlice,
