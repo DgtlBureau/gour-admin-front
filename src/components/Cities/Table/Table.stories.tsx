@@ -16,21 +16,21 @@ export const DefaultCitiesTable = Template.bind({});
 const props: Partial<CitiesTableProps> = {
   cities: [
     {
-      uuid: '01',
+      id: 1,
       name: {
         ru: 'Москва',
         en: 'Moscow',
       },
     },
     {
-      uuid: '02',
+      id: 2,
       name: {
         ru: 'Санкт-Петербург',
         en: 'St. Petersburg',
       },
     },
     {
-      uuid: '03',
+      id: 3,
       name: {
         ru: 'Омск',
         en: 'Omsk',
