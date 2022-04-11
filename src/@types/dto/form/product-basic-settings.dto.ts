@@ -1,5 +1,5 @@
 export type ProductBasicSettingsFormDto = Readonly<{
-  category: number;
+  categoryKey: string;
   title: string;
   description: string;
   metaTitle: string;

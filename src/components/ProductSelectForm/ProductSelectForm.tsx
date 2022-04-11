@@ -34,7 +34,7 @@ export type Characteristic = {
 export type ProductSelectFormProps = {
   selected: number[];
   categories: {
-    value: number;
+    value: string;
     label: string;
   }[];
   products: Product[];
@@ -72,7 +72,7 @@ export function ProductSelectForm({
   const tabOptions = [
     ...defaultTabs,
     ...categories.map(category => ({
-      id: `${category.value}`,
+      id: category.value,
       label: category.label,
     })),
   ];

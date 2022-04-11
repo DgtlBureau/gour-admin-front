@@ -35,7 +35,7 @@ export const characteristics: Characteristic[] = [
   {
     key: 'milk',
     label: 'Молоко',
-    category: '304',
+    category: 'cheese',
     values: [
       {
         key: 'goatsMilk',
@@ -58,7 +58,7 @@ export const characteristics: Characteristic[] = [
   {
     key: 'cheeseCategory',
     label: 'Категория сыра',
-    category: '304',
+    category: 'cheese',
     values: [
       {
         key: 'freshCheeses',
@@ -85,7 +85,7 @@ export const characteristics: Characteristic[] = [
   {
     key: 'crustType',
     label: 'Тип корочки',
-    category: '304',
+    category: 'cheese',
     values: [
       {
         key: 'withWhiteMold',
@@ -100,7 +100,7 @@ export const characteristics: Characteristic[] = [
   {
     key: 'meatType',
     label: 'Тип мяса',
-    category: '233',
+    category: 'meat',
     values: [
       { key: 'Washed', label: 'Колбаса' },
       {
@@ -120,7 +120,7 @@ export const characteristics: Characteristic[] = [
   {
     key: 'processingType',
     label: 'Тип приготовления',
-    category: '233',
+    category: 'meat',
     values: [
       { key: 'Boiled', label: 'Варёное' },
       {

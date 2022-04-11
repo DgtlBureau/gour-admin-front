@@ -141,8 +141,8 @@ export function PriceProductForm({
               Организатор коллективной закупки
             </Typography>
 
-            <HFTextField sx={sx.priceInput} label="Цена Рубли" name="oRub" />
-            <HFTextField sx={sx.priceInput} label="Цена Евро" name="oEuro" />
+            <HFTextField sx={sx.priceInput} label="Скидка Рубли" name="oRub" />
+            <HFTextField sx={sx.priceInput} label="Скидка Евро" name="oEuro" />
           </Box>
 
           <Box sx={sx.fields}>
@@ -150,8 +150,8 @@ export function PriceProductForm({
               Юридическое лицо
             </Typography>
 
-            <HFTextField sx={sx.priceInput} label="Цена Рубли" name="eRub" />
-            <HFTextField sx={sx.priceInput} label="Цена Евро" name="eEuro" />
+            <HFTextField sx={sx.priceInput} label="Скидка Рубли" name="eRub" />
+            <HFTextField sx={sx.priceInput} label="Скидка Евро" name="eEuro" />
           </Box>
         </Box>
       </form>

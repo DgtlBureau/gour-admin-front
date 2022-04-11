@@ -76,7 +76,6 @@ const tabs = [
 function CreateProductView() {
   const [createProduct] = useCreateProductMutation();
   const { data: categories = [] } = useGetAllCategoriesQuery();
-  console.log(categories);
 
   const to = useTo();
   const [activeTabId, setActiveTabId] = useState('settings');
@@ -91,7 +90,7 @@ function CreateProductView() {
 
   const [fullFormState, setFullFormState] = useState<FullFormType>({
     basicSettings: {
-      category: 304,
+      categoryKey: 'cheese',
       title: '',
       description: '',
       metaTitle: '',
@@ -100,6 +99,7 @@ function CreateProductView() {
       metaKeywords: '',
     },
     priceSettings: {
+      discount: 0,
       iRub: 0,
       iEuro: 0,
       oRub: 0,
@@ -120,9 +120,15 @@ function CreateProductView() {
 
   const onSubmit = async () => {
     const characteristics =
-      fullFormState.basicSettings.category === 233 ?
+      fullFormState.basicSettings.categoryKey === 'cheese' ?
         fullFormState.cheeseCategories :
         fullFormState.meatCategories;
+
+    const categoryId =
+      categories.find(
+        category => category.key === fullFormState.basicSettings.categoryKey
+      )?.id || 0;
+
     const newProduct: ProductCreateDto = {
       title: {
         en: '',
@@ -138,7 +144,7 @@ function CreateProductView() {
         eur: fullFormState.priceSettings.iEuro,
       },
       characteristics: characteristics || {},
-      category: fullFormState.basicSettings.category,
+      category: categoryId,
       similarProducts: fullFormState.productSelect || [],
     };
 
@@ -152,7 +158,7 @@ function CreateProductView() {
 
   const handleChangeBasicSettingsForm = (data: ProductBasicSettingsFormDto) => {
     setFullFormState(prevState => {
-      if (prevState.basicSettings.category !== data.category) {
+      if (prevState.basicSettings.categoryKey !== data.categoryKey) {
         return {
           ...prevState,
           basicSettings: data,
@@ -196,12 +202,12 @@ function CreateProductView() {
       id: product.id,
       title: product.title.ru,
       image: product.images[0]?.small || '',
-      category: `${product.category?.id}` || '',
+      category: `${product.category?.key}` || '',
       characteristics: [],
     })) || [];
 
   const selectCategoryOptions = categories.map(category => ({
-    value: category.id,
+    value: category.key,
     label: category.title.ru,
   }));
 
@@ -230,7 +236,7 @@ function CreateProductView() {
         />
       </TabPanel>
       <TabPanel value={activeTabId} index="filters">
-        {fullFormState.basicSettings.category === 233 ? (
+        {fullFormState.basicSettings.categoryKey === 'cheese' ? (
           <ProductFilterForm
             type="meat"
             meatDefaultValues={fullFormState.meatCategories}

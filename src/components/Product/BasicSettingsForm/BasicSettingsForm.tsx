@@ -15,7 +15,7 @@ type Props = {
   defaultValues?: ProductBasicSettingsFormDto;
   isLoading?: boolean;
   categories: {
-    value: number;
+    value: string;
     label: string;
   }[];
   onError: (errors: Record<string, FieldError | undefined>) => void;
