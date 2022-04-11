@@ -48,11 +48,6 @@ export const defaultTheme = createTheme({
     },
   },
   typography: {
-    fontFamily: [
-      'Nunito',
-      'Roboto',
-      '-apple-system',
-      'sans-serif',
-    ].join(','),
+    fontFamily: ['Nunito', 'Roboto', '-apple-system', 'sans-serif'].join(','),
   },
 });
