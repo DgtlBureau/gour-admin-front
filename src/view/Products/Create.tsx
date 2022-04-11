@@ -76,6 +76,7 @@ const tabs = [
 function CreateProductView() {
   const [createProduct] = useCreateProductMutation();
   const { data: categories = [] } = useGetAllCategoriesQuery();
+  console.log(categories);
 
   const to = useTo();
   const [activeTabId, setActiveTabId] = useState('settings');
@@ -141,7 +142,7 @@ function CreateProductView() {
       similarProducts: fullFormState.productSelect || [],
     };
 
-    // await createProduct(newProduct);
+    await createProduct(newProduct);
     // to(Path.GOODS);
   };
 
@@ -248,7 +249,6 @@ function CreateProductView() {
           isLoading={isProductsLoading}
           selected={fullFormState.productSelect || []}
           categories={selectCategoryOptions}
-          characteristics={[]}
           products={recommendedProduct}
           onChange={onChangeRecommended}
         />

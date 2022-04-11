@@ -8,6 +8,7 @@ import { SelectsList } from './SelectsList';
 import { Tabs } from '../Tabs/Tabs';
 import { isProductSelected, filterByAllParams } from './productSelectHelper';
 import { ProgressLinear } from '../UI/ProgressLinear/ProgressLinear';
+import { characteristics } from './productSelectConstants';
 
 export type Product = {
   id: number;
@@ -36,7 +37,6 @@ export type ProductSelectFormProps = {
     value: number;
     label: string;
   }[];
-  characteristics: Characteristic[];
   products: Product[];
   onChange(selected: number[]): void;
   isLoading?: boolean;
@@ -57,7 +57,6 @@ const defaultTabs = [TAB_ALL, TAB_SELECTED];
 export function ProductSelectForm({
   products,
   categories,
-  characteristics,
   selected,
   onChange,
   isLoading,
