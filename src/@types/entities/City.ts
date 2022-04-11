@@ -1,6 +1,6 @@
 import { TranslatableString } from './TranslatableString';
 
 export type City = {
-  uuid: string;
+  id: number;
   name: TranslatableString;
 };
