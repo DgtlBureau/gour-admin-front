@@ -110,50 +110,54 @@ function CreateProductView() {
     productSelect: [],
   });
 
-  const [fullFormErrors, setFullFormErrors] = useState<
-    Record<string, FieldError | undefined>
-  >({});
-
-  useEffect(() => {
-    console.log(fullFormErrors);
-  }, [fullFormErrors]);
-
   const onSubmit = async () => {
+    const {
+      basicSettings,
+      priceSettings,
+      cheeseCategories,
+      meatCategories,
+      productSelect,
+    } = fullFormState;
     const characteristics =
-      fullFormState.basicSettings.categoryKey === 'cheese' ?
-        fullFormState.cheeseCategories :
-        fullFormState.meatCategories;
+      basicSettings.categoryKey === 'cheese' ? cheeseCategories : meatCategories;
 
     const categoryId =
-      categories.find(
-        category => category.key === fullFormState.basicSettings.categoryKey
-      )?.id || 0;
+      categories.find(category => category.key === basicSettings.categoryKey)?.id || 0;
+
+    const roleDiscounts = [
+      {
+        role: 1,
+        rub: priceSettings.eRub,
+        eur: priceSettings.eEuro,
+      },
+      {
+        role: 2,
+        rub: priceSettings.oRub,
+        eur: priceSettings.oEuro,
+      },
+    ];
 
     const newProduct: ProductCreateDto = {
       title: {
         en: '',
-        ru: fullFormState.basicSettings.title,
+        ru: basicSettings.title,
       },
       description: {
         en: '',
-        ru: fullFormState.basicSettings.description,
+        ru: basicSettings.description,
       },
       images: [],
       price: {
-        rub: fullFormState.priceSettings.iRub,
-        eur: fullFormState.priceSettings.iEuro,
+        rub: priceSettings.iRub,
+        eur: priceSettings.iEuro,
       },
       characteristics: characteristics || {},
       category: categoryId,
-      similarProducts: fullFormState.productSelect || [],
+      similarProducts: productSelect || [],
+      roleDiscounts,
     };
 
     await createProduct(newProduct);
-    // to(Path.GOODS);
-  };
-
-  const handleError = (errors: Record<string, FieldError | undefined>) => {
-    setFullFormErrors(prevState => ({ ...prevState, ...errors }));
   };
 
   const handleChangeBasicSettingsForm = (data: ProductBasicSettingsFormDto) => {
@@ -225,14 +229,12 @@ function CreateProductView() {
           categories={selectCategoryOptions}
           defaultValues={fullFormState.basicSettings}
           onChange={handleChangeBasicSettingsForm}
-          onError={handleError}
         />
       </TabPanel>
       <TabPanel value={activeTabId} index="prices">
         <PriceProductForm
           defaultValues={fullFormState.priceSettings}
           onChange={onChangePrice}
-          onError={handleError}
         />
       </TabPanel>
       <TabPanel value={activeTabId} index="filters">

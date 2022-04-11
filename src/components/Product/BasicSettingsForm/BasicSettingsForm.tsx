@@ -18,16 +18,10 @@ type Props = {
     value: string;
     label: string;
   }[];
-  onError: (errors: Record<string, FieldError | undefined>) => void;
   onChange: (data: ProductBasicSettingsFormDto) => void;
 };
 
-export function ProductBasicSettingsForm({
-  onChange,
-  onError,
-  defaultValues,
-  categories,
-}: Props) {
+export function ProductBasicSettingsForm({ onChange, defaultValues, categories }: Props) {
   const values = useForm<ProductBasicSettingsFormDto>({
     resolver: yupResolver(schema),
     mode: 'onBlur',
@@ -44,9 +38,6 @@ export function ProductBasicSettingsForm({
     onChange(data);
   };
 
-  useEffect(() => {
-    onError(values.formState.errors);
-  }, [values.formState.errors]);
   const changeHandler = () => {
     onChange(values.getValues());
   };

@@ -48,14 +48,9 @@ const sx = {
 export type PriceProductFormProps = {
   defaultValues: ProductPriceFormDto;
   onChange: (data: ProductPriceFormDto) => void;
-  onError: (errors: Record<string, FieldError | undefined>) => void;
 };
 
-export function PriceProductForm({
-  defaultValues,
-  onError,
-  onChange,
-}: PriceProductFormProps) {
+export function PriceProductForm({ defaultValues, onChange }: PriceProductFormProps) {
   const [withDiscount, setWithDiscount] = useState(!!defaultValues.discount);
 
   const values = useForm<ProductPriceFormDto>({
@@ -75,9 +70,6 @@ export function PriceProductForm({
   const submitHandler = (data: ProductPriceFormDto) => {
     onChange(data);
   };
-  useEffect(() => {
-    onError(values.formState.errors);
-  }, [values.formState.errors]);
 
   const enableDiscount = () => setWithDiscount(true);
   const disableDiscount = () => setWithDiscount(false);
