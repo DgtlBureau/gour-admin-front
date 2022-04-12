@@ -8,34 +8,34 @@ export const categoryApi = commonApi.injectEndpoints({
   endpoints: builder => ({
     getCategoryById: builder.query<Category, number>({
       query: id => ({
-        url: `${Path.CATEGORY}/${id}`,
+        url: `${Path.CATEGORIES}/${id}`,
         method: 'GET',
       }),
     }),
     getAllCategories: builder.query<Category[], void>({
       query: () => ({
-        url: Path.CATEGORY,
+        url: Path.CATEGORIES,
         method: 'GET',
       }),
     }),
     createCategory: builder.mutation<void, CategoryCreateDto>({
       query: body => ({
-        url: Path.CATEGORY,
+        url: Path.CATEGORIES,
         method: 'POST',
         body,
       }),
     }),
     updateCategory: builder.mutation<void, CategoryUpdateDto>({
       query: ({ id, ...body }) => ({
-        url: `${Path.CATEGORY}/${id}`,
-        method: 'POST',
+        url: `${Path.CATEGORIES}/${id}`,
+        method: 'PUT',
         body,
       }),
     }),
     deleteCategory: builder.mutation<void, number>({
       query: id => ({
-        url: `${Path.CATEGORY}/${id}`,
-        method: 'POST',
+        url: `${Path.CATEGORIES}/${id}`,
+        method: 'DELETE',
       }),
     }),
   }),
