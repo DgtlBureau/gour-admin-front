@@ -1,9 +1,9 @@
 import { Product } from './Product';
-import { ClientRole } from './ClientRole';
+import { UserRole } from './UserRole';
 
 export type RoleDiscount = {
   product: Product;
-  role: ClientRole;
+  role: UserRole;
   value: number;
   rub: number;
   eur: number;

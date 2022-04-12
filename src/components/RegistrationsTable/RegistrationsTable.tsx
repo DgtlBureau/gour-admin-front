@@ -4,6 +4,7 @@ import { Box } from '../UI/Box/Box';
 import { Table } from '../UI/Table/Table';
 import { Typography } from '../UI/Typography/Typography';
 import { IconButton } from '../UI/IconButton/IconButton';
+import { Options } from '../../constants/tabs';
 
 import busketIcon from '../../assets/icons/table/busket.svg';
 import checkIcon from '../../assets/icons/table/check.svg';
@@ -21,11 +22,11 @@ const sx = {
 
 const tabsOptions = [
   {
-    id: 'waitingForApprove',
+    value: Options.NOT_APPROVED,
     label: 'Ждут подтверждения',
   },
   {
-    id: 'approved',
+    value: Options.APPROVED,
     label: 'Подтверждены',
   },
 ];
@@ -49,13 +50,13 @@ export function RegistrationsTable({
   onAccept,
   onDelete,
 }: RegistrationsTableProps) {
-  const [selectedId, setSelectedId] = useState<string>('waitingForApprove');
+  const [tabValue, setTabValue] = useState<string>(Options.NOT_APPROVED);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  const isConfirmed = selectedId !== 'waitingForApprove';
+  const isConfirmed = tabValue !== Options.NOT_APPROVED;
 
-  const changeTab = (id: string) => setSelectedId(id);
+  const changeTab = (val: string) => setTabValue(val);
 
   const changePage = (_: unknown, newPage: number) => setPage(newPage);
 
@@ -84,7 +85,7 @@ export function RegistrationsTable({
     }));
 
   const tabs = {
-    selectedId,
+    value: tabValue,
     options: tabsOptions,
     onChange: changeTab,
   };
