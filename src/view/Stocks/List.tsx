@@ -1,25 +1,32 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { format } from 'date-fns';
 
 import { Header } from '../../components/Header/Header';
 import { Button } from '../../components/UI/Button/Button';
 import { Typography } from '../../components/UI/Typography/Typography';
 import { StockTable, Stock } from '../../components/Stock/Table/Table';
+import { DeleteModal } from '../../components/Stock/DeleteModal/DeleteModal';
 import { Path } from '../../constants/routes';
 import { useTo } from '../../hooks/useTo';
-import { useGetAllPromotionsQuery } from '../../api/promotionApi';
+import { useGetAllPromotionsQuery, useDeletePromotionMutation } from '../../api/promotionApi';
 
-type Props = {
+type RightContentProps = {
   onCreateClick: () => void;
 };
 
-function RightContent({ onCreateClick }: Props) {
+function RightContent({ onCreateClick }: RightContentProps) {
   return <Button onClick={onCreateClick}>Создать акцию</Button>;
 }
 
 const NOW = new Date();
 
 function ListStocksView() {
+  const [currentStockId, setCurrentStockId] = useState(-1);
+
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  const [deletePromotion] = useDeletePromotionMutation();
+
   const { data } = useGetAllPromotionsQuery();
 
   const stocks = data?.map(it => ({
@@ -33,27 +40,39 @@ function ListStocksView() {
 
   const to = useTo();
 
-  const createStock = () => to(Path.STOCKS, 'create');
+  const toCreating = () => to(Path.STOCKS, 'create');
 
-  const editStock = (id: number) => console.log(id);
+  const toEditing = (id: number) => to(Path.STOCKS, id.toString());
 
-  const deleteStock = (id: number) => console.log(id);
+  const openDeleting = (id: number) => {
+    setCurrentStockId(id);
+    setIsDeleting(true);
+  };
+
+  const closeDeleting = () => {
+    setCurrentStockId(-1);
+    setIsDeleting(false);
+  };
+
+  const deleteStock = () => {
+    deletePromotion(currentStockId);
+    closeDeleting();
+  };
 
   return (
     <div>
       <Header
         leftTitle="Акции"
-        rightContent={<RightContent onCreateClick={createStock} />}
+        rightContent={<RightContent onCreateClick={toCreating} />}
       />
       {
         data ? (
-          <StockTable stocksList={stocks} onEdit={editStock} onDelete={deleteStock} />
+          <StockTable stocksList={stocks} onEdit={toEditing} onDelete={openDeleting} />
         ) : (
-          <Typography variant="body1">
-            Список акций пуст
-          </Typography>
+          <Typography variant="body1">Список акций пуст</Typography>
         )
       }
+      <DeleteModal isOpen={isDeleting} onClose={closeDeleting} onDelete={deleteStock} />
     </div>
   );
 }

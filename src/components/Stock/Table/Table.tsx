@@ -7,20 +7,21 @@ import { Box } from '../../UI/Box/Box';
 import { Typography } from '../../UI/Typography/Typography';
 import { IconButton } from '../../UI/IconButton/IconButton';
 import { Table } from '../../UI/Table/Table';
+import { Options } from '../../../constants/tabs';
 
 import sx from './Table.styles';
 
 const tabsOptions = [
   {
-    value: 'All',
+    value: Options.ALL,
     label: 'Все',
   },
   {
-    value: 'Actual',
+    value: Options.ACTUAL,
     label: 'Актуальные',
   },
   {
-    value: 'Past',
+    value: Options.PAST,
     label: 'Прошедшие',
   },
 ];
@@ -60,17 +61,26 @@ function RowActions({ onDelete, onEdit }: RowActionsProps) {
 
 export function StockTable({ stocksList, onEdit, onDelete }: StockTableProps) {
   const [page, setPage] = useState<number>(0);
-  const [value, setValue] = useState<string>('All');
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [tabValue, setTabValue] = useState<string>(Options.ALL);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
 
-  const changeTab = (val: string) => setValue(val);
+  const titleList = [
+    'Изображение',
+    'Заголовок',
+    'Дата начала',
+    'Дата завершения',
+    'Статус',
+    'Действие',
+  ];
+
+  const changeTab = (val: string) => setTabValue(val);
 
   const rows = stocksList
     .filter(stock => {
-      switch (value) {
-        case 'Actual':
+      switch (tabValue) {
+        case Options.ACTUAL:
           return stock.isActual;
-        case 'Past':
+        case Options.PAST:
           return !stock.isActual;
         default:
           return true;
@@ -89,7 +99,7 @@ export function StockTable({ stocksList, onEdit, onDelete }: StockTableProps) {
           variant="body1"
           sx={{ ...sx.status, ...(stock.isActual ? sx.actual : sx.past) }}
         >
-          {stock.isActual ? 'Актуальное' : 'Прошедшие'}
+          {stock.isActual ? 'Актуальное' : 'Прошедшее'}
         </Typography>,
         <RowActions
           onDelete={() => {
@@ -112,7 +122,7 @@ export function StockTable({ stocksList, onEdit, onDelete }: StockTableProps) {
   };
 
   const tabs = {
-    value,
+    value: tabValue,
     options: tabsOptions,
     onChange: changeTab,
   };
@@ -120,18 +130,10 @@ export function StockTable({ stocksList, onEdit, onDelete }: StockTableProps) {
   return (
     <Table
       tabs={tabs}
-      rowTitleList={[
-        'Изображение',
-        'Заголовок',
-        'Дата начала',
-        'Дата завершения ',
-        'Статус',
-        'Действие',
-      ]}
+      rowTitleList={titleList}
       rows={rows}
       page={page}
       rowsPerPage={rowsPerPage}
-      rowsPerPageOptions={[5, 10, 20]}
       onPageChange={сhangePage}
       onRowsPerPageChange={сhangeRowsPerPage}
     />
