@@ -41,34 +41,39 @@ export type ProductSelectFormProps = {
 };
 
 const TAB_ALL = {
-  id: 'all',
+  value: 'all',
   label: 'Все',
 };
 
 const TAB_SELECTED = {
-  id: 'selected',
+  value: 'selected',
   label: 'Выбранные товары',
 };
 
 const defaultTabs = [TAB_ALL, TAB_SELECTED];
 
 export function ProductSelectForm({
+  selected,
   products,
   categories,
   characteristics,
+  onChange,
 }: ProductSelectFormProps) {
-  const [selectedProductIds, setSelectedProductIds] = useState<number[]>([]);
+  const [selectedProductIds, setSelectedProductIds] = useState<number[]>(selected);
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [selectedTabKey, setSelectedTabKey] = useState<string>('all');
   const [filteredProducts, setFilteredProducts] = useState<Product[]>(products);
   const [selectValues, setSelectValues] = useState<Record<string, string | undefined>>(
     {}
   );
+  useEffect(() => {
+    onChange(selectedProductIds);
+  }, [selectedProductIds]);
 
   const tabOptions = [
     ...defaultTabs,
     ...categories.map(category => ({
-      id: category.value,
+      value: category.value,
       label: category.label,
     })),
   ];
@@ -115,7 +120,7 @@ export function ProductSelectForm({
         </Grid>
       </Grid>
 
-      <Tabs selectedId={selectedTabKey} options={tabOptions} onChange={handleChangeTab} />
+      <Tabs value={selectedTabKey} options={tabOptions} onChange={handleChangeTab} />
       <SelectsList
         characteristics={filteredCharacteristics}
         selectValues={selectValues}

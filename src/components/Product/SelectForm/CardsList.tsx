@@ -19,7 +19,13 @@ export function ProductSelectList({
   onClickProduct,
   checkProductSelect,
 }: Props) {
-  if (!products.length) return <Typography variant="h5">Товары не найдены</Typography>;
+  if (!products.length) {
+    return (
+      <Typography sx={{ margin: '20px 0 0 0' }} variant="h5">
+        Товары не найдены
+      </Typography>
+    );
+  }
   return (
     <Grid sx={{ margin: '10px 0 0 0' }} container spacing={2}>
       {products.map(product => (
