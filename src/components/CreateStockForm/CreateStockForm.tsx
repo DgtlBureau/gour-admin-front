@@ -33,11 +33,11 @@ type Props = {
 
 const tabOptions = [
   {
-    id: 'basicSettings',
+    value: 'basicSettings',
     label: 'Основная информация',
   },
   {
-    id: 'products',
+    value: 'products',
     label: 'Товары участвующие в акции',
   },
 ];
@@ -82,7 +82,7 @@ export function CreateStockForm({
       <Grid container>
         <Grid item xs={9}>
           <Tabs
-            selectedId={selectedTabKey}
+            value={selectedTabKey}
             options={tabOptions}
             onChange={setSelectedTabKey}
           />

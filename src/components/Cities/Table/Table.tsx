@@ -9,8 +9,8 @@ import pencilIcon from '../../../assets/icons/table/pencil.svg';
 
 export type CitiesTableProps = {
   cities: City[];
-  onDelete: (uuid: string) => void;
-  onEdit: (uuid: string) => void;
+  onDelete: (id: number) => void;
+  onEdit: (id: number) => void;
 }
 
 export function CitiesTable({
@@ -34,10 +34,10 @@ export function CitiesTable({
       city.name.ru,
       city.name.en,
       <>
-        <IconButton component="button" onClick={() => onDelete(city.uuid)}>
+        <IconButton component="button" onClick={() => onDelete(city.id)}>
           <img src={busketIcon} alt="" />
         </IconButton>
-        <IconButton component="button" onClick={() => onEdit(city.uuid)}>
+        <IconButton component="button" onClick={() => onEdit(city.id)}>
           <img src={pencilIcon} alt="" />
         </IconButton>
       </>,
