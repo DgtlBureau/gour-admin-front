@@ -70,7 +70,7 @@ function CreateProductView() {
     console.log(data);
   };
 
-  const tabsHandler = (id: string) => setTabValue(id);
+  const tabsHandler = (val: string) => setTabValue(val);
 
   return (
     <div>

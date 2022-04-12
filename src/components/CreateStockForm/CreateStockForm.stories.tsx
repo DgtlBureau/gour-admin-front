@@ -1,18 +1,13 @@
 import React from 'react';
 
-import { ComponentStory, Meta } from '@storybook/react';
-import { ProductSelectForm, ProductSelectFormProps } from './ProductSelectForm';
+import { ComponentStory, ComponentMeta } from '@storybook/react';
+
+import { CreateStockForm } from './CreateStockForm';
 
 export default {
-  component: ProductSelectForm,
-  title: 'ProductSelectForm',
-} as Meta;
-
-const Template: ComponentStory<typeof ProductSelectForm> = function (
-  args: ProductSelectFormProps
-) {
-  return <ProductSelectForm {...args} />;
-};
+  title: 'CreateStockForm',
+  component: CreateStockForm,
+} as ComponentMeta<typeof CreateStockForm>;
 
 function createProduct(
   id: number,
@@ -33,8 +28,12 @@ function createProduct(
   };
 }
 
-export const DefaultProductSelectForm = Template.bind({});
-const props: Partial<ProductSelectFormProps> = {
+const Template: ComponentStory<typeof CreateStockForm> = function (args) {
+  return <CreateStockForm {...args} />;
+};
+
+export const DefaultState = Template.bind({});
+DefaultState.args = {
   products: [
     createProduct(
       1,
@@ -223,5 +222,3 @@ const props: Partial<ProductSelectFormProps> = {
     },
   ],
 };
-
-DefaultProductSelectForm.args = props;

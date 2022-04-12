@@ -4,6 +4,8 @@ import { Stack } from '@mui/material';
 import { Table } from '../../UI/Table/Table';
 import { Typography } from '../../UI/Typography/Typography';
 
+import { Options } from '../../../constants/tabs';
+
 type Comment = {
   id: number;
   authorName: string;
@@ -15,11 +17,11 @@ type Comment = {
 
 const tabsOptions = [
   {
-    value: 'waitingForApprove',
+    value: Options.NOT_APPROVED,
     label: 'Ждут подтверждения',
   },
   {
-    value: 'approved',
+    value: Options.APPROVED,
     label: 'Подтверждены',
   },
 ];
@@ -43,9 +45,9 @@ export function ReviewTable({ comments, onClickFullReview }: Props) {
   const [page, setPage] = useState<number>(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  const [value, setValue] = useState<string>('waitingForApprove');
+  const [value, setValue] = useState<string>(Options.NOT_APPROVED);
 
-  const isConfirmed = value !== 'waitingForApprove';
+  const isConfirmed = value !== Options.NOT_APPROVED;
 
   const changeTab = (val: string) => setValue(val);
 

@@ -4,6 +4,6 @@ import { baseQueryWithReauth } from '../http/baseQuery';
 export const commonApi = createApi({
   reducerPath: 'commonApi',
   baseQuery: baseQueryWithReauth,
-  tagTypes: ['Common'],
+  tagTypes: ['Common', 'City', 'ProductGrade'],
   endpoints: () => ({}),
 });
