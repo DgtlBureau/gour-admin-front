@@ -66,7 +66,7 @@ export function Table({
     <Paper>
       {tabs && (
         <Tabs
-          selectedId={tabs.selectedId}
+          value={tabs.value}
           options={tabs.options}
           onChange={tabs.onChange}
         />
