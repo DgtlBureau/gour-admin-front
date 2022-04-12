@@ -7,6 +7,7 @@ export type ProductGrade = {
   client: IUser;
   value: number;
   comment: string;
+  createdAt: string;
   isApproved: boolean;
   productId: number;
 };

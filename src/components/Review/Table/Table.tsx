@@ -6,7 +6,7 @@ import { Typography } from '../../UI/Typography/Typography';
 
 import { Options } from '../../../constants/tabs';
 
-type Comment = {
+export type Comment = {
   id: number;
   authorName: string;
   text: string;

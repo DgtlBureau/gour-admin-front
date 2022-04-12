@@ -9,7 +9,7 @@ import { ProductGetListDto } from '../@types/dto/product/get-list.dto';
 
 export const productApi = commonApi.injectEndpoints({
   endpoints: builder => ({
-    getById: builder.query<Product, ProductGetOneDto>({
+    getProductById: builder.query<Product, ProductGetOneDto>({
       query: ({ id, ...params }) => ({
         url: `${Path.GOODS}/${id}`,
         method: 'GET',
@@ -57,7 +57,7 @@ export const {
   useCreateGradeMutation,
   useDeleteMutation,
   useCreateMutation,
-  useGetByIdQuery,
+  useGetProductByIdQuery,
   useGetAllQuery,
   useUpdateMutation,
 } = productApi;
