@@ -48,17 +48,17 @@ export const productApi = commonApi.injectEndpoints({
         body,
       }),
     }),
-    update: builder.mutation<void, ProductUpdateDto>({
+    updateProduct: builder.mutation<void, ProductUpdateDto>({
       query: ({ id, ...body }) => ({
         url: `${Path.GOODS}/${id}`,
         method: 'POST',
         body,
       }),
     }),
-    delete: builder.mutation<void, number>({
+    deleteProduct: builder.mutation<void, number>({
       query: id => ({
         url: `${Path.GOODS}/${id}`,
-        method: 'POST',
+        method: 'DELETE',
       }),
     }),
   }),
@@ -66,9 +66,9 @@ export const productApi = commonApi.injectEndpoints({
 
 export const {
   useCreateGradeMutation,
-  useDeleteMutation,
+  useDeleteProductMutation,
   useCreateProductMutation,
   useGetByIdQuery,
   useGetAllProductsQuery,
-  useUpdateMutation,
+  useUpdateProductMutation,
 } = productApi;

@@ -4,10 +4,13 @@ import { Path } from '../../constants/routes';
 import { useTo } from '../../hooks/useTo';
 import { Header } from '../../components/Header/Header';
 import { ProductsTable } from '../../components/Product/ProductsTable/ProductsTable';
-import { useGetAllProductsQuery } from '../../api/productApi';
+import { useDeleteProductMutation, useGetAllProductsQuery } from '../../api/productApi';
 import { ProgressLinear } from '../../components/UI/ProgressLinear/ProgressLinear';
 import { ProductTableDto } from '../../@types/dto/table/products.dto';
 import { Typography } from '../../components/UI/Typography/Typography';
+import { ProductDeletePopup } from '../../components/Product/DeletePopup/DeletePopup';
+import { eventBus, EventTypes } from '../../packages/EventBus';
+import { NotificationType } from '../../@types/entities/Notification';
 
 type Props = {
   onUploadClick: () => void;
@@ -31,6 +34,7 @@ function ListProductsView() {
 
   const [page, setPage] = useState<number>(0);
   const [rowsPerPage, setRowsPerPage] = useState<number>(5);
+  const [deletedProductId, setDeletedProductId] = useState<number | null>(null);
   const [loadedProducts, setLoadedProducts] = useState<ProductTableDto[]>([]);
 
   const { data, isLoading, isError } = useGetAllProductsQuery(
@@ -46,6 +50,8 @@ function ListProductsView() {
       skip: loadedProducts.length >= rowsPerPage * (page + 1),
     }
   );
+
+  const [fetchDeleteProduct, deleteProductData] = useDeleteProductMutation();
 
   useEffect(() => {
     if (!data) return;
@@ -71,8 +77,26 @@ function ListProductsView() {
     to(Path.GOODS, `${id}`);
   };
 
+  const onDeleteClick = (id: number) => {
+    setDeletedProductId(id);
+  };
+
   const onUploadClick = () => {
     console.log('uploading');
+  };
+
+  const handleCloseModal = () => {
+    setDeletedProductId(null);
+  };
+
+  const handleDeleteProduct = async () => {
+    if (!deletedProductId) return;
+    try {
+      await fetchDeleteProduct(deletedProductId);
+    } catch (error) {
+      console.error(error);
+    }
+    setDeletedProductId(null);
   };
 
   const handleChangePage = (_: unknown, newPage: number) => {
@@ -83,6 +107,21 @@ function ListProductsView() {
     setRowsPerPage(newRowsPerPage);
     setPage(0);
   };
+
+  useEffect(() => {
+    if (deleteProductData.isSuccess) {
+      eventBus.emit(EventTypes.notification, {
+        message: 'Товар успешно удален',
+        type: NotificationType.SUCCESS,
+      });
+    }
+    if (deleteProductData.isError) {
+      eventBus.emit(EventTypes.notification, {
+        message: 'Возникла ошибка',
+        type: NotificationType.DANGER,
+      });
+    }
+  }, [deleteProductData]);
 
   return (
     <div>
@@ -106,9 +145,15 @@ function ListProductsView() {
           onChangePage={handleChangePage}
           onChangeRowsPerPage={handleChangeRowsPerPage}
           onEdit={onEditClick}
-          onRemove={id => console.log(id)}
+          onRemove={onDeleteClick}
         />
       )}
+
+      <ProductDeletePopup
+        isOpen={deletedProductId !== null}
+        onCancel={handleCloseModal}
+        onSubmit={handleDeleteProduct}
+      />
     </div>
   );
 }

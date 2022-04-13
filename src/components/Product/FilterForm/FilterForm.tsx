@@ -5,15 +5,16 @@ import {
   ProductFilterCheeseFormDto,
   ProductFilterMeatFormDto,
 } from '../../../@types/dto/form/product-filters.dto';
+import { ProductCategory } from '../../../@types/dto/product/category.dto';
 import { useGetAllCategoriesQuery } from '../../../api/categoryApi';
 import { ProductFilterFormCheese } from './Cheese';
 import { ProductFilterFormMeat } from './Meat';
 
 type Props = {
-  type: 'cheese' | 'meat';
+  type: ProductCategory;
   onChange: (
     data: ProductFilterMeatFormDto | ProductFilterCheeseFormDto,
-    type: 'meat' | 'cheese'
+    type: ProductCategory
   ) => void;
   cheeseDefaultValues?: ProductFilterCheeseFormDto;
   meatDefaultValues?: ProductFilterMeatFormDto;

@@ -6,6 +6,7 @@ import {
   ProductFilterMeatFormDto,
 } from '../../@types/dto/form/product-filters.dto';
 import { ProductPriceFormDto } from '../../@types/dto/form/product-price.dto';
+import { ProductCategory } from '../../@types/dto/product/category.dto';
 import { ProductCreateDto } from '../../@types/dto/product/create.dto';
 import { useGetAllCategoriesQuery } from '../../api/categoryApi';
 import { useCreateProductMutation, useGetAllProductsQuery } from '../../api/productApi';
@@ -53,25 +54,6 @@ function RightContent({ onSaveHandler, onCancelHandler }: Props) {
     </>
   );
 }
-
-const tabs = [
-  {
-    id: 'settings',
-    label: 'Основные настройки',
-  },
-  {
-    id: 'prices',
-    label: 'Цены',
-  },
-  {
-    id: 'filters',
-    label: 'Фильтры',
-  },
-  {
-    id: 'recommended_products',
-    label: 'Рекомендуемые товары',
-  },
-];
 
 function CreateProductView() {
   const [language, setLanguage] = useState<'ru' | 'en'>('ru');
@@ -174,7 +156,7 @@ function CreateProductView() {
   };
   const onChangeFilterForm = (
     data: ProductFilterCheeseFormDto | ProductFilterMeatFormDto,
-    type: 'meat' | 'cheese'
+    type: ProductCategory
   ) => {
     if (type === 'cheese') {
       setFullFormState(prevState => ({
@@ -215,7 +197,11 @@ function CreateProductView() {
           <RightContent onSaveHandler={onSubmit} onCancelHandler={onCancelHandler} />
         }
       />
-      <Tabs options={tabs} selectedId={activeTabId} onChange={tabsHandler} />
+      <Tabs
+        options={createProductTabOptions}
+        selectedId={activeTabId}
+        onChange={tabsHandler}
+      />
       <TabPanel value={activeTabId} index="settings">
         <ProductBasicSettingsForm
           categories={selectCategoryOptions}
