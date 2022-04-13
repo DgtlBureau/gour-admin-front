@@ -86,7 +86,7 @@ export function ProductsTable({
         rowsPerPage={rowsPerPage}
         page={page}
         rowsCount={rowsCount}
-        rowsPerPageOptions={[2, 5, 10, 25]}
+        rowsPerPageOptions={[5, 10, 25]}
         onPageChange={onChangePage}
         onRowsPerPageChange={event => onChangeRowsPerPage(+event.target.value)}
       />

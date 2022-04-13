@@ -26,8 +26,11 @@ function RightContent({ onUploadClick, onCreateClick }: Props) {
 }
 
 function ListProductsView() {
+  const lang = 'ru'; // TODO: смена языка
+  const currency = 'rub'; // TODO: смена валюты
+
   const [page, setPage] = useState<number>(0);
-  const [rowsPerPage, setRowsPerPage] = useState<number>(2);
+  const [rowsPerPage, setRowsPerPage] = useState<number>(5);
   const [loadedProducts, setLoadedProducts] = useState<ProductTableDto[]>([]);
 
   const { data, isLoading, isError } = useGetAllProductsQuery(
@@ -39,6 +42,7 @@ function ListProductsView() {
       offset: rowsPerPage * page,
     },
     {
+      // TODO: привести в порядок пагинацию
       skip: loadedProducts.length >= rowsPerPage * (page + 1),
     }
   );
@@ -49,9 +53,10 @@ function ListProductsView() {
     const newProduct = data.products.map(product => ({
       id: product.id,
       image: product.images[0]?.small || '',
-      title: product.title?.ru || '', // TODO: смена языка
-      category: product.category?.title.ru, // TODO: смена языка
-      price: product.price.rub, // TODO: смена валюты
+      title: (lang === 'ru' ? product.title?.ru : product.title?.en) || '',
+      category:
+        (lang === 'ru' ? product.category?.title?.ru : product.category.title?.en) || '',
+      price: currency === 'rub' ? product.price.rub : product.price.eur,
     }));
     setLoadedProducts(prevList => [...prevList, ...newProduct]);
   }, [data?.products]);

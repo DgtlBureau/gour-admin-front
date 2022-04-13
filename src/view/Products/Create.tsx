@@ -193,7 +193,7 @@ function CreateProductView() {
   };
   const tabsHandler = (id: string) => setActiveTabId(id);
 
-  const recommendedProduct: Product[] =
+  const recommendedProducts: Product[] =
     productsData?.products.map(product => ({
       id: product.id,
       title: product.title.ru,
@@ -249,7 +249,7 @@ function CreateProductView() {
           isLoading={isProductsLoading}
           selected={fullFormState.productSelect || []}
           categories={selectCategoryOptions}
-          products={recommendedProduct}
+          products={recommendedProducts}
           onChange={onChangeRecommended}
         />
       </TabPanel>
