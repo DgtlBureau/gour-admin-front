@@ -14,4 +14,7 @@ const Template: ComponentStory<typeof Textarea> = function (args) {
 };
 
 export const DefaultState = Template.bind({});
-DefaultState.args = {};
+DefaultState.args = {
+  label: 'заголовок',
+  error: 'текст ошибки',
+};

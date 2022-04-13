@@ -1,13 +1,15 @@
 import React from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { FormLabel, FormControlLabel, Radio } from '@mui/material';
+import { FormControlLabel } from '@mui/material';
 
 import schema from './validation';
 import { Box } from '../../UI/Box/Box';
 import { Button } from '../../UI/Button/Button';
+import { RadioButton } from '../../UI/RadioButton/RadioButton';
 import { HFTextField } from '../../HookForm/HFTextField';
 import { HFRadioGroup } from '../../HookForm/HFRadioGroup';
+import { Typography } from '../../UI/Typography/Typography';
 
 const sx = {
   form: {
@@ -25,15 +27,10 @@ const sx = {
   radiosLabel: {
     marginBottom: '14px',
     fontSize: '15px',
-    color: '#25262D',
   },
   radios: {
     display: 'flex',
-  },
-  radio: {
-    '&.Mui-checked': {
-      color: '#25262D',
-    },
+    marginTop: '10px',
   },
 };
 
@@ -64,11 +61,10 @@ export function CreateUserForm({
       <form onSubmit={values.handleSubmit(submitHandler)}>
         <Box sx={sx.form}>
           <HFRadioGroup name="role" sx={sx.radioGroup}>
-            <FormLabel sx={sx.radiosLabel}>Роль</FormLabel>
-
+            <Typography variant="body2" color="primary">Роль</Typography>
             <Box sx={sx.radios}>
-              <FormControlLabel value="admin" control={<Radio sx={sx.radio} />} label="Администратор" />
-              <FormControlLabel value="moderator" control={<Radio sx={sx.radio} />} label="Модератор" />
+              <FormControlLabel value="admin" control={<RadioButton />} label="Администратор" />
+              <FormControlLabel value="moderator" control={<RadioButton />} label="Модератор" />
             </Box>
           </HFRadioGroup>
 

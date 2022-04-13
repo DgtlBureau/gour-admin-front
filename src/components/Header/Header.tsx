@@ -20,7 +20,7 @@ export function Header({ leftTitle, rightContent }: Props) {
   return (
     <MUIAppBar sx={sx.bar} position="static">
       <Toolbar sx={sx.wrapper}>
-        <Typography variant="h5" color="black" component="div" sx={{ flexGrow: 1 }}>
+        <Typography variant="h5" color="primary" component="div" sx={{ flexGrow: 1 }}>
           {leftTitle}
         </Typography>
         {rightContent}

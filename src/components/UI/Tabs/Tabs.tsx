@@ -12,10 +12,16 @@ export type TabsProps = {
 
 export function Tabs({ value, options, onChange }: TabsProps) {
   return (
-    <MUITabs value={value} onChange={(_, newValue: string) => onChange(newValue)}>
-      {options.map(option => (
-        <Tab label={option.label} value={option.value} key={option.value} />
-      ))}
+    <MUITabs
+      color="accent.main"
+      value={value}
+      onChange={(_, newValue: string) => onChange(newValue)}
+    >
+      {
+        options.map(option => (
+          <Tab label={option.label} value={option.value} key={option.value} color="secondary" />
+        ))
+      }
     </MUITabs>
   );
 }

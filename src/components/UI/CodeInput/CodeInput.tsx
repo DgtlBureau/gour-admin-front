@@ -13,7 +13,7 @@ const inputSx = {
   fontSize: '32px',
   boxSizing: 'border-box',
   color: defaultTheme.palette.text.primary,
-  outlineColor: defaultTheme.palette.accent.main,
+  outlineColor: defaultTheme.palette.primary.main,
 };
 
 type Props = {

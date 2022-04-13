@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FormLabel, FormControlLabel, RadioGroup } from '@mui/material';
+import { FormControlLabel, RadioGroup } from '@mui/material';
 import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
@@ -34,11 +34,6 @@ const sx = {
   },
   radios: {
     display: 'flex',
-  },
-  radio: {
-    '&.Mui-checked': {
-      color: '#25262D',
-    },
   },
   title: {
     marginBottom: '10px',
@@ -94,13 +89,13 @@ export function ProductPriceForm({
       <form onSubmit={values.handleSubmit(submitHandler)}>
         <Box sx={sx.discount}>
           <RadioGroup sx={sx.radioGroup}>
-            <FormLabel>Скидка на товар</FormLabel>
+            <Typography variant="body1" color="primary">Скидка на товар</Typography>
             <Box sx={sx.radios}>
               <FormControlLabel
                 label="Да"
+                value="true"
                 control={(
                   <RadioButton
-                    sx={sx.radio}
                     checked={withDiscount}
                     onChange={enableDiscount}
                   />
@@ -111,7 +106,6 @@ export function ProductPriceForm({
                 value="false"
                 control={(
                   <RadioButton
-                    sx={sx.radio}
                     checked={!withDiscount}
                     onChange={disableDiscount}
                   />
