@@ -12,17 +12,25 @@ export type Comment = {
   text: string;
   productName: string;
   date: string;
-  isConfirmed: boolean;
+  isConfirmed: boolean | null;
 };
 
 const tabsOptions = [
   {
-    value: Options.NOT_APPROVED,
+    value: Options.WAIT_FOR_APPROVE,
     label: 'Ждут подтверждения',
+  },
+  {
+    value: Options.ALL,
+    label: 'Все',
   },
   {
     value: Options.APPROVED,
     label: 'Подтверждены',
+  },
+  {
+    value: Options.NOT_APPROVED,
+    label: 'Отклонены',
   },
 ];
 
@@ -45,11 +53,9 @@ export function ReviewTable({ comments, onClickFullReview }: Props) {
   const [page, setPage] = useState<number>(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  const [value, setValue] = useState<string>(Options.NOT_APPROVED);
+  const [tabKey, setTabKey] = useState<string>(Options.WAIT_FOR_APPROVE);
 
-  const isConfirmed = value !== Options.NOT_APPROVED;
-
-  const changeTab = (val: string) => setValue(val);
+  const changeTab = (key: string) => setTabKey(key);
 
   const handleChangePage = (_: unknown, newPage: number) => {
     setPage(newPage);
@@ -63,7 +69,20 @@ export function ReviewTable({ comments, onClickFullReview }: Props) {
   };
 
   const row = comments
-    .filter(comment => comment.isConfirmed === isConfirmed)
+    .filter(comment => {
+      switch (tabKey) {
+        case Options.WAIT_FOR_APPROVE:
+          return comment.isConfirmed === null;
+        case Options.APPROVED:
+          return comment.isConfirmed === true;
+        case Options.NOT_APPROVED:
+          return comment.isConfirmed === false;
+        case Options.ALL:
+          return true;
+        default:
+          return true;
+      }
+    })
     .map(comment => {
       const cells = [
         comment.authorName,
@@ -86,7 +105,7 @@ export function ReviewTable({ comments, onClickFullReview }: Props) {
     });
 
   const tabs = {
-    value,
+    value: tabKey,
     options: tabsOptions,
     onChange: changeTab,
   };

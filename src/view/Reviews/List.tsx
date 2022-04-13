@@ -64,6 +64,14 @@ function ListReviewsView() {
     setIsModalOpen(false);
   };
 
+  const handleReject = (commentId: number) => {
+    fetchUpdateProductGrade({
+      id: commentId,
+      isApproved: false,
+    });
+    setIsModalOpen(false);
+  };
+
   const handleApprove = (commentId: number) => {
     fetchUpdateProductGrade({
       id: commentId,
@@ -74,8 +82,12 @@ function ListReviewsView() {
 
   useEffect(() => {
     if (updateProductGradeData.isSuccess) {
+      const isApproved = updateProductGradeData.data?.isApproved;
+      const message = isApproved ?
+        'Комментарий успешно подтвержден' :
+        'Комментарий отклонен';
       eventBus.emit(EventTypes.notification, {
-        message: 'Комментарий успешно подтвержден',
+        message,
         type: NotificationType.SUCCESS,
       });
     }
@@ -101,7 +113,7 @@ function ListReviewsView() {
         isOpened={isModalOpen}
         comment={openedReviewData}
         onConfirm={() => handleApprove(openedReviewData.id)}
-        onCancel={handleCancel}
+        onCancel={() => handleReject(openedReviewData.id)}
       />
     </div>
   );

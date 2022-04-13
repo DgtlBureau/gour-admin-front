@@ -16,6 +16,7 @@ type Props = {
   comment: CommentModal;
   isOpened: boolean;
   onConfirm: () => void;
+  onReject: () => void;
   onCancel: () => void;
 };
 
@@ -24,7 +25,13 @@ const wrapperBoxStyles: CSSProperties = {
   padding: '25px',
 };
 
-export function ConfirmReviewModal({ comment, isOpened, onConfirm, onCancel }: Props) {
+export function ConfirmReviewModal({
+  comment,
+  isOpened,
+  onConfirm,
+  onReject,
+  onCancel,
+}: Props) {
   return (
     <Dialog open={isOpened} onClose={onCancel}>
       <Box sx={wrapperBoxStyles}>
@@ -44,7 +51,7 @@ export function ConfirmReviewModal({ comment, isOpened, onConfirm, onCancel }: P
             sx={{ margin: '0 0 0 10px' }}
             type="button"
             variant="outlined"
-            onClick={onCancel}
+            onClick={onReject}
           >
             отклонить
           </Button>
