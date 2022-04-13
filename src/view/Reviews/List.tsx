@@ -113,7 +113,8 @@ function ListReviewsView() {
         isOpened={isModalOpen}
         comment={openedReviewData}
         onConfirm={() => handleApprove(openedReviewData.id)}
-        onCancel={() => handleReject(openedReviewData.id)}
+        onReject={() => handleReject(openedReviewData.id)}
+        onCancel={handleCancel}
       />
     </div>
   );
