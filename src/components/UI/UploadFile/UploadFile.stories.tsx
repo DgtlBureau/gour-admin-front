@@ -5,7 +5,7 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { UploadFile } from './UploadFile';
 
 export default {
-  title: 'UploadFile',
+  title: 'UI/UploadFile',
   component: UploadFile,
 } as ComponentMeta<typeof UploadFile>;
 
