@@ -13,10 +13,10 @@ import {
 import { Typography } from '../../components/UI/Typography/Typography';
 import { eventBus, EventTypes } from '../../packages/EventBus';
 import { NotificationType } from '../../@types/entities/Notification';
-import { CreateCityModal } from '../../components/CreateCityModal/CreateCityModal';
 import { CreateCityDto } from '../../@types/dto/city/create.dto';
 import { UpdateCityDto } from '../../@types/dto/city/update.dto';
 import { City } from '../../@types/entities/City';
+import { CreateCityModal } from '../../components/Cities/CreateModal/CreateModal';
 
 type Props = {
   onCreateClick: () => void;

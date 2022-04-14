@@ -7,7 +7,7 @@ import { Table } from './Table';
 import { Button } from '../Button/Button';
 
 export default {
-  title: 'Table',
+  title: 'UI/Table',
   component: Table,
 } as ComponentMeta<typeof Table>;
 
