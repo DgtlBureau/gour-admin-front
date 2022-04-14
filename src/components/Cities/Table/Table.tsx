@@ -11,7 +11,7 @@ export type CitiesTableProps = {
   cities: City[];
   onDelete: (id: number) => void;
   onEdit: (id: number) => void;
-};
+}
 
 export function CitiesTable({ cities, onDelete, onEdit }: CitiesTableProps) {
   const [page, setPage] = useState(0);
