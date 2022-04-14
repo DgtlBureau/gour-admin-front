@@ -31,12 +31,12 @@ const tabsOptions = [
   },
 ];
 
-type User = {
+export type User = {
   id: number;
   name: string;
   phone: string;
   role: string;
-  isConfirmed: boolean;
+  isApproved: boolean;
 };
 
 export type RegistrationsTableProps = {
@@ -54,7 +54,7 @@ export function RegistrationsTable({
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  const isConfirmed = tabValue !== Options.NOT_APPROVED;
+  const isApproved = tabValue !== Options.NOT_APPROVED;
 
   const changeTab = (val: string) => setTabValue(val);
 
@@ -66,7 +66,7 @@ export function RegistrationsTable({
   };
 
   const rows = users
-    .filter(user => user.isConfirmed === isConfirmed)
+    .filter(user => user.isApproved === isApproved)
     .map((user, i) => ({
       id: i,
       cells: [
@@ -77,9 +77,11 @@ export function RegistrationsTable({
           <IconButton component="button" onClick={() => onDelete(user.id)}>
             <img src={busketIcon} alt="" />
           </IconButton>
-          <IconButton component="button" onClick={() => onAccept(user.id)}>
-            <img src={checkIcon} alt="" />
-          </IconButton>
+          {!isApproved && (
+            <IconButton component="button" onClick={() => onAccept(user.id)}>
+              <img src={checkIcon} alt="" />
+            </IconButton>
+          )}
         </>,
       ],
     }));
