@@ -41,7 +41,7 @@ function ListReviewsView() {
     id: comment.id,
     authorName: comment.client?.name || '',
     text: comment.comment,
-    productName: `${comment.productId}`,
+    productName: comment.product?.title?.ru || '',
     date: format(new Date(comment.createdAt), 'dd.MM.yyyy') || '',
     isConfirmed: comment.isApproved,
   }));
