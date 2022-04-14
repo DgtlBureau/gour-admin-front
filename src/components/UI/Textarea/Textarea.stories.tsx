@@ -5,7 +5,7 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { Textarea } from './Textarea';
 
 export default {
-  title: 'Textarea',
+  title: 'UI/Textarea',
   component: Textarea,
 } as ComponentMeta<typeof Textarea>;
 
@@ -14,4 +14,7 @@ const Template: ComponentStory<typeof Textarea> = function (args) {
 };
 
 export const DefaultState = Template.bind({});
-DefaultState.args = {};
+DefaultState.args = {
+  label: 'заголовок',
+  error: 'текст ошибки',
+};

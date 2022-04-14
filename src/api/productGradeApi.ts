@@ -26,8 +26,8 @@ export const productGradeApi = commonApi.injectEndpoints({
       >({
         query(grade: Pick<ProductGrade, 'isApproved' | 'id'>) {
           return {
-            method: 'put',
-            url: `productGrades/${grade.id}`,
+            method: 'post',
+            url: `productGrades/${grade.id}/approve`,
             body: grade,
           };
         },

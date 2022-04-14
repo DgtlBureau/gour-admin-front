@@ -5,7 +5,7 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { ProgressLinear } from './ProgressLinear';
 
 export default {
-  title: 'ProgressLinear',
+  title: 'UI/ProgressLinear',
   component: ProgressLinear,
 } as ComponentMeta<typeof ProgressLinear>;
 
