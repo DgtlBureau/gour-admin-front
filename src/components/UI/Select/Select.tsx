@@ -1,7 +1,18 @@
 import React from 'react';
-import ReactSelect, { OnChangeValue } from 'react-select';
+import ReactSelect, { Colors, OnChangeValue } from 'react-select';
 import { SxProps } from '@mui/material';
+
+import { Box } from '../Box/Box';
 import { Typography } from '../Typography/Typography';
+import { defaultTheme } from '../../../themes';
+
+const font = defaultTheme.typography.fontFamily;
+
+const selectColors: Pick<Colors, 'primary' | 'primary25'| 'primary50'> = {
+  primary: defaultTheme.palette.primary.main,
+  primary25: defaultTheme.palette.secondary.main,
+  primary50: 'none',
+};
 
 export type SelectOption<V = string> = {
   value: V;
@@ -38,14 +49,44 @@ export function Select<V, isMulti extends boolean>({
     null;
 
   return (
-    <div style={{ marginTop: 15 }}>
-      {label && <Typography variant="inherit">{label}</Typography>}
-      <ReactSelect value={selectValue} options={options} isMulti={isMulti} {...props} />
-      {error && isError && (
-        <Typography variant="caption" color="error">
-          {error}
-        </Typography>
-      )}
-    </div>
+    <Box sx={{ marginTop: 15 }}>
+      {
+        label && (
+          <Typography variant="body2" color="primary">
+            {label}
+          </Typography>
+        )
+      }
+      <ReactSelect
+        value={selectValue}
+        options={options}
+        isMulti={isMulti}
+        theme={theme => ({
+          ...theme,
+          colors: {
+            ...theme.colors,
+            ...selectColors,
+          },
+        })}
+        styles={{
+          control: base => ({
+            ...base,
+            fontFamily: font,
+          }),
+          menu: base => ({
+            ...base,
+            fontFamily: font,
+          }),
+        }}
+        {...props}
+      />
+      {
+        error && isError && (
+          <Typography variant="caption" color="error">
+            {error}
+          </Typography>
+        )
+      }
+    </Box>
   );
 }

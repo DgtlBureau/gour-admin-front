@@ -5,7 +5,7 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { CategoriesTable } from './Table';
 
 export default {
-  title: 'Categories/Table',
+  title: 'Tables/Categories',
   component: CategoriesTable,
 } as ComponentMeta<typeof CategoriesTable>;
 
