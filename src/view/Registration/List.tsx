@@ -68,7 +68,7 @@ function ListRegistrationsView() {
     id: client.id,
     name: client.name,
     phone: client.phone,
-    role: client.name,
+    role: client.role.title,
     isApproved: client.isApproved,
   }));
 
