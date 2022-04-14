@@ -54,70 +54,65 @@ function ListCitiesView() {
     });
     setCreateModalOpened(true);
   };
-  const onDeleteClick = (id: number) => {
-    fetchDeleteCity(id);
-  };
-  const handleSaveForm = (data: CreateCityDto | UpdateCityDto) => {
-    const newData = {
-      name: {
-        ru: data.rusName,
-        en: data.engName,
-      },
-    };
-    if ('id' in data) {
-      console.log(data.id);
-
-      fetchUpdateCity({ ...newData, id: data.id });
-    } else {
-      fetchCreateCity(newData);
-    }
-    setCreateModalOpened(false);
-  };
-
-  useEffect(() => {
-    if (deleteCityData.isSuccess) {
+  const onDeleteClick = async (id: number) => {
+    try {
+      await fetchDeleteCity(id).unwrap();
       eventBus.emit(EventTypes.notification, {
         message: 'Город успешно удален',
         type: NotificationType.SUCCESS,
       });
-    }
-    if (deleteCityData.isError) {
+    } catch (error) {
+      console.log(error);
       eventBus.emit(EventTypes.notification, {
         message: 'Произошла ошибка',
         type: NotificationType.DANGER,
       });
     }
-  }, [deleteCityData]);
+  };
 
-  useEffect(() => {
-    if (createCityData.isSuccess) {
-      eventBus.emit(EventTypes.notification, {
-        message: 'Город успешно создан',
-        type: NotificationType.SUCCESS,
-      });
+  const handleSaveForm = (cityDto: CreateCityDto | UpdateCityDto) => {
+    let newData;
+    if ('id' in cityDto) {
+      newData = {
+        id: cityDto.id,
+        name: {
+          ru: cityDto.rusName,
+          en: cityDto.engName,
+        },
+      };
+    } else {
+      newData = {
+        id: undefined,
+        name: {
+          ru: cityDto.rusName,
+          en: cityDto.engName,
+        },
+      };
     }
-    if (createCityData.isError) {
-      eventBus.emit(EventTypes.notification, {
-        message: 'Произошла ошибка',
-        type: NotificationType.DANGER,
-      });
-    }
-  }, [createCityData]);
 
-  useEffect(() => {
-    if (updateCityData.isSuccess) {
-      eventBus.emit(EventTypes.notification, {
-        message: 'Город успешно изменен',
-        type: NotificationType.SUCCESS,
-      });
-    }
-    if (updateCityData.isError) {
+    try {
+      if (newData.id) {
+        fetchUpdateCity(newData).unwrap();
+        eventBus.emit(EventTypes.notification, {
+          message: 'Город успешно изменен',
+          type: NotificationType.SUCCESS,
+        });
+      } else {
+        fetchCreateCity(newData).unwrap();
+        eventBus.emit(EventTypes.notification, {
+          message: 'Город успешно создан',
+          type: NotificationType.SUCCESS,
+        });
+      }
+    } catch (error) {
+      console.log(error);
       eventBus.emit(EventTypes.notification, {
         message: 'Произошла ошибка',
         type: NotificationType.DANGER,
       });
     }
-  }, [updateCityData]);
+    setCreateModalOpened(false);
+  };
 
   if (isLoading) {
     return <LinearProgress />;
