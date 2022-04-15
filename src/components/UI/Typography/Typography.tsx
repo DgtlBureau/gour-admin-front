@@ -24,7 +24,7 @@ type Props = {
   sx?: SxProps;
 };
 
-export function Typography({ variant = 'h4', children, color, sx }: Props) {
+export function Typography({ variant = 'body1', children, color, sx }: Props) {
   return (
     <MUITypography sx={sx} variant={variant} color={color}>
       {children}

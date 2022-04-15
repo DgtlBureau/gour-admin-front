@@ -34,22 +34,8 @@ type RightContentProps = {
   onCreateClick: () => void;
 };
 
-type ModalActionsProps = {
-  onCancel: () => void;
-  onDelete: () => void;
-};
-
 function RightContent({ onCreateClick }: RightContentProps) {
   return <Button onClick={onCreateClick}>Добавить пользователя</Button>;
-}
-
-function DeleteModalActions({ onCancel, onDelete }: ModalActionsProps) {
-  return (
-    <>
-      <Button size="small" onClick={onCancel} sx={{ marginRight: '10px' }}>Отмена</Button>
-      <Button variant="outlined" size="small" onClick={onDelete}>Удалить</Button>
-    </>
-  );
 }
 
 function ListUsersView() {
@@ -99,8 +85,9 @@ function ListUsersView() {
       <Modal
         title="Удаление пользователя"
         description="Вы действительно хотите удалить пользователя?"
+        acceptText="Удалить"
         isOpen={isDeleting}
-        actions={<DeleteModalActions onCancel={closeDeleteModal} onDelete={deleteUser} />}
+        onAccept={deleteUser}
         onClose={closeDeleteModal}
       />
     </div>
