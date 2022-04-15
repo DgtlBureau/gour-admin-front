@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 
 import { Header } from '../../components/Header/Header';
 import { Button } from '../../components/UI/Button/Button';
-import { CreateUserForm } from '../../components/CreateUserForm/CreateUserForm';
+import { CreateUserForm } from '../../components/Users/CreateForm/CreateForm';
 import { useCreateUserMutation } from '../../api/userApi';
 import { UserCreateDto } from '../../@types/dto/user/create.dto';
 import { Path } from '../../constants/routes';

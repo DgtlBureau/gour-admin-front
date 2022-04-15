@@ -8,10 +8,10 @@ type Props = {
   label?: string;
   sx?: SxProps;
   name?: string;
+  multiline?: boolean;
   variant?: 'standard' | 'outlined' | 'filled' | undefined;
   isError?: boolean;
   type?: string;
-  multiline?: boolean;
   onChange?: ChangeEventHandler<HTMLInputElement>;
   onFocus?: FocusEventHandler<HTMLInputElement>;
   onBlur?: FocusEventHandler<HTMLInputElement>;

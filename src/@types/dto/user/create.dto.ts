@@ -1,5 +1,5 @@
 export type UserCreateDto = Readonly<{
+  apiUserUuid: string;
   role: number;
-  email: string;
-  additionalInfo?: Record<string, string | number>;
+  additionalInfo: Record<string, string | number>;
 }>;

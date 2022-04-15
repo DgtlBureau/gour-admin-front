@@ -9,8 +9,8 @@ import { Header } from '../../components/Header/Header';
 import { ProductBasicSettingsForm } from '../../components/Product/BasicSettingsForm/BasicSettingsForm';
 import { ProductFilterForm } from '../../components/Product/FilterForm/FilterForm';
 import { ProductRecommendedForm } from '../../components/Product/RecommendedForm/RecommendedForm';
-import { TabPanel } from '../../components/Tabs/TabPanel';
-import { Tabs } from '../../components/Tabs/Tabs';
+import { TabPanel } from '../../components/UI/Tabs/TabPanel';
+import { Tabs } from '../../components/UI/Tabs/Tabs';
 import { Button } from '../../components/UI/Button/Button';
 import { Path } from '../../constants/routes';
 import { useTo } from '../../hooks/useTo';
@@ -35,25 +35,25 @@ function RightContent({ onCancelHandler }: Props) {
 function CreateProductView() {
   const tabs = [
     {
-      id: 'settings',
+      value: 'settings',
       label: 'Основные настройки',
     },
     {
-      id: 'prices',
+      value: 'prices',
       label: 'Цены',
     },
     {
-      id: 'filters',
+      value: 'filters',
       label: 'Фильтры',
     },
     {
-      id: 'recommended_products',
+      value: 'recommended_products',
       label: 'Рекомендуемые товары',
     },
   ];
 
   const to = useTo();
-  const [activeTabId, setActiveTabId] = useState('settings');
+  const [activeTabValue, setActiveTabValue] = useState('settings');
 
   const onCancelHandler = () => to(Path.GOODS);
   const onSubmitBasicSettingsForm = (data: ProductBasicSettingsFormDto) => {
@@ -70,7 +70,7 @@ function CreateProductView() {
     console.log(data);
   };
 
-  const tabsHandler = (id: string) => setActiveTabId(id);
+  const tabsHandler = (id: string) => setActiveTabValue(id);
 
   return (
     <div>
@@ -78,17 +78,17 @@ function CreateProductView() {
         leftTitle="Создание товара"
         rightContent={<RightContent onCancelHandler={onCancelHandler} />}
       />
-      <Tabs options={tabs} selectedId={activeTabId} onChange={tabsHandler} />
-      <TabPanel value={activeTabId} index="settings">
+      <Tabs options={tabs} value={activeTabValue} onChange={tabsHandler} />
+      <TabPanel value={activeTabValue} index="settings">
         <ProductBasicSettingsForm onSubmit={onSubmitBasicSettingsForm} />
       </TabPanel>
-      <TabPanel value={activeTabId} index="prices">
+      <TabPanel value={activeTabValue} index="prices">
         {/* <ProductBasicSettingsForm onSubmit={onSaveHandler} /> */}
       </TabPanel>
-      <TabPanel value={activeTabId} index="filters">
+      <TabPanel value={activeTabValue} index="filters">
         <ProductFilterForm type="meat" onSubmit={onSubmitFilterForm} />
       </TabPanel>
-      <TabPanel value={activeTabId} index="recommended_products">
+      <TabPanel value={activeTabValue} index="recommended_products">
         <ProductRecommendedForm onSubmit={onSubmitRecommended} />
       </TabPanel>
     </div>

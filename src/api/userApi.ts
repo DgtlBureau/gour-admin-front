@@ -1,42 +1,53 @@
 import { commonApi } from './commonApi';
-import { Path } from '../constants/routes';
 import { UserCreateDto } from '../@types/dto/user/create.dto';
 import { UserGetListDto } from '../@types/dto/user/get-list.dto';
 import { IUser } from '../@types/entities/IUser';
+
+const USERS_API_PATH = '/auth/apiUsers';
+const ROLES = ['ADMIN', 'CLIENT', 'MODERATOR'];
 
 export const userApi = commonApi.injectEndpoints({
   endpoints: builder => ({
     getById: builder.query<IUser, number>({
       query: id => ({
-        url: `${Path.USERS}/${id}`,
+        url: `${USERS_API_PATH}/${id}`,
         method: 'GET',
       }),
     }),
-    getAll: builder.query<IUser[], UserGetListDto>({
+    getAllUsers: builder.query<IUser[], UserGetListDto>({
       query: () => ({
-        url: Path.USERS,
+        url: USERS_API_PATH,
         method: 'GET',
+        params: {
+          roles: JSON.stringify(ROLES),
+        },
       }),
+      transformResponse(users: (IUser & {roles: IUser['role'][]})[]) {
+        return users.map(user => ({
+          ...user,
+          role: user.roles.filter(it => ROLES.includes(it.key))[0],
+        }));
+      },
     }),
     createUser: builder.mutation<void, UserCreateDto>({
       query: body => ({
-        url: Path.USERS,
+        url: USERS_API_PATH,
         method: 'POST',
         body,
       }),
     }),
-    delete: builder.mutation<void, number>({
+    deleteUser: builder.mutation<void, string>({
       query: id => ({
-        url: `${Path.USERS}/${id}`,
-        method: 'POST',
+        url: `${USERS_API_PATH}/${id}`,
+        method: 'DELETE',
       }),
     }),
   }),
 });
 
 export const {
-  useDeleteMutation,
+  useDeleteUserMutation,
   useCreateUserMutation,
-  useGetAllQuery,
+  useGetAllUsersQuery,
   useGetByIdQuery,
 } = userApi;
