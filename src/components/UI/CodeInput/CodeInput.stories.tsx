@@ -5,7 +5,7 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { CodeInput } from './CodeInput';
 
 export default {
-  title: 'CodeInput',
+  title: 'UI/CodeInput',
   component: CodeInput,
 } as ComponentMeta<typeof CodeInput>;
 

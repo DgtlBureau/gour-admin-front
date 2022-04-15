@@ -5,7 +5,7 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { CreateCategoryForm } from './CreateForm';
 
 export default {
-  title: 'CreateCategoryModal',
+  title: 'Modals/CreateCategory',
   component: CreateCategoryForm,
 } as ComponentMeta<typeof CreateCategoryForm>;
 

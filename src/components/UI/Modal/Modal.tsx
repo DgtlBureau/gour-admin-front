@@ -13,7 +13,7 @@ const sx = {
     transform: 'translate(-50%, -50%)',
     maxWidth: '690px',
     padding: '24px',
-    bgcolor: 'background.paper',
+    bgcolor: 'background.default',
   },
   title: {
     marginBottom: '10px',
@@ -27,9 +27,10 @@ const sx = {
 };
 
 export type ModalProps = {
-  title: string;
   isOpen: boolean;
-  body: ReactNode;
+  title: string;
+  description?: string;
+  body?: ReactNode;
   actions?: ReactNode;
   acceptText?: string;
   closeText?: string;
@@ -38,9 +39,10 @@ export type ModalProps = {
 }
 
 export function Modal({
-  title,
-  body,
   isOpen,
+  title,
+  description,
+  body,
   actions,
   acceptText = 'Принять',
   closeText = 'Отменить',
@@ -52,7 +54,11 @@ export function Modal({
       <Box sx={sx.modal}>
         <Typography sx={sx.title} variant="body2" color="primary">{title}</Typography>
 
-        <Box sx={sx.body}>{body}</Box>
+        <Box sx={sx.body}>
+          {
+            body || <Typography variant="body1">{description}</Typography>
+          }
+        </Box>
 
         <Box>
           {

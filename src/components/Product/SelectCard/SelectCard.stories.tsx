@@ -6,7 +6,7 @@ import { SelectCard } from './SelectCard';
 
 export default {
   component: SelectCard,
-  title: 'SelectCard',
+  title: 'Cards/ProductSelect',
 } as ComponentMeta<typeof SelectCard>;
 
 const Template: ComponentStory<typeof SelectCard> = function (args) {
