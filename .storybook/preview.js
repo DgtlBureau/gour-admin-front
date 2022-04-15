@@ -2,13 +2,14 @@
 
 import { defaultTheme } from '../src/themes';
 import React from 'react';
-import { ThemeProvider } from '@mui/material';
+import { ThemeProvider, CssBaseline } from '@mui/material';
 import { ThemeProvider as EmotionThemeProvider } from 'emotion-theming';
 
 const MUITheme = (Story, context) => {
   return (
     <EmotionThemeProvider theme={defaultTheme}>
       <ThemeProvider theme={defaultTheme}>
+        <CssBaseline />
         <Story {...context} />
       </ThemeProvider>
     </EmotionThemeProvider>
