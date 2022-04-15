@@ -13,7 +13,7 @@ const sx = {
     transform: 'translate(-50%, -50%)',
     maxWidth: '690px',
     padding: '24px',
-    bgcolor: 'background.paper',
+    bgcolor: 'background.default',
   },
   title: {
     marginBottom: '10px',

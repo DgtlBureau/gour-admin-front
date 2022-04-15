@@ -42,8 +42,12 @@ export function Button({
       size={size}
       component={component || 'button'}
     >
-      {isLoading ? <ProgressCircular size={15} /> : ''}
-      &nbsp;
+      {isLoading && (
+        <>
+          <ProgressCircular size={15} />
+          &nbsp;
+        </>
+      )}
       {children}
     </MUIButton>
   );

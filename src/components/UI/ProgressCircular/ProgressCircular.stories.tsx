@@ -5,7 +5,7 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { ProgressCircular } from './ProgressCircular';
 
 export default {
-  title: 'ProgressCircular',
+  title: 'UI/ProgressCircular',
   component: ProgressCircular,
 } as ComponentMeta<typeof ProgressCircular>;
 

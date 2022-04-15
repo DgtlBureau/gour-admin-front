@@ -6,7 +6,7 @@ import { PhotoCamera } from '@mui/icons-material';
 import { IconButton } from './IconButton';
 
 export default {
-  title: 'IconButton',
+  title: 'UI/IconButton',
   component: IconButton,
 } as ComponentMeta<typeof IconButton>;
 
