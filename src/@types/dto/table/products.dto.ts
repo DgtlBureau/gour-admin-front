@@ -2,6 +2,6 @@ export type ProductTableDto = Readonly<{
   id: number;
   image: string;
   title: string;
-  category: string;
+  categoryId: string;
   price: number;
 }>;

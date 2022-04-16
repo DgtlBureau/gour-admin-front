@@ -11,7 +11,7 @@ export type ProductsTableProps = {
   products: ProductTableDto[];
   categories: {
     label: string;
-    value: string;
+    id: string;
   }[];
   page: number;
   rowsCount: number;
@@ -41,7 +41,7 @@ export function ProductsTable({
       label: 'Все',
     },
     ...categories.map(category => ({
-      id: category.value,
+      id: category.id,
       label: category.label,
     })),
   ];
@@ -49,7 +49,7 @@ export function ProductsTable({
   const changeTab = (id: string) => setSelectedId(id);
 
   const rows = products
-    .filter(product => product.category === selectedId || selectedId === 'all')
+    .filter(product => product.categoryId === selectedId || selectedId === 'all')
     .map((product, i) => ({
       id: i,
       cells: [
@@ -57,7 +57,7 @@ export function ProductsTable({
           <img style={{ height: '100%' }} src={product.image} alt="promotion" />
         </Box>,
         product.id,
-        categories.find(category => category.value === product.category)?.label ||
+        categories.find(category => category.id === product.categoryId)?.label ||
           'нет категории',
         product.price,
         <Box>

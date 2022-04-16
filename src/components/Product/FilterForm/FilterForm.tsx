@@ -8,6 +8,7 @@ import {
 import { ProductCategory } from '../../../@types/dto/product/category.dto';
 import { useGetAllCategoriesQuery } from '../../../api/categoryApi';
 import { ProductFilterFormCheese } from './Cheese';
+import { FILTER } from './filterConstants';
 import { ProductFilterFormMeat } from './Meat';
 
 type Props = {
@@ -28,13 +29,13 @@ export function ProductFilterForm({
 }: Props) {
   return (
     <>
-      {type === 'cheese' && (
+      {type === FILTER.CHEESE && (
         <ProductFilterFormCheese
           defaultValues={cheeseDefaultValues}
           onChange={onChange}
         />
       )}
-      {type === 'meat' && (
+      {type === FILTER.MEAT && (
         <ProductFilterFormMeat defaultValues={meatDefaultValues} onChange={onChange} />
       )}
     </>

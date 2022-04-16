@@ -15,7 +15,6 @@ const Template: ComponentStory<typeof PriceProductForm> = function () {
 
   const submit = (data: ProductPriceFormDto) => {
     setPrices(data);
-    console.log(data);
   };
 
   return <PriceProductForm defaultValues={prices} onChange={submit} />;

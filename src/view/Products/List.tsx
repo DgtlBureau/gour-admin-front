@@ -11,6 +11,7 @@ import { Typography } from '../../components/UI/Typography/Typography';
 import { ProductDeletePopup } from '../../components/Product/DeletePopup/DeletePopup';
 import { eventBus, EventTypes } from '../../packages/EventBus';
 import { NotificationType } from '../../@types/entities/Notification';
+import { useGetAllCategoriesQuery } from '../../api/categoryApi';
 
 type Props = {
   onUploadClick: () => void;
@@ -37,7 +38,12 @@ function ListProductsView() {
   const [deletedProductId, setDeletedProductId] = useState<number | null>(null);
   const [loadedProducts, setLoadedProducts] = useState<ProductTableDto[]>([]);
 
-  const { data, isLoading, isError } = useGetAllProductsQuery(
+  const { data: categories = [] } = useGetAllCategoriesQuery();
+  const {
+    data: productsData,
+    isLoading,
+    isError,
+  } = useGetAllProductsQuery(
     {
       withSimilarProducts: false,
       withMeta: false,
@@ -54,18 +60,17 @@ function ListProductsView() {
   const [fetchDeleteProduct, deleteProductData] = useDeleteProductMutation();
 
   useEffect(() => {
-    if (!data) return;
+    if (!productsData) return;
 
-    const newProduct = data.products.map(product => ({
+    const newProducts = productsData.products.map(product => ({
       id: product.id,
       image: product.images[0]?.small || '',
-      title: (lang === 'ru' ? product.title?.ru : product.title?.en) || '',
-      category:
-        (lang === 'ru' ? product.category?.title?.ru : product.category.title?.en) || '',
+      title: product.title[lang] || '',
+      categoryId: `${product.category?.id}`,
       price: currency === 'rub' ? product.price.rub : product.price.eur,
     }));
-    setLoadedProducts(prevList => [...prevList, ...newProduct]);
-  }, [data?.products]);
+    setLoadedProducts(prevList => [...prevList, ...newProducts]);
+  }, [productsData?.products]);
 
   const to = useTo();
 
@@ -92,8 +97,20 @@ function ListProductsView() {
   const handleDeleteProduct = async () => {
     if (!deletedProductId) return;
     try {
-      await fetchDeleteProduct(deletedProductId);
+      await fetchDeleteProduct(deletedProductId).unwrap();
+      if (deleteProductData.isSuccess) {
+        eventBus.emit(EventTypes.notification, {
+          message: 'Товар успешно удален',
+          type: NotificationType.SUCCESS,
+        });
+      }
     } catch (error) {
+      if (deleteProductData.isError) {
+        eventBus.emit(EventTypes.notification, {
+          message: 'Возникла ошибка',
+          type: NotificationType.DANGER,
+        });
+      }
       console.error(error);
     }
     setDeletedProductId(null);
@@ -108,20 +125,10 @@ function ListProductsView() {
     setPage(0);
   };
 
-  useEffect(() => {
-    if (deleteProductData.isSuccess) {
-      eventBus.emit(EventTypes.notification, {
-        message: 'Товар успешно удален',
-        type: NotificationType.SUCCESS,
-      });
-    }
-    if (deleteProductData.isError) {
-      eventBus.emit(EventTypes.notification, {
-        message: 'Возникла ошибка',
-        type: NotificationType.DANGER,
-      });
-    }
-  }, [deleteProductData]);
+  const formattedCategories = categories.map(category => ({
+    label: category.title?.ru || '',
+    id: `${category.id}`,
+  }));
 
   return (
     <div>
@@ -138,9 +145,9 @@ function ListProductsView() {
       {!isLoading && !isError && (
         <ProductsTable
           products={loadedProducts}
-          categories={[]}
+          categories={formattedCategories}
           page={page}
-          rowsCount={data?.totalCount || 0}
+          rowsCount={productsData?.totalCount || 0}
           rowsPerPage={rowsPerPage}
           onChangePage={handleChangePage}
           onChangeRowsPerPage={handleChangeRowsPerPage}
