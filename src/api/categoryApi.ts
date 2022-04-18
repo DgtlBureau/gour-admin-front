@@ -17,6 +17,16 @@ export const categoryApi = commonApi.injectEndpoints({
         url: Path.CATEGORIES,
         method: 'GET',
       }),
+      providesTags: result => (
+        result ? (
+          [
+            ...result.map(({ id }) => ({ type: 'Category' as const, id })),
+            { type: 'Category', id: 'LIST' },
+          ]
+        ) : (
+          [{ type: 'Category', id: 'LIST' }]
+        )
+      ),
     }),
     createCategory: builder.mutation<void, CategoryCreateDto>({
       query: body => ({
@@ -24,6 +34,7 @@ export const categoryApi = commonApi.injectEndpoints({
         method: 'POST',
         body,
       }),
+      invalidatesTags: [{ type: 'Category', id: 'LIST' }],
     }),
     updateCategory: builder.mutation<void, CategoryUpdateDto>({
       query: ({ id, ...body }) => ({
@@ -31,12 +42,14 @@ export const categoryApi = commonApi.injectEndpoints({
         method: 'PUT',
         body,
       }),
+      invalidatesTags: [{ type: 'Category', id: 'LIST' }],
     }),
     deleteCategory: builder.mutation<void, number>({
       query: id => ({
         url: `${Path.CATEGORIES}/${id}`,
         method: 'DELETE',
       }),
+      invalidatesTags: [{ type: 'Category', id: 'LIST' }],
     }),
   }),
 });

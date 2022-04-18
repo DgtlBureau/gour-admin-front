@@ -59,11 +59,11 @@ function ListCategoriesView() {
   };
 
   const create = (category: CategoryCreateDto) => {
-    createCategory(category);
+    createCategory({ ...category, key: '' });
     closeCreating();
   };
   const edit = (category: CategoryCreateDto) => {
-    editCategory({ id: categoryId, ...category });
+    editCategory({ id: categoryId, ...category, key: '' });
     closeEditing();
   };
   const remove = () => {
