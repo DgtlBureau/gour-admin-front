@@ -11,10 +11,12 @@ export const cityApi = commonApi.injectEndpoints({
             url: 'cities',
           };
         },
-        providesTags: result => (result ? [
-          ...result.map(({ id }) => ({ type: 'City', id } as const)),
-          { type: 'City', id: 'LIST' },
-        ] : [{ type: 'City', id: 'LIST' }]),
+        providesTags: result => (result ?
+          [
+            ...result.map(({ id }) => ({ type: 'City', id } as const)),
+            { type: 'City', id: 'LIST' },
+          ] :
+          [{ type: 'City', id: 'LIST' }]),
       }),
       getCity: builder.query<City, number>({
         query(id) {
@@ -33,9 +35,7 @@ export const cityApi = commonApi.injectEndpoints({
             body: city,
           };
         },
-        invalidatesTags: [
-          { type: 'City', id: 'LIST' },
-        ],
+        invalidatesTags: [{ type: 'City', id: 'LIST' }],
       }),
       updateCity: builder.mutation<City, Partial<City> & Pick<City, 'id'>>({
         query(city) {
@@ -45,9 +45,7 @@ export const cityApi = commonApi.injectEndpoints({
             body: city,
           };
         },
-        invalidatesTags: (r, e, { id }) => [
-          { type: 'City', id },
-        ],
+        invalidatesTags: (r, e, { id }) => [{ type: 'City', id }],
       }),
       deleteCity: builder.mutation<City, number>({
         query(id) {
@@ -56,9 +54,7 @@ export const cityApi = commonApi.injectEndpoints({
             url: `cities/${id}`,
           };
         },
-        invalidatesTags: [
-          { type: 'City', id: 'LIST' },
-        ],
+        invalidatesTags: [{ type: 'City', id: 'LIST' }],
       }),
     };
   },
