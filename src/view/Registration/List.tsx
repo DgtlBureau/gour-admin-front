@@ -6,65 +6,48 @@ import {
   useUpdateClientMutation,
 } from '../../api/clientApi';
 import { Header } from '../../components/Header/Header';
-import {
-  RegistrationsTable,
-  User,
-} from '../../components/RegistrationsTable/RegistrationsTable';
+import { RegistrationsTable, Client } from '../../components/Registrations/Table/Table';
 import { eventBus, EventTypes } from '../../packages/EventBus';
 
 function ListRegistrationsView() {
   const { data: clients = [] } = useGetClientsListQuery();
 
-  const [fetchUpdateClient, updateClientData] = useUpdateClientMutation();
-  const [fetchDeleteClient, deleteClientData] = useDeleteClientMutation();
+  const [fetchUpdateClient] = useUpdateClientMutation();
+  const [fetchDeleteClient] = useDeleteClientMutation();
 
   const handleApproveClient = async (id: number) => {
     try {
-      await fetchUpdateClient({ id, isApproved: true });
+      await fetchUpdateClient({ id, isApproved: true }).unwrap();
+      eventBus.emit(EventTypes.notification, {
+        message: 'Регистрация пользователя подтверждена',
+        type: NotificationType.SUCCESS,
+      });
     } catch (error) {
       console.log(error);
+      eventBus.emit(EventTypes.notification, {
+        message: 'Возникла ошибка',
+        type: NotificationType.DANGER,
+      });
     }
   };
 
   const handleDeleteClient = async (id: number) => {
     try {
-      await fetchDeleteClient(id);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  useEffect(() => {
-    if (updateClientData.isSuccess) {
-      eventBus.emit(EventTypes.notification, {
-        message: 'Регистрация пользователя подтверждена',
-        type: NotificationType.SUCCESS,
-      });
-    }
-    if (updateClientData.isError) {
-      eventBus.emit(EventTypes.notification, {
-        message: 'Возникла ошибка',
-        type: NotificationType.DANGER,
-      });
-    }
-  }, [updateClientData]);
-
-  useEffect(() => {
-    if (deleteClientData.isSuccess) {
+      await fetchDeleteClient(id).unwrap();
       eventBus.emit(EventTypes.notification, {
         message: 'Заявка удалена',
         type: NotificationType.SUCCESS,
       });
-    }
-    if (deleteClientData.isError) {
+    } catch (error) {
+      console.log(error);
       eventBus.emit(EventTypes.notification, {
         message: 'Возникла ошибка',
         type: NotificationType.DANGER,
       });
     }
-  }, [deleteClientData]);
+  };
 
-  const formattedUsers: User[] = clients.map(client => ({
+  const formattedClients: Client[] = clients.map(client => ({
     id: client.id,
     name: client.name,
     phone: client.phone,
@@ -76,7 +59,7 @@ function ListRegistrationsView() {
     <div>
       <Header leftTitle="Подтверждение регистрации" />
       <RegistrationsTable
-        users={formattedUsers}
+        clients={formattedClients}
         onAccept={handleApproveClient}
         onDelete={handleDeleteClient}
       />

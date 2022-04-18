@@ -16,7 +16,7 @@ const Template: ComponentStory<typeof RegistrationsTable> = function (
 export const DefaultRegistrationsTable = Template.bind({});
 
 const props: Partial<RegistrationsTableProps> = {
-  users: [
+  clients: [
     {
       id: 0,
       name: 'Саша',

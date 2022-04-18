@@ -31,7 +31,7 @@ const tabsOptions = [
   },
 ];
 
-export type User = {
+export type Client = {
   id: number;
   name: string;
   phone: string;
@@ -40,13 +40,13 @@ export type User = {
 };
 
 export type RegistrationsTableProps = {
-  users: User[];
+  clients: Client[];
   onAccept: (id: number) => void;
   onDelete: (id: number) => void;
 };
 
 export function RegistrationsTable({
-  users,
+  clients,
   onAccept,
   onDelete,
 }: RegistrationsTableProps) {
@@ -65,20 +65,20 @@ export function RegistrationsTable({
     setPage(0);
   };
 
-  const rows = users
-    .filter(user => user.isApproved === isApproved)
-    .map((user, i) => ({
+  const rows = clients
+    .filter(client => client.isApproved === isApproved)
+    .map((client, i) => ({
       id: i,
       cells: [
-        user.name,
-        user.phone,
-        <Typography sx={sx.role}>{user.role}</Typography>,
+        client.name,
+        client.phone,
+        <Typography sx={sx.role}>{client.role}</Typography>,
         <>
-          <IconButton component="button" onClick={() => onDelete(user.id)}>
+          <IconButton component="button" onClick={() => onDelete(client.id)}>
             <img src={busketIcon} alt="" />
           </IconButton>
           {!isApproved && (
-            <IconButton component="button" onClick={() => onAccept(user.id)}>
+            <IconButton component="button" onClick={() => onAccept(client.id)}>
               <img src={checkIcon} alt="" />
             </IconButton>
           )}
