@@ -23,6 +23,7 @@ import { Tabs } from '../../components/Tabs/Tabs';
 import { Button } from '../../components/UI/Button/Button';
 import { Path } from '../../constants/routes';
 import { useTo } from '../../hooks/useTo';
+import { createProductTabOptions } from './productConstants';
 
 type Props = {
   onSaveHandler: () => void;
@@ -80,12 +81,12 @@ function CreateProductView() {
     },
     priceSettings: {
       discount: 0,
-      iRub: 0,
-      iEuro: 0,
-      oRub: 0,
-      oEuro: 0,
-      eRub: 0,
-      eEuro: 0,
+      rub: 0,
+      eur: 0,
+      companyDiscountRub: 0,
+      companyDiscountEur: 0,
+      collectiveDiscountRub: 0,
+      collectiveDiscountEur: 0,
     },
     productSelect: [],
   });
@@ -105,14 +106,14 @@ function CreateProductView() {
 
     const roleDiscounts = [
       {
-        role: 1,
-        rub: priceSettings.eRub,
-        eur: priceSettings.eEuro,
+        role: 3,
+        rub: priceSettings.companyDiscountRub,
+        eur: priceSettings.companyDiscountEur,
       },
       {
-        role: 2,
-        rub: priceSettings.oRub,
-        eur: priceSettings.oEuro,
+        role: 4,
+        rub: priceSettings.collectiveDiscountRub,
+        eur: priceSettings.collectiveDiscountEur,
       },
     ];
 
@@ -127,8 +128,8 @@ function CreateProductView() {
       },
       images: [],
       price: {
-        rub: priceSettings.iRub,
-        eur: priceSettings.iEuro,
+        rub: priceSettings.rub,
+        eur: priceSettings.eur,
       },
       characteristics: characteristics || {},
       category: categoryId,

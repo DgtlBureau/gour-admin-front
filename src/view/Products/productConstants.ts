@@ -1,4 +1,4 @@
-const createProductTabOptions = [
+export const createProductTabOptions = [
   {
     id: 'settings',
     label: 'Основные настройки',

@@ -1,9 +1,9 @@
 export type ProductPriceFormDto = Readonly<{
   discount?: number;
-  iRub: number;
-  iEuro: number;
-  oRub: number;
-  oEuro: number;
-  eRub: number;
-  eEuro: number;
+  rub: number;
+  eur: number;
+  companyDiscountRub: number;
+  companyDiscountEur: number;
+  collectiveDiscountRub: number;
+  collectiveDiscountEur: number;
 }>;
