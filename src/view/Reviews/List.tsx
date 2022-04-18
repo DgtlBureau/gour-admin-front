@@ -64,40 +64,46 @@ function ListReviewsView() {
     setIsModalOpen(false);
   };
 
-  const handleReject = (commentId: number) => {
-    fetchUpdateProductGrade({
-      id: commentId,
-      isApproved: false,
-    });
-    setIsModalOpen(false);
-  };
-
-  const handleApprove = (commentId: number) => {
-    fetchUpdateProductGrade({
-      id: commentId,
-      isApproved: true,
-    });
-    setIsModalOpen(false);
-  };
-
-  useEffect(() => {
-    if (updateProductGradeData.isSuccess) {
-      const isApproved = updateProductGradeData.data?.isApproved;
-      const message = isApproved ?
-        'Комментарий успешно подтвержден' :
-        'Комментарий отклонен';
+  const handleReject = async (commentId: number) => {
+    try {
+      await fetchUpdateProductGrade({
+        id: commentId,
+        isApproved: false,
+      }).unwrap();
       eventBus.emit(EventTypes.notification, {
-        message,
+        message: 'Комментарий успешно подтвержден',
         type: NotificationType.SUCCESS,
       });
-    }
-    if (updateProductGradeData.isError) {
+    } catch (error) {
+      console.log(error);
       eventBus.emit(EventTypes.notification, {
         message: 'Произошла ошибка',
         type: NotificationType.DANGER,
       });
     }
-  }, [updateProductGradeData]);
+    setIsModalOpen(false);
+  };
+
+  const handleApprove = async (commentId: number) => {
+    try {
+      await fetchUpdateProductGrade({
+        id: commentId,
+        isApproved: true,
+      }).unwrap();
+      eventBus.emit(EventTypes.notification, {
+        message: 'Комментарий отклонен',
+        type: NotificationType.SUCCESS,
+      });
+    } catch (error) {
+      console.log(error);
+      eventBus.emit(EventTypes.notification, {
+        message: 'Произошла ошибка',
+        type: NotificationType.DANGER,
+      });
+    }
+
+    setIsModalOpen(false);
+  };
 
   if (isLoading) return <LinearProgress />;
 
