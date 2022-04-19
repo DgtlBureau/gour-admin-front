@@ -6,5 +6,6 @@ export type CategoryUpdateDto = Readonly<
     title: TranslatableStringDto;
     description: TranslatableTextDto;
     icon: string;
+    key: string;
   }>
 >;
