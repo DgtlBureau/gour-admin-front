@@ -1,5 +1,7 @@
 export enum Options {
   ALL = 'ALL',
-  NOT_APPROVED = 'notApproved',
-  APPROVED = 'approved'
+  NOT_APPROVED = 'NOT_APPROVED',
+  APPROVED = 'APPROVED',
+  ACTUAL = 'ACTUAL',
+  PAST = 'PAST',
 }

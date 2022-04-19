@@ -55,6 +55,7 @@ export function RegistrationsTable({
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
   const isApproved = tabValue !== Options.NOT_APPROVED;
+  const titleList = ['Имя Фамилия', 'Телефон', 'Роль', 'Действие'];
 
   const changeTab = (val: string) => setTabValue(val);
 
@@ -96,11 +97,10 @@ export function RegistrationsTable({
     <Box>
       <Table
         tabs={tabs}
-        rowTitleList={['Имя Фамилия', 'Телефон', 'Роль', 'Действие']}
+        rowTitleList={titleList}
         rows={rows}
         rowsPerPage={rowsPerPage}
         page={page}
-        rowsPerPageOptions={[5, 10, 25]}
         onPageChange={changePage}
         onRowsPerPageChange={changeRowsPerPage}
       />

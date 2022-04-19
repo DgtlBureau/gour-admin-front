@@ -20,13 +20,13 @@ type Props = {
     | 'inherit'
     | undefined;
   children: ReactNode;
-  sx?: SxProps;
   color?: string;
+  sx?: SxProps;
 };
 
 export function Typography({ variant = 'body1', children, color, sx }: Props) {
   return (
-    <MUITypography sx={sx} color={color} variant={variant}>
+    <MUITypography sx={sx} variant={variant} color={color}>
       {children}
     </MUITypography>
   );

@@ -1,10 +1,12 @@
-import { Stack } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
+
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+
 import { Box } from '../../UI/Box/Box';
 import { IconButton } from '../../UI/IconButton/IconButton';
 import { Table } from '../../UI/Table/Table';
+import { Options } from '../../../constants/tabs';
 
 export type ProductsTableProps = {
   products: {
@@ -28,14 +30,16 @@ export function ProductsTable({
   onEdit,
   onRemove,
 }: ProductsTableProps) {
-  const [value, setValue] = useState<string>('all');
+  const [tabValue, setTabValue] = useState<string>(Options.ALL);
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+
+  const titleList = ['Фото', 'Название', 'Категория', 'Цена', 'Действие'];
 
   const tabsOptions = [
     {
-      value: 'all',
-      label: 'Все',
+      value: Options.ALL,
+      label: 'Всё',
     },
     ...categories.map(category => ({
       value: category.value,
@@ -43,7 +47,7 @@ export function ProductsTable({
     })),
   ];
 
-  const changeTab = (val: string) => setValue(val);
+  const changeTab = (val: string) => setTabValue(val);
 
   const changePage = (_: unknown, newPage: number) => setPage(newPage);
 
@@ -53,7 +57,7 @@ export function ProductsTable({
   };
 
   const rows = products
-    .filter(product => product.category === value || value === 'all')
+    .filter(product => product.category === tabValue || tabValue === Options.ALL)
     .map((product, i) => ({
       id: i,
       cells: [
@@ -76,7 +80,7 @@ export function ProductsTable({
     }));
 
   const tabs = {
-    value,
+    value: tabValue,
     options: tabsOptions,
     onChange: changeTab,
   };
@@ -85,11 +89,10 @@ export function ProductsTable({
     <Box>
       <Table
         tabs={tabs}
-        rowTitleList={['Фото', 'Название', 'Категория', 'Цена', 'Действие']}
+        rowTitleList={titleList}
         rows={rows}
         rowsPerPage={rowsPerPage}
         page={page}
-        rowsPerPageOptions={[5, 10, 25]}
         onPageChange={changePage}
         onRowsPerPageChange={changeRowsPerPage}
       />

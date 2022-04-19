@@ -6,33 +6,33 @@ import { Promotion } from '../@types/entities/Promotion';
 
 export const promotionApi = commonApi.injectEndpoints({
   endpoints: builder => ({
-    getById: builder.query<Promotion, number>({
+    getByIdPromotion: builder.query<Promotion, number>({
       query: id => ({
         url: `${Path.STOCKS}/${id}`,
         method: 'GET',
       }),
     }),
-    getAll: builder.query<Promotion[], void>({
+    getAllPromotions: builder.query<Promotion[], void>({
       query: () => ({
         url: Path.STOCKS,
         method: 'GET',
       }),
     }),
-    create: builder.mutation<void, PromotionCreateDto>({
+    createPromotion: builder.mutation<void, PromotionCreateDto>({
       query: body => ({
         url: Path.STOCKS,
         method: 'POST',
         body,
       }),
     }),
-    update: builder.mutation<void, PromotionUpdateDto>({
+    updatePromotion: builder.mutation<void, PromotionUpdateDto>({
       query: ({ id, ...body }) => ({
         url: `${Path.STOCKS}/${id}`,
         method: 'POST',
         body,
       }),
     }),
-    delete: builder.mutation<void, number>({
+    deletePromotion: builder.mutation<void, number>({
       query: id => ({
         url: `${Path.STOCKS}/${id}`,
         method: 'POST',
@@ -42,9 +42,9 @@ export const promotionApi = commonApi.injectEndpoints({
 });
 
 export const {
-  useDeleteMutation,
-  useCreateMutation,
-  useUpdateMutation,
-  useGetAllQuery,
-  useGetByIdQuery,
+  useDeletePromotionMutation,
+  useCreatePromotionMutation,
+  useUpdatePromotionMutation,
+  useGetAllPromotionsQuery,
+  useGetByIdPromotionQuery,
 } = promotionApi;

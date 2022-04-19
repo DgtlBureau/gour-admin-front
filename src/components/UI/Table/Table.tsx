@@ -38,7 +38,7 @@ type Props = {
   rows: Row[];
   page: number;
   rowsPerPage: number;
-  rowsPerPageOptions: number[];
+  rowsPerPageOptions?: number[];
   onPageChange: (event: unknown, newPage: number) => void;
   onRowsPerPageChange: (event: ChangeEvent<HTMLInputElement>) => void;
 };
@@ -48,7 +48,7 @@ export function Table({
   rowTitleList,
   rows,
   rowsPerPage,
-  rowsPerPageOptions,
+  rowsPerPageOptions = [5, 10, 25],
   page,
   onPageChange,
   onRowsPerPageChange,

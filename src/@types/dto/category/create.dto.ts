@@ -5,4 +5,5 @@ export type CategoryCreateDto = Readonly<{
   title: TranslatableStringDto;
   description: TranslatableTextDto;
   icon: string;
+  key: string;
 }>;
