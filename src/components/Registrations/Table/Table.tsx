@@ -31,22 +31,22 @@ const tabsOptions = [
   },
 ];
 
-type User = {
+export type Client = {
   id: number;
   name: string;
   phone: string;
   role: string;
-  isConfirmed: boolean;
+  isApproved: boolean;
 };
 
 export type RegistrationsTableProps = {
-  users: User[];
+  clients: Client[];
   onAccept: (id: number) => void;
   onDelete: (id: number) => void;
 };
 
 export function RegistrationsTable({
-  users,
+  clients,
   onAccept,
   onDelete,
 }: RegistrationsTableProps) {
@@ -54,9 +54,8 @@ export function RegistrationsTable({
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
+  const isApproved = tabValue !== Options.NOT_APPROVED;
   const titleList = ['Имя Фамилия', 'Телефон', 'Роль', 'Действие'];
-
-  const isConfirmed = tabValue !== Options.NOT_APPROVED;
 
   const changeTab = (val: string) => setTabValue(val);
 
@@ -67,21 +66,23 @@ export function RegistrationsTable({
     setPage(0);
   };
 
-  const rows = users
-    .filter(user => user.isConfirmed === isConfirmed)
-    .map((user, i) => ({
+  const rows = clients
+    .filter(client => client.isApproved === isApproved)
+    .map((client, i) => ({
       id: i,
       cells: [
-        user.name,
-        user.phone,
-        <Typography sx={sx.role}>{user.role}</Typography>,
+        client.name,
+        client.phone,
+        <Typography sx={sx.role}>{client.role}</Typography>,
         <>
-          <IconButton component="button" onClick={() => onDelete(user.id)}>
+          <IconButton component="button" onClick={() => onDelete(client.id)}>
             <img src={busketIcon} alt="" />
           </IconButton>
-          <IconButton component="button" onClick={() => onAccept(user.id)}>
-            <img src={checkIcon} alt="" />
-          </IconButton>
+          {!isApproved && (
+            <IconButton component="button" onClick={() => onAccept(client.id)}>
+              <img src={checkIcon} alt="" />
+            </IconButton>
+          )}
         </>,
       ],
     }));
