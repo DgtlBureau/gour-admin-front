@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { Header } from '../../components/Header/Header';
 import { Button } from '../../components/UI/Button/Button';
 import { Path } from '../../constants/routes';
