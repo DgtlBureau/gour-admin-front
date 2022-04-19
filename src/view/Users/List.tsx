@@ -47,7 +47,7 @@ function ListUsersView() {
 
   const to = useTo();
 
-  const goToUserCreate = () => to(Path.USERS, 'create');
+  const toCreating = () => to(Path.USERS, 'create');
 
   const confirmUser = (uuid: string) => console.log(uuid);
 
@@ -66,7 +66,7 @@ function ListUsersView() {
     <div>
       <Header
         leftTitle="Пользователи"
-        rightContent={<RightContent onCreateClick={goToUserCreate} />}
+        rightContent={<RightContent onCreateClick={toCreating} />}
       />
       {
         data ? (

@@ -9,26 +9,37 @@ import { ProductGetListDto } from '../@types/dto/product/get-list.dto';
 
 export const productApi = commonApi.injectEndpoints({
   endpoints: builder => ({
-    getById: builder.query<Product, ProductGetOneDto>({
+    getProductById: builder.query<Product, ProductGetOneDto>({
       query: ({ id, ...params }) => ({
         url: `${Path.GOODS}/${id}`,
         method: 'GET',
         params,
       }),
     }),
-    getAll: builder.query<Product[], ProductGetListDto>({
+    getAllProducts: builder.query<Product[], ProductGetListDto>({
       query: params => ({
         url: `${Path.GOODS}`,
         method: 'GET',
         params,
       }),
+      providesTags: result => (
+        result ? (
+          [
+            ...result.map(({ id }) => ({ type: 'Product' as const, id })),
+            { type: 'Product', id: 'LIST' },
+          ]
+        ) : (
+          [{ type: 'Product', id: 'LIST' }]
+        )
+      ),
     }),
-    create: builder.mutation<void, ProductCreateDto>({
+    createProduct: builder.mutation<void, ProductCreateDto>({
       query: body => ({
         url: Path.GOODS,
         method: 'POST',
         body,
       }),
+      invalidatesTags: [{ type: 'Product', id: 'LIST' }],
     }),
     createGrade: builder.mutation<void, ProductGradeCreateDto>({
       query: body => ({
@@ -36,28 +47,31 @@ export const productApi = commonApi.injectEndpoints({
         method: 'POST',
         body,
       }),
+      invalidatesTags: [{ type: 'Product', id: 'LIST' }],
     }),
-    update: builder.mutation<void, ProductUpdateDto>({
+    updateProduct: builder.mutation<void, ProductUpdateDto>({
       query: ({ id, ...body }) => ({
         url: `${Path.GOODS}/${id}`,
-        method: 'POST',
+        method: 'PUT',
         body,
       }),
+      invalidatesTags: [{ type: 'Product', id: 'LIST' }],
     }),
-    delete: builder.mutation<void, number>({
+    deleteProduct: builder.mutation<void, number>({
       query: id => ({
         url: `${Path.GOODS}/${id}`,
-        method: 'POST',
+        method: 'DELETE',
       }),
+      invalidatesTags: [{ type: 'Product', id: 'LIST' }],
     }),
   }),
 });
 
 export const {
   useCreateGradeMutation,
-  useDeleteMutation,
-  useCreateMutation,
-  useGetByIdQuery,
-  useGetAllQuery,
-  useUpdateMutation,
+  useDeleteProductMutation,
+  useCreateProductMutation,
+  useGetProductByIdQuery,
+  useGetAllProductsQuery,
+  useUpdateProductMutation,
 } = productApi;

@@ -6,4 +6,5 @@ export type Category = {
   title: TranslatableString;
   description: TranslatableText;
   icon: string;
+  key: string;
 };

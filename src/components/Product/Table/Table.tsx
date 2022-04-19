@@ -8,10 +8,12 @@ import { IconButton } from '../../UI/IconButton/IconButton';
 import { Table } from '../../UI/Table/Table';
 import { Options } from '../../../constants/tabs';
 
+import defaultProductImg from '../../../assets/images/default-product-image.svg';
+
 export type ProductsTableProps = {
   products: {
     id: number;
-    image: string;
+    image?: string;
     title: string;
     category: string;
     cost: number;
@@ -61,8 +63,12 @@ export function ProductsTable({
     .map((product, i) => ({
       id: i,
       cells: [
-        <Box sx={{ maxWidth: '144px', height: '60px', overflow: 'hidden' }}>
-          <img style={{ height: '100%' }} src={product.image} alt="promotion" />
+        <Box sx={{ maxWidth: '144px', height: '60px' }}>
+          <img
+            style={{ height: '100%', objectFit: 'cover' }}
+            src={product.image || defaultProductImg}
+            alt="promotion"
+          />
         </Box>,
         product.title,
         categories.find(category => category.value === product.category)?.label ||
