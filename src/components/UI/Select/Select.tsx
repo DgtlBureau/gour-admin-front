@@ -39,6 +39,7 @@ export function Select<V, isMulti extends boolean>({
   isError,
   isMulti,
   label,
+  sx,
   ...props
 }: Props<V, isMulti>) {
   const selectValue = value ?
@@ -49,7 +50,7 @@ export function Select<V, isMulti extends boolean>({
     null;
 
   return (
-    <Box sx={{ marginTop: 15 }}>
+    <Box sx={sx}>
       {
         label && (
           <Typography variant="body2" color="primary">
@@ -72,6 +73,7 @@ export function Select<V, isMulti extends boolean>({
           control: base => ({
             ...base,
             fontFamily: font,
+            backgroundColor: 'inherit',
           }),
           menu: base => ({
             ...base,

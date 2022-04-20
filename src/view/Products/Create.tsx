@@ -80,7 +80,7 @@ function CreateProductView() {
       />
       <Tabs options={tabs} value={tabValue} onChange={tabsHandler} />
       <TabPanel value={tabValue} index="settings">
-        <ProductBasicSettingsForm onSubmit={onSubmitBasicSettingsForm} />
+        <ProductBasicSettingsForm categories={[]} onSubmit={onSubmitBasicSettingsForm} />
       </TabPanel>
       <TabPanel value={tabValue} index="prices">
         {/* <ProductBasicSettingsForm onSubmit={onSaveHandler} /> */}

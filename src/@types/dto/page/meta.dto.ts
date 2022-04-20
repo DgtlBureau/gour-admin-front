@@ -1,4 +1,4 @@
-import { TranslatableStringDto } from './translatable-string.dto';
+import { TranslatableStringDto } from '../translatable-string.dto';
 
 export type PageMetaDto = Readonly<{
   metaTitle?: TranslatableStringDto;

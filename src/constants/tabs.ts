@@ -4,4 +4,10 @@ export enum Options {
   APPROVED = 'APPROVED',
   ACTUAL = 'ACTUAL',
   PAST = 'PAST',
+
+  MAIN = 'MAIN',
+  PURCHASE = 'PURCHASE',
+  PRIVACY = 'PRIVACY',
+  COOKIE = 'COOKIE',
+  AGREEMENT = 'AGREEMENT',
 }

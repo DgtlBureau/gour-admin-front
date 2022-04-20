@@ -14,4 +14,13 @@ const Template: ComponentStory<typeof PagesAboutUsForm> = function (args) {
 };
 
 export const DefaultState = Template.bind({});
-DefaultState.args = {};
+DefaultState.args = {
+  defaultValues: {
+    title: 'sdfsdfsdf',
+    description: 'sdfsdfsdf',
+    isIndexed: true,
+    metaTitle: 'sdfsdf',
+    metaDescription: 'sdfsdfsd',
+    metaKeywords: 'sdfsdf',
+  },
+};
