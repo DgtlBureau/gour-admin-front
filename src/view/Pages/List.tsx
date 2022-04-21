@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { SingleValue } from 'react-select';
 
 import { Box } from '../../components/UI/Box/Box';
 import { Button } from '../../components/UI/Button/Button';
-import { Select } from '../../components/UI/Select/Select';
+import { Select, SelectOption } from '../../components/UI/Select/Select';
 import { Tabs } from '../../components/UI/Tabs/Tabs';
 import { PagesAboutUsForm } from '../../components/AboutUs/PagesForm/PagesForm';
 import { Options } from '../../constants/tabs';
@@ -54,6 +55,8 @@ const tabs = [
   },
 ];
 
+type Language = 'ru' | 'en';
+
 const selectOptions = [
   {
     value: 'ru',
@@ -63,7 +66,7 @@ const selectOptions = [
     value: 'en',
     label: 'English',
   },
-];
+] as { value: Language, label: string }[];
 
 const emptyLanguages = {
   ru: '',
@@ -77,14 +80,14 @@ function ListPagesView() {
   const [updatePage] = useUpdatePageMutation();
 
   const [tabValue, setTabValue] = useState<string>(Options.MAIN);
-  const [language, setLanguage] = useState<'ru' | 'en'>('ru');
+  const [language, setLanguage] = useState<Language>('ru');
   const [defaultValues, setDefaultValues] = useState<PagesAboutFormDto>({} as PagesAboutFormDto);
 
   const currentPage = pages && pages.find(page => page.key === tabValue);
 
   const changeTab = (value: string) => setTabValue(value);
 
-  const selectLanguage = (newValue: any) => setLanguage(newValue?.value);
+  const selectLanguage = (option: SingleValue<SelectOption<Language>>) => option && setLanguage(option.value);
 
   const create = (page: PagesAboutFormDto) => {
     const newPage = {
@@ -179,7 +182,7 @@ function ListPagesView() {
         <Tabs options={tabs} value={tabValue} onChange={changeTab} />
 
         <Box sx={sx.actions}>
-          <Select sx={sx.select} value={language} options={selectOptions} onChange={selectLanguage} />
+          <Select sx={sx.select} value={language} options={selectOptions} onChange={selectLanguage} isMulti={false} />
           <Button type="submit" form="pagesForm" variant="contained" sx={sx.saveBtn}>
             сохранить
           </Button>
