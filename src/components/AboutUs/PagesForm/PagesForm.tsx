@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { FormControlLabel, FormLabel, Grid, Radio } from '@mui/material';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
@@ -18,19 +18,16 @@ export function PagesAboutUsForm({ defaultValues, onSubmit }: Props) {
   const values = useForm<PagesAboutFormDto>({
     resolver: yupResolver(schema),
     mode: 'onBlur',
-    defaultValues: {
-      ...defaultValues,
-      isIndexed: defaultValues?.isIndexed !== undefined ? defaultValues?.isIndexed : true,
-    },
+    defaultValues,
   });
 
-  const submitHandler = (data: PagesAboutFormDto) => {
-    onSubmit(data);
-  };
+  const submit = (data: PagesAboutFormDto) => onSubmit(data);
+
+  useEffect(() => values.reset(defaultValues), [defaultValues]);
 
   return (
     <FormProvider {...values}>
-      <form id="pagesForm" onSubmit={values.handleSubmit(submitHandler)}>
+      <form id="pagesForm" onSubmit={values.handleSubmit(submit)}>
         <Grid container spacing={2}>
           <Grid item xs={8}>
             <HFTextField label="Заголовок" name="title" />

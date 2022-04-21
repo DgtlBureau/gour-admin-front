@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { Box } from '../../components/UI/Box/Box';
 import { Button } from '../../components/UI/Button/Button';
@@ -65,6 +65,11 @@ const selectOptions = [
   },
 ];
 
+const emptyLanguages = {
+  ru: '',
+  en: '',
+};
+
 function ListPagesView() {
   const { data: pages } = useGetAllPagesQuery();
 
@@ -73,69 +78,100 @@ function ListPagesView() {
 
   const [tabValue, setTabValue] = useState<string>(Options.MAIN);
   const [language, setLanguage] = useState<'ru' | 'en'>('ru');
+  const [defaultValues, setDefaultValues] = useState<PagesAboutFormDto>({} as PagesAboutFormDto);
 
-  const currentPage = pages?.find(page => page.key === tabValue);
-
-  const defaultValues = currentPage ? (
-    {
-      title: currentPage.info.title[language],
-      description: currentPage.info.description[language],
-      isIndexed: currentPage.meta.isIndexed,
-      metaTitle: currentPage.meta.metaTitle[language],
-      metaDescription: currentPage.meta.metaDescription[language],
-      metaKeywords: currentPage.meta.metaKeywords[language],
-    }
-  ) : undefined;
+  const currentPage = pages && pages.find(page => page.key === tabValue);
 
   const changeTab = (value: string) => setTabValue(value);
 
   const selectLanguage = (newValue: any) => setLanguage(newValue?.value);
 
-  const getPageBody = (page: PagesAboutFormDto) => ({
-    info: {
-      title: {
-        [language]: page.title,
-      },
-      description: {
-        [language]: page.description,
-      },
-    },
-    meta: {
-      metaTitle: {
-        [language]: page.metaTitle,
-      },
-      metaDescription: {
-        [language]: page.metaDescription,
-      },
-      metaKeywords: {
-        [language]: page.metaKeywords,
-      },
-      isIndexed: page.isIndexed,
-    },
-  });
-
   const create = (page: PagesAboutFormDto) => {
-    const body = getPageBody(page);
     const newPage = {
       key: tabValue,
-      ...body,
+      info: {
+        title: {
+          [language]: page.title,
+        },
+        description: {
+          [language]: page.description,
+        },
+      },
+      meta: {
+        metaTitle: {
+          ...emptyLanguages,
+          [language]: page.metaTitle,
+        },
+        metaDescription: {
+          ...emptyLanguages,
+          [language]: page.metaDescription,
+        },
+        metaKeywords: {
+          ...emptyLanguages,
+          [language]: page.metaKeywords,
+        },
+        isIndexed: !!page.isIndexed,
+      },
     } as PageCreateDto;
 
     createPage(newPage);
   };
 
   const edit = (page: PagesAboutFormDto) => {
-    const body = getPageBody(page);
+    if (!currentPage) return;
+
     const editedPage = {
-      id: currentPage && currentPage.id,
+      id: currentPage.id,
       key: tabValue,
-      ...body,
+      info: {
+        title: {
+          ru: currentPage.info.title.ru,
+          en: currentPage.info.title.en,
+          [language]: page.title,
+        },
+        description: {
+          ru: currentPage.info.title.ru,
+          en: currentPage.info.title.en,
+          [language]: page.description,
+        },
+      },
+      meta: {
+        metaTitle: {
+          ru: currentPage.meta.metaTitle.ru,
+          en: currentPage.meta.metaTitle.en,
+          [language]: page.metaTitle,
+        },
+        metaDescription: {
+          ru: currentPage.meta.metaDescription.ru,
+          en: currentPage.meta.metaDescription.en,
+          [language]: page.metaDescription,
+        },
+        metaKeywords: {
+          ru: currentPage.meta.metaKeywords.ru,
+          en: currentPage.meta.metaKeywords.en,
+          [language]: page.metaKeywords,
+        },
+        isIndexed: !!page.isIndexed,
+      },
     } as PageUpdateDto;
 
     updatePage(editedPage);
   };
 
-  const cancel = () => console.log(defaultValues);
+  const changeDefaultValues = () => {
+    const values = {
+      title: currentPage?.info.title[language] || '',
+      description: currentPage?.info.description[language] || '',
+      isIndexed: currentPage?.meta.isIndexed || true,
+      metaTitle: currentPage?.meta.metaTitle[language] || '',
+      metaDescription: currentPage?.meta.metaDescription[language] || '',
+      metaKeywords: currentPage?.meta.metaKeywords[language] || '',
+    };
+
+    setDefaultValues(values);
+  };
+
+  useEffect(() => changeDefaultValues(), [language, currentPage]);
 
   return (
     <div>
@@ -144,18 +180,17 @@ function ListPagesView() {
 
         <Box sx={sx.actions}>
           <Select sx={sx.select} value={language} options={selectOptions} onChange={selectLanguage} />
-
           <Button type="submit" form="pagesForm" variant="contained" sx={sx.saveBtn}>
             сохранить
-          </Button>
-
-          <Button variant="outlined" onClick={cancel}>
-            отменить
           </Button>
         </Box>
       </Box>
 
-      <PagesAboutUsForm defaultValues={defaultValues} onSubmit={currentPage ? edit : create} />
+      <PagesAboutUsForm
+        key={`${tabValue}/${language}`}
+        defaultValues={defaultValues}
+        onSubmit={currentPage ? edit : create}
+      />
     </div>
   );
 }
