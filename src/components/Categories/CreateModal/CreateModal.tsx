@@ -1,47 +1,66 @@
 import React from 'react';
 
-import { Box } from '@mui/material';
-import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { Typography } from '../../UI/Typography/Typography';
-import { Button } from '../../UI/Button/Button';
 import { TranslatableStringDto } from '../../../@types/dto/translatable-string.dto';
-import schema from './validation';
-import { HFTextField } from '../../HookForm/HFTextField';
+import { CategoryCreateDto } from '../../../@types/dto/category/create.dto';
+import { Category } from '../../../@types/entities/Category';
+import { Modal } from '../../UI/Modal/Modal';
+import { Button } from '../../UI/Button/Button';
+import { CreateCategoryForm } from '../CreateForm/CreateForm';
 
-type Props = {
-  defaultValues: TranslatableStringDto;
-  onSave: SubmitHandler<TranslatableStringDto>;
+export type CreateModalProps = {
+  isOpen: boolean;
+  category?: Category;
+  onSave: (category: CategoryCreateDto) => void;
+  onClose: () => void;
+}
+
+type ModalActionsProps = {
   onCancel: () => void;
 };
 
-export function CreateCategoryModal({ defaultValues, onSave, onCancel }: Props) {
-  const values = useForm<TranslatableStringDto>({
-    resolver: yupResolver(schema),
-    defaultValues,
-  });
+function ModalActions({ onCancel }: ModalActionsProps) {
+  return (
+    <>
+      <Button form="createCategoryForm" type="submit" size="small" sx={{ marginRight: '10px' }}>
+        Сохранить
+      </Button>
+      <Button variant="outlined" size="small" onClick={onCancel}>
+        Отменить
+      </Button>
+    </>
+  );
+}
 
-  const submitHandler = (data: TranslatableStringDto) => {
-    onSave(data);
+export function CreateCategoryModal({
+  isOpen,
+  category,
+  onSave,
+  onClose,
+}: CreateModalProps) {
+  const modalTitle = category ? 'Редактирование категории товара' : 'Добавление категории товара';
+
+  const defaultValues = category ? { ru: category.title.ru, en: category.title.en } : { ru: '', en: '' };
+
+  const save = (title: TranslatableStringDto) => {
+    const newCategory = {
+      title,
+      description: {
+        ru: '',
+        en: '',
+      },
+      icon: '',
+    } as CategoryCreateDto;
+
+    onSave(newCategory);
   };
 
   return (
-    <FormProvider {...values}>
-      <form onSubmit={values.handleSubmit(submitHandler)}>
-        <Box sx={{ maxWidth: '690px' }}>
-          <Typography variant="h6">Добавление категории товара</Typography>
-          <HFTextField sx={{ margin: '10px 0' }} label="Название (Рус)" name="rusName" />
-          <HFTextField label="Название (Eng)" name="engName" />
-          <Box sx={{ margin: '25px 0 0 0' }}>
-            <Button type="submit" sx={{ margin: '0 10px 0 0' }}>
-              Сохранить
-            </Button>
-            <Button variant="outlined" onClick={onCancel}>
-              Отменить
-            </Button>
-          </Box>
-        </Box>
-      </form>
-    </FormProvider>
+    <Modal
+      isOpen={isOpen}
+      title={modalTitle}
+      body={<CreateCategoryForm onSave={save} defaultValues={defaultValues} />}
+      actions={<ModalActions onCancel={onClose} />}
+      onClose={onClose}
+    />
   );
 }

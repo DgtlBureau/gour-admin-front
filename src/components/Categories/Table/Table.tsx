@@ -2,15 +2,11 @@ import React, { ChangeEvent, useState } from 'react';
 
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+
+import { Category } from '../../../@types/entities/Category';
 import { Box } from '../../UI/Box/Box';
 import { Table } from '../../UI/Table/Table';
 import { IconButton } from '../../UI/IconButton/IconButton';
-
-type Category = {
-  id: number;
-  engName: string;
-  rusName: string;
-};
 
 type CategoryActions = {
   onDelete: () => void;
@@ -40,7 +36,7 @@ function RowActions({ onDelete, onEdit }: CategoryActions) {
 
 export function CategoriesTable({ categories, onDelete, onEdit }: Props) {
   const [page, setPage] = useState<number>(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const handleChangePage = (_: unknown, newPage: number) => {
     setPage(newPage);
@@ -53,26 +49,17 @@ export function CategoriesTable({ categories, onDelete, onEdit }: Props) {
     setPage(0);
   };
 
-  const row = categories.map(category => {
-    const cells = Object.keys(category).map(key => {
-      switch (key) {
-        case 'id':
-          return (
-            <RowActions
-              onDelete={() => onDelete(category.id)}
-              onEdit={() => onEdit(category.id)}
-            />
-          );
-        default:
-          return category[key as keyof Category];
-      }
-    });
-
-    return {
-      id: category.id,
-      cells,
-    };
-  });
+  const row = categories.map((category, i) => ({
+    id: i,
+    cells: [
+      category.title.ru,
+      category.title.en,
+      <RowActions
+        onDelete={() => onDelete(category.id)}
+        onEdit={() => onEdit(category.id)}
+      />,
+    ],
+  }));
 
   return (
     <Table

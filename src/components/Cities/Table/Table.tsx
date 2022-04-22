@@ -13,11 +13,7 @@ export type CitiesTableProps = {
   onEdit: (id: number) => void;
 }
 
-export function CitiesTable({
-  cities,
-  onDelete,
-  onEdit,
-}: CitiesTableProps) {
+export function CitiesTable({ cities, onDelete, onEdit }: CitiesTableProps) {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 

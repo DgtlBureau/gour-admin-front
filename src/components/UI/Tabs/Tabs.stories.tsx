@@ -29,10 +29,10 @@ const OPTIONS = [
 ];
 
 const Template: ComponentStory<typeof Tabs> = function () {
-  const [selectedId, setSelectedId] = useState<string>('tab0');
+  const [value, setValue] = useState<string>('tab0');
 
   return (
-    <Tabs value={selectedId} options={OPTIONS} onChange={id => setSelectedId(id)} />
+    <Tabs value={value} options={OPTIONS} onChange={id => setValue(id)} />
   );
 };
 

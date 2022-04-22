@@ -1,6 +1,8 @@
 export enum Options {
   ALL = 'ALL',
-  WAIT_FOR_APPROVE = 'waitForApprove',
-  NOT_APPROVED = 'notApproved',
-  APPROVED = 'approved',
+  WAIT_FOR_APPROVE = 'WAIT_FOR_APPROVE',
+  NOT_APPROVED = 'NOT_APPROVED',
+  APPROVED = 'APPROVED',
+  ACTUAL = 'ACTUAL',
+  PAST = 'PAST',
 }

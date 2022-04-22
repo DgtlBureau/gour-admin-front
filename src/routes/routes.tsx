@@ -24,8 +24,6 @@ import CreateUserView from '../view/Users/Create';
 import EditUserView from '../view/Users/Edit';
 import ListReviewsView from '../view/Reviews/List';
 import ListCitiesView from '../view/Cities/List';
-import CreateCityView from '../view/Cities/Create';
-import EditCityView from '../view/Cities/Edit';
 import ListRegistrationsView from '../view/Registration/List';
 import AuthRestorePasswordView from '../view/Auth/RestorePassword';
 import { Path } from '../constants/routes';
@@ -158,11 +156,7 @@ export function Routing() {
         <PrivateLayout />
       </RequireAuth>
     ),
-    children: [
-      { path: '', element: <ListCitiesView /> },
-      { path: 'create', element: <CreateCityView /> },
-      { path: ':id', element: <EditCityView /> },
-    ],
+    children: [{ path: '', element: <ListCitiesView /> }],
   };
 
   const routing = useRoutes([

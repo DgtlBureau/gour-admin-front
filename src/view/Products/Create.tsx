@@ -14,6 +14,7 @@ import { Tabs } from '../../components/UI/Tabs/Tabs';
 import { Button } from '../../components/UI/Button/Button';
 import { Path } from '../../constants/routes';
 import { useTo } from '../../hooks/useTo';
+import {useGetAllCategoriesQuery} from "../../api/categoryApi";
 
 type Props = {
   onCancelHandler: () => void;
@@ -51,9 +52,10 @@ function CreateProductView() {
       label: 'Рекомендуемые товары',
     },
   ];
+  const {data: categories} = useGetAllCategoriesQuery();
 
   const to = useTo();
-  const [activeTabValue, setActiveTabValue] = useState('settings');
+  const [tabValue, setTabValue] = useState('settings');
 
   const onCancelHandler = () => to(Path.GOODS);
   const onSubmitBasicSettingsForm = (data: ProductBasicSettingsFormDto) => {
@@ -70,7 +72,7 @@ function CreateProductView() {
     console.log(data);
   };
 
-  const tabsHandler = (id: string) => setActiveTabValue(id);
+  const tabsHandler = (val: string) => setTabValue(val);
 
   return (
     <div>
@@ -78,17 +80,20 @@ function CreateProductView() {
         leftTitle="Создание товара"
         rightContent={<RightContent onCancelHandler={onCancelHandler} />}
       />
-      <Tabs options={tabs} value={activeTabValue} onChange={tabsHandler} />
-      <TabPanel value={activeTabValue} index="settings">
-        <ProductBasicSettingsForm onSubmit={onSubmitBasicSettingsForm} />
+      <Tabs options={tabs} value={tabValue} onChange={tabsHandler} />
+      <TabPanel value={tabValue} index="settings">
+        <ProductBasicSettingsForm
+            categories={(categories || []).map(it => ({value: it.id.toString(), label: it.title.ru}))}
+            onSubmit={onSubmitBasicSettingsForm}
+        />
       </TabPanel>
-      <TabPanel value={activeTabValue} index="prices">
+      <TabPanel value={tabValue} index="prices">
         {/* <ProductBasicSettingsForm onSubmit={onSaveHandler} /> */}
       </TabPanel>
-      <TabPanel value={activeTabValue} index="filters">
+      <TabPanel value={tabValue} index="filters">
         <ProductFilterForm type="meat" onSubmit={onSubmitFilterForm} />
       </TabPanel>
-      <TabPanel value={activeTabValue} index="recommended_products">
+      <TabPanel value={tabValue} index="recommended_products">
         <ProductRecommendedForm onSubmit={onSubmitRecommended} />
       </TabPanel>
     </div>
