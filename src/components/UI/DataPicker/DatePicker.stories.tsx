@@ -5,7 +5,7 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { DatePicker } from './DatePicker';
 
 export default {
-  title: 'DataPicker',
+  title: 'UI/DataPicker',
   component: DatePicker,
 } as ComponentMeta<typeof DatePicker>;
 

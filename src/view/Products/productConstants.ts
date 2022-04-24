@@ -1,18 +1,18 @@
 export const createProductTabOptions = [
   {
-    id: 'settings',
+    value: 'settings',
     label: 'Основные настройки',
   },
   {
-    id: 'prices',
+    value: 'prices',
     label: 'Цены',
   },
   {
-    id: 'filters',
+    value: 'filters',
     label: 'Фильтры',
   },
   {
-    id: 'recommended_products',
+    value: 'recommended_products',
     label: 'Рекомендуемые товары',
   },
 ];

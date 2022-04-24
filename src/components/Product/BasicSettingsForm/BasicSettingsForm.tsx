@@ -54,7 +54,7 @@ export function ProductBasicSettingsForm({ onChange, defaultValues, categories }
             <HFTextField name="title" label="Название" />
           </Grid>
           <Grid item md={4}>
-            <HFSelect options={categories} name="category" placeholder="Категория" />
+            <HFSelect options={categories} name="categoryKey" placeholder="Категория" />
           </Grid>
           <Grid item md={12}>
             <HFTextarea name="description" placeholder="Описание" />

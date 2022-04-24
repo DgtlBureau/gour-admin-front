@@ -8,15 +8,15 @@ import { Table } from '../../UI/Table/Table';
 
 const tabsOptions = [
   {
-    id: 'All',
+    value: 'All',
     label: 'Все',
   },
   {
-    id: 'Actual',
+    value: 'Actual',
     label: 'Актуальные',
   },
   {
-    id: 'Past',
+    value: 'Past',
     label: 'Прошедшие',
   },
 ];
@@ -57,14 +57,14 @@ function RowActions({ onDelete, onEdit }: StockActions) {
 
 export function StockTable({ stocksList, onEdit, onDelete }: Props) {
   const [page, setPage] = useState<number>(0);
-  const [selectedTabId, setSelectedTabId] = useState<string>('All');
+  const [value, setValue] = useState<string>('All');
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  const changeTab = (id: string) => setSelectedTabId(id);
+  const changeTab = (val: string) => setValue(val);
 
   const rows = stocksList
     .filter(stock => {
-      switch (selectedTabId) {
+      switch (value) {
         case 'Actual':
           return stock.isActual;
         case 'Past':
@@ -116,7 +116,7 @@ export function StockTable({ stocksList, onEdit, onDelete }: Props) {
   };
 
   const tabs = {
-    selectedId: selectedTabId,
+    value,
     options: tabsOptions,
     onChange: changeTab,
   };

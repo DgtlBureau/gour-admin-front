@@ -11,15 +11,15 @@ import { ProductCreateDto } from '../../@types/dto/product/create.dto';
 import { useGetAllCategoriesQuery } from '../../api/categoryApi';
 import { useCreateProductMutation, useGetAllProductsQuery } from '../../api/productApi';
 import { Header } from '../../components/Header/Header';
-import { PriceProductForm } from '../../components/PriceProductForm/PriceProductForm';
+import { PriceProductForm } from '../../components/Product/PriceForm/PriceForm';
 import { ProductBasicSettingsForm } from '../../components/Product/BasicSettingsForm/BasicSettingsForm';
 import { ProductFilterForm } from '../../components/Product/FilterForm/FilterForm';
 import {
   Product,
   ProductSelectForm,
-} from '../../components/ProductSelectForm/ProductSelectForm';
-import { TabPanel } from '../../components/Tabs/TabPanel';
-import { Tabs } from '../../components/Tabs/Tabs';
+} from '../../components/Product/SelectForm/SelectForm';
+import { TabPanel } from '../../components/UI/Tabs/TabPanel';
+import { Tabs } from '../../components/UI/Tabs/Tabs';
 import { Button } from '../../components/UI/Button/Button';
 import { Path } from '../../constants/routes';
 import { useTo } from '../../hooks/useTo';
@@ -174,6 +174,7 @@ function CreateProductView() {
   const onChangeRecommended = (recommendedIds: number[]) => {
     setFullFormState(prevState => ({ ...prevState, productSelect: recommendedIds }));
   };
+
   const tabsHandler = (id: string) => setActiveTabId(id);
 
   const recommendedProducts: Product[] =
@@ -200,7 +201,7 @@ function CreateProductView() {
       />
       <Tabs
         options={createProductTabOptions}
-        selectedId={activeTabId}
+        value={activeTabId}
         onChange={tabsHandler}
       />
       <TabPanel value={activeTabId} index="settings">

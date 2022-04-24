@@ -5,7 +5,7 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { PhoneInput } from './PhoneInput';
 
 export default {
-  title: 'PhoneInput',
+  title: 'UI/PhoneInput',
   component: PhoneInput,
 } as ComponentMeta<typeof PhoneInput>;
 

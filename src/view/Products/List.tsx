@@ -3,7 +3,7 @@ import { Button } from '../../components/UI/Button/Button';
 import { Path } from '../../constants/routes';
 import { useTo } from '../../hooks/useTo';
 import { Header } from '../../components/Header/Header';
-import { ProductsTable } from '../../components/Product/ProductsTable/ProductsTable';
+import { ProductsTable } from '../../components/Product/Table/Table';
 import { useDeleteProductMutation, useGetAllProductsQuery } from '../../api/productApi';
 import { ProgressLinear } from '../../components/UI/ProgressLinear/ProgressLinear';
 import { ProductTableDto } from '../../@types/dto/table/products.dto';
