@@ -37,7 +37,7 @@ export function ProductsTable({
   onEdit,
   onRemove,
 }: ProductsTableProps) {
-  const [selectedId, setSelectedId] = useState<string>('all');
+  const [selectedId, setSelectedId] = useState<string>(Options.ALL);
 
   const tabsOptions = [
     {
@@ -53,7 +53,7 @@ export function ProductsTable({
   const changeTab = (id: string) => setSelectedId(id);
 
   const rows = products
-    .filter(product => product.categoryId === selectedId || selectedId === 'all')
+    .filter(product => product.categoryId === selectedId || selectedId === Options.ALL)
     .map((product, i) => ({
       id: i,
       cells: [
