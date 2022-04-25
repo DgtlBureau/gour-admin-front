@@ -6,7 +6,7 @@ import { Textarea } from '../UI/Textarea/Textarea';
 type Props = {
   name: string;
   defaultValue?: string;
-  placeholder: string;
+  placeholder?: string;
   label?: string;
   type?: string;
   sx?: CSSProperties;

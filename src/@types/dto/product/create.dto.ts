@@ -1,5 +1,5 @@
 import { ImageDto } from '../image.dto';
-import { PageMetaDto } from '../page-meta.dto';
+import { PageMetaDto } from '../page/meta.dto';
 import { PriceDto } from '../price.dto';
 import { TranslatableStringDto } from '../translatable-string.dto';
 
