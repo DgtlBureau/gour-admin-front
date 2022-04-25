@@ -23,8 +23,6 @@ import ListUsersView from '../view/Users/List';
 import CreateUserView from '../view/Users/Create';
 import EditUserView from '../view/Users/Edit';
 import ListReviewsView from '../view/Reviews/List';
-import CreateReviewView from '../view/Reviews/Create';
-import EditReviewView from '../view/Reviews/Edit';
 import ListCitiesView from '../view/Cities/List';
 import ListRegistrationsView from '../view/Registration/List';
 import AuthRestorePasswordView from '../view/Auth/RestorePassword';
@@ -148,11 +146,7 @@ export function Routing() {
         <PrivateLayout />
       </RequireAuth>
     ),
-    children: [
-      { path: '', element: <ListReviewsView /> },
-      { path: 'create', element: <CreateReviewView /> },
-      { path: ':id', element: <EditReviewView /> },
-    ],
+    children: [{ path: '', element: <ListReviewsView /> }],
   };
 
   const citiesRoutes = {
