@@ -10,5 +10,5 @@ export type ReferralCodeTableProps = {
 };
 
 export function ReferralCodeTable(props: ReferralCodeTableProps) {
-    return <div>ReferralCodeTable</div>
+  return <div>ReferralCodeTable</div>;
 }

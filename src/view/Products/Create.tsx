@@ -14,7 +14,7 @@ import { Tabs } from '../../components/UI/Tabs/Tabs';
 import { Button } from '../../components/UI/Button/Button';
 import { Path } from '../../constants/routes';
 import { useTo } from '../../hooks/useTo';
-import {useGetAllCategoriesQuery} from "../../api/categoryApi";
+import { useGetAllCategoriesQuery } from '../../api/categoryApi';
 
 type Props = {
   onCancelHandler: () => void;
@@ -52,7 +52,7 @@ function CreateProductView() {
       label: 'Рекомендуемые товары',
     },
   ];
-  const {data: categories} = useGetAllCategoriesQuery();
+  const { data: categories } = useGetAllCategoriesQuery();
 
   const to = useTo();
   const [tabValue, setTabValue] = useState('settings');
@@ -83,8 +83,8 @@ function CreateProductView() {
       <Tabs options={tabs} value={tabValue} onChange={tabsHandler} />
       <TabPanel value={tabValue} index="settings">
         <ProductBasicSettingsForm
-            categories={(categories || []).map(it => ({value: it.id.toString(), label: it.title.ru}))}
-            onSubmit={onSubmitBasicSettingsForm}
+          categories={(categories || []).map(it => ({ value: it.id.toString(), label: it.title.ru }))}
+          onSubmit={onSubmitBasicSettingsForm}
         />
       </TabPanel>
       <TabPanel value={tabValue} index="prices">

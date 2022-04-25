@@ -7,5 +7,5 @@ export type ReferralCodeDiscountBlockProps = {
 };
 
 export function ReferralCodeDiscountBlock(props: ReferralCodeDiscountBlockProps) {
-    return <div>ReferralCodeDiscountBlock</div>
+  return <div>ReferralCodeDiscountBlock</div>;
 }

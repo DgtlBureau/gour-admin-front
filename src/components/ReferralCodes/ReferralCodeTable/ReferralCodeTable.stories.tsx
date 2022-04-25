@@ -1,15 +1,18 @@
-import React from "react";
+import React from 'react';
 
-import {ComponentStory, Meta} from "@storybook/react";
-import {ReferralCodeTable, ReferralCodeTableProps} from "./ReferralCodeTable";
+import { ComponentStory, Meta } from '@storybook/react';
+import { ReferralCodeTable, ReferralCodeTableProps } from './ReferralCodeTable';
 
 export default {
-    component: ReferralCodeTable,
-    title: "src/components/ReferralCodes/ReferralCodeTable",
+  component: ReferralCodeTable,
+  title: 'src/components/ReferralCodes/ReferralCodeTable',
 } as Meta;
 
-const Template: ComponentStory<typeof ReferralCodeTable> = (args: ReferralCodeTableProps) =>
-    <ReferralCodeTable {...args} />;
+const Template: ComponentStory<typeof ReferralCodeTable> = function (
+  args: ReferralCodeTableProps
+) {
+  return <ReferralCodeTable {...args} />;
+};
 export const DefaultReferralCodeTable = Template.bind({});
 const props: Partial<ReferralCodeTableProps> = {};
 

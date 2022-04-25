@@ -8,5 +8,5 @@ export type ReferralCodeCreateModalProps = {
 };
 
 export function ReferralCodeCreateModal(props: ReferralCodeCreateModalProps) {
-    return <div>ReferralCodeCreateModal</div>
+  return <div>ReferralCodeCreateModal</div>;
 }

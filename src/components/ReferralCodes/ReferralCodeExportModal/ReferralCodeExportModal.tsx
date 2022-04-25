@@ -11,5 +11,5 @@ export type ReferralCodeExportModalProps = {
 };
 
 export function ReferralCodeExportModal(props: ReferralCodeExportModalProps) {
-    return <div>ReferralCodeExportModal</div>
+  return <div>ReferralCodeExportModal</div>;
 }
