@@ -2,10 +2,14 @@ import React, { useState } from 'react';
 
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+
 import { Box } from '../../UI/Box/Box';
 import { IconButton } from '../../UI/IconButton/IconButton';
 import { Table } from '../../UI/Table/Table';
 import { ProductTableDto } from '../../../@types/dto/table/products.dto';
+import { Options } from '../../../constants/tabs';
+
+const titleList = ['Фото', 'Название', 'Категория', 'Цена', 'Действие'];
 
 export type ProductsTableProps = {
   products: ProductTableDto[];
@@ -37,8 +41,8 @@ export function ProductsTable({
 
   const tabsOptions = [
     {
-      value: 'all',
-      label: 'Все',
+      value: Options.ALL,
+      label: 'Всё',
     },
     ...categories.map(category => ({
       value: category.id,
@@ -81,7 +85,7 @@ export function ProductsTable({
     <Box>
       <Table
         tabs={tabs}
-        rowTitleList={['Фото', 'Название', 'Категория', 'Цена', 'Действие']}
+        rowTitleList={titleList}
         rows={rows}
         rowsPerPage={rowsPerPage}
         page={page}

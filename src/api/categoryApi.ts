@@ -8,7 +8,7 @@ export const categoryApi = commonApi.injectEndpoints({
   endpoints: builder => ({
     getCategoryById: builder.query<Category, number>({
       query: id => ({
-        url: `${Path.CATEGORY}/${id}`,
+        url: `${Path.CATEGORIES}/${id}`,
         method: 'GET',
       }),
     }),
@@ -17,26 +17,39 @@ export const categoryApi = commonApi.injectEndpoints({
         url: Path.CATEGORIES,
         method: 'GET',
       }),
+      providesTags: result => (
+        result ? (
+          [
+            ...result.map(({ id }) => ({ type: 'Category' as const, id })),
+            { type: 'Category', id: 'LIST' },
+          ]
+        ) : (
+          [{ type: 'Category', id: 'LIST' }]
+        )
+      ),
     }),
     createCategory: builder.mutation<void, CategoryCreateDto>({
       query: body => ({
-        url: Path.CATEGORY,
+        url: Path.CATEGORIES,
         method: 'POST',
         body,
       }),
+      invalidatesTags: [{ type: 'Category', id: 'LIST' }],
     }),
     updateCategory: builder.mutation<void, CategoryUpdateDto>({
       query: ({ id, ...body }) => ({
-        url: `${Path.CATEGORY}/${id}`,
-        method: 'POST',
+        url: `${Path.CATEGORIES}/${id}`,
+        method: 'PUT',
         body,
       }),
+      invalidatesTags: [{ type: 'Category', id: 'LIST' }],
     }),
     deleteCategory: builder.mutation<void, number>({
       query: id => ({
-        url: `${Path.CATEGORY}/${id}`,
-        method: 'POST',
+        url: `${Path.CATEGORIES}/${id}`,
+        method: 'DELETE',
       }),
+      invalidatesTags: [{ type: 'Category', id: 'LIST' }],
     }),
   }),
 });

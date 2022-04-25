@@ -13,28 +13,29 @@ export const productGradeApi = commonApi.injectEndpoints({
             params,
           };
         },
-        providesTags: result => (result ? [
-          ...result.map(({ id }) => ({ type: 'ProductGrade', id } as const)),
-          { type: 'ProductGrade', id: 'LIST' },
-        ] : [{ type: 'ProductGrade', id: 'LIST' }]),
+        providesTags: result => (result ?
+          [
+            ...result.map(({ id }) => ({ type: 'ProductGrade', id } as const)),
+            { type: 'ProductGrade', id: 'LIST' },
+          ] :
+          [{ type: 'ProductGrade', id: 'LIST' }]),
       }),
-      updateProductGrade: builder.mutation<ProductGrade, Pick<ProductGrade, 'isApproved'|'id'>>({
-        query(grade: Pick<ProductGrade, 'isApproved'|'id'>) {
+      updateProductGrade: builder.mutation<
+        ProductGrade,
+        Pick<ProductGrade, 'isApproved' | 'id'>
+      >({
+        query(grade: Pick<ProductGrade, 'isApproved' | 'id'>) {
           return {
-            method: 'post',
-            url: `productGrades/${grade.id}/approve`,
+            method: 'put',
+            url: `productGrades/${grade.id}`,
             body: grade,
           };
         },
-        invalidatesTags: [
-          { type: 'ProductGrade', id: 'LIST' },
-        ],
+        invalidatesTags: [{ type: 'ProductGrade', id: 'LIST' }],
       }),
     };
   },
 });
 
-export const {
-  useGetProductGradeListQuery,
-  useUpdateProductGradeMutation,
-} = productGradeApi;
+export const { useGetProductGradeListQuery, useUpdateProductGradeMutation } =
+  productGradeApi;

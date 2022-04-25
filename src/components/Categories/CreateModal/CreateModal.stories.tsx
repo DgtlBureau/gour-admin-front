@@ -14,6 +14,4 @@ const Template: ComponentStory<typeof CreateCategoryModal> = function (args) {
 };
 
 export const DefaultState = Template.bind({});
-DefaultState.args = {
-  defaultValues: { ru: 'Сыр', en: 'Cheese' },
-};
+DefaultState.args = {};

@@ -68,20 +68,16 @@ function ListUsersView() {
         leftTitle="Пользователи"
         rightContent={<RightContent onCreateClick={goToUserCreate} />}
       />
-      {
-        data ? (
-          <UsersTable
-            users={data}
-            categories={categories}
-            onDelete={openDeleteModal}
-            onConfirm={confirmUser}
-          />
-        ) : (
-          <Typography variant="body1">
-            Список пользователей пуст
-          </Typography>
-        )
-      }
+      {data ? (
+        <UsersTable
+          users={data}
+          categories={categories}
+          onDelete={openDeleteModal}
+          onConfirm={confirmUser}
+        />
+      ) : (
+        <Typography variant="body1">Список пользователей пуст</Typography>
+      )}
       <Modal
         title="Удаление пользователя"
         description="Вы действительно хотите удалить пользователя?"
