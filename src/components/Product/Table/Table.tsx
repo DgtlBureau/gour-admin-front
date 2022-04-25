@@ -56,7 +56,7 @@ export function ProductsTable({
         <Box sx={{ maxWidth: '144px', height: '60px', overflow: 'hidden' }}>
           <img style={{ height: '100%' }} src={product.image} alt="promotion" />
         </Box>,
-        product.id,
+        product.title,
         categories.find(category => category.id === product.categoryId)?.label ||
           'нет категории',
         product.price,

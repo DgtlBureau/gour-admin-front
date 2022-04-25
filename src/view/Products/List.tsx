@@ -67,7 +67,7 @@ function ListProductsView() {
       image: product.images[0]?.small || '',
       title: product.title[lang] || '',
       categoryId: `${product.category?.id}`,
-      price: currency === 'rub' ? product.price.rub : product.price.eur,
+      price: product.price[currency] || 0,
     }));
     setLoadedProducts(prevList => [...prevList, ...newProducts]);
   }, [productsData?.products]);

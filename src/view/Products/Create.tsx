@@ -218,7 +218,7 @@ function CreateProductView() {
         />
       </TabPanel>
       <TabPanel value={activeTabId} index="filters">
-        {fullFormState.basicSettings.categoryKey === 'cheese' ? (
+        {fullFormState.basicSettings.categoryKey === 'meat' ? (
           <ProductFilterForm
             type="meat"
             meatDefaultValues={fullFormState.meatCategories}
