@@ -8,9 +8,8 @@ import { Tabs } from '../../components/UI/Tabs/Tabs';
 import { PagesAboutUsForm } from '../../components/AboutUs/PagesForm/PagesForm';
 import { Options } from '../../constants/tabs';
 import { useGetAllPagesQuery, useCreatePageMutation, useUpdatePageMutation } from '../../api/pageApi';
+import { convertPageForCreate, convertPageForUpdate } from './pagesHelper';
 import { PagesAboutFormDto } from '../../@types/dto/form/pages-about.dto';
-import { PageUpdateDto } from '../../@types/dto/page/update.dto';
-import { PageCreateDto } from '../../@types/dto/page/create.dto';
 
 const sx = {
   header: {
@@ -68,11 +67,6 @@ const selectOptions = [
   },
 ] as { value: Language, label: string }[];
 
-const emptyLanguages = {
-  ru: '',
-  en: '',
-};
-
 function ListPagesView() {
   const { data: pages } = useGetAllPagesQuery();
 
@@ -89,78 +83,6 @@ function ListPagesView() {
 
   const selectLanguage = (option: SingleValue<SelectOption<Language>>) => option && setLanguage(option.value);
 
-  const create = (page: PagesAboutFormDto) => {
-    const newPage = {
-      key: tabValue,
-      info: {
-        title: {
-          [language]: page.title,
-        },
-        description: {
-          [language]: page.description,
-        },
-      },
-      meta: {
-        metaTitle: {
-          ...emptyLanguages,
-          [language]: page.metaTitle,
-        },
-        metaDescription: {
-          ...emptyLanguages,
-          [language]: page.metaDescription,
-        },
-        metaKeywords: {
-          ...emptyLanguages,
-          [language]: page.metaKeywords,
-        },
-        isIndexed: !!page.isIndexed,
-      },
-    } as PageCreateDto;
-
-    createPage(newPage);
-  };
-
-  const edit = (page: PagesAboutFormDto) => {
-    if (!currentPage) return;
-
-    const editedPage = {
-      id: currentPage.id,
-      key: tabValue,
-      info: {
-        title: {
-          ru: currentPage.info.title.ru,
-          en: currentPage.info.title.en,
-          [language]: page.title,
-        },
-        description: {
-          ru: currentPage.info.title.ru,
-          en: currentPage.info.title.en,
-          [language]: page.description,
-        },
-      },
-      meta: {
-        metaTitle: {
-          ru: currentPage.meta.metaTitle.ru,
-          en: currentPage.meta.metaTitle.en,
-          [language]: page.metaTitle,
-        },
-        metaDescription: {
-          ru: currentPage.meta.metaDescription.ru,
-          en: currentPage.meta.metaDescription.en,
-          [language]: page.metaDescription,
-        },
-        metaKeywords: {
-          ru: currentPage.meta.metaKeywords.ru,
-          en: currentPage.meta.metaKeywords.en,
-          [language]: page.metaKeywords,
-        },
-        isIndexed: !!page.isIndexed,
-      },
-    } as PageUpdateDto;
-
-    updatePage(editedPage);
-  };
-
   const changeDefaultValues = () => {
     const values = {
       title: currentPage?.info.title[language] || '',
@@ -172,6 +94,17 @@ function ListPagesView() {
     };
 
     setDefaultValues(values);
+  };
+
+  const create = (page: PagesAboutFormDto) => {
+    const newPage = convertPageForCreate(tabValue, page, language);
+    createPage(newPage);
+  };
+
+  const update = (page: PagesAboutFormDto) => {
+    if (!currentPage) return;
+    const updatedPage = convertPageForUpdate(tabValue, currentPage, page, language);
+    updatePage(updatedPage);
   };
 
   useEffect(() => changeDefaultValues(), [language, currentPage]);
@@ -192,7 +125,7 @@ function ListPagesView() {
       <PagesAboutUsForm
         key={`${tabValue}/${language}`}
         defaultValues={defaultValues}
-        onSubmit={currentPage ? edit : create}
+        onSubmit={currentPage ? update : create}
       />
     </div>
   );
