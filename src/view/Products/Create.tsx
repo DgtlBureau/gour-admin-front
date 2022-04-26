@@ -128,8 +128,8 @@ function CreateProductView() {
       },
       images: [],
       price: {
-        rub: priceSettings.rub,
-        eur: priceSettings.eur,
+        rub: +priceSettings.rub,
+        eur: +priceSettings.eur,
       },
       characteristics: characteristics || {},
       category: categoryId,
@@ -153,6 +153,8 @@ function CreateProductView() {
     });
   };
   const onChangePrice = (data: ProductPriceFormDto) => {
+    console.log(data);
+
     setFullFormState(prevState => ({ ...prevState, priceSettings: data }));
   };
   const onChangeFilterForm = (
@@ -183,7 +185,7 @@ function CreateProductView() {
       title: product.title.ru,
       image: product.images[0]?.small || '',
       category: `${product.category?.key}` || '',
-      characteristics: [],
+      characteristics: product.characteristics,
     })) || [];
 
   const selectCategoryOptions = categories.map(category => ({

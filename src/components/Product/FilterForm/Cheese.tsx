@@ -9,6 +9,10 @@ import { HFSelect } from '../../HookForm/HFSelect';
 import { HFRadioGroup } from '../../HookForm/HFRadioGroup';
 import { RadioButton } from '../../UI/RadioButton/RadioButton';
 import { toSelectOptions } from '../../../utils/toSelectOptions';
+import {
+  CHEESE_CHARACTERISTICS,
+  COMMON_CHARACTERISTICS,
+} from '../../../constants/characteristics';
 
 type Props = {
   onChange: (data: ProductFilterCheeseFormDto, type: 'cheese') => void;
@@ -29,23 +33,11 @@ export function ProductFilterFormCheese({ onChange, defaultValues }: Props) {
     values.reset(defaultValues);
   }, [defaultValues]);
 
-  const { categories, crustType, milk, timeOfOrigin, country } = {
-    categories: ['Свежий', 'Мягкий', 'Полутвёрдый', 'Твёрдый', 'Голубой с плесенью'],
-    milk: ['Коровье ', 'Козье', 'Овечье ', 'Смешанный'],
-    crustType: ['С белой плесенью ', 'Мытая ', 'Не указано'],
-    country: ['россия'],
-    timeOfOrigin: [
-      'Без выдержки',
-      'От 1 месяца',
-      'От 3 месяцев',
-      'От 6 месяцев',
-      'От 1 года',
-    ],
-  };
-
   const handleChange = () => {
     onChange(values.getValues(), 'cheese');
   };
+
+  const allCharacteristics = { ...COMMON_CHARACTERISTICS, ...CHEESE_CHARACTERISTICS };
 
   return (
     <FormProvider {...values}>
@@ -54,46 +46,21 @@ export function ProductFilterFormCheese({ onChange, defaultValues }: Props) {
           handleChange();
         }}
       >
-        <HFSelect
-          placeholder="Категория сыра"
-          name="category"
-          label="Категория сыра"
-          options={toSelectOptions(categories)}
-        />
-
-        <HFSelect
-          placeholder="Молоко"
-          label="Молоко"
-          name="milk"
-          options={toSelectOptions(milk)}
-        />
-
-        <FormLabel>Наличие сычужного фермента</FormLabel>
-        <HFRadioGroup name="rennet">
-          <FormControlLabel value control={<RadioButton />} label="Да" />
-          <FormControlLabel value={false} control={<RadioButton />} label="Нет" />
-        </HFRadioGroup>
-
-        <HFSelect
-          placeholder="Страна происхождения"
-          name="country"
-          label="Страна происхождения"
-          options={toSelectOptions(country)}
-        />
-
-        <HFSelect
-          placeholder="Тип корочки"
-          name="crustType"
-          label="Тип корочки"
-          options={toSelectOptions(crustType)}
-        />
-
-        <HFSelect
-          placeholder="Тип корочки"
-          name="timeOfOrigin"
-          label="Тип корочки"
-          options={toSelectOptions(timeOfOrigin)}
-        />
+        {Object.keys(allCharacteristics).map(key => {
+          const characteristic = allCharacteristics[key];
+          const optionValues = characteristic.values.map(value => ({
+            value: value.key,
+            label: value.label.ru,
+          }));
+          return (
+            <HFSelect
+              placeholder={characteristic.label.ru}
+              name={key}
+              label={characteristic.label.ru}
+              options={optionValues}
+            />
+          );
+        })}
       </form>
     </FormProvider>
   );

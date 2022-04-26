@@ -6,9 +6,9 @@ export const isProductSelected = (productId: number, selectedProductIds: number[
 export const filterProductBySelects = (
   product: Product,
   selectsValues: Record<string, string | undefined>
-) => product.characteristics.every(characteristic => {
-  if (!selectsValues[characteristic.key]) return true;
-  return selectsValues[characteristic.key] === characteristic.value;
+) => Object.keys(product.characteristics).every(key => {
+  if (!selectsValues[key]) return true;
+  return selectsValues[key] === product.characteristics[key];
 });
 
 export const filterProductByTab = (

@@ -24,7 +24,7 @@ function createProduct(
     title,
     category,
     image,
-    characteristics,
+    characteristics: {},
   };
 }
 

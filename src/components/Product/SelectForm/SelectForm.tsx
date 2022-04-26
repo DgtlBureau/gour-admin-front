@@ -8,7 +8,8 @@ import { SelectsList } from './SelectsList';
 import { Tabs } from '../../UI/Tabs/Tabs';
 import { isProductSelected, filterByAllParams } from './selectHelper';
 import { ProgressLinear } from '../../UI/ProgressLinear/ProgressLinear';
-import { characteristics } from './productSelectConstants';
+import { ALL_CHARACTERISTICS } from '../../../constants/characteristics';
+import { TranslatableString } from '../../../@types/entities/TranslatableString';
 
 export type Product = {
   id: number;
@@ -17,17 +18,17 @@ export type Product = {
   category: string;
   characteristics: {
     key: string;
-    value: string;
+    value: TranslatableString;
   }[];
 };
 
-export type Characteristic = {
+export type SelectCharacteristic = {
   key: string;
-  label: string;
-  category: string;
+  label: TranslatableString;
+  categoryKey: string;
   values: {
     key: string;
-    label: string;
+    label: TranslatableString;
   }[];
 };
 
@@ -103,9 +104,12 @@ export function ProductSelectForm({
     );
   }, [products, searchQuery, selectedTabKey, selectValues]);
 
-  const filteredCharacteristics = characteristics.filter(
-    characteristic => characteristic.category === selectedTabKey || characteristic.category === 'all'
-  );
+  const filteredCharacteristics = Object.keys(ALL_CHARACTERISTICS)
+    .map(key => ({ ...ALL_CHARACTERISTICS[key], key }))
+    .filter(
+      characteristic => characteristic.categoryKey === selectedTabKey ||
+        characteristic.categoryKey === 'all'
+    );
 
   if (isLoading) {
     return <ProgressLinear variant="query" />;

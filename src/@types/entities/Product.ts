@@ -21,7 +21,7 @@ export type Product = {
   pieces: ProductModification[];
   price: Price;
   roleDiscounts: RoleDiscount[];
-  characteristics: Record<string, string | number>;
+  characteristics: Record<string, string>;
   meta: PageMeta;
 };
 
