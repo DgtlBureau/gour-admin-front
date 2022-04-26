@@ -16,6 +16,7 @@ export const productApi = commonApi.injectEndpoints({
         method: 'GET',
         params,
       }),
+      providesTags: (result, error, { id }) => [{ type: 'Product', id }],
     }),
     getAllProducts: builder.query<
       { products: Product[]; totalCount: number },
@@ -33,6 +34,12 @@ export const productApi = commonApi.injectEndpoints({
           totalCount: +totalCount,
         };
       },
+      providesTags: result => (result ?
+        [
+          ...result.products.map(({ id }) => ({ type: 'Product', id } as const)),
+          { type: 'Product', id: 'LIST' },
+        ] :
+        [{ type: 'Product', id: 'LIST' }]),
     }),
     createProduct: builder.mutation<void, ProductCreateDto>({
       query: body => ({
@@ -40,6 +47,7 @@ export const productApi = commonApi.injectEndpoints({
         method: 'POST',
         body,
       }),
+      invalidatesTags: [{ type: 'Product', id: 'LIST' }],
     }),
     createGrade: builder.mutation<void, ProductGradeCreateDto>({
       query: body => ({
@@ -51,15 +59,17 @@ export const productApi = commonApi.injectEndpoints({
     updateProduct: builder.mutation<void, ProductUpdateDto>({
       query: ({ id, ...body }) => ({
         url: `${Path.GOODS}/${id}`,
-        method: 'POST',
+        method: 'put',
         body,
       }),
+      invalidatesTags: (r, e, { id }) => [{ type: 'Product', id }],
     }),
     deleteProduct: builder.mutation<void, number>({
       query: id => ({
         url: `${Path.GOODS}/${id}`,
-        method: 'DELETE',
+        method: 'delete',
       }),
+      invalidatesTags: [{ type: 'Product', id: 'LIST' }],
     }),
   }),
 });

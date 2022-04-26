@@ -24,6 +24,8 @@ import { Button } from '../../components/UI/Button/Button';
 import { Path } from '../../constants/routes';
 import { useTo } from '../../hooks/useTo';
 import { createProductTabOptions } from './productConstants';
+import { NotificationType } from '../../@types/entities/Notification';
+import { eventBus, EventTypes } from '../../packages/EventBus';
 
 type Props = {
   onSaveHandler: () => void;
@@ -58,7 +60,7 @@ function RightContent({ onSaveHandler, onCancelHandler }: Props) {
 
 function CreateProductView() {
   const [language, setLanguage] = useState<'ru' | 'en'>('ru');
-  const [createProduct] = useCreateProductMutation();
+  const [fetchCreateProduct] = useCreateProductMutation();
   const { data: categories = [] } = useGetAllCategoriesQuery();
 
   const to = useTo();
@@ -137,7 +139,20 @@ function CreateProductView() {
       roleDiscounts,
     };
 
-    await createProduct(newProduct);
+    try {
+      await fetchCreateProduct(newProduct).unwrap();
+      eventBus.emit(EventTypes.notification, {
+        message: 'Товар создан',
+        type: NotificationType.SUCCESS,
+      });
+      to(Path.GOODS, '/');
+    } catch (error) {
+      eventBus.emit(EventTypes.notification, {
+        message: 'Произошла ошибка',
+        type: NotificationType.DANGER,
+      });
+      console.log(error);
+    }
   };
   const handleChangeBasicSettingsForm = (data: ProductBasicSettingsFormDto) => {
     setFullFormState(prevState => {
