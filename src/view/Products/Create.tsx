@@ -169,6 +169,7 @@ function CreateProductView() {
         products={productsData?.products || []}
         fullFormState={fullFormState}
         setFullFormState={setFullFormState}
+        mode="create"
       />
     </div>
   );

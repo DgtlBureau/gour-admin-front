@@ -18,15 +18,22 @@ type Props = {
     value: string;
     label: string;
   }[];
+  mode: 'create' | 'edit';
   onChange: (data: ProductBasicSettingsFormDto) => void;
 };
 
-export function ProductBasicSettingsForm({ onChange, defaultValues, categories }: Props) {
+export function ProductBasicSettingsForm({
+  onChange,
+  defaultValues,
+  categories,
+  mode,
+}: Props) {
   const values = useForm<ProductBasicSettingsFormDto>({
     resolver: yupResolver(schema),
     mode: 'onBlur',
     defaultValues: {
-      isIndexed: defaultValues?.isIndexed !== undefined ? defaultValues?.isIndexed : true,
+      isIndexed:
+        defaultValues?.isIndexed !== undefined ? defaultValues?.isIndexed : false,
     },
   });
 
@@ -53,11 +60,13 @@ export function ProductBasicSettingsForm({ onChange, defaultValues, categories }
           <Grid item md={8}>
             <HFTextField name="title" label="Название" />
           </Grid>
-          <Grid item md={4}>
-            <HFSelect options={categories} name="categoryKey" placeholder="Категория" />
-          </Grid>
+          {mode === 'create' && (
+            <Grid item md={4}>
+              <HFSelect options={categories} name="categoryKey" placeholder="Категория" />
+            </Grid>
+          )}
           <Grid item md={12}>
-            <HFTextarea name="description" placeholder="Описание" />
+            <HFTextarea label="Описание" name="description" placeholder="Описание" />
           </Grid>
           <Grid item md={12}>
             <FormLabel>Индексация</FormLabel>

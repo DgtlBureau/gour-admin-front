@@ -213,6 +213,7 @@ function EditProductView() {
         products={productsList?.products || []}
         fullFormState={fullFormState}
         setFullFormState={setFullFormState}
+        mode="edit"
       />
     </div>
   );

@@ -31,12 +31,14 @@ type ProductFullFormProps = {
   isProductsLoading?: boolean;
   categories: Category[];
   products: Product[];
+  mode: 'create' | 'edit';
   fullFormState: FullFormType;
   setFullFormState: Dispatch<SetStateAction<FullFormType>>;
 };
 
 export function ProductFullForm({
   language,
+  mode,
   activeTabId,
   categories,
   products,
@@ -105,6 +107,7 @@ export function ProductFullForm({
       <TabPanel value={activeTabId} index="settings">
         <ProductBasicSettingsForm
           categories={selectCategoryOptions}
+          mode={mode}
           defaultValues={fullFormState.basicSettings}
           onChange={handleChangeBasicSettingsForm}
         />
