@@ -17,8 +17,6 @@ export function HFDatePicker({ name, defaultValue, ...props }: Props) {
     formState: { errors },
   } = useFormContext();
 
-  console.log(errors);
-
   return (
     <Controller
       name={name}
