@@ -26,18 +26,14 @@ import { useTo } from '../../hooks/useTo';
 import { createProductTabOptions } from './productConstants';
 import { NotificationType } from '../../@types/entities/Notification';
 import { eventBus, EventTypes } from '../../packages/EventBus';
+import {
+  FullFormType,
+  ProductFullForm,
+} from '../../components/Product/FullForm/FullForm';
 
 type Props = {
   onSaveHandler: () => void;
   onCancelHandler: () => void;
-};
-
-type FullFormType = {
-  basicSettings: ProductBasicSettingsFormDto;
-  priceSettings: ProductPriceFormDto;
-  cheeseCategories?: ProductFilterCheeseFormDto;
-  meatCategories?: ProductFilterMeatFormDto;
-  productSelect?: number[];
 };
 
 function RightContent({ onSaveHandler, onCancelHandler }: Props) {
@@ -59,18 +55,10 @@ function RightContent({ onSaveHandler, onCancelHandler }: Props) {
 }
 
 function CreateProductView() {
-  const [language, setLanguage] = useState<'ru' | 'en'>('ru');
-  const [fetchCreateProduct] = useCreateProductMutation();
-  const { data: categories = [] } = useGetAllCategoriesQuery();
-
+  const language = 'ru';
   const to = useTo();
+
   const [activeTabId, setActiveTabId] = useState('settings');
-  const { data: productsData, isLoading: isProductsLoading = false } =
-    useGetAllProductsQuery(
-      { withSimilarProducts: false, withMeta: false, withRoleDiscount: false },
-      { skip: activeTabId !== 'recommended_products' }
-    );
-  const onCancelHandler = () => to(Path.GOODS);
   const [fullFormState, setFullFormState] = useState<FullFormType>({
     basicSettings: {
       categoryKey: 'cheese',
@@ -93,9 +81,15 @@ function CreateProductView() {
     productSelect: [],
   });
 
-  console.log('data ', productsData);
+  const [fetchCreateProduct] = useCreateProductMutation();
+  const { data: categories = [] } = useGetAllCategoriesQuery();
+  const { data: productsData, isLoading: isProductsLoading = false } =
+    useGetAllProductsQuery(
+      { withSimilarProducts: false, withMeta: false, withRoleDiscount: false },
+      { skip: activeTabId !== 'recommended_products' }
+    );
 
-  const onSubmit = async () => {
+  const onSave = async () => {
     const {
       basicSettings,
       priceSettings,
@@ -148,7 +142,7 @@ function CreateProductView() {
         message: 'Товар создан',
         type: NotificationType.SUCCESS,
       });
-      to(Path.GOODS, '/');
+      to(Path.GOODS);
     } catch (error) {
       eventBus.emit(EventTypes.notification, {
         message: 'Произошла ошибка',
@@ -157,108 +151,25 @@ function CreateProductView() {
       console.log(error);
     }
   };
-  const handleChangeBasicSettingsForm = (data: ProductBasicSettingsFormDto) => {
-    setFullFormState(prevState => {
-      if (prevState.basicSettings.categoryKey !== data.categoryKey) {
-        return {
-          ...prevState,
-          basicSettings: data,
-          cheeseCategories: undefined,
-          meatCategories: undefined,
-        };
-      }
-      return { ...prevState, basicSettings: data };
-    });
-  };
-  const onChangePrice = (data: ProductPriceFormDto) => {
-    setFullFormState(prevState => ({ ...prevState, priceSettings: data }));
-  };
-  const onChangeFilterForm = (
-    data: ProductFilterCheeseFormDto | ProductFilterMeatFormDto,
-    type: ProductCategory
-  ) => {
-    if (type === 'cheese') {
-      setFullFormState(prevState => ({
-        ...prevState,
-        cheeseCategories: data as ProductFilterCheeseFormDto,
-      }));
-    } else {
-      setFullFormState(prevState => ({
-        ...prevState,
-        meatCategories: data as ProductFilterMeatFormDto,
-      }));
-    }
-  };
-  const onChangeRecommended = (recommendedIds: number[]) => {
-    setFullFormState(prevState => ({ ...prevState, productSelect: recommendedIds }));
-  };
 
-  const tabsHandler = (id: string) => setActiveTabId(id);
-
-  const recommendedProducts: Product[] =
-    productsData?.products.map(product => ({
-      id: product.id,
-      title: product.title.ru,
-      image: product.images[0]?.small || '',
-      category: `${product.category?.key}` || '',
-      characteristics: product.characteristics,
-    })) || [];
-
-  const selectCategoryOptions = categories.map(category => ({
-    value: category.key,
-    label: category.title.ru,
-  }));
+  const onCancel = () => to(Path.GOODS);
 
   return (
     <div>
       <Header
         leftTitle="Создание товара"
-        rightContent={
-          <RightContent onSaveHandler={onSubmit} onCancelHandler={onCancelHandler} />
-        }
+        rightContent={<RightContent onSaveHandler={onSave} onCancelHandler={onCancel} />}
       />
-      <Tabs
-        options={createProductTabOptions}
-        value={activeTabId}
-        onChange={tabsHandler}
+      <ProductFullForm
+        language={language}
+        activeTabId={activeTabId}
+        isProductsLoading={isProductsLoading}
+        onChangeTab={setActiveTabId}
+        categories={categories}
+        products={productsData?.products || []}
+        fullFormState={fullFormState}
+        setFullFormState={setFullFormState}
       />
-      <TabPanel value={activeTabId} index="settings">
-        <ProductBasicSettingsForm
-          categories={selectCategoryOptions}
-          defaultValues={fullFormState.basicSettings}
-          onChange={handleChangeBasicSettingsForm}
-        />
-      </TabPanel>
-      <TabPanel value={activeTabId} index="prices">
-        <PriceProductForm
-          defaultValues={fullFormState.priceSettings}
-          onChange={onChangePrice}
-        />
-      </TabPanel>
-      <TabPanel value={activeTabId} index="filters">
-        {fullFormState.basicSettings.categoryKey === 'meat' ? (
-          <ProductFilterForm
-            type="meat"
-            meatDefaultValues={fullFormState.meatCategories}
-            onChange={onChangeFilterForm}
-          />
-        ) : (
-          <ProductFilterForm
-            type="cheese"
-            cheeseDefaultValues={fullFormState.cheeseCategories}
-            onChange={onChangeFilterForm}
-          />
-        )}
-      </TabPanel>
-      <TabPanel value={activeTabId} index="recommended_products">
-        <ProductSelectForm
-          isLoading={isProductsLoading}
-          selected={fullFormState.productSelect || []}
-          categories={selectCategoryOptions}
-          products={recommendedProducts}
-          onChange={onChangeRecommended}
-        />
-      </TabPanel>
     </div>
   );
 }

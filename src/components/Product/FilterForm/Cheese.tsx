@@ -1,14 +1,10 @@
 import React, { useEffect } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { FormControlLabel, FormLabel } from '@mui/material';
-import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
 
 import schema from './validationCheese';
 import { ProductFilterCheeseFormDto } from '../../../@types/dto/form/product-filters.dto';
 import { HFSelect } from '../../HookForm/HFSelect';
-import { HFRadioGroup } from '../../HookForm/HFRadioGroup';
-import { RadioButton } from '../../UI/RadioButton/RadioButton';
-import { toSelectOptions } from '../../../utils/toSelectOptions';
 import {
   CHEESE_CHARACTERISTICS,
   COMMON_CHARACTERISTICS,
@@ -25,7 +21,6 @@ export function ProductFilterFormCheese({ onChange, defaultValues }: Props) {
     mode: 'onBlur',
     defaultValues: {
       ...defaultValues,
-      rennet: defaultValues?.rennet !== undefined ? defaultValues.rennet : true,
     },
   });
 

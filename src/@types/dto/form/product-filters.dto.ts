@@ -1,6 +1,6 @@
 export type ProductFilterCheeseFormDto = Readonly<{
   category: string;
-  rennet: boolean;
+  rennet: string;
   milk: string;
   country: string;
   crustType: string;
