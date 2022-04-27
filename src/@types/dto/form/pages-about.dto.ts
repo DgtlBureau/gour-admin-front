@@ -1,9 +1,8 @@
 export type PagesAboutFormDto = Readonly<{
-  pageTitle: string;
+  title: string;
   description: string;
   isIndexed: boolean;
-  title: string;
-  metaTitle: string;
-  keywords: string;
-  metaKeywords: string;
+  metaTitle?: string;
+  metaDescription?: string;
+  metaKeywords?: string;
 }>;

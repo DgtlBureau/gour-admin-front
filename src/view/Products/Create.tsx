@@ -23,6 +23,7 @@ import { Tabs } from '../../components/UI/Tabs/Tabs';
 import { Button } from '../../components/UI/Button/Button';
 import { Path } from '../../constants/routes';
 import { useTo } from '../../hooks/useTo';
+
 import { createProductTabOptions } from './productConstants';
 import { NotificationType } from '../../@types/entities/Notification';
 import { eventBus, EventTypes } from '../../packages/EventBus';

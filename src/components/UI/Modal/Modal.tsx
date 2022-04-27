@@ -34,6 +34,7 @@ export type ModalProps = {
   actions?: ReactNode;
   acceptText?: string;
   closeText?: string;
+  formId?: string;
   onAccept?: () => void;
   onClose: () => void;
 }
@@ -46,6 +47,7 @@ export function Modal({
   actions,
   acceptText = 'Принять',
   closeText = 'Отменить',
+  formId,
   onAccept,
   onClose,
 }: ModalProps) {
@@ -65,8 +67,21 @@ export function Modal({
             actions || (
               <>
                 {
-                  !!onAccept && (
-                    <Button size="small" sx={sx.acceptBtn} onClick={onAccept}>
+                  onAccept ? (
+                    <Button
+                      size="small"
+                      sx={sx.acceptBtn}
+                      onClick={onAccept}
+                    >
+                      {acceptText}
+                    </Button>
+                  ) : !!formId && (
+                    <Button
+                      type="submit"
+                      form={formId}
+                      size="small"
+                      sx={sx.acceptBtn}
+                    >
                       {acceptText}
                     </Button>
                   )

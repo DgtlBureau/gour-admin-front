@@ -7,6 +7,7 @@ import authSlice from './slices/authSlice';
 import { userApi } from '../api/userApi';
 import { cityApi } from '../api/cityApi';
 import { productGradeApi } from '../api/productGradeApi';
+import { pageApi } from '../api/pageApi';
 
 export const rootReducer = combineReducers({
   auth: authSlice,
@@ -17,4 +18,5 @@ export const rootReducer = combineReducers({
   [promotionApi.reducerPath]: promotionApi.reducer,
   [cityApi.reducerPath]: cityApi.reducer,
   [productGradeApi.reducerPath]: productGradeApi.reducer,
+  [pageApi.reducerPath]: pageApi.reducer,
 });

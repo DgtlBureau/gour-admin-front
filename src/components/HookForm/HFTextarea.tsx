@@ -7,7 +7,7 @@ import { TextField } from '../UI/TextField/TextField';
 type Props = {
   name: string;
   defaultValue?: string;
-  placeholder: string;
+  placeholder?: string;
   label?: string;
   type?: string;
   sx?: CSSProperties;

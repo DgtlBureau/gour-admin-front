@@ -1,41 +1,39 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { FormControlLabel, FormLabel, Grid, Radio } from '@mui/material';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Button } from '../../UI/Button/Button';
 import { HFTextField } from '../../HookForm/HFTextField';
+import { HFTextarea } from '../../HookForm/HFTextarea';
 import schema from './validation';
 import { HFRadioGroup } from '../../HookForm/HFRadioGroup';
 import { PagesAboutFormDto } from '../../../@types/dto/form/pages-about.dto';
 
 type Props = {
-  defaultValues: PagesAboutFormDto;
+  defaultValues?: PagesAboutFormDto;
   onSubmit: SubmitHandler<PagesAboutFormDto>;
-  onCancel: () => void;
 };
 
-export function PagesAboutUsForm({ defaultValues, onSubmit, onCancel }: Props) {
+export function PagesAboutUsForm({ defaultValues, onSubmit }: Props) {
   const values = useForm<PagesAboutFormDto>({
     resolver: yupResolver(schema),
-    defaultValues: {
-      isIndexed: defaultValues?.isIndexed !== undefined ? defaultValues?.isIndexed : true,
-    },
+    mode: 'onBlur',
+    defaultValues,
   });
 
-  const submitHandler = (data: PagesAboutFormDto) => {
-    onSubmit(data);
-  };
+  const submit = (data: PagesAboutFormDto) => onSubmit(data);
+
+  useEffect(() => values.reset(defaultValues), [defaultValues]);
 
   return (
     <FormProvider {...values}>
-      <form onSubmit={values.handleSubmit(submitHandler)}>
+      <form id="pagesForm" onSubmit={values.handleSubmit(submit)}>
         <Grid container spacing={2}>
           <Grid item xs={8}>
             <HFTextField label="Заголовок" name="title" />
           </Grid>
           <Grid item xs={12}>
-            <HFTextField label="Описание" name="description" multiline />
+            <HFTextarea label="Описание" name="description" />
           </Grid>
           <Grid item xs={8}>
             <FormLabel>Индексация</FormLabel>
@@ -55,14 +53,6 @@ export function PagesAboutUsForm({ defaultValues, onSubmit, onCancel }: Props) {
             <Grid item xs={4}>
               <HFTextField label="metaKeywords" name="metaKeywords" />
             </Grid>
-          </Grid>
-          <Grid item xs={12}>
-            <Button type="submit" sx={{ margin: '0 10px 0 0' }}>
-              Сохранить
-            </Button>
-            <Button variant="outlined" onClick={onCancel}>
-              Отменить
-            </Button>
           </Grid>
         </Grid>
       </form>
