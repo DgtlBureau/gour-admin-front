@@ -92,6 +92,9 @@ function CreateProductView() {
     },
     productSelect: [],
   });
+
+  console.log('data ', productsData);
+
   const onSubmit = async () => {
     const {
       basicSettings,
@@ -168,8 +171,6 @@ function CreateProductView() {
     });
   };
   const onChangePrice = (data: ProductPriceFormDto) => {
-    console.log(data);
-
     setFullFormState(prevState => ({ ...prevState, priceSettings: data }));
   };
   const onChangeFilterForm = (

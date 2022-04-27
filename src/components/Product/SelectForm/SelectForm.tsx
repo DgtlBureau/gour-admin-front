@@ -16,10 +16,7 @@ export type Product = {
   title: string;
   image: string;
   category: string;
-  characteristics: {
-    key: string;
-    value: TranslatableString;
-  }[];
+  characteristics: { [key in string]: string };
 };
 
 export type SelectCharacteristic = {

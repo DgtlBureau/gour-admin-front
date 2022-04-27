@@ -36,41 +36,30 @@ function ListProductsView() {
   const [page, setPage] = useState<number>(0);
   const [rowsPerPage, setRowsPerPage] = useState<number>(5);
   const [deletedProductId, setDeletedProductId] = useState<number | null>(null);
-  const [loadedProducts, setLoadedProducts] = useState<ProductTableDto[]>([]);
 
   const { data: categories = [] } = useGetAllCategoriesQuery();
   const {
     data: productsData,
     isLoading,
     isError,
-  } = useGetAllProductsQuery(
-    {
-      withSimilarProducts: false,
-      withMeta: false,
-      withRoleDiscount: false,
-      length: rowsPerPage,
-      offset: rowsPerPage * page,
-    },
-    {
-      // TODO: привести в порядок пагинацию
-      skip: loadedProducts.length >= rowsPerPage * (page + 1),
-    }
-  );
+  } = useGetAllProductsQuery({
+    withSimilarProducts: false,
+    withMeta: false,
+    withRoleDiscount: false,
+    length: rowsPerPage,
+    offset: rowsPerPage * page,
+  });
 
   const [fetchDeleteProduct, deleteProductData] = useDeleteProductMutation();
 
-  useEffect(() => {
-    if (!productsData) return;
-
-    const newProducts = productsData.products.map(product => ({
+  const newProductsList =
+    productsData?.products?.map(product => ({
       id: product.id,
       image: product.images[0]?.small || '',
       title: product.title[lang] || '',
       categoryId: `${product.category?.id}`,
       price: product.price[currency] || 0,
-    }));
-    setLoadedProducts(prevList => [...prevList, ...newProducts]);
-  }, [productsData?.products]);
+    })) || [];
 
   const to = useTo();
 
@@ -144,7 +133,7 @@ function ListProductsView() {
       )}
       {!isLoading && !isError && (
         <ProductsTable
-          products={loadedProducts}
+          products={newProductsList}
           categories={formattedCategories}
           page={page}
           rowsCount={productsData?.totalCount || 0}
