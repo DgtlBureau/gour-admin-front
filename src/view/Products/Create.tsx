@@ -1,29 +1,52 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { FieldError } from 'react-hook-form';
 import { ProductBasicSettingsFormDto } from '../../@types/dto/form/product-basic-settings.dto';
 import {
   ProductFilterCheeseFormDto,
   ProductFilterMeatFormDto,
 } from '../../@types/dto/form/product-filters.dto';
-import { ProductRecommendedFormDto } from '../../@types/dto/form/product-recommended.dto';
+import { ProductPriceFormDto } from '../../@types/dto/form/product-price.dto';
+import { ProductCategory } from '../../@types/dto/product/category.dto';
+import { ProductCreateDto } from '../../@types/dto/product/create.dto';
+import { useGetAllCategoriesQuery } from '../../api/categoryApi';
+import { useCreateProductMutation, useGetAllProductsQuery } from '../../api/productApi';
 import { Header } from '../../components/Header/Header';
+import { PriceProductForm } from '../../components/Product/PriceForm/PriceForm';
 import { ProductBasicSettingsForm } from '../../components/Product/BasicSettingsForm/BasicSettingsForm';
 import { ProductFilterForm } from '../../components/Product/FilterForm/FilterForm';
-import { ProductRecommendedForm } from '../../components/Product/RecommendedForm/RecommendedForm';
+import {
+  Product,
+  ProductSelectForm,
+} from '../../components/Product/SelectForm/SelectForm';
 import { TabPanel } from '../../components/UI/Tabs/TabPanel';
 import { Tabs } from '../../components/UI/Tabs/Tabs';
 import { Button } from '../../components/UI/Button/Button';
 import { Path } from '../../constants/routes';
 import { useTo } from '../../hooks/useTo';
-import { useGetAllCategoriesQuery } from '../../api/categoryApi';
+
+import { createProductTabOptions } from './productConstants';
+import { NotificationType } from '../../@types/entities/Notification';
+import { eventBus, EventTypes } from '../../packages/EventBus';
+import {
+  FullFormType,
+  ProductFullForm,
+} from '../../components/Product/FullForm/FullForm';
+import { useGetClientRolesListQuery } from '../../api/clientRoleApi';
 
 type Props = {
+  onSaveHandler: () => void;
   onCancelHandler: () => void;
 };
 
-function RightContent({ onCancelHandler }: Props) {
+function RightContent({ onSaveHandler, onCancelHandler }: Props) {
   return (
     <>
-      <Button type="submit" sx={{ marginRight: '10px' }}>
+      <Button
+        type="submit"
+        form="productPriceForm"
+        onClick={onSaveHandler}
+        sx={{ marginRight: '10px' }}
+      >
         Сохранить
       </Button>
       <Button variant="outlined" onClick={onCancelHandler}>
@@ -34,68 +57,131 @@ function RightContent({ onCancelHandler }: Props) {
 }
 
 function CreateProductView() {
-  const tabs = [
-    {
-      value: 'settings',
-      label: 'Основные настройки',
-    },
-    {
-      value: 'prices',
-      label: 'Цены',
-    },
-    {
-      value: 'filters',
-      label: 'Фильтры',
-    },
-    {
-      value: 'recommended_products',
-      label: 'Рекомендуемые товары',
-    },
-  ];
-  const { data: categories } = useGetAllCategoriesQuery();
-
+  const language = 'ru';
   const to = useTo();
-  const [tabValue, setTabValue] = useState('settings');
 
-  const onCancelHandler = () => to(Path.GOODS);
-  const onSubmitBasicSettingsForm = (data: ProductBasicSettingsFormDto) => {
-    console.log(data);
+  const { data: clientRolesList = [] } = useGetClientRolesListQuery();
+
+  const roles = clientRolesList.filter(
+    role => role.key === 'COMPANY' || role.key === 'COLLECTIVE_PURCHASE'
+  );
+
+  const [activeTabId, setActiveTabId] = useState('settings');
+  const [fullFormState, setFullFormState] = useState<FullFormType>({
+    basicSettings: {
+      categoryKey: 'cheese',
+      title: '',
+      description: '',
+      metaTitle: '',
+      metaDescription: '',
+      isIndexed: true,
+      metaKeywords: '',
+    },
+    priceSettings: {
+      discount: 0,
+      rub: 0,
+      eur: 0,
+      companyDiscountRub: 0,
+      companyDiscountEur: 0,
+      collectiveDiscountRub: 0,
+      collectiveDiscountEur: 0,
+    },
+    productSelect: [],
+  });
+
+  const [fetchCreateProduct] = useCreateProductMutation();
+  const { data: categories = [] } = useGetAllCategoriesQuery();
+  const { data: productsData, isLoading: isProductsLoading = false } =
+    useGetAllProductsQuery(
+      { withSimilarProducts: false, withMeta: false, withRoleDiscount: false },
+      { skip: activeTabId !== 'recommended_products' }
+    );
+
+  const onSave = async () => {
+    const {
+      basicSettings,
+      priceSettings,
+      cheeseCategories,
+      meatCategories,
+      productSelect,
+    } = fullFormState;
+    const characteristics =
+      basicSettings.categoryKey === 'cheese' ? cheeseCategories : meatCategories;
+
+    const categoryId =
+      categories.find(category => category.key === basicSettings.categoryKey)?.id || 0;
+
+    const roleDiscounts =
+      roles.map(role => {
+        if (role.key === 'COMPANY') {
+          return {
+            role: role.id,
+            rub: priceSettings.companyDiscountRub,
+            eur: priceSettings.companyDiscountEur,
+          };
+        }
+        return {
+          role: role.id,
+          rub: priceSettings.collectiveDiscountRub,
+          eur: priceSettings.collectiveDiscountEur,
+        };
+      }) || [];
+
+    const newProduct: ProductCreateDto = {
+      title: {
+        en: '',
+        ru: basicSettings.title,
+      },
+      description: {
+        en: '',
+        ru: basicSettings.description,
+      },
+      images: [],
+      price: {
+        rub: +priceSettings.rub,
+        eur: +priceSettings.eur,
+      },
+      characteristics: characteristics || {},
+      category: categoryId,
+      similarProducts: productSelect || [],
+      roleDiscounts,
+    };
+
+    try {
+      await fetchCreateProduct(newProduct).unwrap();
+      eventBus.emit(EventTypes.notification, {
+        message: 'Товар создан',
+        type: NotificationType.SUCCESS,
+      });
+      to(Path.GOODS);
+    } catch (error) {
+      eventBus.emit(EventTypes.notification, {
+        message: 'Произошла ошибка',
+        type: NotificationType.DANGER,
+      });
+      console.log(error);
+    }
   };
 
-  const onSubmitFilterForm = (
-    data: ProductFilterCheeseFormDto | ProductFilterMeatFormDto
-  ) => {
-    console.log(data);
-  };
-
-  const onSubmitRecommended = (data: ProductRecommendedFormDto) => {
-    console.log(data);
-  };
-
-  const tabsHandler = (val: string) => setTabValue(val);
+  const onCancel = () => to(Path.GOODS);
 
   return (
     <div>
       <Header
         leftTitle="Создание товара"
-        rightContent={<RightContent onCancelHandler={onCancelHandler} />}
+        rightContent={<RightContent onSaveHandler={onSave} onCancelHandler={onCancel} />}
       />
-      <Tabs options={tabs} value={tabValue} onChange={tabsHandler} />
-      <TabPanel value={tabValue} index="settings">
-        <ProductBasicSettingsForm
-          categories={(categories || []).map(it => ({ value: it.id.toString(), label: it.title.ru }))}
-          onSubmit={onSubmitBasicSettingsForm}
-        />
-      </TabPanel>
-      <TabPanel value={tabValue} index="prices">
-        {/* <ProductBasicSettingsForm onSubmit={onSaveHandler} /> */}
-      </TabPanel>
-      <TabPanel value={tabValue} index="filters">
-        <ProductFilterForm type="meat" onSubmit={onSubmitFilterForm} />
-      </TabPanel>
-      <TabPanel value={tabValue} index="recommended_products">
-        <ProductRecommendedForm onSubmit={onSubmitRecommended} />
-      </TabPanel>
+      <ProductFullForm
+        language={language}
+        activeTabId={activeTabId}
+        isProductsLoading={isProductsLoading}
+        onChangeTab={setActiveTabId}
+        categories={categories}
+        products={productsData?.products || []}
+        fullFormState={fullFormState}
+        setFullFormState={setFullFormState}
+        mode="create"
+      />
     </div>
   );
 }

@@ -1,6 +1,7 @@
 export type ProductBasicSettingsFormDto = Readonly<{
-  category: 'meat' | 'cheese';
+  categoryKey: string;
   title: string;
+  description: string;
   metaTitle: string;
   firstImage?: string;
   secondImage?: string;

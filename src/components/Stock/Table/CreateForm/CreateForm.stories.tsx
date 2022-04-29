@@ -24,7 +24,7 @@ function createProduct(
     title,
     category,
     image,
-    characteristics,
+    characteristics: {},
   };
 }
 
@@ -136,89 +136,6 @@ DefaultState.args = {
     {
       value: 'meat',
       label: 'Мясо',
-    },
-  ],
-  characteristics: [
-    {
-      key: 'milk',
-      label: 'Молоко',
-      category: 'cheese',
-      values: [
-        {
-          key: 'goatsMilk',
-          label: 'Козье молоко',
-        },
-        {
-          key: 'cowsMilk',
-          label: 'Коровье молоко',
-        },
-      ],
-    },
-    {
-      key: 'cheeseCategory',
-      label: 'Категория сыра',
-      category: 'cheese',
-      values: [
-        {
-          key: 'hardCheeses',
-          label: 'Твердые',
-        },
-        {
-          key: 'freshCheeses',
-          label: 'Свежие',
-        },
-        {
-          key: 'softCheeses',
-          label: 'Мягкие сыры',
-        },
-        {
-          key: 'pickledCheeses',
-          label: 'Рассольные сыры',
-        },
-      ],
-    },
-
-    {
-      key: 'meatCategory',
-      label: 'Категория мяса',
-      category: 'meat',
-      values: [
-        {
-          key: 'A',
-          label: 'А',
-        },
-        {
-          key: 'B',
-          label: 'Б',
-        },
-        {
-          key: 'V',
-          label: 'В',
-        },
-        {
-          key: 'G',
-          label: 'Г',
-        },
-      ],
-    },
-    {
-      key: 'country',
-      label: 'Страна происхождения',
-      category: 'all',
-      values: [
-        {
-          key: 'Russia',
-          label: 'Россия',
-        },
-        {
-          key: 'Spain',
-          label: 'Испания',
-        },
-        {
-          key: 'Sweden',
-          label: 'Швеция',
-        },
-      ],
     },
   ],
 };

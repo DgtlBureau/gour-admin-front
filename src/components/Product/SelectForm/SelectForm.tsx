@@ -7,37 +7,37 @@ import { ProductSelectList } from './CardsList';
 import { SelectsList } from './SelectsList';
 import { Tabs } from '../../UI/Tabs/Tabs';
 import { isProductSelected, filterByAllParams } from './selectHelper';
+import { ProgressLinear } from '../../UI/ProgressLinear/ProgressLinear';
+import { ALL_CHARACTERISTICS } from '../../../constants/characteristics';
+import { TranslatableString } from '../../../@types/entities/TranslatableString';
 
 export type Product = {
   id: number;
   title: string;
   image: string;
   category: string;
-  characteristics: {
-    key: string;
-    value: string;
-  }[];
+  characteristics: { [key in string]: string };
 };
 
-export type Characteristic = {
+export type SelectCharacteristic = {
   key: string;
-  label: string;
-  category: string;
+  label: TranslatableString;
+  categoryKey: string;
   values: {
     key: string;
-    label: string;
+    label: TranslatableString;
   }[];
 };
 
 export type ProductSelectFormProps = {
   selected: number[];
   categories: {
-    label: string;
     value: string;
+    label: string;
   }[];
-  characteristics: Characteristic[];
   products: Product[];
   onChange(selected: number[]): void;
+  isLoading?: boolean;
 };
 
 const TAB_ALL = {
@@ -56,8 +56,8 @@ export function ProductSelectForm({
   selected,
   products,
   categories,
-  characteristics,
   onChange,
+  isLoading,
 }: ProductSelectFormProps) {
   const [selectedProductIds, setSelectedProductIds] = useState<number[]>(selected);
   const [searchQuery, setSearchQuery] = useState<string>('');
@@ -78,6 +78,10 @@ export function ProductSelectForm({
     })),
   ];
 
+  useEffect(() => {
+    onChange(selectedProductIds);
+  }, [selectedProductIds]);
+
   const handleProductClick = (productId: number) => {
     if (isProductSelected(productId, selectedProductIds)) {
       const newSelectedProductsList = selectedProductIds.filter(id => id !== productId);
@@ -97,9 +101,16 @@ export function ProductSelectForm({
     );
   }, [products, searchQuery, selectedTabKey, selectValues]);
 
-  const filteredCharacteristics = characteristics.filter(
-    characteristic => characteristic.category === selectedTabKey || characteristic.category === 'all'
-  );
+  const filteredCharacteristics = Object.keys(ALL_CHARACTERISTICS)
+    .map(key => ({ ...ALL_CHARACTERISTICS[key], key }))
+    .filter(
+      characteristic => characteristic.categoryKey === selectedTabKey ||
+        characteristic.categoryKey === 'all'
+    );
+
+  if (isLoading) {
+    return <ProgressLinear variant="query" />;
+  }
 
   return (
     <Stack>

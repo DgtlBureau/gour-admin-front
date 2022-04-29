@@ -1,23 +1,16 @@
 import * as yup from 'yup';
 
-const defaultValidation = yup.string().required('Укажите цену');
+const defaultValidation = yup.number().typeError('Введите число!');
 
 export default yup.object().shape({
-  iRub: defaultValidation,
-  iEuro: defaultValidation,
-  iDollar: defaultValidation,
-  iYuan: defaultValidation,
-  iDirhams: defaultValidation,
+  discount: yup.string(),
+
+  iRub: defaultValidation.min(1, 'Укажите цену'),
+  iEuro: defaultValidation.min(1, 'Укажите цену'),
 
   oRub: defaultValidation,
   oEuro: defaultValidation,
-  oDollar: defaultValidation,
-  oYuan: defaultValidation,
-  oDirhams: defaultValidation,
 
   eRub: defaultValidation,
   eEuro: defaultValidation,
-  eDollar: defaultValidation,
-  eYuan: defaultValidation,
-  eDirhams: defaultValidation,
 });

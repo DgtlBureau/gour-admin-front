@@ -10,7 +10,7 @@ export default {
 } as Meta;
 
 const defaultValues = {
-  category: 'cheese',
+  categoryKey: 'cheese',
   title: '',
   metaTitle: '',
   metaDescription: '',
@@ -29,12 +29,12 @@ const categories = [
   },
 ];
 
-const Template: ComponentStory<typeof ProductBasicSettingsForm> = function () {
+const Template: ComponentStory<typeof ProductBasicSettingsForm> = function (args) {
   return (
     <ProductBasicSettingsForm
+      {...args}
       categories={categories}
       defaultValues={defaultValues}
-      onSubmit={data => console.log(data)}
     />
   );
 };

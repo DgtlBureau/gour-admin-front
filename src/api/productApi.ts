@@ -1,3 +1,4 @@
+import { FetchBaseQueryMeta } from '@reduxjs/toolkit/dist/query';
 import { commonApi } from './commonApi';
 import { Path } from '../constants/routes';
 import { Product } from '../@types/entities/Product';
@@ -15,20 +16,38 @@ export const productApi = commonApi.injectEndpoints({
         method: 'GET',
         params,
       }),
+      providesTags: (result, error, { id }) => [{ type: 'Product', id }],
     }),
-    getAll: builder.query<Product[], ProductGetListDto>({
+    getAllProducts: builder.query<
+      { products: Product[]; totalCount: number },
+      ProductGetListDto
+    >({
       query: params => ({
         url: `${Path.GOODS}`,
         method: 'GET',
         params,
       }),
+      transformResponse(products: Product[], { response }: FetchBaseQueryMeta) {
+        const totalCount = response?.headers.get('X-Total-Count') || 0;
+        return {
+          products,
+          totalCount: +totalCount,
+        };
+      },
+      providesTags: result => (result ?
+        [
+          ...result.products.map(({ id }) => ({ type: 'Product', id } as const)),
+          { type: 'Product', id: 'LIST' },
+        ] :
+        [{ type: 'Product', id: 'LIST' }]),
     }),
-    create: builder.mutation<void, ProductCreateDto>({
+    createProduct: builder.mutation<void, ProductCreateDto>({
       query: body => ({
         url: Path.GOODS,
         method: 'POST',
         body,
       }),
+      invalidatesTags: [{ type: 'Product', id: 'LIST' }],
     }),
     createGrade: builder.mutation<void, ProductGradeCreateDto>({
       query: body => ({
@@ -37,27 +56,29 @@ export const productApi = commonApi.injectEndpoints({
         body,
       }),
     }),
-    update: builder.mutation<void, ProductUpdateDto>({
+    updateProduct: builder.mutation<void, ProductUpdateDto>({
       query: ({ id, ...body }) => ({
         url: `${Path.GOODS}/${id}`,
-        method: 'POST',
+        method: 'put',
         body,
       }),
+      invalidatesTags: (r, e, { id }) => [{ type: 'Product', id }],
     }),
-    delete: builder.mutation<void, number>({
+    deleteProduct: builder.mutation<void, number>({
       query: id => ({
         url: `${Path.GOODS}/${id}`,
-        method: 'POST',
+        method: 'delete',
       }),
+      invalidatesTags: [{ type: 'Product', id: 'LIST' }],
     }),
   }),
 });
 
 export const {
   useCreateGradeMutation,
-  useDeleteMutation,
-  useCreateMutation,
+  useDeleteProductMutation,
+  useCreateProductMutation,
   useGetProductByIdQuery,
-  useGetAllQuery,
-  useUpdateMutation,
+  useGetAllProductsQuery,
+  useUpdateProductMutation,
 } = productApi;

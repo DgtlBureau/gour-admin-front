@@ -4,15 +4,10 @@ import React, { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
 import { CreateStockFormDto } from '../../../../@types/dto/form/create-stock.dto';
-import { Category } from '../../../../@types/entities/Category';
 import { HFDatePicker } from '../../../HookForm/HFDatePicker';
 import { HFTextField } from '../../../HookForm/HFTextField';
 import { HFUploadPhoto } from '../../../HookForm/HFUploadPhoto';
-import {
-  Characteristic,
-  Product,
-  ProductSelectForm,
-} from '../../../Product/SelectForm/SelectForm';
+import { Product, ProductSelectForm } from '../../../Product/SelectForm/SelectForm';
 import { TabPanel } from '../../../UI/Tabs/TabPanel';
 import { Tabs } from '../../../UI/Tabs/Tabs';
 import { Button } from '../../../UI/Button/Button';
@@ -25,7 +20,6 @@ type Props = {
     label: string;
     value: string;
   }[];
-  characteristics: Characteristic[];
   defaultValues: CreateStockFormDto;
   onSubmit: (data: CreateStockFormDto) => void;
   onCancel: () => void;
@@ -45,7 +39,6 @@ const tabOptions = [
 export function CreateStockForm({
   products,
   categories,
-  characteristics,
   defaultValues,
   onSubmit,
   onCancel,
@@ -62,7 +55,6 @@ export function CreateStockForm({
   });
 
   useEffect(() => {
-    console.log(selectedProducts);
     if (selectedProducts.length === 0) return;
     setError('');
   }, [selectedProducts]);
@@ -165,7 +157,6 @@ export function CreateStockForm({
         <ProductSelectForm
           selected={selectedProducts}
           categories={categories}
-          characteristics={characteristics}
           products={products}
           onChange={setSelectedProducts}
         />
