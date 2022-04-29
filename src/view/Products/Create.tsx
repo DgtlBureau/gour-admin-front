@@ -31,6 +31,7 @@ import {
   FullFormType,
   ProductFullForm,
 } from '../../components/Product/FullForm/FullForm';
+import { useGetClientRolesListQuery } from '../../api/clientRoleApi';
 
 type Props = {
   onSaveHandler: () => void;
@@ -58,6 +59,12 @@ function RightContent({ onSaveHandler, onCancelHandler }: Props) {
 function CreateProductView() {
   const language = 'ru';
   const to = useTo();
+
+  const { data: clientRolesList = [] } = useGetClientRolesListQuery();
+
+  const roles = clientRolesList.filter(
+    role => role.key === 'COMPANY' || role.key === 'COLLECTIVE_PURCHASE'
+  );
 
   const [activeTabId, setActiveTabId] = useState('settings');
   const [fullFormState, setFullFormState] = useState<FullFormType>({
@@ -104,18 +111,21 @@ function CreateProductView() {
     const categoryId =
       categories.find(category => category.key === basicSettings.categoryKey)?.id || 0;
 
-    const roleDiscounts = [
-      {
-        role: 3,
-        rub: priceSettings.companyDiscountRub,
-        eur: priceSettings.companyDiscountEur,
-      },
-      {
-        role: 4,
-        rub: priceSettings.collectiveDiscountRub,
-        eur: priceSettings.collectiveDiscountEur,
-      },
-    ];
+    const roleDiscounts =
+      roles.map(role => {
+        if (role.key === 'COMPANY') {
+          return {
+            role: role.id,
+            rub: priceSettings.companyDiscountRub,
+            eur: priceSettings.companyDiscountEur,
+          };
+        }
+        return {
+          role: role.id,
+          rub: priceSettings.collectiveDiscountRub,
+          eur: priceSettings.collectiveDiscountEur,
+        };
+      }) || [];
 
     const newProduct: ProductCreateDto = {
       title: {

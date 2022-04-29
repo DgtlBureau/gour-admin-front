@@ -119,13 +119,14 @@ export function ProductFullForm({
         />
       </TabPanel>
       <TabPanel value={activeTabId} index="filters">
-        {fullFormState.basicSettings.categoryKey === 'meat' ? (
+        {fullFormState.basicSettings.categoryKey === 'meat' && (
           <ProductFilterForm
             type="meat"
             meatDefaultValues={fullFormState.meatCategories}
             onChange={onChangeFilterForm}
           />
-        ) : (
+        )}
+        {fullFormState.basicSettings.categoryKey === 'cheese' && (
           <ProductFilterForm
             type="cheese"
             cheeseDefaultValues={fullFormState.cheeseCategories}
