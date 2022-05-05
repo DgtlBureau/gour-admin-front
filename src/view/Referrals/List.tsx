@@ -6,10 +6,12 @@ import { ReferralCode } from '../../@types/entities/ReferralCode';
 import {
   useCreateReferralCodeMutation,
   useDeleteReferralCodeMutation,
-  useGetReferralCodeDiscountQuery,
   useGetReferralCodesListQuery,
-  useUpdateReferralCodeDiscountMutation,
 } from '../../api/referralCodeApi';
+import {
+  useGetReferralDiscountQuery,
+  useUpdateReferralDiscountMutation,
+} from '../../api/referralDiscountApi';
 import { Header } from '../../components/Header/Header';
 import { ReferralCodeCreateModal } from '../../components/ReferralCodes/CreateModal/CreateModal';
 import { ReferralCodeDiscountBlock } from '../../components/ReferralCodes/DiscountBlock/DiscountBlock';
@@ -40,10 +42,10 @@ function ListReferralCodesView() {
   const [isExportModalOpen, setIsExportModalOpen] = useState(false);
   const { data: referralCodes = [], isLoading, isError } = useGetReferralCodesListQuery();
   const { data: referralDiscount, isLoading: referralDiscountLoading } =
-    useGetReferralCodeDiscountQuery();
+    useGetReferralDiscountQuery();
   const [fetchDeleteReferralCode] = useDeleteReferralCodeMutation();
   const [fetchCreateReferralCode] = useCreateReferralCodeMutation();
-  const [fetchUpdateReferralCodeDiscount] = useUpdateReferralCodeDiscountMutation();
+  const [fetchUpdateReferralCodeDiscount] = useUpdateReferralDiscountMutation();
 
   const handleCreate = async (code: string) => {
     try {
