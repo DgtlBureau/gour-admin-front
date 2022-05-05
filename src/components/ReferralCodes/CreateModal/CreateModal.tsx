@@ -14,7 +14,7 @@ type ModalActionsProps = {
 
 export type ReferralCodeCreateModalProps = {
   isOpen: boolean;
-  onSave(refferalCode: { code: string }): void;
+  onSave(referralCode: string): void;
   onClose(): void;
 };
 
@@ -24,7 +24,7 @@ function ModalActions({ onClose }: ModalActionsProps) {
       <Button
         size="small"
         type="submit"
-        form="refferalCreateForm"
+        form="referralCreateForm"
         sx={{ marginRight: '10px' }}
       >
         Сохранить
@@ -50,7 +50,10 @@ export function ReferralCodeCreateModal({
     values.reset({ code: '' });
   }, [isOpen]);
 
-  const submit = (data: ReferralCodeCreateDto) => onSave({ code: data.code });
+  const submit = (data: ReferralCodeCreateDto) => {
+    console.log('test');
+    onSave(data.code);
+  };
 
   return (
     <Modal

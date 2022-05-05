@@ -6,7 +6,9 @@ import { ReferralCode } from '../../@types/entities/ReferralCode';
 import {
   useCreateReferralCodeMutation,
   useDeleteReferralCodeMutation,
+  useGetReferralCodeDiscountQuery,
   useGetReferralCodesListQuery,
+  useUpdateReferralCodeDiscountMutation,
 } from '../../api/referralCodeApi';
 import { Header } from '../../components/Header/Header';
 import { ReferralCodeCreateModal } from '../../components/ReferralCodes/CreateModal/CreateModal';
@@ -37,14 +39,18 @@ function ListReferralCodesView() {
   const [isCreateCodeModalOpen, setIsCreateCodeModalOpen] = useState(false);
   const [isExportModalOpen, setIsExportModalOpen] = useState(false);
   const { data: referralCodes = [], isLoading, isError } = useGetReferralCodesListQuery();
+  const { data: referralDiscount, isLoading: referralDiscountLoading } =
+    useGetReferralCodeDiscountQuery();
   const [fetchDeleteReferralCode] = useDeleteReferralCodeMutation();
   const [fetchCreateReferralCode] = useCreateReferralCodeMutation();
+  const [fetchUpdateReferralCodeDiscount] = useUpdateReferralCodeDiscountMutation();
 
-  const [globalDiscount, setGlobalDiscount] = useState(10);
-
-  const handleCreate = async (code: ReferralCodeCreateDto) => {
+  const handleCreate = async (code: string) => {
     try {
-      await fetchCreateReferralCode({ ...code, discount: globalDiscount }).unwrap();
+      await fetchCreateReferralCode({
+        code,
+        discount: referralDiscount?.discount,
+      }).unwrap();
       eventBus.emit(EventTypes.notification, {
         message: 'Код успешно создан',
         type: NotificationType.SUCCESS,
@@ -73,11 +79,28 @@ function ListReferralCodesView() {
       });
     }
   };
+  const handleUpdateDiscount = async (discount: number) => {
+    try {
+      await fetchUpdateReferralCodeDiscount({ discount }).unwrap();
+      eventBus.emit(EventTypes.notification, {
+        message: 'Скидка обновлена',
+        type: NotificationType.SUCCESS,
+      });
+    } catch (error) {
+      console.log(error);
+      eventBus.emit(EventTypes.notification, {
+        message: 'Произошла ошибка',
+        type: NotificationType.DANGER,
+      });
+    }
+  };
 
   const formattedReferralCodesList = referralCodes.map(referralCode => ({
     id: referralCode.id,
     label: referralCode.code,
   }));
+
+  const discount = referralDiscount?.discount || 0;
 
   return (
     <div>
@@ -97,8 +120,9 @@ function ListReferralCodesView() {
       <Stack spacing={2}>
         <ReferralCodeTable codes={formattedReferralCodesList} onRemove={handleDelete} />
         <ReferralCodeDiscountBlock
-          discount={globalDiscount}
-          onChange={(discount: number) => setGlobalDiscount(discount)}
+          discount={discount}
+          isLoading={referralDiscountLoading}
+          onChange={handleUpdateDiscount}
         />
       </Stack>
 

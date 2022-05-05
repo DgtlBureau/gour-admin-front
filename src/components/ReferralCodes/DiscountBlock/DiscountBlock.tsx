@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
+import { LinearProgress } from '@mui/material';
 import { Box } from '../../UI/Box/Box';
 import { Button } from '../../UI/Button/Button';
 import { Typography } from '../../UI/Typography/Typography';
@@ -29,10 +30,15 @@ const sx = {
 
 export type DiscountBlockProps = {
   discount: number;
+  isLoading: boolean;
   onChange(discount: number): void;
 };
 
-export function ReferralCodeDiscountBlock({ discount, onChange }: DiscountBlockProps) {
+export function ReferralCodeDiscountBlock({
+  discount,
+  isLoading,
+  onChange,
+}: DiscountBlockProps) {
   const [isEditing, setIsEditing] = useState(false);
 
   const values = useForm<ReferralDiscountEditDto>({
@@ -45,6 +51,8 @@ export function ReferralCodeDiscountBlock({ discount, onChange }: DiscountBlockP
     onChange(data.discount);
     setIsEditing(false);
   };
+
+  if (isLoading) return <LinearProgress />;
 
   return (
     <Box sx={sx.block}>

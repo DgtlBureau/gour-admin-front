@@ -37,7 +37,7 @@ export type ModalProps = {
   formId?: string;
   onAccept?: () => void;
   onClose: () => void;
-}
+};
 
 export function Modal({
   isOpen,
@@ -54,44 +54,33 @@ export function Modal({
   return (
     <MUIModal open={isOpen} onClose={onClose}>
       <Box sx={sx.modal}>
-        <Typography sx={sx.title} variant="body2" color="primary">{title}</Typography>
+        <Typography sx={sx.title} variant="body2" color="primary">
+          {title}
+        </Typography>
 
         <Box sx={sx.body}>
-          {
-            body || <Typography variant="body1">{description}</Typography>
-          }
+          {body || <Typography variant="body1">{description}</Typography>}
         </Box>
 
         <Box>
-          {
-            actions || (
-              <>
-                {
-                  onAccept ? (
-                    <Button
-                      size="small"
-                      sx={sx.acceptBtn}
-                      onClick={onAccept}
-                    >
-                      {acceptText}
-                    </Button>
-                  ) : !!formId && (
-                    <Button
-                      type="submit"
-                      form={formId}
-                      size="small"
-                      sx={sx.acceptBtn}
-                    >
-                      {acceptText}
-                    </Button>
-                  )
-                }
-                <Button variant="outlined" size="small" onClick={onClose}>
-                  {closeText}
+          {actions || (
+            <>
+              {onAccept ? (
+                <Button size="small" sx={sx.acceptBtn} onClick={onAccept}>
+                  {acceptText}
                 </Button>
-              </>
-            )
-          }
+              ) : (
+                !!formId && (
+                  <Button type="submit" form={formId} size="small" sx={sx.acceptBtn}>
+                    {acceptText}
+                  </Button>
+                )
+              )}
+              <Button variant="outlined" size="small" onClick={onClose}>
+                {closeText}
+              </Button>
+            </>
+          )}
         </Box>
       </Box>
     </MUIModal>
