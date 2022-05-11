@@ -9,12 +9,13 @@ import { RadioButton } from '../../UI/RadioButton/RadioButton';
 import { HFTextField } from '../../HookForm/HFTextField';
 import { HFRadioGroup } from '../../HookForm/HFRadioGroup';
 import { Typography } from '../../UI/Typography/Typography';
-import { UserCreateDto } from '../../../@types/dto/user/create.dto';
+import { SignupUserDto } from '../../../@types/dto/auth/signup-user.dto';
 
 const sx = {
   form: {
     display: 'flex',
     alignItems: 'center',
+    padding: '0 24px',
   },
   field: {
     maxWidth: '320px',
@@ -35,17 +36,17 @@ const sx = {
 };
 
 export type CreateUserFormProps = {
-  onSubmit: (data: UserCreateDto) => void;
+  onSubmit: (data: SignupUserDto) => void;
 }
 
 export function CreateUserForm({ onSubmit }: CreateUserFormProps) {
-  const values = useForm<UserCreateDto>({
-    defaultValues: { role: 0 },
+  const values = useForm<SignupUserDto>({
+    defaultValues: { role: 'admin' },
     mode: 'onBlur',
     resolver: yupResolver(schema),
   });
 
-  const submitHandler = (data: UserCreateDto) => onSubmit(data);
+  const submitHandler = (data: SignupUserDto) => onSubmit(data);
 
   return (
     <FormProvider {...values}>
