@@ -100,9 +100,7 @@ function ListReferralCodesView() {
     label: referralCode.code,
   }));
 
-  const discount = referralDiscount?.discount || 0;
-
-  console.log(discount);
+  const discount = referralDiscount || 0;
 
   return (
     <div>

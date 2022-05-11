@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
@@ -7,7 +7,6 @@ import { Box } from '../../UI/Box/Box';
 import { Button } from '../../UI/Button/Button';
 import { Typography } from '../../UI/Typography/Typography';
 import { HFTextField } from '../../HookForm/HFTextField';
-import { ReferralDiscountEditDto } from '../../../@types/dto/referral/discount-edit.dto';
 import schema from './validation';
 
 const sx = {
@@ -28,6 +27,10 @@ const sx = {
   },
 };
 
+type ReferralDiscountEdit = {
+  discount: number;
+};
+
 export type DiscountBlockProps = {
   discount: number;
   isLoading: boolean;
@@ -41,13 +44,17 @@ export function ReferralCodeDiscountBlock({
 }: DiscountBlockProps) {
   const [isEditing, setIsEditing] = useState(false);
 
-  const values = useForm<ReferralDiscountEditDto>({
+  const values = useForm<ReferralDiscountEdit>({
     resolver: yupResolver(schema),
     mode: 'onBlur',
     defaultValues: { discount },
   });
 
-  const submit = (data: ReferralDiscountEditDto) => {
+  useEffect(() => {
+    values.reset({ discount });
+  }, [discount]);
+
+  const submit = (data: ReferralDiscountEdit) => {
     onChange(data.discount);
     setIsEditing(false);
   };

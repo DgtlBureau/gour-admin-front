@@ -1,11 +1,10 @@
 import { commonApi } from './commonApi';
 import { ReferralCode } from '../@types/entities/ReferralCode';
-import { ReferralDiscountEditDto } from '../@types/dto/referral/discount-edit.dto';
 
 export const referralDiscountApi = commonApi.injectEndpoints({
   endpoints(builder) {
     return {
-      getReferralDiscount: builder.query<ReferralDiscountEditDto, void>({
+      getReferralDiscount: builder.query<number, void>({
         query() {
           return {
             method: 'get',
@@ -14,7 +13,7 @@ export const referralDiscountApi = commonApi.injectEndpoints({
         },
         providesTags: [{ type: 'ReferralDiscount', id: 0 }],
       }),
-      updateReferralDiscount: builder.mutation<void, ReferralDiscountEditDto>({
+      updateReferralDiscount: builder.mutation<void, { discount: number }>({
         query(discount) {
           return {
             method: 'post',
