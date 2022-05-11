@@ -1,4 +1,4 @@
-import React, { CSSProperties } from 'react';
+import React, { CSSProperties, ReactNode } from 'react';
 import ReactCodeInput, { InputModeTypes } from 'react-code-input';
 
 import { defaultTheme } from '../../../themes';

@@ -1,8 +1,6 @@
-import { Stack } from '@mui/material';
 import React, { useState } from 'react';
-import { ReferralCodeCreateDto } from '../../@types/dto/referral/create-code.dto';
+import { LinearProgress, Stack } from '@mui/material';
 import { NotificationType } from '../../@types/entities/Notification';
-import { ReferralCode } from '../../@types/entities/ReferralCode';
 import {
   useCreateReferralCodeMutation,
   useDeleteReferralCodeMutation,
@@ -19,6 +17,7 @@ import { ReferralCodeExportModal } from '../../components/ReferralCodes/ExportMo
 import { ReferralCodeTable } from '../../components/ReferralCodes/Table/Table';
 
 import { Button } from '../../components/UI/Button/Button';
+import { Typography } from '../../components/UI/Typography/Typography';
 import { eventBus, EventTypes } from '../../packages/EventBus';
 
 type Props = {
@@ -51,7 +50,6 @@ function ListReferralCodesView() {
     try {
       await fetchCreateReferralCode({
         code,
-        discount: referralDiscount?.discount,
       }).unwrap();
       eventBus.emit(EventTypes.notification, {
         message: 'Код успешно создан',
@@ -104,6 +102,8 @@ function ListReferralCodesView() {
 
   const discount = referralDiscount?.discount || 0;
 
+  console.log(discount);
+
   return (
     <div>
       <Header
@@ -120,7 +120,14 @@ function ListReferralCodesView() {
         )}
       />
       <Stack spacing={2}>
-        <ReferralCodeTable codes={formattedReferralCodesList} onRemove={handleDelete} />
+        {isLoading && <LinearProgress />}
+        {!isLoading && isError && <Typography variant="h2">Произошла ошибка</Typography>}
+        {!isLoading && !isError && formattedReferralCodesList.length === 0 && (
+          <Typography variant="h2">Нет реферальных кодов</Typography>
+        )}
+        {!isLoading && !isError && formattedReferralCodesList.length !== 0 && (
+          <ReferralCodeTable codes={formattedReferralCodesList} onRemove={handleDelete} />
+        )}
         <ReferralCodeDiscountBlock
           discount={discount}
           isLoading={referralDiscountLoading}

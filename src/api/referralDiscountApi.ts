@@ -12,6 +12,7 @@ export const referralDiscountApi = commonApi.injectEndpoints({
             url: 'referralCodes/discount',
           };
         },
+        providesTags: [{ type: 'ReferralDiscount', id: 0 }],
       }),
       updateReferralDiscount: builder.mutation<void, ReferralDiscountEditDto>({
         query(discount) {
@@ -21,6 +22,7 @@ export const referralDiscountApi = commonApi.injectEndpoints({
             body: discount,
           };
         },
+        invalidatesTags: [{ type: 'ReferralDiscount', id: 0 }],
       }),
     };
   },
