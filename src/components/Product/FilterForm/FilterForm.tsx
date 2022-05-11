@@ -5,19 +5,39 @@ import {
   ProductFilterCheeseFormDto,
   ProductFilterMeatFormDto,
 } from '../../../@types/dto/form/product-filters.dto';
+import { ProductCategory } from '../../../@types/dto/product/category.dto';
+import { useGetAllCategoriesQuery } from '../../../api/categoryApi';
 import { ProductFilterFormCheese } from './Cheese';
+import { FILTER } from './filterConstants';
 import { ProductFilterFormMeat } from './Meat';
 
 type Props = {
-  type: 'cheese' | 'meat';
-  onSubmit: SubmitHandler<ProductFilterMeatFormDto | ProductFilterCheeseFormDto>;
+  type: ProductCategory;
+  onChange: (
+    data: ProductFilterMeatFormDto | ProductFilterCheeseFormDto,
+    type: ProductCategory
+  ) => void;
+  cheeseDefaultValues?: ProductFilterCheeseFormDto;
+  meatDefaultValues?: ProductFilterMeatFormDto;
 };
 
-export function ProductFilterForm({ type, onSubmit }: Props) {
+export function ProductFilterForm({
+  type,
+  onChange,
+  cheeseDefaultValues,
+  meatDefaultValues,
+}: Props) {
   return (
     <>
-      {type === 'cheese' && <ProductFilterFormCheese onSubmit={onSubmit} />}
-      {type === 'meat' && <ProductFilterFormMeat onSubmit={onSubmit} />}
+      {type === FILTER.CHEESE && (
+        <ProductFilterFormCheese
+          defaultValues={cheeseDefaultValues}
+          onChange={onChange}
+        />
+      )}
+      {type === FILTER.MEAT && (
+        <ProductFilterFormMeat defaultValues={meatDefaultValues} onChange={onChange} />
+      )}
     </>
   );
 }

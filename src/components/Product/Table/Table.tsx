@@ -1,23 +1,27 @@
-import { Stack } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
+
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+
 import { Box } from '../../UI/Box/Box';
 import { IconButton } from '../../UI/IconButton/IconButton';
 import { Table } from '../../UI/Table/Table';
+import { ProductTableDto } from '../../../@types/dto/table/products.dto';
+import { Options } from '../../../constants/tabs';
+
+const titleList = ['Фото', 'Название', 'Категория', 'Цена', 'Действие'];
 
 export type ProductsTableProps = {
-  products: {
-    id: number;
-    image: string;
-    title: string;
-    category: string;
-    cost: number;
-  }[];
+  products: ProductTableDto[];
   categories: {
     label: string;
-    value: string;
+    id: string;
   }[];
+  page: number;
+  rowsCount: number;
+  onChangePage: (_: unknown, newPage: number) => void;
+  rowsPerPage: number;
+  onChangeRowsPerPage: (rowPerPage: number) => void;
   onEdit(id: number): void;
   onRemove(id: number): void;
 };
@@ -25,35 +29,31 @@ export type ProductsTableProps = {
 export function ProductsTable({
   products,
   categories,
+  page,
+  rowsCount,
+  rowsPerPage,
+  onChangePage,
+  onChangeRowsPerPage,
   onEdit,
   onRemove,
 }: ProductsTableProps) {
-  const [value, setValue] = useState<string>('all');
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [selectedId, setSelectedId] = useState<string>(Options.ALL);
 
   const tabsOptions = [
     {
-      value: 'all',
-      label: 'Все',
+      value: Options.ALL,
+      label: 'Всё',
     },
     ...categories.map(category => ({
-      value: category.value,
+      value: category.id,
       label: category.label,
     })),
   ];
 
-  const changeTab = (val: string) => setValue(val);
-
-  const changePage = (_: unknown, newPage: number) => setPage(newPage);
-
-  const changeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
-  };
+  const changeTab = (id: string) => setSelectedId(id);
 
   const rows = products
-    .filter(product => product.category === value || value === 'all')
+    .filter(product => product.categoryId === selectedId || selectedId === Options.ALL)
     .map((product, i) => ({
       id: i,
       cells: [
@@ -61,9 +61,9 @@ export function ProductsTable({
           <img style={{ height: '100%' }} src={product.image} alt="promotion" />
         </Box>,
         product.title,
-        categories.find(category => category.value === product.category)?.label ||
+        categories.find(category => category.id === product.categoryId)?.label ||
           'нет категории',
-        product.cost,
+        product.price,
         <Box>
           <IconButton onClick={() => onEdit(product.id)} component="symbol">
             <EditIcon />
@@ -76,7 +76,7 @@ export function ProductsTable({
     }));
 
   const tabs = {
-    value,
+    value: selectedId,
     options: tabsOptions,
     onChange: changeTab,
   };
@@ -85,13 +85,14 @@ export function ProductsTable({
     <Box>
       <Table
         tabs={tabs}
-        rowTitleList={['Фото', 'Название', 'Категория', 'Цена', 'Действие']}
+        rowTitleList={titleList}
         rows={rows}
         rowsPerPage={rowsPerPage}
         page={page}
+        rowsCount={rowsCount}
         rowsPerPageOptions={[5, 10, 25]}
-        onPageChange={changePage}
-        onRowsPerPageChange={changeRowsPerPage}
+        onPageChange={onChangePage}
+        onRowsPerPageChange={event => onChangeRowsPerPage(+event.target.value)}
       />
     </Box>
   );

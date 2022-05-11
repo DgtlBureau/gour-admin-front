@@ -36,9 +36,10 @@ type Props = {
   tabs?: TabsProps;
   rowTitleList: string[];
   rows: Row[];
+  rowsCount?: number;
   page: number;
   rowsPerPage: number;
-  rowsPerPageOptions: number[];
+  rowsPerPageOptions?: number[];
   onPageChange: (event: unknown, newPage: number) => void;
   onRowsPerPageChange: (event: ChangeEvent<HTMLInputElement>) => void;
 };
@@ -48,8 +49,9 @@ export function Table({
   rowTitleList,
   rows,
   rowsPerPage,
-  rowsPerPageOptions,
+  rowsPerPageOptions = [5, 10, 25],
   page,
+  rowsCount,
   onPageChange,
   onRowsPerPageChange,
 }: Props) {
@@ -107,7 +109,7 @@ export function Table({
           labelDisplayedRows={getDisplayedRowsLabel}
           rowsPerPageOptions={rowsPerPageOptions}
           component="div"
-          count={rows.length}
+          count={rowsCount || rows.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={onPageChange}

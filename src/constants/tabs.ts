@@ -1,5 +1,14 @@
 export enum Options {
   ALL = 'ALL',
-  NOT_APPROVED = 'notApproved',
-  APPROVED = 'approved'
+  WAIT_FOR_APPROVE = 'WAIT_FOR_APPROVE',
+  NOT_APPROVED = 'NOT_APPROVED',
+  APPROVED = 'APPROVED',
+  ACTUAL = 'ACTUAL',
+  PAST = 'PAST',
+
+  MAIN = 'MAIN',
+  PURCHASE = 'PURCHASE',
+  PRIVACY = 'PRIVACY',
+  COOKIE = 'COOKIE',
+  AGREEMENT = 'AGREEMENT',
 }

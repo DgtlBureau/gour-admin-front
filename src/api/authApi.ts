@@ -4,6 +4,12 @@ import { SignInDto } from '../@types/dto/auth/signin.dto';
 import { Tokens } from '../@types/dto/auth/tokens.dto';
 import { ForgotPasswordDto } from '../@types/dto/auth/forgot-password.dto';
 import { RestorePasswordDto } from '../@types/dto/auth/restore-password.dto';
+import { SignupUserDto } from '../@types/dto/auth/signup-user.dto';
+
+const ROLE_HASH: Record<'admin'|'moderator', string> = {
+  admin: process.env.REACT_APP_ROLE_ADMIN_CODE as string,
+  moderator: process.env.REACT_APP_ROLE_MODERATOR_CODE as string,
+};
 
 export const authApi = commonApi.injectEndpoints({
   endpoints: builder => ({
@@ -32,6 +38,16 @@ export const authApi = commonApi.injectEndpoints({
         body,
       }),
     }),
+    signupWithoutPassword: builder.mutation<Tokens, SignupUserDto>({
+      query: body => ({
+        url: '/auth/signup-without-password',
+        method: 'POST',
+        body: {
+          email: body.email,
+          role: ROLE_HASH[body.role],
+        },
+      }),
+    }),
     forgotPassword: builder.mutation<void, ForgotPasswordDto>({
       query: body => ({
         url: '/auth/forgot-password',
@@ -55,4 +71,5 @@ export const {
   useSignoutMutation,
   useForgotPasswordMutation,
   useRestorePasswordMutation,
+  useSignupWithoutPasswordMutation,
 } = authApi;

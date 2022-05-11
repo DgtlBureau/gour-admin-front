@@ -1,5 +1,5 @@
 import { ImageDto } from '../image.dto';
-import { PageMetaDto } from '../page-meta.dto';
+import { PageMetaDto } from '../page/meta.dto';
 import { PriceDto } from '../price.dto';
 import { TranslatableStringDto } from '../translatable-string.dto';
 
@@ -9,7 +9,7 @@ export type ProductCreateDto = Readonly<{
   images: ImageDto[];
   price: PriceDto;
   meta?: PageMetaDto;
-  characteristics: Record<string, string | number>;
+  characteristics: Record<string, string>;
   moyskladCode?: number;
   category: number;
   similarProducts?: number[];

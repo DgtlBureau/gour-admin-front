@@ -2,19 +2,15 @@ import { Grid } from '@mui/material';
 import React, { Dispatch, SetStateAction } from 'react';
 import { SingleValue } from 'react-select';
 import { Select, SelectOption } from '../../UI/Select/Select';
-import { Characteristic } from './SelectForm';
+import { SelectCharacteristic } from './SelectForm';
 
 type Props = {
-  characteristics: Characteristic[];
+  characteristics: SelectCharacteristic[];
   selectValues: Record<string, string | undefined>;
   setSelectValues: Dispatch<SetStateAction<Record<string, string | undefined>>>;
 };
 
-export function SelectsList({
-  characteristics,
-  selectValues,
-  setSelectValues,
-}: Props) {
+export function SelectsList({ characteristics, selectValues, setSelectValues }: Props) {
   const handleChangeSelect = (
     newValue: SingleValue<SelectOption<string>>,
     characteristicKey: string
@@ -28,17 +24,17 @@ export function SelectsList({
       {characteristics.map(characteristic => (
         <Grid item xs={3} key={characteristic.key}>
           <Select
-            label={characteristic.label}
-            placeholder={characteristic.label}
+            label={characteristic.label.ru}
+            placeholder={characteristic.label.ru}
             value={selectValues[characteristic.key] || ''}
             options={[
               {
                 value: '',
-                label: characteristic.label,
+                label: characteristic.label.ru,
               },
               ...characteristic.values.map(value => ({
                 value: value.key,
-                label: value.label,
+                label: value.label.ru,
               })),
             ]}
             isMulti={false}

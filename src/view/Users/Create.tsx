@@ -3,12 +3,12 @@ import React, { useEffect } from 'react';
 import { Header } from '../../components/Header/Header';
 import { Button } from '../../components/UI/Button/Button';
 import { CreateUserForm } from '../../components/Users/CreateForm/CreateForm';
-import { useCreateUserMutation } from '../../api/userApi';
-import { UserCreateDto } from '../../@types/dto/user/create.dto';
 import { Path } from '../../constants/routes';
 import { useTo } from '../../hooks/useTo';
 import { eventBus, EventTypes } from '../../packages/EventBus';
+import { useSignupWithoutPasswordMutation } from '../../api/authApi';
 import { NotificationType } from '../../@types/entities/Notification';
+import { SignupUserDto } from '../../@types/dto/auth/signup-user.dto';
 
 type Props = {
   onCancel: () => void;
@@ -28,28 +28,28 @@ function RightContent({ onCancel }: Props) {
 }
 
 function CreateUserView() {
-  const [createUser, createUserData] = useCreateUserMutation();
+  const [signupWithoutPasswordMutation, signupUserData] = useSignupWithoutPasswordMutation();
 
   const to = useTo();
 
   const cancel = () => to(Path.USERS);
 
-  const submit = (data: UserCreateDto) => createUser(data);
+  const submit = (data: SignupUserDto) => signupWithoutPasswordMutation(data);
 
   useEffect(() => {
-    if (createUserData.isSuccess) {
+    if (signupUserData.isSuccess) {
       eventBus.emit(EventTypes.notification, {
         message: 'Вы создали пользователя',
         type: NotificationType.SUCCESS,
       });
     }
-    if (createUserData.isError) {
+    if (signupUserData.isError) {
       eventBus.emit(EventTypes.notification, {
         message: 'Ошибка при создании пользователя',
         type: NotificationType.DANGER,
       });
     }
-  }, [createUserData]);
+  }, [signupUserData]);
 
   return (
     <div>

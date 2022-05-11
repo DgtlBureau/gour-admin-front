@@ -1,7 +1,7 @@
 import React from 'react';
-
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
+import { Category } from '../../../@types/entities/Category';
 import { CategoriesTable } from './Table';
 
 export default {
@@ -13,12 +13,16 @@ const Template: ComponentStory<typeof CategoriesTable> = function (args) {
   return <CategoriesTable {...args} />;
 };
 
-function generateCategories(id: number, engName: string, rusName: string) {
+function generateCategories(id: number, eng: string, rus: string) {
   return {
-    engName,
-    rusName,
     id,
-  };
+    title: {
+      ru: rus,
+      en: eng,
+    },
+    description: {},
+    icon: '',
+  } as Category;
 }
 
 export const DefaultState = Template.bind({});
