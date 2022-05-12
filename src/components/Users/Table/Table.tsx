@@ -72,7 +72,7 @@ export function UsersTable({
           <img src={checkIcon} alt="" />
         </IconButton>
         {['CLIENT', 'COMPANY', 'COLLECTIVE_PURCHASE'].includes(user.role) ? (
-          <a href={`/api/clients/${user.uuid}/login`} target="_blank" rel="noreferrer">
+          <a href={`${process.env.REACT_APP_STORE_PATH}/api/clients/${user.uuid}/login`} target="_blank" rel="noreferrer">
             <IconButton component="div">
               <img src={loginIcon} alt="" />
             </IconButton>
