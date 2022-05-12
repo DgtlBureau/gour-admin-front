@@ -14,7 +14,6 @@ import { SignupUserDto } from '../../../@types/dto/auth/signup-user.dto';
 const sx = {
   form: {
     display: 'flex',
-    alignItems: 'center',
     padding: '0 24px',
   },
   field: {
