@@ -17,16 +17,12 @@ export const categoryApi = commonApi.injectEndpoints({
         url: Path.CATEGORIES,
         method: 'GET',
       }),
-      providesTags: result => (
-        result ? (
-          [
-            ...result.map(({ id }) => ({ type: 'Category' as const, id })),
-            { type: 'Category', id: 'LIST' },
-          ]
-        ) : (
-          [{ type: 'Category', id: 'LIST' }]
-        )
-      ),
+      providesTags: result => (result ?
+        [
+          ...result.map(({ id }) => ({ type: 'Category' as const, id })),
+          { type: 'Category', id: 'LIST' },
+        ] :
+        [{ type: 'Category', id: 'LIST' }]),
     }),
     createCategory: builder.mutation<void, CategoryCreateDto>({
       query: body => ({

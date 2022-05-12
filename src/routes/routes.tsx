@@ -24,6 +24,7 @@ import CreateUserView from '../view/Users/Create';
 import EditUserView from '../view/Users/Edit';
 import ListReviewsView from '../view/Reviews/List';
 import ListCitiesView from '../view/Cities/List';
+import ListReferralCodesView from '../view/Referrals/List';
 import ListRegistrationsView from '../view/Registration/List';
 import AuthRestorePasswordView from '../view/Auth/RestorePassword';
 import { Path } from '../constants/routes';
@@ -159,6 +160,16 @@ export function Routing() {
     children: [{ path: '', element: <ListCitiesView /> }],
   };
 
+  const referralsRoutes = {
+    path: Path.REFERRALS,
+    element: (
+      <RequireAuth>
+        <PrivateLayout />
+      </RequireAuth>
+    ),
+    children: [{ path: '', element: <ListReferralCodesView /> }],
+  };
+
   const routing = useRoutes([
     authRoutes,
     productsRoutes,
@@ -170,6 +181,7 @@ export function Routing() {
     reviewsRoutes,
     pagesRoutes,
     registrationsRoutes,
+    referralsRoutes,
   ]);
 
   return <Suspense fallback="loading..🔧">{routing}</Suspense>;

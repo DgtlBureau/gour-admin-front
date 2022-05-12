@@ -9,6 +9,7 @@ import { Options } from '../../../constants/tabs';
 
 import busketIcon from '../../../assets/icons/table/busket.svg';
 import checkIcon from '../../../assets/icons/table/check.svg';
+import loginIcon from './assets/login.svg';
 
 const sx = {
   role: {
@@ -19,8 +20,15 @@ const sx = {
   },
 };
 
+export type UserTableItem = {
+  login: string;
+  name: string;
+  role: string;
+  uuid: string;
+}
+
 export type UsersTableProps = {
-  users: IUser[];
+  users: UserTableItem[];
   categories: {
     value: string,
     label: string,
@@ -48,14 +56,14 @@ export function UsersTable({
     setPage(0);
   };
 
-  const filteredUsers = tabsValue === Options.ALL ? users : users.filter(user => user.role.key === tabsValue);
+  const filteredUsers = tabsValue === Options.ALL ? users : users.filter(user => user.role === tabsValue);
 
   const rows = filteredUsers.map((user, i) => ({
     id: i,
     cells: [
       user.name,
       user.login,
-      <Typography variant="body1" sx={sx.role}>{user.role.key}</Typography>,
+      <Typography variant="body1" sx={sx.role}>{user.role}</Typography>,
       <>
         <IconButton component="button" onClick={() => onDelete(user.apiUserUuid)}>
           <img src={busketIcon} alt="" />
@@ -63,6 +71,13 @@ export function UsersTable({
         <IconButton component="button" onClick={() => onConfirm(user.apiUserUuid)}>
           <img src={checkIcon} alt="" />
         </IconButton>
+        {['CLIENT', 'COMPANY', 'COLLECTIVE_PURCHASE'].includes(user.role) ? (
+          <a href={`${process.env.REACT_APP_STORE_PATH}/api/clients/${user.uuid}/login`} target="_blank" rel="noreferrer">
+            <IconButton component="div">
+              <img src={loginIcon} alt="" />
+            </IconButton>
+          </a>
+        ) : null}
       </>,
     ],
   }));
