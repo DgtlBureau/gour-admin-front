@@ -5,16 +5,16 @@ import { FormControlLabel } from '@mui/material';
 
 import schema from './validation';
 import { Box } from '../../UI/Box/Box';
-import { Button } from '../../UI/Button/Button';
 import { RadioButton } from '../../UI/RadioButton/RadioButton';
 import { HFTextField } from '../../HookForm/HFTextField';
 import { HFRadioGroup } from '../../HookForm/HFRadioGroup';
 import { Typography } from '../../UI/Typography/Typography';
+import { SignupUserDto } from '../../../@types/dto/auth/signup-user.dto';
 
 const sx = {
   form: {
     display: 'flex',
-    alignItems: 'center',
+    padding: '0 24px',
   },
   field: {
     maxWidth: '320px',
@@ -34,31 +34,22 @@ const sx = {
   },
 };
 
-export type UserFields = {
-  role: 'admin' | 'moderator';
-  email: string;
-}
-
 export type CreateUserFormProps = {
-  user: UserFields;
-  onSubmit: (data: UserFields) => void;
+  onSubmit: (data: SignupUserDto) => void;
 }
 
-export function CreateUserForm({
-  user,
-  onSubmit,
-}: CreateUserFormProps) {
-  const values = useForm<UserFields>({
-    defaultValues: user,
+export function CreateUserForm({ onSubmit }: CreateUserFormProps) {
+  const values = useForm<SignupUserDto>({
+    defaultValues: { role: 'admin' },
     mode: 'onBlur',
     resolver: yupResolver(schema),
   });
 
-  const submitHandler = (data: UserFields) => onSubmit(data);
+  const submitHandler = (data: SignupUserDto) => onSubmit(data);
 
   return (
     <FormProvider {...values}>
-      <form onSubmit={values.handleSubmit(submitHandler)}>
+      <form id="createUserForm" onSubmit={values.handleSubmit(submitHandler)}>
         <Box sx={sx.form}>
           <HFRadioGroup name="role" sx={sx.radioGroup}>
             <Typography variant="body2" color="primary">Роль</Typography>
@@ -69,11 +60,6 @@ export function CreateUserForm({
           </HFRadioGroup>
 
           <HFTextField sx={sx.field} name="email" label="Email" />
-
-          {/* delete later */}
-          <Button type="submit" sx={{ marginLeft: '55px' }}>
-            Сохранить
-          </Button>
         </Box>
       </form>
     </FormProvider>

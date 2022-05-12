@@ -29,7 +29,7 @@ export const userApi = commonApi.injectEndpoints({
         }));
       },
     }),
-    create: builder.mutation<void, UserCreateDto>({
+    createUser: builder.mutation<void, UserCreateDto>({
       query: body => ({
         url: USERS_API_PATH,
         method: 'POST',
@@ -47,7 +47,7 @@ export const userApi = commonApi.injectEndpoints({
 
 export const {
   useDeleteUserMutation,
-  useCreateMutation,
+  useCreateUserMutation,
   useGetAllUsersQuery,
   useGetByIdQuery,
 } = userApi;

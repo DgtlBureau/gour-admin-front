@@ -1,26 +1,26 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 
-import { InputLabel } from '@mui/material';
 import { Header } from '../../components/Header/Header';
 import { Button } from '../../components/UI/Button/Button';
+import { CreateUserForm } from '../../components/Users/CreateForm/CreateForm';
 import { Path } from '../../constants/routes';
 import { useTo } from '../../hooks/useTo';
-import { RadioButton } from '../../components/UI/RadioButton/RadioButton';
-import { TextField } from '../../components/UI/TextField/TextField';
+import { eventBus, EventTypes } from '../../packages/EventBus';
 import { useSignupWithoutPasswordMutation } from '../../api/authApi';
+import { NotificationType } from '../../@types/entities/Notification';
+import { SignupUserDto } from '../../@types/dto/auth/signup-user.dto';
 
 type Props = {
-  onSaveClick: () => void;
-  onCancelHandler: () => void;
+  onCancel: () => void;
 };
 
-function RightContent({ onSaveClick, onCancelHandler }: Props) {
+function RightContent({ onCancel }: Props) {
   return (
     <>
-      <Button onClick={onSaveClick} sx={{ marginRight: '10px' }}>
+      <Button form="createUserForm" type="submit" sx={{ marginRight: '10px' }}>
         Сохранить
       </Button>
-      <Button variant="outlined" onClick={onCancelHandler}>
+      <Button variant="outlined" onClick={onCancel}>
         Отмена
       </Button>
     </>
@@ -28,51 +28,38 @@ function RightContent({ onSaveClick, onCancelHandler }: Props) {
 }
 
 function CreateUserView() {
+  const [signupWithoutPasswordMutation, signupUserData] = useSignupWithoutPasswordMutation();
+
   const to = useTo();
-  const [signupWithoutPasswordMutation] = useSignupWithoutPasswordMutation();
 
-  const [role, setRole] = useState<'admin'|'moderator'>('admin');
-  const [email, setEmail] = useState('');
+  const cancel = () => to(Path.USERS);
 
-  const onCancelHandler = () => {
-    to(Path.USERS);
-  };
-  const onSaveClick = () => {
-    signupWithoutPasswordMutation({
-      role, email,
-    });
-  };
+  const submit = (data: SignupUserDto) => signupWithoutPasswordMutation(data);
+
+  useEffect(() => {
+    if (signupUserData.isSuccess) {
+      eventBus.emit(EventTypes.notification, {
+        message: 'Вы создали пользователя',
+        type: NotificationType.SUCCESS,
+      });
+    }
+    if (signupUserData.isError) {
+      eventBus.emit(EventTypes.notification, {
+        message: 'Ошибка при создании пользователя',
+        type: NotificationType.DANGER,
+      });
+    }
+  }, [signupUserData]);
 
   return (
     <div>
       <Header
         leftTitle="Добавление пользователя"
         rightContent={
-          <RightContent onSaveClick={onSaveClick} onCancelHandler={onCancelHandler} />
+          <RightContent onCancel={cancel} />
         }
       />
-      <InputLabel>
-        Роль:
-      </InputLabel>
-      <div style={{ display: 'flex', alignItems: 'center' }}>
-        {/* eslint-disable-next-line jsx-a11y/label-has-for */}
-        <label style={{ display: 'flex', alignItems: 'center' }}>
-          <RadioButton checked={role === 'admin'} onChange={() => setRole('admin')} />
-          {' '}
-          Администратор
-        </label>
-        {/* eslint-disable-next-line jsx-a11y/label-has-for */}
-        <label style={{ display: 'flex', alignItems: 'center', marginRight: '20px' }}>
-          <RadioButton checked={role === 'moderator'} onChange={() => setRole('moderator')} />
-          {' '}
-          Модератор
-        </label>
-        <TextField
-          label="email"
-          value={email}
-          onChange={e => setEmail(e.target.value)}
-        />
-      </div>
+      <CreateUserForm onSubmit={submit} />
     </div>
   );
 }

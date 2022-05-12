@@ -65,10 +65,10 @@ export function UsersTable({
       user.login,
       <Typography variant="body1" sx={sx.role}>{user.role}</Typography>,
       <>
-        <IconButton component="button" onClick={() => onDelete(user.uuid)}>
+        <IconButton component="button" onClick={() => onDelete(user.apiUserUuid)}>
           <img src={busketIcon} alt="" />
         </IconButton>
-        <IconButton component="button" onClick={() => onConfirm(user.uuid)}>
+        <IconButton component="button" onClick={() => onConfirm(user.apiUserUuid)}>
           <img src={checkIcon} alt="" />
         </IconButton>
         {['CLIENT', 'COMPANY', 'COLLECTIVE_PURCHASE'].includes(user.role) ? (
