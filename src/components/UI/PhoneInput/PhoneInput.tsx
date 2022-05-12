@@ -31,7 +31,7 @@ export function PhoneInput({
       onBlur={onBlur}
       onFocus={onFocus}
     >
-      {() => <TextField />}
+      <TextField />
     </InputMask>
   );
 }

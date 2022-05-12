@@ -11,6 +11,12 @@ export default {
 const Template: ComponentStory<typeof ReferralCodeDiscountBlock> = function () {
   const [discount, setDiscount] = useState(0);
 
-  return <ReferralCodeDiscountBlock discount={discount} onChange={newDiscount => setDiscount(newDiscount)} />;
+  return (
+    <ReferralCodeDiscountBlock
+      discount={discount}
+      onChange={newDiscount => setDiscount(newDiscount)}
+      isLoading={false}
+    />
+  );
 };
 export const DefaultReferralCodeDiscountBlock = Template.bind({});
