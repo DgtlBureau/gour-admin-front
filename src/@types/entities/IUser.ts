@@ -7,4 +7,5 @@ export interface IUser {
   }
   uuid: string;
   isApproved: boolean;
+  createdAt: string;
 }

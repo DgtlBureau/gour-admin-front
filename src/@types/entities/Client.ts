@@ -6,4 +6,5 @@ export type Client = {
   phone: string;
   isApproved: boolean;
   role: ClientRole;
+  createdAt: string;
 };
