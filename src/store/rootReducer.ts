@@ -9,6 +9,8 @@ import { cityApi } from '../api/cityApi';
 import { productGradeApi } from '../api/productGradeApi';
 import { pageApi } from '../api/pageApi';
 import { clientRoleApi } from '../api/clientRoleApi';
+import { referralCodeApi } from '../api/referralCodeApi';
+import { referralDiscountApi } from '../api/referralDiscountApi';
 
 export const rootReducer = combineReducers({
   auth: authSlice,
@@ -21,4 +23,6 @@ export const rootReducer = combineReducers({
   [productGradeApi.reducerPath]: productGradeApi.reducer,
   [pageApi.reducerPath]: pageApi.reducer,
   [clientRoleApi.reducerPath]: clientRoleApi.reducer,
+  [referralCodeApi.reducerPath]: referralCodeApi.reducer,
+  [referralDiscountApi.reducerPath]: referralDiscountApi.reducer,
 });

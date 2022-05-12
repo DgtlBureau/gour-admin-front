@@ -1,9 +1,9 @@
-import React, { CSSProperties } from 'react';
+import React, { CSSProperties, ReactNode } from 'react';
 import ReactCodeInput, { InputModeTypes } from 'react-code-input';
 
 import { defaultTheme } from '../../../themes';
 
-const inputSx = {
+const inputSx: CSSProperties = {
   border: '1px solid lightgrey',
   borderRadius: '4px',
   margin: '4px',
@@ -44,7 +44,7 @@ export function CodeInput({
       type={type}
       fields={fieldsCount}
       inputMode={inputMode}
-      inputStyle={inputSx as CSSProperties}
+      inputStyle={inputSx}
     />
   );
 }

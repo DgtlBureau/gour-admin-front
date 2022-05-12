@@ -32,6 +32,7 @@ const linkedItems: SidebarLinkedItem[] = [
   { label: 'Отзывы', path: Path.REVIEWS },
   { label: 'Страницы', path: Path.PAGES },
   { label: 'Города', path: Path.CITIES },
+  { label: 'Рефералы', path: Path.REFERRALS },
 ];
 
 const actionItems = [

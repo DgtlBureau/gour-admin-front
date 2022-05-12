@@ -16,5 +16,6 @@ export enum Path {
   PAGES = 'pages',
   REGISTRATION = 'registrations-confirmations',
   AUTH = 'auth',
+  REFERRALS = 'referrals',
   ERROR_PAGE = '404',
 }
