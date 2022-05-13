@@ -9,9 +9,6 @@ export const imageApi = commonApi.injectEndpoints({
         url: `${Path.IMAGES}/upload`,
         method: 'POST',
         body,
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
       }),
     }),
   }),

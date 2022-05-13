@@ -87,6 +87,7 @@ function CreateProductView() {
 
   const uploadPhoto = async (image: File, i: number) => {
     const formData = new FormData();
+
     formData.append('image', image);
 
     try {
