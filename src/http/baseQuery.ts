@@ -9,11 +9,6 @@ import { HTTP_UNAUTHORIZED } from '../constants/HttpConstants';
 export const baseQuery = fetchBaseQuery({
   baseUrl: process.env.REACT_APP_BACKEND_URL,
   credentials: 'include',
-  prepareHeaders: headers => {
-    headers.append('Content-Type', 'application/json');
-    headers.append('accept', 'application/json');
-    return headers;
-  },
 });
 
 export const baseQueryWithReauth: BaseQueryFn<FetchArgs, unknown, FetchBaseQueryError> =

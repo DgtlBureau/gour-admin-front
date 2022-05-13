@@ -10,7 +10,10 @@ import { Path } from '../../constants/routes';
 import { useTo } from '../../hooks/useTo';
 import { NotificationType } from '../../@types/entities/Notification';
 import { eventBus, EventTypes } from '../../packages/EventBus';
-import { FullFormType, ProductFullForm } from '../../components/Product/FullForm/FullForm';
+import {
+  FullFormType,
+  ProductFullForm,
+} from '../../components/Product/FullForm/FullForm';
 import { useGetClientRolesListQuery } from '../../api/clientRoleApi';
 import { Image } from '../../@types/entities/Image';
 
@@ -76,16 +79,15 @@ function CreateProductView() {
 
   const { data: categories = [] } = useGetAllCategoriesQuery();
 
-  const { data: productsData, isLoading: isProductsLoading = false } = useGetAllProductsQuery(
-    { withSimilarProducts: false, withMeta: false, withRoleDiscount: false },
-    { skip: activeTabId !== 'recommended_products' }
-  );
+  const { data: productsData, isLoading: isProductsLoading = false } =
+    useGetAllProductsQuery(
+      { withSimilarProducts: false, withMeta: false, withRoleDiscount: false },
+      { skip: activeTabId !== 'recommended_products' }
+    );
 
-  const uploadPhoto = async (photo: string, i: number) => {
+  const uploadPhoto = async (image: File, i: number) => {
     const formData = new FormData();
-    formData.append('photo', photo);
-
-    console.log(photo);
+    formData.append('image', image);
 
     try {
       await uploadImage(formData).unwrap();
