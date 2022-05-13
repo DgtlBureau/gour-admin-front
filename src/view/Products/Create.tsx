@@ -1,37 +1,18 @@
-import React, { useEffect, useState } from 'react';
-import { FieldError } from 'react-hook-form';
-import { ProductBasicSettingsFormDto } from '../../@types/dto/form/product-basic-settings.dto';
-import {
-  ProductFilterCheeseFormDto,
-  ProductFilterMeatFormDto,
-} from '../../@types/dto/form/product-filters.dto';
-import { ProductPriceFormDto } from '../../@types/dto/form/product-price.dto';
-import { ProductCategory } from '../../@types/dto/product/category.dto';
+import React, { useState } from 'react';
+
 import { ProductCreateDto } from '../../@types/dto/product/create.dto';
 import { useGetAllCategoriesQuery } from '../../api/categoryApi';
 import { useCreateProductMutation, useGetAllProductsQuery } from '../../api/productApi';
+import { useUploadImageMutation } from '../../api/imageApi';
 import { Header } from '../../components/Header/Header';
-import { PriceProductForm } from '../../components/Product/PriceForm/PriceForm';
-import { ProductBasicSettingsForm } from '../../components/Product/BasicSettingsForm/BasicSettingsForm';
-import { ProductFilterForm } from '../../components/Product/FilterForm/FilterForm';
-import {
-  Product,
-  ProductSelectForm,
-} from '../../components/Product/SelectForm/SelectForm';
-import { TabPanel } from '../../components/UI/Tabs/TabPanel';
-import { Tabs } from '../../components/UI/Tabs/Tabs';
 import { Button } from '../../components/UI/Button/Button';
 import { Path } from '../../constants/routes';
 import { useTo } from '../../hooks/useTo';
-
-import { createProductTabOptions } from './productConstants';
 import { NotificationType } from '../../@types/entities/Notification';
 import { eventBus, EventTypes } from '../../packages/EventBus';
-import {
-  FullFormType,
-  ProductFullForm,
-} from '../../components/Product/FullForm/FullForm';
+import { FullFormType, ProductFullForm } from '../../components/Product/FullForm/FullForm';
 import { useGetClientRolesListQuery } from '../../api/clientRoleApi';
+import { Image } from '../../@types/entities/Image';
 
 type Props = {
   onSaveHandler: () => void;
@@ -57,7 +38,6 @@ function RightContent({ onSaveHandler, onCancelHandler }: Props) {
 }
 
 function CreateProductView() {
-  const language = 'ru';
   const to = useTo();
 
   const { data: clientRolesList = [] } = useGetClientRolesListQuery();
@@ -90,12 +70,37 @@ function CreateProductView() {
   });
 
   const [fetchCreateProduct] = useCreateProductMutation();
+  const [uploadImage, { data: imageData }] = useUploadImageMutation();
+
+  const [images, setImages] = useState<Image[]>([]);
+
   const { data: categories = [] } = useGetAllCategoriesQuery();
-  const { data: productsData, isLoading: isProductsLoading = false } =
-    useGetAllProductsQuery(
-      { withSimilarProducts: false, withMeta: false, withRoleDiscount: false },
-      { skip: activeTabId !== 'recommended_products' }
-    );
+
+  const { data: productsData, isLoading: isProductsLoading = false } = useGetAllProductsQuery(
+    { withSimilarProducts: false, withMeta: false, withRoleDiscount: false },
+    { skip: activeTabId !== 'recommended_products' }
+  );
+
+  const uploadPhoto = async (photo: string, i: number) => {
+    const formData = new FormData();
+    formData.append('photo', photo);
+
+    console.log(photo);
+
+    try {
+      await uploadImage(formData).unwrap();
+      if (imageData) {
+        const updatedImages = images.slice();
+        updatedImages.splice(i, 1, imageData);
+        setImages(updatedImages);
+      }
+    } catch (error) {
+      eventBus.emit(EventTypes.notification, {
+        message: `Произошла ошибка при загрузке фото ${i + 1}`,
+        type: NotificationType.DANGER,
+      });
+    }
+  };
 
   const onSave = async () => {
     const {
@@ -105,6 +110,7 @@ function CreateProductView() {
       meatCategories,
       productSelect,
     } = fullFormState;
+
     const characteristics =
       basicSettings.categoryKey === 'cheese' ? cheeseCategories : meatCategories;
 
@@ -127,6 +133,12 @@ function CreateProductView() {
         };
       }) || [];
 
+    [
+      basicSettings.firstImage,
+      basicSettings.secondImage,
+      basicSettings.thirdImage,
+    ].forEach((image, i) => image && uploadPhoto(image, i));
+
     const newProduct: ProductCreateDto = {
       title: {
         en: '',
@@ -136,7 +148,7 @@ function CreateProductView() {
         en: '',
         ru: basicSettings.description,
       },
-      images: [],
+      images: images.map(image => image.id),
       price: {
         rub: +priceSettings.rub,
         eur: +priceSettings.eur,
@@ -159,7 +171,6 @@ function CreateProductView() {
         message: 'Произошла ошибка',
         type: NotificationType.DANGER,
       });
-      console.log(error);
     }
   };
 
@@ -172,7 +183,6 @@ function CreateProductView() {
         rightContent={<RightContent onSaveHandler={onSave} onCancelHandler={onCancel} />}
       />
       <ProductFullForm
-        language={language}
         activeTabId={activeTabId}
         isProductsLoading={isProductsLoading}
         onChangeTab={setActiveTabId}

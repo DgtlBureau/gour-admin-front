@@ -1,15 +1,35 @@
-import React, { useEffect, useState } from 'react';
-import { useForm, FormProvider, FieldError } from 'react-hook-form';
+import React, { useEffect } from 'react';
+import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FormControlLabel, FormLabel, Grid } from '@mui/material';
+
+import { RadioButton } from '../../UI/RadioButton/RadioButton';
 import { HFTextField } from '../../HookForm/HFTextField';
 import { HFSelect } from '../../HookForm/HFSelect';
 import { HFTextarea } from '../../HookForm/HFTextarea';
-import schema from './validation';
-import { ProductBasicSettingsFormDto } from '../../../@types/dto/form/product-basic-settings.dto';
-import { RadioButton } from '../../UI/RadioButton/RadioButton';
 import { HFRadioGroup } from '../../HookForm/HFRadioGroup';
-import { Category } from '../../../@types/entities/Category';
+import { HFUploadPhoto } from '../../HookForm/HFUploadPhoto';
+import { ProductBasicSettingsFormDto } from '../../../@types/dto/form/product-basic-settings.dto';
+import schema from './validation';
+
+const sx = {
+  header: {
+    display: 'flex',
+  },
+  category: {
+    marginLeft: '10px',
+  },
+  images: {
+    display: 'flex',
+    justifyContent: 'space-between',
+  },
+  imageUpload: {
+    marginRight: '10px',
+  },
+  meta: {
+    marginBottom: '10px',
+  },
+};
 
 type Props = {
   defaultValues?: ProductBasicSettingsFormDto;
@@ -41,47 +61,57 @@ export function ProductBasicSettingsForm({
     values.reset(defaultValues);
   }, [defaultValues]);
 
-  const submitHandler = (data: ProductBasicSettingsFormDto) => {
-    onChange(data);
-  };
+  const submit = (data: ProductBasicSettingsFormDto) => onChange(data);
 
-  const changeHandler = () => {
-    onChange(values.getValues());
-  };
+  const change = () => onChange(values.getValues());
 
   return (
     <FormProvider {...values}>
       <form
         id="productPriceForm"
-        onBlur={changeHandler}
-        onSubmit={values.handleSubmit(submitHandler)}
+        onBlur={change}
+        onSubmit={values.handleSubmit(submit)}
       >
         <Grid container spacing={2}>
-          <Grid item md={8}>
-            <HFTextField name="title" label="Название" />
-          </Grid>
-          {mode === 'create' && (
-            <Grid item md={4}>
-              <HFSelect options={categories} name="categoryKey" placeholder="Категория" />
+          <Grid item md={8} sx={sx.header}>
+            <Grid item md>
+              <HFTextField name="title" label="Название" />
             </Grid>
-          )}
-          <Grid item md={12}>
+            {
+              mode === 'create' && (
+                <Grid item md={4}>
+                  <HFSelect
+                    sx={sx.category}
+                    label="Категория"
+                    options={categories}
+                    name="categoryKey"
+                    placeholder="Категория"
+                  />
+                </Grid>
+              )
+            }
+          </Grid>
+          <Grid item md={8} sx={sx.images}>
+            <HFUploadPhoto sx={sx.imageUpload} id="firstImage" label="Фото 1" name="firstImage" />
+            <HFUploadPhoto sx={sx.imageUpload} id="secondImage" label="Фото 2" name="secondImage" />
+            <HFUploadPhoto id="thirdImage" label="Фото 3" name="thirdImage" />
+          </Grid>
+
+          <Grid item md={8}>
             <HFTextarea label="Описание" name="description" placeholder="Описание" />
           </Grid>
-          <Grid item md={12}>
+
+          <Grid item md={8}>
             <FormLabel>Индексация</FormLabel>
             <HFRadioGroup name="isIndexed">
               <FormControlLabel value control={<RadioButton />} label="Да" />
               <FormControlLabel value={false} control={<RadioButton />} label="Нет" />
             </HFRadioGroup>
           </Grid>
-          <Grid item md={6}>
-            <HFTextField name="metaTitle" label="metaTitle" />
-          </Grid>
-          <Grid item md={6}>
-            <HFTextField name="metaDescription" label="metaDescription" />
-          </Grid>
-          <Grid item md={6}>
+
+          <Grid item md={8}>
+            <HFTextField sx={sx.meta} name="metaTitle" label="metaTitle" />
+            <HFTextField sx={sx.meta} name="metaDescription" label="metaDescription" />
             <HFTextField name="metaKeywords" label="metaKeywords" />
           </Grid>
         </Grid>

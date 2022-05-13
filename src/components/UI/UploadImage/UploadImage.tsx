@@ -1,8 +1,8 @@
 import React, { ChangeEvent, ChangeEventHandler, CSSProperties, useState } from 'react';
 import { PhotoCamera } from '@mui/icons-material';
-import { Stack } from '@mui/material';
+import { Stack, SxProps } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { IconButton } from '../IconButton/IconButton';
+
 import { Typography } from '../Typography/Typography';
 import { Button } from '../Button/Button';
 
@@ -24,6 +24,7 @@ type Props = {
   isError?: boolean;
   helperText?: string;
   allowedFileTypes: ('image/jpeg' | 'image/png' | 'image/webp')[];
+  sx?: SxProps;
   onChange: ChangeEventHandler<HTMLInputElement>;
 };
 
@@ -35,6 +36,7 @@ export function UploadImage({
   helperText,
   label,
   allowedFileTypes,
+  sx,
 }: Props) {
   const Input = styled('input')({
     display: 'none',
@@ -69,7 +71,7 @@ export function UploadImage({
   };
 
   return (
-    <Stack sx={{ width: '340px' }} alignItems="center" spacing={2}>
+    <Stack sx={{ width: '340px', ...sx }} alignItems="center" spacing={2}>
       <Stack
         sx={{ width: '100%' }}
         direction="row"
@@ -78,8 +80,9 @@ export function UploadImage({
         spacing={2}
       >
         <Typography variant="body1">{label}</Typography>
-        <Button onClick={handleDelete}>Удалить</Button>
+        <Button onClick={handleDelete} size="small">Удалить</Button>
       </Stack>
+
       <label
         htmlFor={id}
         style={{
@@ -95,17 +98,15 @@ export function UploadImage({
           type="file"
           name={name}
         />
-        {!loadedFile && (
-          <IconButton color="primary" aria-label="upload picture" component="span">
-            <PhotoCamera />
-          </IconButton>
-        )}
+        {!loadedFile && <PhotoCamera />}
       </label>
-      {helperText && (
-        <Typography variant="body1" color="error">
-          {helperText}
-        </Typography>
-      )}
+      {
+        helperText && (
+          <Typography variant="body1" color="error">
+            {helperText}
+          </Typography>
+        )
+      }
     </Stack>
   );
 }

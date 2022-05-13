@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import { ProductBasicSettingsFormDto } from '../../../@types/dto/form/product-basic-settings.dto';
 import {
   ProductFilterCheeseFormDto,
@@ -8,6 +8,7 @@ import { ProductPriceFormDto } from '../../../@types/dto/form/product-price.dto'
 import { ProductCategory } from '../../../@types/dto/product/category.dto';
 import { Category } from '../../../@types/entities/Category';
 import { Product } from '../../../@types/entities/Product';
+import { Box } from '../../UI/Box/Box';
 import { TabPanel } from '../../UI/Tabs/TabPanel';
 import { Tabs } from '../../UI/Tabs/Tabs';
 import { ProductBasicSettingsForm } from '../BasicSettingsForm/BasicSettingsForm';
@@ -25,7 +26,6 @@ export type FullFormType = {
 };
 
 type ProductFullFormProps = {
-  language: 'ru' | 'en';
   activeTabId: string;
   onChangeTab: (tabId: string) => void;
   isProductsLoading?: boolean;
@@ -37,7 +37,6 @@ type ProductFullFormProps = {
 };
 
 export function ProductFullForm({
-  language,
   mode,
   activeTabId,
   categories,
@@ -60,9 +59,11 @@ export function ProductFullForm({
       return { ...prevState, basicSettings: data };
     });
   };
+
   const onChangePrice = (data: ProductPriceFormDto) => {
     setFullFormState(prevState => ({ ...prevState, priceSettings: data }));
   };
+
   const onChangeFilterForm = (
     data: ProductFilterCheeseFormDto | ProductFilterMeatFormDto,
     type: ProductCategory
@@ -79,6 +80,7 @@ export function ProductFullForm({
       }));
     }
   };
+
   const onChangeRecommended = (recommendedIds: number[]) => {
     setFullFormState(prevState => ({ ...prevState, productSelect: recommendedIds }));
   };
@@ -98,7 +100,7 @@ export function ProductFullForm({
   }));
 
   return (
-    <div>
+    <Box sx={{ padding: '0 24px' }}>
       <Tabs
         options={createProductTabOptions}
         value={activeTabId}
@@ -143,6 +145,6 @@ export function ProductFullForm({
           onChange={onChangeRecommended}
         />
       </TabPanel>
-    </div>
+    </Box>
   );
 }

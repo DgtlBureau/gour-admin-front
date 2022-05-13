@@ -2,7 +2,6 @@ import React, { CSSProperties } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 
 import { Textarea } from '../UI/Textarea/Textarea';
-import { TextField } from '../UI/TextField/TextField';
 
 type Props = {
   name: string;
@@ -25,11 +24,10 @@ export function HFTextarea({ name, defaultValue, ...props }: Props) {
       control={control}
       defaultValue={defaultValue || ''}
       render={({ field: { ref, ...rest } }) => (
-        <TextField
+        <Textarea
           {...rest}
-          multiline
           isError={!!errors[name]}
-          helperText={errors[name]?.message ?? ''}
+          error={errors[name]?.message ?? ''}
           {...props}
         />
       )}

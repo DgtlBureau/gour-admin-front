@@ -1,6 +1,7 @@
 import React from 'react';
 import { SxProps } from '@mui/material';
 import { Controller, useFormContext } from 'react-hook-form';
+
 import { UploadImage } from '../UI/UploadImage/UploadImage';
 
 type Props = {
@@ -10,10 +11,15 @@ type Props = {
   type?: string;
   sx?: SxProps;
   id: string;
-  allowedFileTypes: ('image/jpeg' | 'image/png' | 'image/webp')[];
+  allowedFileTypes?: ('image/jpeg' | 'image/png' | 'image/webp')[];
 };
 
-export function HFUploadPhoto({ name, defaultValue, ...props }: Props) {
+export function HFUploadPhoto({
+  name,
+  defaultValue,
+  allowedFileTypes = ['image/jpeg', 'image/png', 'image/webp'],
+  ...props
+}: Props) {
   const {
     control,
     formState: { errors },
@@ -29,6 +35,7 @@ export function HFUploadPhoto({ name, defaultValue, ...props }: Props) {
           {...rest}
           isError={!!errors[name]}
           helperText={errors[name]?.message ?? ''}
+          allowedFileTypes={allowedFileTypes}
           {...props}
         />
       )}

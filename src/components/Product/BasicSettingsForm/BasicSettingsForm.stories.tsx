@@ -6,7 +6,7 @@ import { ProductBasicSettingsFormDto } from '../../../@types/dto/form/product-ba
 
 export default {
   component: ProductBasicSettingsForm,
-  title: 'ProductBasicSettingsForm',
+  title: 'Forms/ProductBasicSettings',
 } as Meta;
 
 const defaultValues = {
@@ -35,6 +35,7 @@ const Template: ComponentStory<typeof ProductBasicSettingsForm> = function (args
       {...args}
       categories={categories}
       defaultValues={defaultValues}
+      mode="create"
     />
   );
 };

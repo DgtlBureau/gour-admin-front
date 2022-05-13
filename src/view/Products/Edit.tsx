@@ -187,7 +187,6 @@ function EditProductView() {
         message: 'Произошла ошибка',
         type: NotificationType.DANGER,
       });
-      console.log(error);
     }
   };
 
@@ -206,7 +205,6 @@ function EditProductView() {
         rightContent={<RightContent onSaveClick={onSave} onCancelHandler={onCancel} />}
       />
       <ProductFullForm
-        language={lang}
         activeTabId={activeTabId}
         onChangeTab={setActiveTabId}
         categories={categories}
