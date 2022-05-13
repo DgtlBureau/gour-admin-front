@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { LinearProgress, Stack } from '@mui/material';
+import { format } from 'date-fns';
 import { NotificationType } from '../../@types/entities/Notification';
 import {
   useCreateReferralCodeMutation,
@@ -19,6 +20,7 @@ import { ReferralCodeTable } from '../../components/ReferralCodes/Table/Table';
 import { Button } from '../../components/UI/Button/Button';
 import { Typography } from '../../components/UI/Typography/Typography';
 import { eventBus, EventTypes } from '../../packages/EventBus';
+import { downloadFileFromUrl } from '../../utils/loadFileUtil';
 
 type Props = {
   onCreateClick: () => void;
@@ -145,7 +147,17 @@ function ListReferralCodesView() {
           setIsExportModalOpen(false);
         }}
         onExport={(period?: { start: Date; end: Date }) => {
-          console.log(period);
+          const url = new URL('/api/referralCodes/export', process.env.REACT_APP_STORE_PATH);
+          let name = 'referral_codes_export';
+          if (period?.start) {
+            url.searchParams.set('start', period.start.toISOString());
+            name += format(period.start, 'yyyy-MM-dd');
+          }
+          if (period?.end) {
+            url.searchParams.set('end', period.end.toISOString());
+            name += `-${format(period.start, 'yyyy-MM-dd')}`;
+          }
+          downloadFileFromUrl(url.href, name);
         }}
       />
     </div>
