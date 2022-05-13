@@ -49,7 +49,7 @@ function ListUsersView() {
       login: it.login,
       name: it.name,
       role: it.role.key,
-      uuid: it.uuid,
+      uuid: it.apiUserUuid,
       createdAt: it.createdAt,
     })),
     ...(clients || []).map(it => ({
