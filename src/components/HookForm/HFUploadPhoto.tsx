@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ChangeEvent } from 'react';
 import { SxProps } from '@mui/material';
 import { Controller, useFormContext } from 'react-hook-form';
 
@@ -30,10 +30,11 @@ export function HFUploadPhoto({
       name={name}
       control={control}
       defaultValue={defaultValue || ''}
-      render={({ field: { ref, ...rest } }) => (
+      render={({ field: { ref, onChange, ...rest } }) => (
         <UploadImage
           {...rest}
           isError={!!errors[name]}
+          onChange={({ target: tg }) => onChange(tg.files?.[0])}
           helperText={errors[name]?.message ?? ''}
           allowedFileTypes={allowedFileTypes}
           {...props}

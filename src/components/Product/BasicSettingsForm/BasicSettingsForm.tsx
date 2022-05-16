@@ -50,7 +50,7 @@ export function ProductBasicSettingsForm({
 }: Props) {
   const values = useForm<ProductBasicSettingsFormDto>({
     resolver: yupResolver(schema),
-    mode: 'onBlur',
+    mode: 'onChange',
     defaultValues: {
       isIndexed:
         defaultValues?.isIndexed !== undefined ? defaultValues?.isIndexed : false,
@@ -69,7 +69,7 @@ export function ProductBasicSettingsForm({
     <FormProvider {...values}>
       <form
         id="productPriceForm"
-        onBlur={change}
+        onChange={change}
         onSubmit={values.handleSubmit(submit)}
       >
         <Grid container spacing={2}>
@@ -77,23 +77,31 @@ export function ProductBasicSettingsForm({
             <Grid item md>
               <HFTextField name="title" label="Название" />
             </Grid>
-            {
-              mode === 'create' && (
-                <Grid item md={4}>
-                  <HFSelect
-                    sx={sx.category}
-                    label="Категория"
-                    options={categories}
-                    name="categoryKey"
-                    placeholder="Категория"
-                  />
-                </Grid>
-              )
-            }
+            {mode === 'create' && (
+              <Grid item md={4}>
+                <HFSelect
+                  sx={sx.category}
+                  label="Категория"
+                  options={categories}
+                  name="categoryKey"
+                  placeholder="Категория"
+                />
+              </Grid>
+            )}
           </Grid>
           <Grid item md={8} sx={sx.images}>
-            <HFUploadPhoto sx={sx.imageUpload} id="firstImage" label="Фото 1" name="firstImage" />
-            <HFUploadPhoto sx={sx.imageUpload} id="secondImage" label="Фото 2" name="secondImage" />
+            <HFUploadPhoto
+              sx={sx.imageUpload}
+              id="firstImage"
+              label="Фото 1"
+              name="firstImage"
+            />
+            <HFUploadPhoto
+              sx={sx.imageUpload}
+              id="secondImage"
+              label="Фото 2"
+              name="secondImage"
+            />
             <HFUploadPhoto id="thirdImage" label="Фото 3" name="thirdImage" />
           </Grid>
 

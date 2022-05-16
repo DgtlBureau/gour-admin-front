@@ -80,7 +80,9 @@ export function UploadImage({
         spacing={2}
       >
         <Typography variant="body1">{label}</Typography>
-        <Button onClick={handleDelete} size="small">Удалить</Button>
+        <Button onClick={handleDelete} size="small">
+          Удалить
+        </Button>
       </Stack>
 
       <label
@@ -100,13 +102,11 @@ export function UploadImage({
         />
         {!loadedFile && <PhotoCamera />}
       </label>
-      {
-        helperText && (
-          <Typography variant="body1" color="error">
-            {helperText}
-          </Typography>
-        )
-      }
+      {helperText && (
+        <Typography variant="body1" color="error">
+          {helperText}
+        </Typography>
+      )}
     </Stack>
   );
 }
