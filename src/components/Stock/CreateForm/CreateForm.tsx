@@ -10,7 +10,6 @@ import { HFUploadPhoto } from '../../HookForm/HFUploadPhoto';
 import { Product, ProductSelectForm } from '../../Product/SelectForm/SelectForm';
 import { TabPanel } from '../../UI/Tabs/TabPanel';
 import { Tabs } from '../../UI/Tabs/Tabs';
-import { Button } from '../../UI/Button/Button';
 import { Typography } from '../../UI/Typography/Typography';
 import schema from './validation';
 
@@ -20,9 +19,8 @@ type Props = {
     label: string;
     value: string;
   }[];
-  defaultValues: CreateStockFormDto;
+  defaultValues?: CreateStockFormDto;
   onSubmit: (data: CreateStockFormDto) => void;
-  onCancel: () => void;
 };
 
 const tabOptions = [
@@ -41,7 +39,6 @@ export function CreateStockForm({
   categories,
   defaultValues,
   onSubmit,
-  onCancel,
 }: Props) {
   const [selectedTabKey, setSelectedTabKey] = useState<string>('basicSettings');
 
@@ -72,21 +69,11 @@ export function CreateStockForm({
   return (
     <>
       <Grid container>
-        <Grid item xs={9}>
-          <Tabs
-            value={selectedTabKey}
-            options={tabOptions}
-            onChange={setSelectedTabKey}
-          />
-        </Grid>
-        <Grid item xs={3}>
-          <Button sx={{ margin: '0 10px 0 0' }} type="submit" form="createStockForm">
-            Сохранить
-          </Button>
-          <Button type="button" onClick={onCancel}>
-            Отмена
-          </Button>
-        </Grid>
+        <Tabs
+          value={selectedTabKey}
+          options={tabOptions}
+          onChange={setSelectedTabKey}
+        />
       </Grid>
       {error && (
         <Typography variant="body1" sx={{ color: 'red' }}>

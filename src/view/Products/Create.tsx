@@ -85,8 +85,6 @@ function CreateProductView() {
     const formData = new FormData();
     formData.append('photo', photo);
 
-    console.log(photo);
-
     try {
       await uploadImage(formData).unwrap();
       if (imageData) {
