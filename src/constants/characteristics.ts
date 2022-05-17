@@ -309,7 +309,7 @@ export const MEAT_CHARACTERISTICS: Record<string, Characteristic> = {
     ],
   },
   meatHardness: {
-    label: { ru: 'Твердость', en: 'Hardness' },
+    label: { ru: 'Способ приготовления', en: 'Cooking method' },
     categoryKey: 'meat',
     values: [
       { key: 'salted', label: { ru: 'солёное', en: 'salted' } },
