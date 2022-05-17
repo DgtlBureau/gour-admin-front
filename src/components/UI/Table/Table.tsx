@@ -25,6 +25,9 @@ const sx = {
   bodyCell: {
     fontSize: '14px',
   },
+  tabs: {
+    padding: '0 16px',
+  }
 };
 
 export type Row = {
@@ -67,6 +70,7 @@ export function Table({
     <Paper>
       {tabs && (
         <Tabs
+          sx={sx.tabs}
           value={tabs.value}
           options={tabs.options}
           onChange={tabs.onChange}

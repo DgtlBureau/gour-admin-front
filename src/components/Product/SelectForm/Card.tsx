@@ -13,6 +13,13 @@ type Props = {
 };
 
 const sx = {
+  card: {
+    width: '100%',
+    cursor: 'pointer',
+    border: '1px solid',
+    borderColor: 'secondary.main',
+    borderRadius: 0,
+  },
   box: {
     padding: '4px 0',
     textAlign: 'center',
@@ -20,6 +27,9 @@ const sx = {
   },
   cardText: {
     userSelect: 'none',
+    overflow: 'hidden',
+    whiteSpace: 'nowrap',
+    textOverflow: 'ellipsis',
   },
 };
 
@@ -46,16 +56,16 @@ export function ProductSelectCard({
   }
 
   return (
-    <Card sx={{ width: '100%', cursor: 'pointer' }} onClick={onSelect}>
-      <CardMedia component="img" alt="green iguana" height="140" image={image} />
+    <Card sx={sx.card} onClick={onSelect}>
+      <CardMedia component="img" height="140" image={image} />
       <Box
         sx={{
           ...sx.box,
-          backgroundColor: isSelected ? '#25262D' : '#D6D6D6',
+          backgroundColor: isSelected ? 'primary.main' : 'secondary.main',
         }}
       >
         <Typography
-          sx={{ ...sx.cardText, color: isSelected ? '#fff' : '#25262d' }}
+          sx={{ ...sx.cardText, color: isSelected ? 'common.white' : '' }}
           variant="body1"
         >
           {isSelected ? 'Товар выбран' : 'Выбрать товар'}

@@ -1,5 +1,11 @@
 import React from 'react';
-import { Tabs as MUITabs, Tab } from '@mui/material';
+import { Tabs as MUITabs, Tab, SxProps } from '@mui/material';
+
+const tabSx = {
+  padding: '12px 0',
+  marginRight: '16px',
+  minWidth: 0,
+};
 
 export type TabsProps = {
   value: string;
@@ -7,18 +13,21 @@ export type TabsProps = {
     value: string;
     label: string;
   }[];
+  sx?: SxProps;
   onChange: (val: string) => void;
 };
 
-export function Tabs({ value, options, onChange }: TabsProps) {
+export function Tabs({ value, options, sx, onChange }: TabsProps) {
   return (
     <MUITabs
       color="accent.main"
       value={value}
       onChange={(_, newValue: string) => onChange(newValue)}
+      sx={sx}
     >
       {options.map(option => (
         <Tab
+          sx={tabSx}
           label={option.label}
           value={option.value}
           key={option.value}

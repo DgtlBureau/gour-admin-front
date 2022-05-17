@@ -19,6 +19,16 @@ import { PromotionCreateDto } from '../../@types/dto/promotion/create.dto';
 
 import noImage from '../../assets/images/no-image.svg';
 
+const emptyTranslatableString = {
+  ru: '',
+  en: '',
+};
+
+const emptyTranslatableImage = {
+  ru: -1,
+  en: -1,
+};
+
 type Language = 'ru' | 'en';
 
 const selectOptions = [
@@ -32,22 +42,47 @@ const selectOptions = [
   },
 ] as { value: Language, label: string }[];
 
-type Props = {
+type TranslatableStockValues = {
+  title: string;
+  description: string;
+  smallPhoto: File;
+  fullPhoto: File;
+  metaTitle?: string | undefined;
+  metaDescription?: string | undefined;
+  metaKeywords?: string | undefined;
+};
+
+type CommonStockValues = {
+  startDate: Date;
+  endDate: Date;
+  stockPercent: string;
+  productIdList: number[];
+  isIndexed?: boolean;
+}
+
+type StockFormValues = {
+  ru: TranslatableStockValues,
+  en: TranslatableStockValues,
+  common: CommonStockValues,
+};
+
+type RightContentProps = {
   language: Language;
   onChangeLanguage(option: SingleValue<SelectOption<Language>>): void;
   onSave(): void;
   onCancel(): void;
 };
 
-type StockFormValues = {
-  ru: CreateStockFormDto,
-  en: CreateStockFormDto,
-};
-
-function RightContent({ language, onChangeLanguage, onSave, onCancel }: Props) {
+function RightContent({ language, onChangeLanguage, onSave, onCancel }: RightContentProps) {
   return (
     <>
-      <Select sx={{ width: '150px' }} value={language} options={selectOptions} onChange={onChangeLanguage} isMulti={false} />
+      <Select
+        sx={{ width: '150px' }}
+        value={language}
+        options={selectOptions}
+        onChange={onChangeLanguage}
+        isMulti={false}
+      />
       <Button sx={{ margin: '0 10px' }} onClick={onSave}>
         Сохранить
       </Button>
@@ -94,7 +129,7 @@ function CreateStockView() {
   const rememberValues = (data: CreateStockFormDto) => {
     console.log('remember values');
 
-    const commonValues = {
+    const commonValues: CommonStockValues = {
       startDate: data.startDate,
       endDate: data.endDate,
       stockPercent: data.stockPercent,
@@ -102,7 +137,7 @@ function CreateStockView() {
       isIndexed: data.isIndexed,
     };
 
-    const languageValues = {
+    const translatableValues: TranslatableStockValues = {
       title: data.title,
       description: data.description,
       smallPhoto: data.smallPhoto,
@@ -113,28 +148,16 @@ function CreateStockView() {
     };
 
     const updatedValues = {
-      ru: {
-        ...stockValues.ru,
-        ...commonValues,
-      },
-      en: {
-        ...stockValues.en,
-        ...commonValues,
-      },
-      [language]: languageValues,
+      ...stockValues,
+      [language]: translatableValues,
+      common: commonValues,
     };
 
     setStockValues(updatedValues);
   };
 
   const uploadPhoto = async (image: File, label?: string) => {
-    if (!image) {
-      eventBus.emit(EventTypes.notification, {
-        message: `Выберите фото ${label}`,
-        type: NotificationType.DANGER,
-      });
-      return undefined;
-    }
+    if (!image) return undefined;
 
     const formData = new FormData();
 
@@ -143,8 +166,10 @@ function CreateStockView() {
     try {
       await uploadImage(formData).unwrap();
     } catch (error) {
+      const languageLabel = language === 'ru' ? 'Русский' : 'English';
+
       eventBus.emit(EventTypes.notification, {
-        message: `Произошла ошибка при загрузке фото ${label}`,
+        message: `Произошла ошибка при загрузке фото ${label} (${languageLabel})`,
         type: NotificationType.DANGER,
       });
     }
@@ -153,47 +178,54 @@ function CreateStockView() {
   };
 
   const convertToStock = async (values: StockFormValues) => {
-    const ruCardImage = await uploadPhoto(values.ru.smallPhoto, '1:2');
-    const ruPageImage = await uploadPhoto(values.ru.fullPhoto, '1:1');
+    const ruCardImage = await uploadPhoto(values.ru.smallPhoto);
+    const enCardImage = await uploadPhoto(values.en.smallPhoto);
 
-    const enCardImage = await uploadPhoto(values.en.smallPhoto, '1:2');
-    const enPageImage = await uploadPhoto(values.en.fullPhoto, '1:1');
+    const ruPageImage = await uploadPhoto(values.ru.fullPhoto);
+    const enPageImage = await uploadPhoto(values.en.fullPhoto);
 
     return {
       title: {
-        ru: values.ru.title || '',
-        en: values.en.title || '',
+        ...emptyTranslatableString,
+        ru: values.ru.title,
+        en: values.en.title,
       },
       description: {
-        ru: values.ru.description || '',
-        en: values.en.description || '',
+        ...emptyTranslatableString,
+        ru: values.ru.description,
+        en: values.en.description,
       },
       cardImageId: {
-        ru: ruCardImage?.id || -1,
-        en: enCardImage?.id || -1,
+        ...emptyTranslatableImage,
+        ru: ruCardImage?.id,
+        en: enCardImage?.id,
       },
       pageImageId: {
-        ru: ruPageImage?.id || -1,
-        en: enPageImage?.id || -1,
+        ...emptyTranslatableImage,
+        ru: ruPageImage?.id,
+        en: enPageImage?.id,
       },
-      discount: +values.ru.stockPercent,
-      start: formatISO(values.ru.startDate),
-      end: formatISO(values.ru.endDate),
-      products: values.ru.productIdList,
+      discount: +values.common.stockPercent,
+      start: formatISO(values.common.startDate),
+      end: formatISO(values.common.endDate),
+      products: values.common.productIdList,
       pageMeta: {
         metaTitle: {
-          ru: values.ru.metaTitle || '',
-          en: values.en.metaTitle || '',
+          ...emptyTranslatableString,
+          ru: values.ru.metaTitle,
+          en: values.en.metaTitle,
         },
         metaDescription: {
-          ru: values.ru.metaDescription || '',
-          en: values.en.metaDescription || '',
+          ...emptyTranslatableString,
+          ru: values.ru.metaDescription,
+          en: values.en.metaDescription,
         },
         metaKeywords: {
-          ru: values.ru.metaKeywords || '',
-          en: values.en.metaKeywords || '',
+          ...emptyTranslatableString,
+          ru: values.ru.metaKeywords,
+          en: values.en.metaKeywords,
         },
-        isIndexed: values.ru.isIndexed,
+        isIndexed: values.common.isIndexed,
       },
     } as PromotionCreateDto;
   };
@@ -247,7 +279,7 @@ function CreateStockView() {
         key={`stock-create/${language}`}
         products={products}
         categories={categories}
-        defaultValues={stockValues[language]}
+        defaultValues={{ ...stockValues[language], ...stockValues.common }}
         submitBtnRef={submitBtnRef}
         onSubmit={rememberValues}
       />

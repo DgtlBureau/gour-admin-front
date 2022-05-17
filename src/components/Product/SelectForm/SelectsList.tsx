@@ -22,7 +22,7 @@ export function SelectsList({ characteristics, selectValues, setSelectValues }: 
   return (
     <Grid container spacing={2}>
       {characteristics.map(characteristic => (
-        <Grid item xs={3} key={characteristic.key}>
+        <Grid item xs={6} md={4} lg={3} key={characteristic.key}>
           <Select
             label={characteristic.label.ru}
             placeholder={characteristic.label.ru}

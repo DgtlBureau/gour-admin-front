@@ -48,7 +48,7 @@ export function CreateStockForm({
 }: Props) {
   const [selectedTabKey, setSelectedTabKey] = useState<string>('basicSettings');
 
-  const [selectedProducts, setSelectedProducts] = useState<number[]>([]);
+  const [selectedProducts, setSelectedProducts] = useState<number[]>(defaultValues?.productIdList || []);
 
   const [error, setError] = useState<string>('');
 
@@ -64,12 +64,7 @@ export function CreateStockForm({
 
   const submit = (data: CreateStockFormDto) => {
     if (selectedProducts.length === 0) setError('Пожалуйста, выберите товары, участвующие в акции');
-    else {
-      onSubmit({
-        ...data,
-        productIdList: selectedProducts,
-      });
-    }
+    else onSubmit({ ...data, productIdList: selectedProducts });
   };
 
   return (

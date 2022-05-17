@@ -11,6 +11,17 @@ import { ProgressLinear } from '../../UI/ProgressLinear/ProgressLinear';
 import { ALL_CHARACTERISTICS } from '../../../constants/characteristics';
 import { TranslatableString } from '../../../@types/entities/TranslatableString';
 
+const sx = {
+  productsCount: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+  },
+  tabs: {
+    padding: '20px 0',
+  },
+};
+
 export type Product = {
   id: number;
   title: string;
@@ -115,14 +126,14 @@ export function ProductSelectForm({
   return (
     <Stack>
       <Grid container spacing={2}>
-        <Grid item xs={8}>
+        <Grid item xs={12} md={8} lg={6}>
           <TextField
             label="Поиск"
             value={searchQuery}
             onChange={e => setSearchQuery(e.target.value)}
           />
         </Grid>
-        <Grid item xs={4}>
+        <Grid item sx={sx.productsCount} xs={12} md={4} lg={6}>
           <Typography variant="body1">
             Количество добавленных товаров:
             {' '}
@@ -131,12 +142,14 @@ export function ProductSelectForm({
         </Grid>
       </Grid>
 
-      <Tabs value={selectedTabKey} options={tabOptions} onChange={handleChangeTab} />
+      <Tabs sx={sx.tabs} value={selectedTabKey} options={tabOptions} onChange={handleChangeTab} />
+
       <SelectsList
         characteristics={filteredCharacteristics}
         selectValues={selectValues}
         setSelectValues={setSelectValues}
       />
+
       <ProductSelectList
         products={filteredProducts}
         searchQuery={searchQuery}
