@@ -21,6 +21,7 @@ const containerSx = {
   marginLeft: '230px',
   marginRight: '25px',
   width: 'auto',
+  padding: '0 24px 24px 24px',
 };
 
 const linkedItems: SidebarLinkedItem[] = [

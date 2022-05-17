@@ -17,6 +17,12 @@ export const promotionApi = commonApi.injectEndpoints({
         url: Path.STOCKS,
         method: 'GET',
       }),
+      providesTags: result => (result ?
+        [
+          ...result.map(({ id }) => ({ type: 'Promotion' as const, id })),
+          { type: 'Promotion', id: 'LIST' },
+        ] :
+        [{ type: 'Promotion', id: 'LIST' }]),
     }),
     createPromotion: builder.mutation<void, PromotionCreateDto>({
       query: body => ({
@@ -24,6 +30,7 @@ export const promotionApi = commonApi.injectEndpoints({
         method: 'POST',
         body,
       }),
+      invalidatesTags: [{ type: 'Promotion', id: 'LIST' }],
     }),
     updatePromotion: builder.mutation<void, PromotionUpdateDto>({
       query: ({ id, ...body }) => ({
@@ -31,12 +38,14 @@ export const promotionApi = commonApi.injectEndpoints({
         method: 'POST',
         body,
       }),
+      invalidatesTags: [{ type: 'Promotion', id: 'LIST' }],
     }),
     deletePromotion: builder.mutation<void, number>({
       query: id => ({
         url: `${Path.STOCKS}/${id}`,
         method: 'POST',
       }),
+      invalidatesTags: [{ type: 'Promotion', id: 'LIST' }],
     }),
   }),
 });

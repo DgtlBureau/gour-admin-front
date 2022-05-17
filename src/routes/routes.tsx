@@ -17,8 +17,6 @@ import ListStocksView from '../view/Stocks/List';
 import CreateStockView from '../view/Stocks/Create';
 import EditStockView from '../view/Stocks/Edit';
 import ListPagesView from '../view/Pages/List';
-import EditPageView from '../view/Pages/Edit';
-import CreatePageView from '../view/Pages/Create';
 import ListUsersView from '../view/Users/List';
 import CreateUserView from '../view/Users/Create';
 import EditUserView from '../view/Users/Edit';
@@ -111,8 +109,6 @@ export function Routing() {
     ),
     children: [
       { path: '', element: <ListPagesView /> },
-      { path: 'create', element: <CreatePageView /> },
-      { path: ':id', element: <EditPageView /> },
     ],
   };
 

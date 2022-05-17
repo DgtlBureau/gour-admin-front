@@ -80,7 +80,7 @@ export function UploadImage({
         spacing={2}
       >
         <Typography variant="body1">{label}</Typography>
-        <Button onClick={handleDelete} size="small">
+        <Button onClick={handleDelete} size="small" variant="text">
           Удалить
         </Button>
       </Stack>

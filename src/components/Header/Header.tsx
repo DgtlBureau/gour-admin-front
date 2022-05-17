@@ -7,7 +7,9 @@ const sx = {
     boxShadow: 'none',
   },
   wrapper: {
-    padding: 0,
+    padding: {
+      sm: 0,
+    },
   },
 };
 

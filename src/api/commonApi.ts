@@ -9,6 +9,7 @@ export const commonApi = createApi({
     'City',
     'Product',
     'ProductGrade',
+    'Promotion',
     'Client',
     'Category',
     'Page',
