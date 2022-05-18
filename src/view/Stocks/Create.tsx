@@ -103,6 +103,8 @@ function CreateStockView() {
 
   const submitBtnRef = useRef<HTMLButtonElement>(null);
 
+  const defaultValues = { ...stockValues[language], ...stockValues.common };
+
   const categories = categoriesData?.map(it => ({
     label: it.title.ru,
     value: it.key,
@@ -144,6 +146,8 @@ function CreateStockView() {
   const changeValidity = (value: boolean) => setIsValid({ ...isValid, [language]: value });
 
   const rememberValues = (data: CreateStockFormDto) => {
+    console.log(data);
+
     const commonValues: CommonStockValues = {
       startDate: data.startDate,
       endDate: data.endDate,
@@ -282,7 +286,7 @@ function CreateStockView() {
         key={`stock-create/${language}`}
         products={products}
         categories={categories}
-        defaultValues={{ ...stockValues[language], ...stockValues.common }}
+        defaultValues={defaultValues}
         submitBtnRef={submitBtnRef}
         onValidation={changeValidity}
         onSubmit={rememberValues}
