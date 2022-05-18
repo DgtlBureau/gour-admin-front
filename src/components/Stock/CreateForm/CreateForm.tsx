@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, RefObject } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Grid, FormControlLabel, FormLabel } from '@mui/material';
@@ -24,6 +24,7 @@ type Props = {
     value: string;
   }[];
   defaultValues?: CreateStockFormDto;
+  submitBtnRef?: RefObject<HTMLButtonElement>;
   onValidation?: (value: boolean) => void;
   onSubmit: (data: CreateStockFormDto) => void;
 };
@@ -43,6 +44,7 @@ export function CreateStockForm({
   products,
   categories,
   defaultValues,
+  submitBtnRef,
   onValidation,
   onSubmit,
 }: Props) {
@@ -83,7 +85,7 @@ export function CreateStockForm({
       />
       {
         error && (
-          <Typography variant="body1" sx={{ color: 'red' }}>
+          <Typography variant="body1" sx={{ color: 'red', marginTop: '20px' }}>
             {error}
           </Typography>
         )
@@ -156,6 +158,7 @@ export function CreateStockForm({
                 </Grid>
               </Grid>
             </Grid>
+            <button type="submit" ref={submitBtnRef} style={{ display: 'none' }}>{}</button>
           </form>
         </FormProvider>
       </TabPanel>
