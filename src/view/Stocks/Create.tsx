@@ -25,11 +25,6 @@ const emptyTranslatableString = {
   en: '',
 };
 
-const emptyTranslatableImage = {
-  ru: -1,
-  en: -1,
-};
-
 type Language = 'ru' | 'en';
 
 const selectOptions = [
@@ -46,17 +41,17 @@ const selectOptions = [
 type TranslatableStockValues = {
   title: string;
   description: string;
-  smallPhoto: File;
-  fullPhoto: File;
-  metaTitle?: string | undefined;
-  metaDescription?: string | undefined;
-  metaKeywords?: string | undefined;
+  metaTitle?: string;
+  metaDescription?: string;
+  metaKeywords?: string;
 };
 
 type CommonStockValues = {
   startDate: Date;
   endDate: Date;
   stockPercent: string;
+  smallPhoto: File;
+  fullPhoto: File;
   productIdList: number[];
   isIndexed?: boolean;
 }
@@ -109,7 +104,7 @@ function CreateStockView() {
   });
   const { data: categoriesData } = useGetAllCategoriesQuery();
 
-  const [uploadImage, { data: imageData }] = useUploadImageMutation();
+  const [uploadImage] = useUploadImageMutation();
   const [createPromotion] = useCreatePromotionMutation();
 
   const [language, setLanguage] = useState<Language>('ru');
@@ -137,6 +132,8 @@ function CreateStockView() {
       startDate: data.startDate,
       endDate: data.endDate,
       stockPercent: data.stockPercent,
+      smallPhoto: data.smallPhoto,
+      fullPhoto: data.fullPhoto,
       productIdList: data.productIdList,
       isIndexed: data.isIndexed,
     };
@@ -144,8 +141,6 @@ function CreateStockView() {
     const translatableValues: TranslatableStockValues = {
       title: data.title,
       description: data.description,
-      smallPhoto: data.smallPhoto,
-      fullPhoto: data.fullPhoto,
       metaTitle: data.metaTitle,
       metaDescription: data.metaDescription,
       metaKeywords: data.metaKeywords,
@@ -185,11 +180,8 @@ function CreateStockView() {
   };
 
   const convertToStock = async (values: StockFormValues) => {
-    const ruCardImage = await uploadPhoto(values.ru.smallPhoto, '1:2');
-    const enCardImage = await uploadPhoto(values.en.smallPhoto, '1:2');
-
-    const ruPageImage = await uploadPhoto(values.ru.fullPhoto, '1:1');
-    const enPageImage = await uploadPhoto(values.en.fullPhoto, '1:1');
+    const cardImage = await uploadPhoto(values.common.smallPhoto, '1:2');
+    const pageImage = await uploadPhoto(values.common.fullPhoto, '1:1');
 
     return {
       title: {
@@ -202,16 +194,8 @@ function CreateStockView() {
         ru: values.ru.description,
         en: values.en.description,
       },
-      cardImageId: {
-        ...emptyTranslatableImage,
-        ru: ruCardImage?.id,
-        en: enCardImage?.id,
-      },
-      pageImageId: {
-        ...emptyTranslatableImage,
-        ru: ruPageImage?.id,
-        en: enPageImage?.id,
-      },
+      cardImageId: cardImage.id,
+      pageImageId: pageImage.id,
       discount: +values.common.stockPercent,
       start: formatISO(values.common.startDate),
       end: formatISO(values.common.endDate),
