@@ -20,11 +20,6 @@ import { PromotionCreateDto } from '../../@types/dto/promotion/create.dto';
 
 import noImage from '../../assets/images/no-image.svg';
 
-const emptyTranslatableString = {
-  ru: '',
-  en: '',
-};
-
 type Language = 'ru' | 'en';
 
 const selectOptions = [
@@ -110,6 +105,11 @@ function CreateStockView() {
   const [language, setLanguage] = useState<Language>('ru');
   const [stockValues, setStockValues] = useState({} as StockFormValues);
 
+  const [isValid, setIsValid] = useState({
+    ru: false,
+    en: false,
+  });
+
   const categories = categoriesData?.map(it => ({
     label: it.title.ru,
     value: it.key,
@@ -168,10 +168,8 @@ function CreateStockView() {
     const image = await uploadImage(formData).unwrap();
 
     if (!image) {
-      const languageLabel = language === 'ru' ? 'Русский' : 'English';
-
       eventBus.emit(EventTypes.notification, {
-        message: `Произошла ошибка при загрузке фото ${label} (${languageLabel})`,
+        message: `Произошла ошибка при загрузке фото ${label})`,
         type: NotificationType.DANGER,
       });
     }
@@ -185,12 +183,10 @@ function CreateStockView() {
 
     return {
       title: {
-        ...emptyTranslatableString,
         ru: values.ru.title,
         en: values.en.title,
       },
       description: {
-        ...emptyTranslatableString,
         ru: values.ru.description,
         en: values.en.description,
       },
@@ -202,17 +198,14 @@ function CreateStockView() {
       products: values.common.productIdList,
       pageMeta: {
         metaTitle: {
-          ...emptyTranslatableString,
           ru: values.ru.metaTitle,
           en: values.en.metaTitle,
         },
         metaDescription: {
-          ...emptyTranslatableString,
           ru: values.ru.metaDescription,
           en: values.en.metaDescription,
         },
         metaKeywords: {
-          ...emptyTranslatableString,
           ru: values.ru.metaKeywords,
           en: values.en.metaKeywords,
         },
@@ -222,6 +215,17 @@ function CreateStockView() {
   };
 
   const create = async () => {
+    if (!isValid.ru || !isValid.en) {
+      const invalidLanguages = selectOptions.filter(option => !isValid[option.value]).map(option => option.label);
+
+      eventBus.emit(EventTypes.notification, {
+        message: `Заполните данные для следующих языков: ${invalidLanguages.join(', ')}`,
+        type: NotificationType.DANGER,
+      });
+
+      return;
+    }
+
     const stock = await convertToStock(stockValues);
 
     console.log(stock);
