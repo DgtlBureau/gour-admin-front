@@ -1,4 +1,4 @@
-import React, { useEffect, useState, RefObject } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Grid, FormControlLabel, FormLabel } from '@mui/material';
@@ -24,7 +24,6 @@ type Props = {
     value: string;
   }[];
   defaultValues?: CreateStockFormDto;
-  submitBtnRef?: RefObject<HTMLButtonElement>;
   onSubmit: (data: CreateStockFormDto) => void;
 };
 
@@ -43,7 +42,6 @@ export function CreateStockForm({
   products,
   categories,
   defaultValues,
-  submitBtnRef,
   onSubmit,
 }: Props) {
   const [selectedTabKey, setSelectedTabKey] = useState<string>('basicSettings');
@@ -83,10 +81,10 @@ export function CreateStockForm({
       }
       <TabPanel index={selectedTabKey} value="basicSettings">
         <FormProvider {...values}>
-          <form onSubmit={values.handleSubmit(submit)}>
+          <form id="createStockForm" onSubmit={values.handleSubmit(submit)}>
             <Grid container spacing={2} md={12} lg={8}>
               <Grid item xs={12}>
-                <HFTextField name="title" label="Заголовок" />
+                <HFTextField name="title" label="Заголовок*" />
               </Grid>
 
               <Grid item xs={12}>
@@ -98,7 +96,7 @@ export function CreateStockForm({
                   <HFDatePicker
                     sx={{ width: '100%' }}
                     name="startDate"
-                    label="Дата начала"
+                    label="Дата начала*"
                   />
                 </Grid>
 
@@ -106,19 +104,19 @@ export function CreateStockForm({
                   <HFDatePicker
                     sx={{ width: '100%' }}
                     name="endDate"
-                    label="Дата завершения"
+                    label="Дата завершения*"
                   />
                 </Grid>
 
                 <Grid item xs={4}>
-                  <HFTextField name="stockPercent" label="Процент скидки" />
+                  <HFTextField name="stockPercent" label="Процент скидки*" />
                 </Grid>
 
                 <Grid item xs={12} container spacing={2}>
                   <Grid item md={4}>
                     <HFUploadPhoto
                       sx={{ width: '100%' }}
-                      label="Фото 1:1"
+                      label="Фото 1:1*"
                       name="fullPhoto"
                       id="fullPhoto"
                     />
@@ -127,7 +125,7 @@ export function CreateStockForm({
                   <Grid item md={4}>
                     <HFUploadPhoto
                       sx={{ width: '100%' }}
-                      label="Фото 1:2"
+                      label="Фото 1:2*"
                       name="smallPhoto"
                       id="smallPhoto"
                     />
@@ -149,7 +147,6 @@ export function CreateStockForm({
                 </Grid>
               </Grid>
             </Grid>
-            <button type="submit" ref={submitBtnRef} style={{ display: 'none' }}>{}</button>
           </form>
         </FormProvider>
       </TabPanel>

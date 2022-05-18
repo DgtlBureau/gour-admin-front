@@ -1,6 +1,7 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { formatISO } from 'date-fns';
 import { SingleValue } from 'react-select';
+import { ButtonGroup } from '@mui/material';
 
 import { CreateStockForm } from '../../components/Stock/CreateForm/CreateForm';
 import { Header } from '../../components/Header/Header';
@@ -69,11 +70,11 @@ type StockFormValues = {
 type RightContentProps = {
   language: Language;
   onChangeLanguage(option: SingleValue<SelectOption<Language>>): void;
-  onSave(): void;
   onCancel(): void;
+  onCreate(): void;
 };
 
-function RightContent({ language, onChangeLanguage, onSave, onCancel }: RightContentProps) {
+function RightContent({ language, onChangeLanguage, onCancel, onCreate }: RightContentProps) {
   return (
     <>
       <Select
@@ -83,12 +84,17 @@ function RightContent({ language, onChangeLanguage, onSave, onCancel }: RightCon
         onChange={onChangeLanguage}
         isMulti={false}
       />
-      <Button sx={{ margin: '0 10px' }} onClick={onSave}>
+      <Button type="submit" form="createStockForm" sx={{ margin: '0 10px' }}>
         Сохранить
       </Button>
-      <Button variant="outlined" onClick={onCancel}>
-        Отмена
-      </Button>
+      <ButtonGroup>
+        <Button variant="outlined" onClick={onCancel}>
+          Отмена
+        </Button>
+        <Button variant="outlined" sx={{ marginLeft: '10px' }} onClick={onCreate}>
+          Создать
+        </Button>
+      </ButtonGroup>
     </>
   );
 }
@@ -109,8 +115,6 @@ function CreateStockView() {
   const [language, setLanguage] = useState<Language>('ru');
   const [stockValues, setStockValues] = useState({} as StockFormValues);
 
-  const submitBtnRef = useRef<HTMLButtonElement>(null);
-
   const categories = categoriesData?.map(it => ({
     label: it.title.ru,
     value: it.key,
@@ -126,9 +130,9 @@ function CreateStockView() {
 
   const goToStocks = () => to(Path.STOCKS);
 
-  const rememberValues = (data: CreateStockFormDto) => {
-    console.log('remember values');
+  const selectLanguage = (option: SingleValue<SelectOption<Language>>) => option && setLanguage(option.value);
 
+  const rememberValues = (data: CreateStockFormDto) => {
     const commonValues: CommonStockValues = {
       startDate: data.startDate,
       endDate: data.endDate,
@@ -154,18 +158,21 @@ function CreateStockView() {
     };
 
     setStockValues(updatedValues);
+
+    eventBus.emit(EventTypes.notification, {
+      message: 'Данные сохранены, переключитесь на другой язык или нажмите "Создать"',
+      type: NotificationType.SUCCESS,
+    });
   };
 
-  const uploadPhoto = async (image: File, label?: string) => {
-    if (!image) return undefined;
-
+  const uploadPhoto = async (file?: File, label?: string) => {
     const formData = new FormData();
 
-    formData.append('image', image);
+    formData.append('image', file || noImage);
 
-    try {
-      await uploadImage(formData).unwrap();
-    } catch (error) {
+    const image = await uploadImage(formData).unwrap();
+
+    if (!image) {
       const languageLabel = language === 'ru' ? 'Русский' : 'English';
 
       eventBus.emit(EventTypes.notification, {
@@ -174,15 +181,15 @@ function CreateStockView() {
       });
     }
 
-    return imageData;
+    return image;
   };
 
   const convertToStock = async (values: StockFormValues) => {
-    const ruCardImage = await uploadPhoto(values.ru.smallPhoto);
-    const enCardImage = await uploadPhoto(values.en.smallPhoto);
+    const ruCardImage = await uploadPhoto(values.ru.smallPhoto, '1:2');
+    const enCardImage = await uploadPhoto(values.en.smallPhoto, '1:2');
 
-    const ruPageImage = await uploadPhoto(values.ru.fullPhoto);
-    const enPageImage = await uploadPhoto(values.en.fullPhoto);
+    const ruPageImage = await uploadPhoto(values.ru.fullPhoto, '1:1');
+    const enPageImage = await uploadPhoto(values.en.fullPhoto, '1:1');
 
     return {
       title: {
@@ -230,22 +237,10 @@ function CreateStockView() {
     } as PromotionCreateDto;
   };
 
-  const submitStockForm = () => {
-    console.log('submit form');
-    submitBtnRef?.current?.click();
-  };
-
-  const selectLanguage = (option: SingleValue<SelectOption<Language>>) => {
-    console.log('language change');
-    submitStockForm();
-
-    if (option) setLanguage(option.value);
-  };
-
-  const save = async () => {
-    submitStockForm();
-
+  const create = async () => {
     const stock = await convertToStock(stockValues);
+
+    console.log(stock);
 
     try {
       await createPromotion(stock).unwrap();
@@ -270,8 +265,8 @@ function CreateStockView() {
           <RightContent
             language={language}
             onChangeLanguage={selectLanguage}
-            onSave={save}
             onCancel={goToStocks}
+            onCreate={create}
           />
         )}
       />
@@ -280,7 +275,6 @@ function CreateStockView() {
         products={products}
         categories={categories}
         defaultValues={{ ...stockValues[language], ...stockValues.common }}
-        submitBtnRef={submitBtnRef}
         onSubmit={rememberValues}
       />
     </div>

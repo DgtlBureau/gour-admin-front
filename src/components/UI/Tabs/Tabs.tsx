@@ -2,8 +2,6 @@ import React from 'react';
 import { Tabs as MUITabs, Tab, SxProps } from '@mui/material';
 
 const tabSx = {
-  padding: '12px 0',
-  marginRight: '16px',
   minWidth: 0,
 };
 
