@@ -24,6 +24,7 @@ type Props = {
     value: string;
   }[];
   defaultValues?: CreateStockFormDto;
+  onValidation?: (value: boolean) => void;
   onSubmit: (data: CreateStockFormDto) => void;
 };
 
@@ -42,6 +43,7 @@ export function CreateStockForm({
   products,
   categories,
   defaultValues,
+  onValidation,
   onSubmit,
 }: Props) {
   const [selectedTabKey, setSelectedTabKey] = useState<string>('basicSettings');
@@ -52,13 +54,20 @@ export function CreateStockForm({
 
   const values = useForm<CreateStockFormDto>({
     resolver: yupResolver(schema),
+    mode: 'onBlur',
     defaultValues,
   });
+
+  const isValid = values.formState.isValid && selectedProducts.length !== 0;
 
   useEffect(() => {
     if (selectedProducts.length === 0) return;
     setError('');
   }, [selectedProducts]);
+
+  useEffect(() => {
+    if (onValidation) onValidation(isValid);
+  }, [isValid]);
 
   const submit = (data: CreateStockFormDto) => {
     if (selectedProducts.length === 0) setError('Пожалуйста, выберите товары, участвующие в акции');

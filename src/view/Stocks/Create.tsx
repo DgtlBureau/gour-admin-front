@@ -105,10 +105,7 @@ function CreateStockView() {
   const [language, setLanguage] = useState<Language>('ru');
   const [stockValues, setStockValues] = useState({} as StockFormValues);
 
-  const [isValid, setIsValid] = useState({
-    ru: false,
-    en: false,
-  });
+  const [isValid, setIsValid] = useState({ ru: false, en: false });
 
   const categories = categoriesData?.map(it => ({
     label: it.title.ru,
@@ -126,6 +123,8 @@ function CreateStockView() {
   const goToStocks = () => to(Path.STOCKS);
 
   const selectLanguage = (option: SingleValue<SelectOption<Language>>) => option && setLanguage(option.value);
+
+  const changeValidity = (value: boolean) => setIsValid({ ...isValid, [language]: value });
 
   const rememberValues = (data: CreateStockFormDto) => {
     const commonValues: CommonStockValues = {
@@ -263,6 +262,7 @@ function CreateStockView() {
         products={products}
         categories={categories}
         defaultValues={{ ...stockValues[language], ...stockValues.common }}
+        onValidation={changeValidity}
         onSubmit={rememberValues}
       />
     </div>
