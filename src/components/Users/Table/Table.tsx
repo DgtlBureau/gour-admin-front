@@ -4,10 +4,9 @@ import { Box } from '../../UI/Box/Box';
 import { Table } from '../../UI/Table/Table';
 import { IconButton } from '../../UI/IconButton/IconButton';
 import { Typography } from '../../UI/Typography/Typography';
-import { IUser } from '../../../@types/entities/IUser';
 import { Options } from '../../../constants/tabs';
 
-import busketIcon from '../../../assets/icons/table/busket.svg';
+import basketIcon from '../../../assets/icons/table/basket.svg';
 import checkIcon from '../../../assets/icons/table/check.svg';
 import loginIcon from './assets/login.svg';
 
@@ -24,7 +23,7 @@ export type UserTableItem = {
   login: string;
   name: string;
   role: string;
-  uuid: string;
+  id: string;
 }
 
 export type UsersTableProps = {
@@ -33,8 +32,8 @@ export type UsersTableProps = {
     value: string,
     label: string,
   }[];
-  onDelete: (uuid: string) => void;
-  onConfirm: (uuid: string) => void;
+  onDelete: (id: string) => void;
+  onConfirm: (id: string) => void;
 };
 
 export function UsersTable({
@@ -65,14 +64,14 @@ export function UsersTable({
       user.login,
       <Typography variant="body1" sx={sx.role}>{user.role}</Typography>,
       <>
-        <IconButton component="button" onClick={() => onDelete(user.apiUserUuid)}>
-          <img src={busketIcon} alt="" />
+        <IconButton component="button" onClick={() => onDelete(user.id)}>
+          <img src={basketIcon} alt="" />
         </IconButton>
-        <IconButton component="button" onClick={() => onConfirm(user.apiUserUuid)}>
+        <IconButton component="button" onClick={() => onConfirm(user.id)}>
           <img src={checkIcon} alt="" />
         </IconButton>
         {['CLIENT', 'COMPANY', 'COLLECTIVE_PURCHASE'].includes(user.role) ? (
-          <a href={`${process.env.REACT_APP_STORE_PATH}/api/clients/${user.uuid}/login`} target="_blank" rel="noreferrer">
+          <a href={`${process.env.REACT_APP_STORE_PATH}/api/clients/${user.id}/login`} target="_blank" rel="noreferrer">
             <IconButton component="div">
               <img src={loginIcon} alt="" />
             </IconButton>

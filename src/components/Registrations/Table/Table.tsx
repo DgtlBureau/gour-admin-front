@@ -6,7 +6,7 @@ import { Typography } from '../../UI/Typography/Typography';
 import { IconButton } from '../../UI/IconButton/IconButton';
 import { Options } from '../../../constants/tabs';
 
-import busketIcon from '../../../assets/icons/table/busket.svg';
+import basketIcon from '../../../assets/icons/table/basket.svg';
 import checkIcon from '../../../assets/icons/table/check.svg';
 
 const sx = {
@@ -76,7 +76,7 @@ export function RegistrationsTable({
         <Typography sx={sx.role}>{client.role}</Typography>,
         <>
           <IconButton component="button" onClick={() => onDelete(client.id)}>
-            <img src={busketIcon} alt="" />
+            <img src={basketIcon} alt="" />
           </IconButton>
           {!isApproved && (
             <IconButton component="button" onClick={() => onAccept(client.id)}>

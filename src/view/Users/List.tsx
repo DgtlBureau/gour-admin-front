@@ -10,7 +10,7 @@ import { useTo } from '../../hooks/useTo';
 import { useGetAllUsersQuery, useDeleteUserMutation } from '../../api/userApi';
 import { Roles } from '../../constants/users/roles';
 import { Options } from '../../constants/tabs';
-import { useGetClientQuery, useGetClientsListQuery } from '../../api/clientApi';
+import { useGetClientsListQuery } from '../../api/clientApi';
 
 const categories = [
   {
@@ -49,14 +49,14 @@ function ListUsersView() {
       login: it.login,
       name: it.name,
       role: it.role.key,
-      uuid: it.uuid,
+      id: it.apiUserUuid,
       createdAt: it.createdAt,
     })),
     ...(clients || []).map(it => ({
       login: it.phone,
       name: it.name,
       role: it.role.key,
-      uuid: `${it.id}`,
+      id: `${it.id}`,
       createdAt: it.createdAt,
     })).sort((a, b) => (a.createdAt < b.createdAt ? -1 : 1)),
   ];
@@ -68,13 +68,13 @@ function ListUsersView() {
 
   const goToUserCreate = () => to(Path.USERS, 'create');
 
-  const confirmUser = (uuid: string) => console.log(uuid);
+  const confirmUser = (id: string) => console.log(id);
 
   const deleteUser = () => deleteUserById(userDeleteId);
 
-  const openDeleteModal = (uuid: string) => {
+  const openDeleteModal = (id: string) => {
     setIsDeleting(true);
-    setUserDeleteId(uuid);
+    setUserDeleteId(id);
   };
   const closeDeleteModal = () => {
     setIsDeleting(false);

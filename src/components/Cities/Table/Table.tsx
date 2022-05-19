@@ -4,7 +4,7 @@ import { City } from '../../../@types/entities/City';
 import { IconButton } from '../../UI/IconButton/IconButton';
 import { Table } from '../../UI/Table/Table';
 
-import busketIcon from '../../../assets/icons/table/busket.svg';
+import basketIcon from '../../../assets/icons/table/basket.svg';
 import pencilIcon from '../../../assets/icons/table/pencil.svg';
 
 export type CitiesTableProps = {
@@ -31,7 +31,7 @@ export function CitiesTable({ cities, onDelete, onEdit }: CitiesTableProps) {
       city.name.en,
       <>
         <IconButton component="button" onClick={() => onDelete(city.id)}>
-          <img src={busketIcon} alt="" />
+          <img src={basketIcon} alt="" />
         </IconButton>
         <IconButton component="button" onClick={() => onEdit(city.id)}>
           <img src={pencilIcon} alt="" />
