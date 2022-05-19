@@ -32,7 +32,7 @@ function CreateUserView() {
 
   const to = useTo();
 
-  const cancel = () => to(Path.USERS);
+  const goToUsers = () => to(Path.USERS);
 
   const submit = (data: SignupUserDto) => signupWithoutPasswordMutation(data);
 
@@ -42,6 +42,7 @@ function CreateUserView() {
         message: 'Вы создали пользователя',
         type: NotificationType.SUCCESS,
       });
+      goToUsers();
     }
     if (signupUserData.isError) {
       eventBus.emit(EventTypes.notification, {
@@ -56,7 +57,7 @@ function CreateUserView() {
       <Header
         leftTitle="Добавление пользователя"
         rightContent={
-          <RightContent onCancel={cancel} />
+          <RightContent onCancel={goToUsers} />
         }
       />
       <CreateUserForm onSubmit={submit} />
