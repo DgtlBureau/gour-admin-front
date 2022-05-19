@@ -25,7 +25,7 @@ type Props = {
   }[];
   defaultValues?: CreateStockFormDto;
   submitBtnRef?: RefObject<HTMLButtonElement>;
-  onValidation?: (value: boolean) => void;
+  onValidityChange?: (value: boolean) => void;
   onSubmit: (data: CreateStockFormDto) => void;
 };
 
@@ -45,7 +45,7 @@ export function CreateStockForm({
   categories,
   defaultValues,
   submitBtnRef,
-  onValidation,
+  onValidityChange,
   onSubmit,
 }: Props) {
   const [selectedTabKey, setSelectedTabKey] = useState<string>('basicSettings');
@@ -56,7 +56,6 @@ export function CreateStockForm({
 
   const values = useForm<CreateStockFormDto>({
     resolver: yupResolver(schema),
-    mode: 'onBlur',
     defaultValues,
   });
 
@@ -68,7 +67,7 @@ export function CreateStockForm({
   }, [selectedProducts]);
 
   useEffect(() => {
-    if (onValidation) onValidation(isValid);
+    if (onValidityChange) onValidityChange(isValid);
   }, [isValid]);
 
   const submit = (data: CreateStockFormDto) => {
@@ -93,7 +92,7 @@ export function CreateStockForm({
       <TabPanel index={selectedTabKey} value="basicSettings">
         <FormProvider {...values}>
           <form id="createStockForm" onSubmit={values.handleSubmit(submit)}>
-            <Grid container spacing={2} md={12} lg={8}>
+            <Grid container spacing={2} item md={12} lg={8}>
               <Grid item xs={12}>
                 <HFTextField name="title" label="Заголовок*" />
               </Grid>

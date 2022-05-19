@@ -6,7 +6,7 @@ import { Promotion } from '../@types/entities/Promotion';
 
 export const promotionApi = commonApi.injectEndpoints({
   endpoints: builder => ({
-    getByIdPromotion: builder.query<Promotion, number>({
+    getPromotionById: builder.query<Promotion, number>({
       query: id => ({
         url: `${Path.STOCKS}/${id}`,
         method: 'GET',
@@ -55,5 +55,5 @@ export const {
   useCreatePromotionMutation,
   useUpdatePromotionMutation,
   useGetAllPromotionsQuery,
-  useGetByIdPromotionQuery,
+  useGetPromotionByIdQuery,
 } = promotionApi;

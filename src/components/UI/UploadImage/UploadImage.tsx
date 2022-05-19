@@ -1,4 +1,10 @@
-import React, { ChangeEvent, ChangeEventHandler, CSSProperties, useState } from 'react';
+import React, {
+  ChangeEvent,
+  ChangeEventHandler,
+  CSSProperties,
+  useEffect,
+  useState,
+} from 'react';
 import { PhotoCamera } from '@mui/icons-material';
 import { Stack, SxProps } from '@mui/material';
 import { styled } from '@mui/material/styles';
@@ -17,58 +23,68 @@ const labelStyles: CSSProperties = {
   backgroundPosition: 'center',
 };
 
+const Input = styled('input')({
+  display: 'none',
+});
+
 type Props = {
   id: string;
   name?: string;
+  value?: File;
   label?: string;
   isError?: boolean;
   helperText?: string;
-  allowedFileTypes: ('image/jpeg' | 'image/png' | 'image/webp')[];
+  allowedFileTypes?: ('image/jpeg' | 'image/png' | 'image/webp')[];
   sx?: SxProps;
   onChange: ChangeEventHandler<HTMLInputElement>;
 };
 
 export function UploadImage({
   id,
-  onChange,
   name,
   isError,
   helperText,
+  value,
   label,
-  allowedFileTypes,
+  allowedFileTypes = ['image/jpeg', 'image/png', 'image/webp'],
   sx,
+  onChange,
 }: Props) {
-  const Input = styled('input')({
-    display: 'none',
-  });
-
   const [loadedFile, setLoadedFile] = useState<string | ArrayBuffer | null>(null);
   const [fileEvent, setFileEvent] = useState<ChangeEvent<HTMLInputElement> | null>(null);
 
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setFileEvent(event);
-    onChange(event);
-    const { files } = event.target;
-
-    if (!files) return;
-
+  const putImage = (image: File) => {
     const fr = new FileReader();
 
     fr.addEventListener('load', () => {
       setLoadedFile(fr.result);
     });
 
-    fr.readAsDataURL(files[0]);
+    fr.readAsDataURL(image);
+  };
+
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setFileEvent(event);
+
+    onChange(event);
+
+    const { files } = event.target;
+
+    if (!files) return;
+
+    putImage(files[0]);
   };
 
   const handleDelete = () => {
     setLoadedFile(null);
 
-    if (fileEvent) {
-      fileEvent.target.value = '';
-      onChange(fileEvent);
-    }
+    if (!fileEvent) return;
+
+    fileEvent.target.value = '';
+    onChange(fileEvent);
   };
+
+  useEffect(() => value && putImage(value), []);
 
   return (
     <Stack sx={{ width: '340px', ...sx }} alignItems="center" spacing={2}>
@@ -95,10 +111,10 @@ export function UploadImage({
       >
         <Input
           accept={allowedFileTypes.join(',')}
-          onChange={handleChange}
           id={id}
           type="file"
           name={name}
+          onChange={handleChange}
         />
         {!loadedFile && <PhotoCamera />}
       </label>

@@ -1,9 +1,11 @@
 import * as yup from 'yup';
 
+const photoValidation = yup.mixed().required('Выберите фото');
+
 export default yup.object().shape({
   title: yup.string().required('Введите заголовок'),
-  smallPhoto: yup.mixed().required('Выберите фото'),
-  fullPhoto: yup.mixed().required('Выберите фото'),
+  smallPhoto: photoValidation,
+  fullPhoto: photoValidation,
   startDate: yup.date().typeError('Некорректная дата').required('Введите дату'),
   endDate: yup.date().typeError('Некорректная дата'),
   stockPercent: yup

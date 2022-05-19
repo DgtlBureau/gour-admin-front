@@ -1,5 +1,4 @@
-import { Image } from './Image';
-import { Product } from './Product';
+import { PageMeta } from './PageMeta';
 import { TranslatableString } from './TranslatableString';
 import { TranslatableText } from './TranslatableText';
 
@@ -7,10 +6,11 @@ export type Promotion = {
   id: number;
   title: TranslatableString;
   description: TranslatableText;
-  cardImage: Image;
-  pageImage: Image;
+  cardImage: File;
+  pageImage: File;
   discount: number;
   start: Date;
   end: Date;
-  products: Product[];
+  meta: PageMeta
+  productIdList: number[];
 };
