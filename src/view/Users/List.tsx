@@ -3,13 +3,14 @@ import React, { useState } from 'react';
 import { Header } from '../../components/Header/Header';
 import { Button } from '../../components/UI/Button/Button';
 import { Typography } from '../../components/UI/Typography/Typography';
-import { UsersTable } from '../../components/Users/Table/Table';
+import { UsersTable, UserTableItem } from '../../components/Users/Table/Table';
 import { Modal } from '../../components/UI/Modal/Modal';
 import { Path } from '../../constants/routes';
 import { useTo } from '../../hooks/useTo';
 import { useGetAllUsersQuery, useDeleteUserMutation } from '../../api/userApi';
 import { Roles } from '../../constants/users/roles';
 import { Options } from '../../constants/tabs';
+import { useGetClientQuery, useGetClientsListQuery } from '../../api/clientApi';
 
 const categories = [
   {
@@ -39,8 +40,26 @@ function RightContent({ onCreateClick }: RightContentProps) {
 }
 
 function ListUsersView() {
-  const { data } = useGetAllUsersQuery({});
+  const { data: users } = useGetAllUsersQuery({});
+  const { data: clients } = useGetClientsListQuery();
   const [deleteUserById] = useDeleteUserMutation();
+
+  const data: UserTableItem[] = [
+    ...(users || []).map(it => ({
+      login: it.login,
+      name: it.name,
+      role: it.role.key,
+      uuid: it.uuid,
+      createdAt: it.createdAt,
+    })),
+    ...(clients || []).map(it => ({
+      login: it.phone,
+      name: it.name,
+      role: it.role.key,
+      uuid: `${it.id}`,
+      createdAt: it.createdAt,
+    })).sort((a, b) => (a.createdAt < b.createdAt ? -1 : 1)),
+  ];
 
   const [isDeleting, setIsDeleting] = useState(false);
   const [userDeleteId, setUserDeleteId] = useState('');

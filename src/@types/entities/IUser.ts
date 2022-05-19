@@ -9,4 +9,5 @@ export interface IUser {
   isApproved: boolean;
   additionalInfo: Record<string, string | number>;
   favorites: Product[];
+  createdAt: string;
 }
