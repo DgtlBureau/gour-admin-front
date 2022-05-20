@@ -6,7 +6,7 @@ import { UploadImage } from '../UI/UploadImage/UploadImage';
 
 type Props = {
   name: string;
-  defaultValue?: File;
+  defaultValue?: string;
   label?: string;
   type?: string;
   sx?: SxProps;

@@ -75,6 +75,8 @@ export function CreateStockForm({
     else onSubmit({ ...data, productIdList: selectedProducts });
   };
 
+  useEffect(() => values.reset(defaultValues), [defaultValues]);
+
   return (
     <Box>
       <Tabs
@@ -105,7 +107,7 @@ export function CreateStockForm({
                 <Grid item xs={4}>
                   <HFDatePicker
                     sx={{ width: '100%' }}
-                    name="startDate"
+                    name="start"
                     label="Дата начала*"
                   />
                 </Grid>
@@ -113,31 +115,31 @@ export function CreateStockForm({
                 <Grid item xs={4}>
                   <HFDatePicker
                     sx={{ width: '100%' }}
-                    name="endDate"
+                    name="end"
                     label="Дата завершения*"
                   />
                 </Grid>
 
                 <Grid item xs={4}>
-                  <HFTextField name="stockPercent" label="Процент скидки*" />
+                  <HFTextField type="number" name="discount" label="Процент скидки*" />
                 </Grid>
 
                 <Grid item xs={12} container spacing={2}>
                   <Grid item md={4}>
                     <HFUploadPhoto
                       sx={{ width: '100%' }}
-                      label="Фото 1:1*"
-                      name="fullPhoto"
-                      id="fullPhoto"
+                      label="Фото 1:2*"
+                      name="pageImage"
+                      id="pageImage"
                     />
                   </Grid>
 
                   <Grid item md={4}>
                     <HFUploadPhoto
                       sx={{ width: '100%' }}
-                      label="Фото 1:2*"
-                      name="smallPhoto"
-                      id="smallPhoto"
+                      label="Фото 1:1*"
+                      name="cardImage"
+                      id="cardImage"
                     />
                   </Grid>
                 </Grid>

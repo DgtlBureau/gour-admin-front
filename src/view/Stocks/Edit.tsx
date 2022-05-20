@@ -20,22 +20,13 @@ import { useGetAllCategoriesQuery } from '../../api/categoryApi';
 import { useGetPromotionByIdQuery, useUpdatePromotionMutation } from '../../api/promotionApi';
 import { useUploadImageMutation } from '../../api/imageApi';
 import { eventBus, EventTypes } from '../../packages/EventBus';
+import { languages } from '../../constants/languages';
+import { PromotionUpdateDto } from '../../@types/dto/promotion/update.dto';
 import { NotificationType } from '../../@types/entities/Notification';
 import { CreateStockFormDto } from '../../@types/dto/form/create-stock.dto';
 import { Language } from '../../@types/entities/Language';
 
 import noImage from '../../assets/images/no-image.svg';
-
-const selectOptions = [
-  {
-    value: 'ru',
-    label: 'Русский',
-  },
-  {
-    value: 'en',
-    label: 'English',
-  },
-] as { value: Language, label: string }[];
 
 type RightContentProps = {
   language: Language;
@@ -50,7 +41,7 @@ function RightContent({ language, onChangeLanguage, onSave, onCancel }: RightCon
       <Select
         sx={{ width: '150px' }}
         value={language}
-        options={selectOptions}
+        options={languages}
         onChange={onChangeLanguage}
         isMulti={false}
       />
@@ -65,8 +56,6 @@ function RightContent({ language, onChangeLanguage, onSave, onCancel }: RightCon
 }
 
 function CreateStockView() {
-  const to = useTo();
-
   const { id } = useParams();
 
   const { data: productsData } = useGetAllProductsQuery({
@@ -80,15 +69,19 @@ function CreateStockView() {
   const [updatePromotion] = useUpdatePromotionMutation();
   const [uploadImage] = useUploadImageMutation();
 
-  const [language, setLanguage] = useState<Language>('ru');
   const [stockValues, setStockValues] = useState({} as StockFormValues);
+  const [language, setLanguage] = useState<Language>('ru');
   const [languageForChange, setLanguageForChange] = useState<Language | null>(null);
-
   const [isValid, setIsValid] = useState({ ru: true, en: true });
 
   const submitBtnRef = useRef<HTMLButtonElement>(null);
 
-  const defaultValues = { ...stockValues[language], ...stockValues.common };
+  const defaultValues = {
+    ...stockValues[language],
+    ...stockValues.common,
+    cardImage: stockValues.images?.card.full,
+    pageImage: stockValues.images?.page.full,
+  };
 
   const categories = categoriesData?.map(it => ({
     label: it.title.ru,
@@ -103,58 +96,12 @@ function CreateStockView() {
     characteristics: it.characteristics,
   })) || [];
 
-  useEffect(() => {
-    if (promotion) {
-      const commonValues: CommonStockValues = {
-        startDate: promotion.start,
-        endDate: promotion.end,
-        stockPercent: String(promotion.discount),
-        smallPhoto: promotion.cardImage,
-        fullPhoto: promotion.pageImage,
-        productIdList: promotion.productIdList,
-        isIndexed: promotion.meta.isIndexed,
-      };
-
-      const ruValues: TranslatableStockValues = {
-        title: promotion.title.ru,
-        description: promotion.description.ru,
-        metaTitle: promotion.meta.metaTitle.ru,
-        metaDescription: promotion.meta.metaDescription.ru,
-        metaKeywords: promotion.meta.metaKeywords.ru,
-      };
-
-      const enValues: TranslatableStockValues = {
-        title: promotion.title.en,
-        description: promotion.description.en,
-        metaTitle: promotion.meta.metaTitle.en,
-        metaDescription: promotion.meta.metaDescription.en,
-        metaKeywords: promotion.meta.metaKeywords.en,
-      };
-
-      setStockValues({ common: commonValues, ru: ruValues, en: enValues });
-    }
-  }, [promotion]);
-
+  const to = useTo();
   const goToStocks = () => to(Path.STOCKS);
 
   const submitStockForm = () => submitBtnRef?.current?.click();
 
-  const uploadPhoto = async (file: File, label?: string) => {
-    const formData = new FormData();
-
-    formData.append('image', file);
-
-    const image = await uploadImage(formData).unwrap();
-
-    if (!image) {
-      eventBus.emit(EventTypes.notification, {
-        message: `Произошла ошибка при загрузке фото ${label})`,
-        type: NotificationType.DANGER,
-      });
-    }
-
-    return image;
-  };
+  const changeValidity = (value: boolean) => setIsValid({ ...isValid, [language]: value });
 
   const selectLanguage = (option: SingleValue<SelectOption<Language>>) => {
     if (!option) return;
@@ -172,35 +119,43 @@ function CreateStockView() {
     setLanguageForChange(option.value);
   };
 
-  useEffect(() => {
-    if (languageForChange) {
-      setLanguage(languageForChange);
-      setLanguageForChange(null);
-    }
-  }, [stockValues]);
+  const uploadPicture = async (file: File, label?: string) => {
+    const formData = new FormData();
 
-  const changeStockValues = (data: CreateStockFormDto) => {
-    const newStockValues = convertToStockValues(data, language);
+    formData.append('image', file);
+
+    const image = await uploadImage(formData).unwrap();
+
+    if (!image) {
+      eventBus.emit(EventTypes.notification, {
+        message: `Произошла ошибка при загрузке фото ${label})`,
+        type: NotificationType.DANGER,
+      });
+    }
+
+    return image;
+  };
+
+  const changeStockValues = async (data: CreateStockFormDto) => {
+    const cardImage = typeof data.cardImage === 'string' ? promotion?.cardImage : await uploadPicture(data.cardImage, '1:1');
+    const pageImage = typeof data.pageImage === 'string' ? promotion?.pageImage : await uploadPicture(data.pageImage, '1:2');
+
+    if (!cardImage || !pageImage) return;
+
+    const images = { card: cardImage, page: pageImage };
+
+    const newStockValues = convertToStockValues(data, images, language);
 
     const updatedStockValues = { ...stockValues, ...newStockValues };
 
     setStockValues(updatedStockValues);
   };
 
-  const changeValidity = (value: boolean) => setIsValid({ ...isValid, [language]: value });
-
-  const getStock = async () => {
-    const cardImage = await uploadPhoto(stockValues.common.smallPhoto, '1:2');
-    const pageImage = await uploadPhoto(stockValues.common.fullPhoto, '1:1');
-
-    return convertToStock(stockValues, { card: cardImage, page: pageImage });
-  };
-
   const save = async () => {
     submitStockForm();
 
     if (!isValid.ru || !isValid.en) {
-      const invalidLanguages = selectOptions.filter(option => !isValid[option.value]).map(option => option.label);
+      const invalidLanguages = languages.filter(option => !isValid[option.value]).map(option => option.label);
 
       eventBus.emit(EventTypes.notification, {
         message: `Заполните данные для следующих языков: ${invalidLanguages.join(', ')}`,
@@ -210,10 +165,10 @@ function CreateStockView() {
       return;
     }
 
-    const stock = await getStock();
+    const stock = convertToStock(stockValues);
 
     try {
-      await updatePromotion({ id: Number(id), stock }).unwrap();
+      await updatePromotion({ id: Number(id), ...stock } as PromotionUpdateDto).unwrap();
       eventBus.emit(EventTypes.notification, {
         message: 'Акция обновлена',
         type: NotificationType.SUCCESS,
@@ -226,6 +181,50 @@ function CreateStockView() {
       });
     }
   };
+
+  useEffect(() => {
+    if (promotion) {
+      const commonValues: CommonStockValues = {
+        start: promotion.start,
+        end: promotion.end,
+        discount: promotion.discount,
+        productIdList: promotion.productIdList,
+        isIndexed: promotion.meta?.isIndexed,
+      };
+
+      const ruValues: TranslatableStockValues = {
+        title: promotion.title.ru,
+        description: promotion.description.ru,
+        metaTitle: promotion.meta?.metaTitle.ru,
+        metaDescription: promotion.meta?.metaDescription.ru,
+        metaKeywords: promotion.meta?.metaKeywords.ru,
+      };
+
+      const enValues: TranslatableStockValues = {
+        title: promotion.title.en,
+        description: promotion.description.en,
+        metaTitle: promotion.meta?.metaTitle.en,
+        metaDescription: promotion.meta?.metaDescription.en,
+        metaKeywords: promotion.meta?.metaKeywords.en,
+      };
+
+      const images = {
+        card: promotion.cardImage,
+        page: promotion.pageImage,
+      };
+
+      const newStockValues = { common: commonValues, ru: ruValues, en: enValues, images };
+
+      setStockValues(newStockValues);
+    }
+  }, [promotion]);
+
+  useEffect(() => {
+    if (languageForChange) {
+      setLanguage(languageForChange);
+      setLanguageForChange(null);
+    }
+  }, [stockValues]);
 
   return (
     <div>

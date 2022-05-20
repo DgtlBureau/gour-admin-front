@@ -1,6 +1,6 @@
 import { TranslatableStringDto } from '../translatable-string.dto';
 import { TranslatableTextDto } from '../translatable-text.dto';
-import { PageMeta } from '../../entities/PageMeta';
+import { Meta } from '../../entities/Meta';
 
 export type PromotionCreateDto = Readonly<{
   title: TranslatableStringDto;
@@ -11,5 +11,5 @@ export type PromotionCreateDto = Readonly<{
   start: string,
   end: string;
   products: number[];
-  pageMeta: PageMeta
+  pageMeta: Meta
 }>;

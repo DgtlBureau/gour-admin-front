@@ -43,7 +43,7 @@ export const promotionApi = commonApi.injectEndpoints({
     deletePromotion: builder.mutation<void, number>({
       query: id => ({
         url: `${Path.STOCKS}/${id}`,
-        method: 'POST',
+        method: 'DELETE',
       }),
       invalidatesTags: [{ type: 'Promotion', id: 'LIST' }],
     }),

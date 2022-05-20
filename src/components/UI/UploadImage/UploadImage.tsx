@@ -2,7 +2,6 @@ import React, {
   ChangeEvent,
   ChangeEventHandler,
   CSSProperties,
-  useEffect,
   useState,
 } from 'react';
 import { PhotoCamera } from '@mui/icons-material';
@@ -30,7 +29,7 @@ const Input = styled('input')({
 type Props = {
   id: string;
   name?: string;
-  value?: File;
+  value?: string;
   label?: string;
   isError?: boolean;
   helperText?: string;
@@ -50,18 +49,8 @@ export function UploadImage({
   sx,
   onChange,
 }: Props) {
-  const [loadedFile, setLoadedFile] = useState<string | ArrayBuffer | null>(null);
+  const [loadedFile, setLoadedFile] = useState<string | ArrayBuffer | null>(value || null);
   const [fileEvent, setFileEvent] = useState<ChangeEvent<HTMLInputElement> | null>(null);
-
-  const putImage = (image: File) => {
-    const fr = new FileReader();
-
-    fr.addEventListener('load', () => {
-      setLoadedFile(fr.result);
-    });
-
-    fr.readAsDataURL(image);
-  };
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setFileEvent(event);
@@ -72,7 +61,13 @@ export function UploadImage({
 
     if (!files) return;
 
-    putImage(files[0]);
+    const fr = new FileReader();
+
+    fr.addEventListener('load', () => {
+      setLoadedFile(fr.result);
+    });
+
+    fr.readAsDataURL(files[0]);
   };
 
   const handleDelete = () => {
@@ -83,8 +78,6 @@ export function UploadImage({
     fileEvent.target.value = '';
     onChange(fileEvent);
   };
-
-  useEffect(() => value && putImage(value), []);
 
   return (
     <Stack sx={{ width: '340px', ...sx }} alignItems="center" spacing={2}>
@@ -118,11 +111,13 @@ export function UploadImage({
         />
         {!loadedFile && <PhotoCamera />}
       </label>
-      {helperText && (
-        <Typography variant="body1" color="error">
-          {helperText}
-        </Typography>
-      )}
+      {
+        helperText && (
+          <Typography variant="body1" color="error">
+            {helperText}
+          </Typography>
+        )
+      }
     </Stack>
   );
 }
