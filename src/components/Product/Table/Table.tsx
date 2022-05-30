@@ -63,7 +63,7 @@ export function ProductsTable({
         product.title,
         categories.find(category => category.id === product.categoryId)?.label ||
           'нет категории',
-        product.price,
+        `${product.price}₡`,
         <Box>
           <IconButton onClick={() => onEdit(product.id)} component="symbol">
             <EditIcon />

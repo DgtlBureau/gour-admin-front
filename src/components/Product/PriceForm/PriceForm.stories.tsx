@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { ComponentStory, Meta } from '@storybook/react';
 
 import { PriceProductFormProps, PriceProductForm } from './PriceForm';
-import { ProductPriceFormDto } from '../../../@types/dto/form/product-price.dto';
 
 export default {
   component: PriceProductForm,
@@ -19,11 +18,8 @@ export const DefaultProductPriceForm = Template.bind({});
 
 DefaultProductPriceForm.args = {
   defaultValues: {
-    rub: 0,
-    eur: 0,
-    companyDiscountRub: 0,
-    companyDiscountEur: 0,
-    collectiveDiscountRub: 0,
-    collectiveDiscountEur: 0,
+    cheeseCoin: 0,
+    companyDiscount: 0,
+    collectiveDiscount: 0,
   },
 };

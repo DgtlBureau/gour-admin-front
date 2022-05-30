@@ -5,6 +5,4 @@ export type RoleDiscount = {
   product: Product;
   role: UserRole;
   value: number;
-  rub: number;
-  eur: number;
 };

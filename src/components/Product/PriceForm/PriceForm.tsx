@@ -111,8 +111,7 @@ export function PriceProductForm({ defaultValues, onChange }: PriceProductFormPr
               Физическое лицо
             </Typography>
 
-            <HFTextField sx={sx.priceInput} label="Цена Рубли" name="rub" />
-            <HFTextField sx={sx.priceInput} label="Цена Евро" name="eur" />
+            <HFTextField sx={sx.priceInput} label="Цена CheeseCoin" name="cheeseCoin" />
           </Box>
 
           <Box sx={sx.fields}>
@@ -122,13 +121,8 @@ export function PriceProductForm({ defaultValues, onChange }: PriceProductFormPr
 
             <HFTextField
               sx={sx.priceInput}
-              label="Скидка Рубли"
-              name="companyDiscountRub"
-            />
-            <HFTextField
-              sx={sx.priceInput}
-              label="Скидка Евро"
-              name="companyDiscountEur"
+              label="Скидка CheeseCoin"
+              name="companyDiscount"
             />
           </Box>
 
@@ -139,13 +133,8 @@ export function PriceProductForm({ defaultValues, onChange }: PriceProductFormPr
 
             <HFTextField
               sx={sx.priceInput}
-              label="Скидка Рубли"
-              name="collectiveDiscountRub"
-            />
-            <HFTextField
-              sx={sx.priceInput}
-              label="Скидка Евро"
-              name="collectiveDiscountEur"
+              label="Скидка CheeseCoin"
+              name="collectiveDiscount"
             />
           </Box>
         </Box>

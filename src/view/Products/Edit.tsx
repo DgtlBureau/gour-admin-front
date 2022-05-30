@@ -63,12 +63,9 @@ function EditProductView() {
     },
     priceSettings: {
       discount: 0,
-      rub: 0,
-      eur: 0,
-      companyDiscountRub: 0,
-      companyDiscountEur: 0,
-      collectiveDiscountRub: 0,
-      collectiveDiscountEur: 0,
+      cheeseCoin: 0,
+      companyDiscount: 0,
+      collectiveDiscount: 0,
     },
     productSelect: [],
   });
@@ -88,7 +85,7 @@ function EditProductView() {
     },
     { skip: !productId }
   );
-  const { data: productsList, isLoading: isProductsListLoading = false } =
+  const { data: productsList } =
     useGetAllProductsQuery(
       {
         withSimilarProducts: true,
@@ -115,12 +112,9 @@ function EditProductView() {
       },
       priceSettings: {
         discount: 0,
-        rub: product.price.rub,
-        eur: product.price.eur,
-        companyDiscountRub: 0,
-        companyDiscountEur: 0,
-        collectiveDiscountRub: 0,
-        collectiveDiscountEur: 0,
+        cheeseCoin: product.price.cheeseCoin,
+        companyDiscount: 0,
+        collectiveDiscount: 0,
       },
       cheeseCategories: product.characteristics as ProductFilterCheeseFormDto,
       meatCategories: product.characteristics as ProductFilterMeatFormDto,
@@ -145,13 +139,11 @@ function EditProductView() {
     const roleDiscounts = [
       {
         role: 3,
-        rub: priceSettings.companyDiscountRub,
-        eur: priceSettings.companyDiscountEur,
+        cheeseCoin: priceSettings.companyDiscount,
       },
       {
         role: 4,
-        rub: priceSettings.collectiveDiscountRub,
-        eur: priceSettings.collectiveDiscountEur,
+        cheeseCoin: priceSettings.collectiveDiscount,
       },
     ];
 
@@ -166,8 +158,7 @@ function EditProductView() {
       },
       images: [],
       price: {
-        rub: +priceSettings.rub,
-        eur: +priceSettings.eur,
+        cheeseCoin: +priceSettings.cheeseCoin,
       },
       characteristics: characteristics || {},
       category: categoryId,
@@ -187,7 +178,6 @@ function EditProductView() {
         message: 'Произошла ошибка',
         type: NotificationType.DANGER,
       });
-      console.log(error);
     }
   };
 
