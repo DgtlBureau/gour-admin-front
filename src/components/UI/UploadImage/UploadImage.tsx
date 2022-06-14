@@ -1,6 +1,7 @@
 import React, {
   ChangeEvent,
   ChangeEventHandler,
+  FocusEventHandler,
   CSSProperties,
   useState,
 } from 'react';
@@ -36,6 +37,8 @@ type Props = {
   allowedFileTypes?: ('image/jpeg' | 'image/png' | 'image/webp')[];
   sx?: SxProps;
   onChange: ChangeEventHandler<HTMLInputElement>;
+  onFocus?: FocusEventHandler<HTMLInputElement>;
+  onBlur?: FocusEventHandler<HTMLInputElement>;
 };
 
 export function UploadImage({
@@ -48,8 +51,10 @@ export function UploadImage({
   allowedFileTypes = ['image/jpeg', 'image/png', 'image/webp'],
   sx,
   onChange,
+  onFocus,
+  onBlur,
 }: Props) {
-  const [loadedFile, setLoadedFile] = useState<string | ArrayBuffer | null>(value || null);
+  const [loadedFile, setLoadedFile] = useState<string | ArrayBuffer | null>(null);
   const [fileEvent, setFileEvent] = useState<ChangeEvent<HTMLInputElement> | null>(null);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -98,7 +103,8 @@ export function UploadImage({
         htmlFor={id}
         style={{
           ...labelStyles,
-          backgroundImage: loadedFile ? `url(${loadedFile})` : 'none',
+          // eslint-disable-next-line
+          backgroundImage:  loadedFile ? `url(${loadedFile})` : `url(${value})`,
           border: isError ? '1px solid red' : 'none',
         }}
       >
@@ -108,8 +114,10 @@ export function UploadImage({
           type="file"
           name={name}
           onChange={handleChange}
+          onBlur={onBlur}
+          onFocus={onFocus}
         />
-        {!loadedFile && <PhotoCamera />}
+        {(!loadedFile && !value) && <PhotoCamera />}
       </label>
       {
         helperText && (

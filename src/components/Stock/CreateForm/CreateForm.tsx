@@ -25,7 +25,7 @@ type Props = {
   }[];
   defaultValues?: CreateStockFormDto;
   submitBtnRef?: RefObject<HTMLButtonElement>;
-  onValidityChange?: (value: boolean) => void;
+  onValidityChange: (value: boolean) => void;
   onSubmit: (data: CreateStockFormDto) => void;
 };
 
@@ -61,19 +61,18 @@ export function CreateStockForm({
 
   const isValid = values.formState.isValid && selectedProducts.length !== 0;
 
-  useEffect(() => {
-    if (selectedProducts.length === 0) return;
+  const selectProducts = (productIds: number[]) => {
+    if (productIds.length === 0) return;
     setError('');
-  }, [selectedProducts]);
-
-  useEffect(() => {
-    if (onValidityChange) onValidityChange(isValid);
-  }, [isValid]);
+    setSelectedProducts(productIds);
+  };
 
   const submit = (data: CreateStockFormDto) => {
     if (selectedProducts.length === 0) setError('Пожалуйста, выберите товары, участвующие в акции');
     else onSubmit({ ...data, productIdList: selectedProducts });
   };
+
+  useEffect(() => onValidityChange(isValid), [isValid]);
 
   useEffect(() => values.reset(defaultValues), [defaultValues]);
 
@@ -129,6 +128,7 @@ export function CreateStockForm({
                     <HFUploadPhoto
                       sx={{ width: '100%' }}
                       label="Фото 1:2*"
+                      defaultValue={defaultValues?.pageImage || ''}
                       name="pageImage"
                       id="pageImage"
                     />
@@ -138,6 +138,7 @@ export function CreateStockForm({
                     <HFUploadPhoto
                       sx={{ width: '100%' }}
                       label="Фото 1:1*"
+                      defaultValue={defaultValues?.cardImage || ''}
                       name="cardImage"
                       id="cardImage"
                     />
@@ -169,7 +170,7 @@ export function CreateStockForm({
           selected={selectedProducts}
           categories={categories}
           products={products}
-          onChange={setSelectedProducts}
+          onChange={selectProducts}
         />
       </TabPanel>
     </Box>

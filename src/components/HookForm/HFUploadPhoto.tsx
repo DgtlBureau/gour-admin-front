@@ -6,7 +6,7 @@ import { UploadImage } from '../UI/UploadImage/UploadImage';
 
 type Props = {
   name: string;
-  defaultValue?: string;
+  defaultValue?: string | File;
   label?: string;
   type?: string;
   sx?: SxProps;
@@ -22,11 +22,10 @@ export function HFUploadPhoto({ name, defaultValue, ...props }: Props) {
       name={name}
       control={control}
       defaultValue={defaultValue}
-      render={({ field: { ref, onChange, ...rest } }) => (
+      render={({ field: { ref, ...rest } }) => (
         <UploadImage
           {...rest}
           isError={!!errors[name]}
-          onChange={({ target: tg }) => onChange(tg.files?.[0])}
           helperText={errors[name]?.message ?? ''}
           {...props}
         />

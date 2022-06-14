@@ -224,6 +224,7 @@ function CreateStockView() {
       setLanguage(languageForChange);
       setLanguageForChange(null);
     }
+    console.log('123');
   }, [stockValues]);
 
   return (
@@ -239,6 +240,7 @@ function CreateStockView() {
           />
         )}
       />
+
       <CreateStockForm
         key={`stock-create/${language}`}
         products={products}

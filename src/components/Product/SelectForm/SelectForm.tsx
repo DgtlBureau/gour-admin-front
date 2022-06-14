@@ -70,16 +70,12 @@ export function ProductSelectForm({
   onChange,
   isLoading,
 }: ProductSelectFormProps) {
-  const [selectedProductIds, setSelectedProductIds] = useState<number[]>(selected);
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [selectedTabKey, setSelectedTabKey] = useState<string>('all');
   const [filteredProducts, setFilteredProducts] = useState<Product[]>(products);
   const [selectValues, setSelectValues] = useState<Record<string, string | undefined>>(
     {}
   );
-  useEffect(() => {
-    onChange(selectedProductIds);
-  }, [selectedProductIds]);
 
   const tabOptions = [
     ...defaultTabs,
@@ -89,28 +85,18 @@ export function ProductSelectForm({
     })),
   ];
 
-  useEffect(() => {
-    onChange(selectedProductIds);
-  }, [selectedProductIds]);
-
   const handleProductClick = (productId: number) => {
-    if (isProductSelected(productId, selectedProductIds)) {
-      const newSelectedProductsList = selectedProductIds.filter(id => id !== productId);
-      return setSelectedProductIds(newSelectedProductsList);
+    if (isProductSelected(productId, selected)) {
+      const newSelectedProductsList = selected.filter(id => id !== productId);
+      return onChange(newSelectedProductsList);
     }
-    return setSelectedProductIds(prevList => [...prevList, productId]);
+    return onChange([...selected, productId]);
   };
+
   const handleChangeTab = (tabKey: string) => {
     setSelectedTabKey(tabKey);
     setSelectValues({});
   };
-
-  useEffect(() => {
-    const query = searchQuery.trim().toLowerCase();
-    setFilteredProducts(
-      filterByAllParams(products, query, selectValues, selectedTabKey, selectedProductIds)
-    );
-  }, [products, searchQuery, selectedTabKey, selectValues]);
 
   const filteredCharacteristics = Object.keys(ALL_CHARACTERISTICS)
     .map(key => ({ ...ALL_CHARACTERISTICS[key], key }))
@@ -122,6 +108,13 @@ export function ProductSelectForm({
   if (isLoading) {
     return <ProgressLinear variant="query" />;
   }
+
+  useEffect(() => {
+    const query = searchQuery.trim().toLowerCase();
+    setFilteredProducts(
+      filterByAllParams(products, query, selectValues, selectedTabKey, selected)
+    );
+  }, [products, searchQuery, selectedTabKey, selectValues]);
 
   return (
     <Stack>
@@ -137,7 +130,7 @@ export function ProductSelectForm({
           <Typography variant="body1">
             Количество добавленных товаров:
             {' '}
-            {selectedProductIds.length}
+            {selected.length}
           </Typography>
         </Grid>
       </Grid>
@@ -153,7 +146,7 @@ export function ProductSelectForm({
       <ProductSelectList
         products={filteredProducts}
         searchQuery={searchQuery}
-        checkProductSelect={(id: number) => isProductSelected(id, selectedProductIds)}
+        checkProductSelect={(id: number) => isProductSelected(id, selected)}
         onClickProduct={handleProductClick}
       />
     </Stack>
