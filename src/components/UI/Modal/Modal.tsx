@@ -30,7 +30,7 @@ export type ModalProps = {
   isOpen: boolean;
   title: string;
   description?: string;
-  body?: ReactNode;
+  children?: ReactNode;
   actions?: ReactNode;
   acceptText?: string;
   closeText?: string;
@@ -43,7 +43,7 @@ export function Modal({
   isOpen,
   title,
   description,
-  body,
+  children,
   actions,
   acceptText = 'Принять',
   closeText = 'Отменить',
@@ -59,7 +59,7 @@ export function Modal({
         </Typography>
 
         <Box sx={sx.body}>
-          {body || <Typography variant="body1">{description}</Typography>}
+          {children || <Typography variant="body1">{description}</Typography>}
         </Box>
 
         <Box>

@@ -59,19 +59,18 @@ export function ReferralCodeCreateModal({
     <Modal
       isOpen={isOpen}
       title="Добавление реферального кода"
-      body={(
-        <FormProvider {...values}>
-          <form id="referralCreateForm" onSubmit={values.handleSubmit(submit)}>
-            <HFTextField
-              label="Введите реферальный код"
-              name="code"
-              sx={{ width: '640px' }}
-            />
-          </form>
-        </FormProvider>
-      )}
       actions={<ModalActions onClose={onClose} />}
       onClose={onClose}
-    />
+    >
+      <FormProvider {...values}>
+        <form id="referralCreateForm" onSubmit={values.handleSubmit(submit)}>
+          <HFTextField
+            label="Введите реферальный код"
+            name="code"
+            sx={{ width: '640px' }}
+          />
+        </form>
+      </FormProvider>
+    </Modal>
   );
 }
