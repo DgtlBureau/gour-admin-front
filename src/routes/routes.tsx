@@ -25,7 +25,6 @@ import EditUserView from '../view/Users/Edit';
 import ListReviewsView from '../view/Reviews/List';
 import ListCitiesView from '../view/Cities/List';
 import ListReferralCodesView from '../view/Referrals/List';
-import ListRegistrationsView from '../view/Registration/List';
 import AuthRestorePasswordView from '../view/Auth/RestorePassword';
 import { Path } from '../constants/routes';
 
@@ -116,16 +115,6 @@ export function Routing() {
     ],
   };
 
-  const registrationsRoutes = {
-    path: Path.REGISTRATION,
-    element: (
-      <RequireAuth>
-        <PrivateLayout />
-      </RequireAuth>
-    ),
-    children: [{ path: '', element: <ListRegistrationsView /> }],
-  };
-
   const usersRoutes = {
     path: Path.USERS,
     element: (
@@ -180,7 +169,6 @@ export function Routing() {
     usersRoutes,
     reviewsRoutes,
     pagesRoutes,
-    registrationsRoutes,
     referralsRoutes,
   ]);
 

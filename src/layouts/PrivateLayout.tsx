@@ -28,7 +28,6 @@ const linkedItems: SidebarLinkedItem[] = [
   { label: 'Категории товаров', path: Path.CATEGORIES },
   { label: 'Акции', path: Path.STOCKS },
   { label: 'Пользователи', path: Path.USERS },
-  { label: 'Подтверждение регистрации', path: Path.REGISTRATION },
   { label: 'Отзывы', path: Path.REVIEWS },
   { label: 'Страницы', path: Path.PAGES },
   { label: 'Города', path: Path.CITIES },
