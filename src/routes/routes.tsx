@@ -73,19 +73,19 @@ export function Routing() {
     ],
   };
 
-  const categoriesRoutes = {
-    path: Path.CATEGORIES,
-    element: (
-      <RequireAuth>
-        <PrivateLayout />
-      </RequireAuth>
-    ),
-    children: [
-      { path: '', element: <ListCategoriesView /> },
-      { path: 'create', element: <CreateCategoryView /> },
-      { path: ':id', element: <EditCategoryView /> },
-    ],
-  };
+  // const categoriesRoutes = {
+  //   path: Path.CATEGORIES,
+  //   element: (
+  //     <RequireAuth>
+  //       <PrivateLayout />
+  //     </RequireAuth>
+  //   ),
+  //   children: [
+  //     { path: '', element: <ListCategoriesView /> },
+  //     { path: 'create', element: <CreateCategoryView /> },
+  //     { path: ':id', element: <EditCategoryView /> },
+  //   ],
+  // };
 
   const stocksRoutes = {
     path: Path.STOCKS,
@@ -162,7 +162,7 @@ export function Routing() {
   const routing = useRoutes([
     authRoutes,
     productsRoutes,
-    categoriesRoutes,
+    // categoriesRoutes,
     mainRoutes,
     stocksRoutes,
     citiesRoutes,
