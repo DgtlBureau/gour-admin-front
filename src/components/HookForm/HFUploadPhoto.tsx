@@ -12,11 +12,13 @@ type Props = {
   sx?: SxProps;
   id: string;
   allowedFileTypes?: ('image/jpeg' | 'image/png' | 'image/webp')[];
+  onDelete: () => void;
 };
 
 export function HFUploadPhoto({
   name,
   defaultValue,
+  onDelete,
   allowedFileTypes = ['image/jpeg', 'image/png', 'image/webp'],
   ...props
 }: Props) {
@@ -37,6 +39,7 @@ export function HFUploadPhoto({
           onChange={({ target: tg }) => onChange(tg.files?.[0])}
           helperText={errors[name]?.message ?? ''}
           allowedFileTypes={allowedFileTypes}
+          onDelete={onDelete}
           {...props}
         />
       )}

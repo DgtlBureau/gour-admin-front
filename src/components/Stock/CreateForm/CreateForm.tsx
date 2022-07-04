@@ -128,6 +128,9 @@ export function CreateStockForm({
                       name="fullPhoto"
                       id="fullPhoto"
                       allowedFileTypes={['image/jpeg', 'image/png', 'image/webp']}
+                      onDelete={() => {
+                        console.log('delete full photo');
+                      }}
                     />
                   </Grid>
                   <Grid item xs={5}>
@@ -136,6 +139,9 @@ export function CreateStockForm({
                       name="smallPhoto"
                       id="smallPhoto"
                       allowedFileTypes={['image/jpeg', 'image/png', 'image/webp']}
+                      onDelete={() => {
+                        console.log('delete small photo');
+                      }}
                     />
                   </Grid>
                 </Grid>
