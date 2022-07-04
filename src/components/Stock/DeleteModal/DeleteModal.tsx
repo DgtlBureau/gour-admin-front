@@ -6,13 +6,9 @@ export type DeleteModalProps = {
   isOpen: boolean;
   onDelete: () => void;
   onClose: () => void;
-}
+};
 
-export function DeleteModal({
-  isOpen,
-  onDelete,
-  onClose,
-}: DeleteModalProps) {
+export function DeleteModal({ isOpen, onDelete, onClose }: DeleteModalProps) {
   return (
     <Modal
       isOpen={isOpen}

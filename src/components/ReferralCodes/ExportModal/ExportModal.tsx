@@ -47,31 +47,30 @@ export function ReferralCodeExportModal({ isOpen, onClose, onExport }: ExportMod
       formId="referralExportForm"
       onAccept={isAllTime ? onExport : undefined}
       onClose={onClose}
-      body={(
-        <Box sx={sx.body}>
-          <RadioGroup
-            row
-            value={isAllTime}
-            onChange={e => setIsAllTime(e.target.value === 'true')}
-            sx={sx.radioGroup}
-          >
-            <FormControlLabel value control={<RadioButton />} label="За всё время" />
-            <FormControlLabel
-              value={false}
-              control={<RadioButton />}
-              label="Указать период"
-            />
-          </RadioGroup>
-          {!isAllTime && (
-            <FormProvider {...values}>
-              <form id="referralExportForm" onSubmit={values.handleSubmit(submit)}>
-                <HFDatePicker label="Начало" name="start" sx={sx.startPicker} />
-                <HFDatePicker label="Конец" name="end" />
-              </form>
-            </FormProvider>
-          )}
-        </Box>
-      )}
-    />
+    >
+      <Box sx={sx.body}>
+        <RadioGroup
+          row
+          value={isAllTime}
+          onChange={e => setIsAllTime(e.target.value === 'true')}
+          sx={sx.radioGroup}
+        >
+          <FormControlLabel value control={<RadioButton />} label="За всё время" />
+          <FormControlLabel
+            value={false}
+            control={<RadioButton />}
+            label="Указать период"
+          />
+        </RadioGroup>
+        {!isAllTime && (
+          <FormProvider {...values}>
+            <form id="referralExportForm" onSubmit={values.handleSubmit(submit)}>
+              <HFDatePicker label="Начало" name="start" sx={sx.startPicker} />
+              <HFDatePicker label="Конец" name="end" />
+            </form>
+          </FormProvider>
+        )}
+      </Box>
+    </Modal>
   );
 }

@@ -43,9 +43,10 @@ export function ConfirmReviewModal({
     <Modal
       isOpen={isOpen}
       title={comment.authorName}
-      body={<ModalBody {...comment} />}
       onAccept={onConfirm}
       onClose={onCancel}
-    />
+    >
+      <ModalBody {...comment} />
+    </Modal>
   );
 }

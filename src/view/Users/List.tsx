@@ -10,7 +10,9 @@ import { useTo } from '../../hooks/useTo';
 import { useGetAllUsersQuery, useDeleteUserMutation } from '../../api/userApi';
 import { Roles } from '../../constants/users/roles';
 import { Options } from '../../constants/tabs';
-import { useGetClientQuery, useGetClientsListQuery } from '../../api/clientApi';
+import { useGetClientsListQuery } from '../../api/clientApi';
+import { UserAddCheesecoinsModal } from '../../components/Users/AddCheesecoinsModal/AddCheesecoinsModal';
+import { AddCheesecoinsDto } from '../../@types/dto/add-cheesecoins.dto';
 
 const categories = [
   {
@@ -52,23 +54,26 @@ function ListUsersView() {
       uuid: it.apiUserUuid,
       createdAt: it.createdAt,
     })),
-    ...(clients || []).map(it => ({
-      login: it.phone,
-      name: it.name,
-      role: it.role.key,
-      uuid: `${it.id}`,
-      createdAt: it.createdAt,
-    })).sort((a, b) => (a.createdAt < b.createdAt ? -1 : 1)),
+    ...(clients || [])
+      .map(it => ({
+        login: it.phone,
+        name: it.name,
+        role: it.role.key,
+        uuid: `${it.id}`,
+        createdAt: it.createdAt,
+      }))
+      .sort((a, b) => (a.createdAt < b.createdAt ? -1 : 1)),
   ];
 
   const [isDeleting, setIsDeleting] = useState(false);
+  const [openedUserUuid, setOpenedUserUuid] = useState<string | null>(null);
   const [userDeleteId, setUserDeleteId] = useState('');
 
   const to = useTo();
 
   const goToUserCreate = () => to(Path.USERS, 'create');
 
-  const confirmUser = (uuid: string) => console.log(uuid);
+  const onAddCheesecoins = (cheeseCoinData: AddCheesecoinsDto) => console.log(openedUserUuid, cheeseCoinData);
 
   const deleteUser = () => deleteUserById(userDeleteId);
 
@@ -92,7 +97,7 @@ function ListUsersView() {
           users={data}
           categories={categories}
           onDelete={openDeleteModal}
-          onConfirm={confirmUser}
+          onAddCheesecoins={uuid => setOpenedUserUuid(uuid)}
         />
       ) : (
         <Typography variant="body1">Список пользователей пуст</Typography>
@@ -104,6 +109,12 @@ function ListUsersView() {
         isOpen={isDeleting}
         onAccept={deleteUser}
         onClose={closeDeleteModal}
+      />
+      <UserAddCheesecoinsModal
+        isOpened={!!openedUserUuid}
+        onClose={() => setOpenedUserUuid(null)}
+        title="Добавить сырные шарики"
+        onSubmit={onAddCheesecoins}
       />
     </div>
   );
