@@ -5,6 +5,7 @@ export enum Path {
   CITY = 'cities/:id',
   CITIES = 'cities',
   GOOD = 'product/:id',
+  PERSONAL_AREA = 'personal-area',
   GOODS = 'products',
   STOCK = 'promotions/:id',
   STOCKS = 'promotions',

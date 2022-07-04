@@ -49,6 +49,8 @@ function PrivateLayout() {
 
   const onLinkedItemClick = (item: SidebarLinkedItem) => to(item.path);
 
+  const moveToProfile = () => to(Path.PERSONAL_AREA);
+
   const onActionItemClick = async (item: SidebarActionItem) => {
     switch (item.action) {
       case 'signout':
@@ -71,6 +73,7 @@ function PrivateLayout() {
         actionItems={actionItems}
         profileInfo={{ name: 'Иван', lastName: 'Иванов' }}
         defaultSelected={currentPage}
+        onProfileClick={moveToProfile}
         onLinkedItemClick={onLinkedItemClick}
         onActionItemClick={onActionItemClick}
       />

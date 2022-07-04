@@ -26,6 +26,7 @@ const typographySx = {
   margin: '0',
   padding: '15px 15px',
   borderBottom: ' 1px solid #393A42',
+  cursor: 'pointer',
 };
 
 const listItemTextSx = {
@@ -58,6 +59,7 @@ type Props = {
   linkedItems: SidebarLinkedItem[];
   actionItems: SidebarActionItem[];
   defaultSelected: string;
+  onProfileClick: () => void;
   onLinkedItemClick: (item: SidebarLinkedItem) => void;
   onActionItemClick: (item: SidebarActionItem) => void;
 };
@@ -66,9 +68,10 @@ export default function Sidebar({
   linkedItems,
   actionItems,
   profileInfo,
+  defaultSelected,
+  onProfileClick,
   onLinkedItemClick,
   onActionItemClick,
-  defaultSelected,
 }: Props) {
   const [selected, setSelected] = useState<string>(defaultSelected);
 
@@ -92,11 +95,11 @@ export default function Sidebar({
       <Drawer anchor="left" variant="permanent">
         <Box sx={boxSx} role="presentation">
           <List>
-            <Typography sx={typographySx} variant="h5">
-              {profileInfo.name}
-              &nbsp;
-              {profileInfo.lastName}
-            </Typography>
+            <ListItemText
+              onClick={onProfileClick}
+              primary={`${profileInfo.name} ${profileInfo.lastName}`}
+              sx={typographySx}
+            />
           </List>
           <List sx={{ marginTop: '15px' }}>
             {linkedItems.map(item => (

@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-
 import { Modal } from '../../UI/Modal/Modal';
 import { Button } from '../../UI/Button/Button';
 import { HFTextField } from '../../HookForm/HFTextField';

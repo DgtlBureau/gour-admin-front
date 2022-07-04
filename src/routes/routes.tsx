@@ -27,6 +27,7 @@ import ListCitiesView from '../view/Cities/List';
 import ListReferralCodesView from '../view/Referrals/List';
 import AuthRestorePasswordView from '../view/Auth/RestorePassword';
 import { Path } from '../constants/routes';
+import EditPersonalData from '../view/PersonalArea/Edit';
 
 const AuthLayout = lazy(() => import('../layouts/AuthLayout'));
 const MainLayout = lazy(() => import('../layouts/MainLayout'));
@@ -57,6 +58,16 @@ export function Routing() {
       { path: 'forgot-password', element: <AuthForgotPasswordView /> },
       { path: 'restore-password', element: <AuthRestorePasswordView /> },
     ],
+  };
+
+  const personalArea = {
+    path: Path.PERSONAL_AREA,
+    element: (
+      <RequireAuth>
+        <PrivateLayout />
+      </RequireAuth>
+    ),
+    children: [{ path: '', element: <EditPersonalData /> }],
   };
 
   const productsRoutes = {
@@ -161,6 +172,7 @@ export function Routing() {
 
   const routing = useRoutes([
     authRoutes,
+    personalArea,
     productsRoutes,
     // categoriesRoutes,
     mainRoutes,
