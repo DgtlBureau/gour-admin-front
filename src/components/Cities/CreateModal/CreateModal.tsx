@@ -13,6 +13,7 @@ import { HFTextField } from '../../HookForm/HFTextField';
 type Props = {
   defaultValues: CreateCityDto;
   isOpened: boolean;
+  mode: 'create' | 'edit' | 'closed';
   onSave: (data: CreateCityDto) => void;
   onCancel: () => void;
 };
@@ -22,7 +23,13 @@ const containerSx: CSSProperties = {
   padding: '25px',
 };
 
-export function CreateCityModal({ defaultValues, onSave, onCancel, isOpened }: Props) {
+export function CreateCityModal({
+  defaultValues,
+  onSave,
+  onCancel,
+  isOpened,
+  mode,
+}: Props) {
   const values = useForm<CreateCityDto | UpdateCityDto>({
     resolver: yupResolver(schema),
     defaultValues,
@@ -41,7 +48,9 @@ export function CreateCityModal({ defaultValues, onSave, onCancel, isOpened }: P
       <Dialog onClose={onCancel} open={isOpened}>
         <form onSubmit={values.handleSubmit(submitHandler)}>
           <Box sx={containerSx}>
-            <Typography variant="h6">Добавление города</Typography>
+            <Typography variant="h6">
+              {mode === 'create' ? 'Добавление города' : 'Редактирование города'}
+            </Typography>
             <HFTextField
               sx={{ margin: '10px 0' }}
               label="Название (Рус)"

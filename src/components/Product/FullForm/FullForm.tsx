@@ -16,6 +16,7 @@ import { ProductFilterForm } from '../FilterForm/FilterForm';
 import { PriceProductForm } from '../PriceForm/PriceForm';
 import { Product as SelectProduct, ProductSelectForm } from '../SelectForm/SelectForm';
 import { createProductTabOptions } from './fullFormConstants';
+import { Language } from '../../../@types/entities/Language';
 
 export type FullFormType = {
   basicSettings: ProductBasicSettingsFormDto;
@@ -90,7 +91,7 @@ export function ProductFullForm({
       id: product.id,
       title: product.title.ru,
       image: product.images[0]?.small || '',
-      category: `${product.category?.key}` || '',
+      category: product.category?.key || '',
       characteristics: product.characteristics,
     })) || [];
 

@@ -48,6 +48,7 @@ export function ProductFilterFormMeat({ onChange, defaultValues }: Props) {
           }));
           return (
             <HFSelect
+              key={key}
               placeholder={characteristic.label.ru}
               name={key}
               label={characteristic.label.ru}

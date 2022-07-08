@@ -24,9 +24,3 @@ export type Product = {
   characteristics: Record<string, string>;
   meta: PageMeta;
 };
-
-// !FIXME
-export type Weight = {
-  value: number;
-  unit: 'г' | 'кг';
-};
