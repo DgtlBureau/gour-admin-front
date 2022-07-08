@@ -14,7 +14,6 @@ import { SignupUserDto } from '../../../@types/dto/auth/signup-user.dto';
 const sx = {
   form: {
     maxWidth: '375px',
-    padding: '0 24px',
   },
   radioGroup: {
     display: 'flex',
