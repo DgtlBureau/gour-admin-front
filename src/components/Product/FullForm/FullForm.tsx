@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import { ProductBasicSettingsFormDto } from '../../../@types/dto/form/product-basic-settings.dto';
 import {
   ProductFilterCheeseFormDto,
@@ -15,6 +15,7 @@ import { ProductFilterForm } from '../FilterForm/FilterForm';
 import { PriceProductForm } from '../PriceForm/PriceForm';
 import { Product as SelectProduct, ProductSelectForm } from '../SelectForm/SelectForm';
 import { createProductTabOptions } from './fullFormConstants';
+import { Language } from '../../../@types/entities/Language';
 
 export type FullFormType = {
   basicSettings: ProductBasicSettingsFormDto;
@@ -25,7 +26,7 @@ export type FullFormType = {
 };
 
 type ProductFullFormProps = {
-  language: 'ru' | 'en';
+  language: Language;
   activeTabId: string;
   onChangeTab: (tabId: string) => void;
   isProductsLoading?: boolean;
@@ -88,7 +89,7 @@ export function ProductFullForm({
       id: product.id,
       title: product.title.ru,
       image: product.images[0]?.small || '',
-      category: `${product.category?.key}` || '',
+      category: product.category?.key || '',
       characteristics: product.characteristics,
     })) || [];
 
