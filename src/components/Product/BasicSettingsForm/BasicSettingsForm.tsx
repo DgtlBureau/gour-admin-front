@@ -95,14 +95,27 @@ export function ProductBasicSettingsForm({
               id="firstImage"
               label="Фото 1"
               name="firstImage"
+              onDelete={() => {
+                values.setValue('firstImage', undefined);
+              }}
             />
             <HFUploadPhoto
               sx={sx.imageUpload}
               id="secondImage"
               label="Фото 2"
               name="secondImage"
+              onDelete={() => {
+                values.setValue('secondImage', undefined);
+              }}
             />
-            <HFUploadPhoto id="thirdImage" label="Фото 3" name="thirdImage" />
+            <HFUploadPhoto
+              id="thirdImage"
+              label="Фото 3"
+              name="thirdImage"
+              onDelete={() => {
+                values.setValue('thirdImage', undefined);
+              }}
+            />
           </Grid>
 
           <Grid item md={8}>

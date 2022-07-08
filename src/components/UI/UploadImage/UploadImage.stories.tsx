@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { ChangeEvent, useState } from 'react';
 
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
+import fr from 'date-fns/esm/locale/fr/index.js';
 import { UploadImage } from './UploadImage';
 
 export default {
@@ -10,7 +11,18 @@ export default {
 } as ComponentMeta<typeof UploadImage>;
 
 const Template: ComponentStory<typeof UploadImage> = function (args) {
-  return <UploadImage {...args} />;
+  const [value, setValue] = useState<File | null>(null);
+
+  const onChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const { files } = event.target;
+    if (!files?.[0]) return;
+    setValue(files[0]);
+  };
+  const onDelete = () => {
+    setValue(null);
+  };
+
+  return <UploadImage {...args} value={value} onChange={onChange} onDelete={onDelete} />;
 };
 
 export const DefaultState = Template.bind({});

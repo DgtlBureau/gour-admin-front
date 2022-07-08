@@ -12,10 +12,20 @@ type Props = {
   sx?: SxProps;
   id: string;
   allowedFileTypes?: ('image/jpeg' | 'image/png' | 'image/webp')[];
+  onDelete: () => void;
 };
 
-export function HFUploadPhoto({ name, defaultValue, ...props }: Props) {
-  const { control, formState: { errors } } = useFormContext();
+export function HFUploadPhoto({
+  name,
+  defaultValue,
+  onDelete,
+  allowedFileTypes,
+  ...props
+}: Props) {
+  const {
+    control,
+    formState: { errors },
+  } = useFormContext();
 
   return (
     <Controller
@@ -27,6 +37,8 @@ export function HFUploadPhoto({ name, defaultValue, ...props }: Props) {
           {...rest}
           isError={!!errors[name]}
           helperText={errors[name]?.message ?? ''}
+          allowedFileTypes={allowedFileTypes}
+          onDelete={onDelete}
           {...props}
         />
       )}

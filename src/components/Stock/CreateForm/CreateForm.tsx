@@ -50,7 +50,9 @@ export function CreateStockForm({
 }: Props) {
   const [selectedTabKey, setSelectedTabKey] = useState<string>('basicSettings');
 
-  const [selectedProducts, setSelectedProducts] = useState<number[]>(defaultValues?.productIdList || []);
+  const [selectedProducts, setSelectedProducts] = useState<number[]>(
+    defaultValues?.productIdList || []
+  );
 
   const [error, setError] = useState<string>('');
 
@@ -78,18 +80,12 @@ export function CreateStockForm({
 
   return (
     <Box>
-      <Tabs
-        value={selectedTabKey}
-        options={tabOptions}
-        onChange={setSelectedTabKey}
-      />
-      {
-        error && (
-          <Typography variant="body1" sx={{ color: 'red', marginTop: '20px' }}>
-            {error}
-          </Typography>
-        )
-      }
+      <Tabs value={selectedTabKey} options={tabOptions} onChange={setSelectedTabKey} />
+      {error && (
+        <Typography variant="body1" sx={{ color: 'red', marginTop: '20px' }}>
+          {error}
+        </Typography>
+      )}
       <TabPanel index={selectedTabKey} value="basicSettings">
         <FormProvider {...values}>
           <form id="createStockForm" onSubmit={values.handleSubmit(submit)}>
@@ -126,21 +122,25 @@ export function CreateStockForm({
                 <Grid item xs={12} container spacing={2}>
                   <Grid item md={4}>
                     <HFUploadPhoto
-                      sx={{ width: '100%' }}
-                      label="Фото 1:2*"
-                      defaultValue={defaultValues?.pageImage || ''}
-                      name="pageImage"
-                      id="pageImage"
+                      label="Фото 1:1"
+                      name="fullPhoto"
+                      id="fullPhoto"
+                      allowedFileTypes={['image/jpeg', 'image/png', 'image/webp']}
+                      onDelete={() => {
+                        console.log('delete full photo');
+                      }}
                     />
                   </Grid>
 
                   <Grid item md={4}>
                     <HFUploadPhoto
-                      sx={{ width: '100%' }}
-                      label="Фото 1:1*"
-                      defaultValue={defaultValues?.cardImage || ''}
-                      name="cardImage"
-                      id="cardImage"
+                      label="Фото 1:2"
+                      name="smallPhoto"
+                      id="smallPhoto"
+                      allowedFileTypes={['image/jpeg', 'image/png', 'image/webp']}
+                      onDelete={() => {
+                        console.log('delete small photo');
+                      }}
                     />
                   </Grid>
                 </Grid>
@@ -149,18 +149,28 @@ export function CreateStockForm({
                   <FormLabel>Индексация</FormLabel>
                   <HFRadioGroup name="isIndexed">
                     <FormControlLabel value control={<RadioButton />} label="Да" />
-                    <FormControlLabel value={false} control={<RadioButton />} label="Нет" />
+                    <FormControlLabel
+                      value={false}
+                      control={<RadioButton />}
+                      label="Нет"
+                    />
                   </HFRadioGroup>
                 </Grid>
 
                 <Grid item xs={12}>
                   <HFTextField name="metaTitle" label="metaTitle" />
-                  <HFTextField sx={{ margin: '10px 0' }} name="metaDescription" label="metaDescription" />
+                  <HFTextField
+                    sx={{ margin: '10px 0' }}
+                    name="metaDescription"
+                    label="metaDescription"
+                  />
                   <HFTextField name="metaKeywords" label="metaKeywords" />
                 </Grid>
               </Grid>
             </Grid>
-            <button type="submit" ref={submitBtnRef} style={{ display: 'none' }}>{}</button>
+            <button type="submit" ref={submitBtnRef} style={{ display: 'none' }}>
+              {}
+            </button>
           </form>
         </FormProvider>
       </TabPanel>

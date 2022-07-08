@@ -111,6 +111,8 @@ function CreateProductView() {
       productSelect,
     } = fullFormState;
 
+    console.log('basicSettings', basicSettings);
+
     const characteristics =
       basicSettings.categoryKey === 'cheese' ? cheeseCategories : meatCategories;
 
