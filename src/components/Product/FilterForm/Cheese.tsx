@@ -49,6 +49,7 @@ export function ProductFilterFormCheese({ onChange, defaultValues }: Props) {
           }));
           return (
             <HFSelect
+              key={key}
               placeholder={characteristic.label.ru}
               name={key}
               label={characteristic.label.ru}

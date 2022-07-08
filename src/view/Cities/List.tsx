@@ -27,7 +27,8 @@ function RightContent({ onCreateClick }: Props) {
 }
 
 function ListCitiesView() {
-  const [createModalOpened, setCreateModalOpened] = useState<boolean>(false);
+  const [createModalMode, setCreateModalMode] =
+    useState<'create' | 'edit' | 'closed'>('closed');
   const [formState, setFormState] = useState<CreateCityDto | UpdateCityDto>({
     rusName: '',
     engName: '',
@@ -43,7 +44,7 @@ function ListCitiesView() {
       rusName: '',
       engName: '',
     });
-    setCreateModalOpened(true);
+    setCreateModalMode('create');
   };
   const onEditClick = (id: number) => {
     const editedCity = cities.find(city => city.id === id);
@@ -52,7 +53,7 @@ function ListCitiesView() {
       rusName: editedCity?.name.ru || '',
       engName: editedCity?.name.en || '',
     });
-    setCreateModalOpened(true);
+    setCreateModalMode('edit');
   };
   const onDeleteClick = async (id: number) => {
     try {
@@ -111,7 +112,7 @@ function ListCitiesView() {
         type: NotificationType.DANGER,
       });
     }
-    setCreateModalOpened(false);
+    setCreateModalMode('closed');
   };
 
   if (isLoading) {
@@ -129,17 +130,18 @@ function ListCitiesView() {
   return (
     <div>
       <Header
-        leftTitle="Товары"
+        leftTitle="Города"
         rightContent={<RightContent onCreateClick={onCreateClick} />}
       />
 
       <CitiesTable cities={cities} onDelete={onDeleteClick} onEdit={onEditClick} />
 
       <CreateCityModal
-        isOpened={createModalOpened}
+        isOpened={createModalMode !== 'closed'}
+        mode={createModalMode}
         defaultValues={formState}
         onSave={handleSaveForm}
-        onCancel={() => setCreateModalOpened(false)}
+        onCancel={() => setCreateModalMode('closed')}
       />
     </div>
   );
