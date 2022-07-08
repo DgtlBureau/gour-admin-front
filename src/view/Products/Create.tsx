@@ -3,11 +3,11 @@ import React, { useState } from 'react';
 import { ProductCreateDto } from '../../@types/dto/product/create.dto';
 import { useGetAllCategoriesQuery } from '../../api/categoryApi';
 import { useCreateProductMutation, useGetAllProductsQuery } from '../../api/productApi';
+import { useUploadImageMutation } from '../../api/imageApi';
 import { Header } from '../../components/Header/Header';
 import { Button } from '../../components/UI/Button/Button';
 import { Path } from '../../constants/routes';
 import { useTo } from '../../hooks/useTo';
-
 import { NotificationType } from '../../@types/entities/Notification';
 import { eventBus, EventTypes } from '../../packages/EventBus';
 import {
@@ -15,6 +15,7 @@ import {
   ProductFullForm,
 } from '../../components/Product/FullForm/FullForm';
 import { useGetClientRolesListQuery } from '../../api/clientRoleApi';
+import { Image } from '../../@types/entities/Image';
 
 type Props = {
   onSaveHandler: () => void;
@@ -40,7 +41,6 @@ function RightContent({ onSaveHandler, onCancelHandler }: Props) {
 }
 
 function CreateProductView() {
-  const language = 'ru';
   const to = useTo();
 
   const { data: clientRolesList = [] } = useGetClientRolesListQuery();
@@ -70,12 +70,37 @@ function CreateProductView() {
   });
 
   const [fetchCreateProduct] = useCreateProductMutation();
+  const [uploadImage, { data: imageData }] = useUploadImageMutation();
+
+  const [images, setImages] = useState<Image[]>([]);
+
   const { data: categories = [] } = useGetAllCategoriesQuery();
+
   const { data: productsData, isLoading: isProductsLoading = false } =
     useGetAllProductsQuery(
       { withSimilarProducts: false, withMeta: false, withRoleDiscount: false },
       { skip: activeTabId !== 'recommended_products' }
     );
+
+  const uploadPhoto = async (image: File, i: number) => {
+    const formData = new FormData();
+
+    formData.append('image', image);
+
+    try {
+      await uploadImage(formData).unwrap();
+      if (imageData) {
+        const updatedImages = images.slice();
+        updatedImages.splice(i, 1, imageData);
+        setImages(updatedImages);
+      }
+    } catch (error) {
+      eventBus.emit(EventTypes.notification, {
+        message: `Произошла ошибка при загрузке фото ${i + 1}`,
+        type: NotificationType.DANGER,
+      });
+    }
+  };
 
   const onSave = async () => {
     const {
@@ -85,6 +110,9 @@ function CreateProductView() {
       meatCategories,
       productSelect,
     } = fullFormState;
+
+    console.log('basicSettings', basicSettings);
+
     const characteristics =
       basicSettings.categoryKey === 'cheese' ? cheeseCategories : meatCategories;
 
@@ -105,6 +133,12 @@ function CreateProductView() {
         };
       }) || [];
 
+    [
+      basicSettings.firstImage,
+      basicSettings.secondImage,
+      basicSettings.thirdImage,
+    ].forEach((image, i) => image && uploadPhoto(image, i));
+
     const newProduct: ProductCreateDto = {
       title: {
         en: '',
@@ -114,7 +148,7 @@ function CreateProductView() {
         en: '',
         ru: basicSettings.description,
       },
-      images: [],
+      images: images.map(image => image.id),
       price: {
         cheeseCoin: +priceSettings.cheeseCoin,
       },
@@ -148,7 +182,6 @@ function CreateProductView() {
         rightContent={<RightContent onSaveHandler={onSave} onCancelHandler={onCancel} />}
       />
       <ProductFullForm
-        language={language}
         activeTabId={activeTabId}
         isProductsLoading={isProductsLoading}
         onChangeTab={setActiveTabId}

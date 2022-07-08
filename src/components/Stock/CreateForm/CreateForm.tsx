@@ -3,15 +3,15 @@ import { Grid } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
-import { CreateStockFormDto } from '../../../../@types/dto/form/create-stock.dto';
-import { HFDatePicker } from '../../../HookForm/HFDatePicker';
-import { HFTextField } from '../../../HookForm/HFTextField';
-import { HFUploadPhoto } from '../../../HookForm/HFUploadPhoto';
-import { Product, ProductSelectForm } from '../../../Product/SelectForm/SelectForm';
-import { TabPanel } from '../../../UI/Tabs/TabPanel';
-import { Tabs } from '../../../UI/Tabs/Tabs';
-import { Button } from '../../../UI/Button/Button';
-import { Typography } from '../../../UI/Typography/Typography';
+import { CreateStockFormDto } from '../../../@types/dto/form/create-stock.dto';
+import { HFDatePicker } from '../../HookForm/HFDatePicker';
+import { HFTextField } from '../../HookForm/HFTextField';
+import { HFUploadPhoto } from '../../HookForm/HFUploadPhoto';
+import { Product, ProductSelectForm } from '../../Product/SelectForm/SelectForm';
+import { TabPanel } from '../../UI/Tabs/TabPanel';
+import { Tabs } from '../../UI/Tabs/Tabs';
+import { Button } from '../../UI/Button/Button';
+import { Typography } from '../../UI/Typography/Typography';
 import schema from './validation';
 
 type Props = {
@@ -128,6 +128,9 @@ export function CreateStockForm({
                       name="fullPhoto"
                       id="fullPhoto"
                       allowedFileTypes={['image/jpeg', 'image/png', 'image/webp']}
+                      onDelete={() => {
+                        console.log('delete full photo');
+                      }}
                     />
                   </Grid>
                   <Grid item xs={5}>
@@ -136,6 +139,9 @@ export function CreateStockForm({
                       name="smallPhoto"
                       id="smallPhoto"
                       allowedFileTypes={['image/jpeg', 'image/png', 'image/webp']}
+                      onDelete={() => {
+                        console.log('delete small photo');
+                      }}
                     />
                   </Grid>
                 </Grid>

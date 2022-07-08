@@ -3,9 +3,9 @@ export type ProductBasicSettingsFormDto = Readonly<{
   title: string;
   description: string;
   metaTitle: string;
-  firstImage?: string;
-  secondImage?: string;
-  thirdImage?: string;
+  firstImage?: File;
+  secondImage?: File;
+  thirdImage?: File;
   metaDescription: string;
   isIndexed: boolean;
   metaKeywords: string;
