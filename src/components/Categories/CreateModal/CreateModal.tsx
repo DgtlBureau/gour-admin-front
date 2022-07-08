@@ -12,7 +12,7 @@ export type CreateModalProps = {
   category?: Category;
   onSave: (category: CategoryCreateDto) => void;
   onClose: () => void;
-}
+};
 
 type ModalActionsProps = {
   onCancel: () => void;
@@ -21,7 +21,12 @@ type ModalActionsProps = {
 function ModalActions({ onCancel }: ModalActionsProps) {
   return (
     <>
-      <Button form="createCategoryForm" type="submit" size="small" sx={{ marginRight: '10px' }}>
+      <Button
+        form="createCategoryForm"
+        type="submit"
+        size="small"
+        sx={{ marginRight: '10px' }}
+      >
         Сохранить
       </Button>
       <Button variant="outlined" size="small" onClick={onCancel}>
@@ -37,9 +42,13 @@ export function CreateCategoryModal({
   onSave,
   onClose,
 }: CreateModalProps) {
-  const modalTitle = category ? 'Редактирование категории товара' : 'Добавление категории товара';
+  const modalTitle = category ?
+    'Редактирование категории товара' :
+    'Добавление категории товара';
 
-  const defaultValues = category ? { ru: category.title.ru, en: category.title.en } : { ru: '', en: '' };
+  const defaultValues = category ?
+    { ru: category.title.ru, en: category.title.en } :
+    { ru: '', en: '' };
 
   const save = (title: TranslatableStringDto) => {
     const newCategory = {
@@ -58,9 +67,10 @@ export function CreateCategoryModal({
     <Modal
       isOpen={isOpen}
       title={modalTitle}
-      body={<CreateCategoryForm onSave={save} defaultValues={defaultValues} />}
       actions={<ModalActions onCancel={onClose} />}
       onClose={onClose}
-    />
+    >
+      <CreateCategoryForm onSave={save} defaultValues={defaultValues} />
+    </Modal>
   );
 }

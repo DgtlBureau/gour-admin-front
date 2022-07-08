@@ -90,7 +90,7 @@ export function ProductFullForm({
       id: product.id,
       title: product.title.ru,
       image: product.images[0]?.small || '',
-      category: `${product.category?.key}` || '',
+      category: product.category?.key || '',
       characteristics: product.characteristics,
     })) || [];
 

@@ -23,7 +23,6 @@ import EditUserView from '../view/Users/Edit';
 import ListReviewsView from '../view/Reviews/List';
 import ListCitiesView from '../view/Cities/List';
 import ListReferralCodesView from '../view/Referrals/List';
-import ListRegistrationsView from '../view/Registration/List';
 import AuthRestorePasswordView from '../view/Auth/RestorePassword';
 import { Path } from '../constants/routes';
 
@@ -72,19 +71,19 @@ export function Routing() {
     ],
   };
 
-  const categoriesRoutes = {
-    path: Path.CATEGORIES,
-    element: (
-      <RequireAuth>
-        <PrivateLayout />
-      </RequireAuth>
-    ),
-    children: [
-      { path: '', element: <ListCategoriesView /> },
-      { path: 'create', element: <CreateCategoryView /> },
-      { path: ':id', element: <EditCategoryView /> },
-    ],
-  };
+  // const categoriesRoutes = {
+  //   path: Path.CATEGORIES,
+  //   element: (
+  //     <RequireAuth>
+  //       <PrivateLayout />
+  //     </RequireAuth>
+  //   ),
+  //   children: [
+  //     { path: '', element: <ListCategoriesView /> },
+  //     { path: 'create', element: <CreateCategoryView /> },
+  //     { path: ':id', element: <EditCategoryView /> },
+  //   ],
+  // };
 
   const stocksRoutes = {
     path: Path.STOCKS,
@@ -110,16 +109,6 @@ export function Routing() {
     children: [
       { path: '', element: <ListPagesView /> },
     ],
-  };
-
-  const registrationsRoutes = {
-    path: Path.REGISTRATION,
-    element: (
-      <RequireAuth>
-        <PrivateLayout />
-      </RequireAuth>
-    ),
-    children: [{ path: '', element: <ListRegistrationsView /> }],
   };
 
   const usersRoutes = {
@@ -169,14 +158,13 @@ export function Routing() {
   const routing = useRoutes([
     authRoutes,
     productsRoutes,
-    categoriesRoutes,
+    // categoriesRoutes,
     mainRoutes,
     stocksRoutes,
     citiesRoutes,
     usersRoutes,
     reviewsRoutes,
     pagesRoutes,
-    registrationsRoutes,
     referralsRoutes,
   ]);
 

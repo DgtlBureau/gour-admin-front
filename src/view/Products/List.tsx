@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
+
 import { Button } from '../../components/UI/Button/Button';
 import { Path } from '../../constants/routes';
 import { useTo } from '../../hooks/useTo';
@@ -6,7 +7,6 @@ import { Header } from '../../components/Header/Header';
 import { ProductsTable } from '../../components/Product/Table/Table';
 import { useDeleteProductMutation, useGetAllProductsQuery } from '../../api/productApi';
 import { ProgressLinear } from '../../components/UI/ProgressLinear/ProgressLinear';
-import { ProductTableDto } from '../../@types/dto/table/products.dto';
 import { Typography } from '../../components/UI/Typography/Typography';
 import { ProductDeletePopup } from '../../components/Product/DeletePopup/DeletePopup';
 import { eventBus, EventTypes } from '../../packages/EventBus';
@@ -31,7 +31,6 @@ function RightContent({ onUploadClick, onCreateClick }: Props) {
 
 function ListProductsView() {
   const lang = 'ru'; // TODO: смена языка
-  const currency = 'rub'; // TODO: смена валюты
 
   const [page, setPage] = useState<number>(0);
   const [rowsPerPage, setRowsPerPage] = useState<number>(5);
@@ -46,8 +45,6 @@ function ListProductsView() {
     withSimilarProducts: false,
     withMeta: false,
     withRoleDiscount: false,
-    length: rowsPerPage,
-    offset: rowsPerPage * page,
   });
 
   const [fetchDeleteProduct, deleteProductData] = useDeleteProductMutation();
@@ -58,7 +55,7 @@ function ListProductsView() {
       image: product.images[0]?.small || '',
       title: product.title[lang] || '',
       categoryId: `${product.category?.id}`,
-      price: product.price[currency] || 0,
+      price: product.price.cheeseCoin || 0,
     })) || [];
 
   const to = useTo();
@@ -100,7 +97,6 @@ function ListProductsView() {
           type: NotificationType.DANGER,
         });
       }
-      console.error(error);
     }
     setDeletedProductId(null);
   };

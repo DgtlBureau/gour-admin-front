@@ -1,7 +1,7 @@
 import React from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { FormControlLabel } from '@mui/material';
+import { FormControlLabel, Stack } from '@mui/material';
 
 import schema from './validation';
 import { Box } from '../../UI/Box/Box';
@@ -13,12 +13,8 @@ import { SignupUserDto } from '../../../@types/dto/auth/signup-user.dto';
 
 const sx = {
   form: {
-    display: 'flex',
+    maxWidth: '375px',
     padding: '0 24px',
-  },
-  field: {
-    maxWidth: '320px',
-    marginLeft: '55px',
   },
   radioGroup: {
     display: 'flex',
@@ -36,7 +32,7 @@ const sx = {
 
 export type CreateUserFormProps = {
   onSubmit: (data: SignupUserDto) => void;
-}
+};
 
 export function CreateUserForm({ onSubmit }: CreateUserFormProps) {
   const values = useForm<SignupUserDto>({
@@ -50,17 +46,28 @@ export function CreateUserForm({ onSubmit }: CreateUserFormProps) {
   return (
     <FormProvider {...values}>
       <form id="createUserForm" onSubmit={values.handleSubmit(submitHandler)}>
-        <Box sx={sx.form}>
+        <Stack spacing={2} sx={sx.form}>
+          <HFTextField name="name" label="Имя" />
+          <HFTextField name="surname" label="Фамилия" />
+          <HFTextField name="email" label="Email" />
           <HFRadioGroup name="role" sx={sx.radioGroup}>
-            <Typography variant="body2" color="primary">Роль</Typography>
+            <Typography variant="body2" color="primary">
+              Роль
+            </Typography>
             <Box sx={sx.radios}>
-              <FormControlLabel value="admin" control={<RadioButton />} label="Администратор" />
-              <FormControlLabel value="moderator" control={<RadioButton />} label="Модератор" />
+              <FormControlLabel
+                value="admin"
+                control={<RadioButton />}
+                label="Администратор"
+              />
+              <FormControlLabel
+                value="moderator"
+                control={<RadioButton />}
+                label="Модератор"
+              />
             </Box>
           </HFRadioGroup>
-
-          <HFTextField sx={sx.field} name="email" label="Email" />
-        </Box>
+        </Stack>
       </form>
     </FormProvider>
   );

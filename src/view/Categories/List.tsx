@@ -13,6 +13,8 @@ import {
   useUpdateCategoryMutation,
   useDeleteCategoryMutation,
 } from '../../api/categoryApi';
+import { eventBus, EventTypes } from '../../packages/EventBus';
+import { NotificationType } from '../../@types/entities/Notification';
 
 type RightContentProps = {
   onClick: () => void;
@@ -66,8 +68,20 @@ function ListCategoriesView() {
     editCategory({ id: categoryId, ...category, key: '' });
     closeEditing();
   };
-  const remove = () => {
-    deleteCategory(categoryId);
+  const remove = async () => {
+    try {
+      await deleteCategory(categoryId).unwrap();
+      eventBus.emit(EventTypes.notification, {
+        message: 'Категория успешно создана',
+        type: NotificationType.SUCCESS,
+      });
+    } catch (error) {
+      console.log(error);
+      eventBus.emit(EventTypes.notification, {
+        message: 'Произошла ошибка',
+        type: NotificationType.DANGER,
+      });
+    }
     closeDeleting();
   };
 
@@ -77,24 +91,12 @@ function ListCategoriesView() {
         leftTitle="Категории"
         rightContent={<RightContent onClick={openCreating} />}
       />
-      {
-        data ? (
-          <CategoriesTable
-            categories={data}
-            onDelete={openDeleting}
-            onEdit={openEditing}
-          />
-        ) : (
-          <Typography variant="body1">
-            Список категорий пуст
-          </Typography>
-        )
-      }
-      <CreateCategoryModal
-        isOpen={isCreating}
-        onSave={create}
-        onClose={closeCreating}
-      />
+      {data ? (
+        <CategoriesTable categories={data} onDelete={openDeleting} onEdit={openEditing} />
+      ) : (
+        <Typography variant="body1">Список категорий пуст</Typography>
+      )}
+      <CreateCategoryModal isOpen={isCreating} onSave={create} onClose={closeCreating} />
       <CreateCategoryModal
         isOpen={isEditing}
         category={editingCategory}

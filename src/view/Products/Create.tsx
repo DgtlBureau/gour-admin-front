@@ -62,12 +62,9 @@ function CreateProductView() {
     },
     priceSettings: {
       discount: 0,
-      rub: 0,
-      eur: 0,
-      companyDiscountRub: 0,
-      companyDiscountEur: 0,
-      collectiveDiscountRub: 0,
-      collectiveDiscountEur: 0,
+      cheeseCoin: 0,
+      companyDiscount: 0,
+      collectiveDiscount: 0,
     },
     productSelect: [],
   });
@@ -125,14 +122,12 @@ function CreateProductView() {
         if (role.key === 'COMPANY') {
           return {
             role: role.id,
-            rub: priceSettings.companyDiscountRub,
-            eur: priceSettings.companyDiscountEur,
+            cheeseCoin: priceSettings.companyDiscount,
           };
         }
         return {
           role: role.id,
-          rub: priceSettings.collectiveDiscountRub,
-          eur: priceSettings.collectiveDiscountEur,
+          cheeseCoin: priceSettings.collectiveDiscount,
         };
       }) || [];
 
@@ -153,8 +148,7 @@ function CreateProductView() {
       },
       images: images.map(image => image.id),
       price: {
-        rub: +priceSettings.rub,
-        eur: +priceSettings.eur,
+        cheeseCoin: +priceSettings.cheeseCoin,
       },
       characteristics: characteristics || {},
       category: categoryId,

@@ -27,7 +27,7 @@ const sx = {
   },
   tabs: {
     padding: '0 16px',
-  }
+  },
 };
 
 export type Row = {
@@ -69,12 +69,7 @@ export function Table({
   return (
     <Paper>
       {tabs && (
-        <Tabs
-          sx={sx.tabs}
-          value={tabs.value}
-          options={tabs.options}
-          onChange={tabs.onChange}
-        />
+        <Tabs value={tabs.value} options={tabs.options} onChange={tabs.onChange} />
       )}
       <MUITableContainer>
         <MUITable sx={{ minWidth: 650 }} aria-label="simple table">
@@ -109,7 +104,7 @@ export function Table({
         </MUITable>
 
         <TablePagination
-          labelRowsPerPage="Рядов на странице:"
+          labelRowsPerPage="Записей на странице:"
           labelDisplayedRows={getDisplayedRowsLabel}
           rowsPerPageOptions={rowsPerPageOptions}
           component="div"
