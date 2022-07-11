@@ -6,7 +6,7 @@ import { UploadImage } from '../UI/UploadImage/UploadImage';
 
 type Props = {
   name: string;
-  defaultValue?: string | File;
+  defaultValue?: string;
   label?: string;
   type?: string;
   sx?: SxProps;
@@ -19,7 +19,7 @@ export function HFUploadPhoto({
   name,
   defaultValue,
   onDelete,
-  allowedFileTypes,
+  allowedFileTypes = ['image/jpeg', 'image/png', 'image/webp'],
   ...props
 }: Props) {
   const {
@@ -31,11 +31,12 @@ export function HFUploadPhoto({
     <Controller
       name={name}
       control={control}
-      defaultValue={defaultValue}
-      render={({ field: { ref, ...rest } }) => (
+      defaultValue={defaultValue || ''}
+      render={({ field: { ref, onChange, ...rest } }) => (
         <UploadImage
           {...rest}
           isError={!!errors[name]}
+          onChange={({ target: tg }) => onChange(tg.files?.[0])}
           helperText={errors[name]?.message ?? ''}
           allowedFileTypes={allowedFileTypes}
           onDelete={onDelete}

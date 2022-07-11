@@ -2,6 +2,7 @@ import { Meta } from './Meta';
 import { Image } from './Image';
 import { TranslatableString } from './TranslatableString';
 import { TranslatableText } from './TranslatableText';
+import { Product } from './Product';
 
 export type Promotion = {
   id: number;
@@ -12,6 +13,6 @@ export type Promotion = {
   discount: number;
   start: Date;
   end: Date;
-  meta: Meta
-  productIdList: number[];
+  pageMeta: Meta;
+  products: Product[];
 };

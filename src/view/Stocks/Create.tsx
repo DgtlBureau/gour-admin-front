@@ -1,43 +1,48 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { SingleValue } from 'react-select';
+import React, { useRef } from 'react';
+// import { SingleValue } from 'react-select';
+import { formatISO } from 'date-fns';
 
 import { CreateStockForm } from '../../components/Stock/CreateForm/CreateForm';
 import { Header } from '../../components/Header/Header';
 import { Button } from '../../components/UI/Button/Button';
 import { Path } from '../../constants/routes';
-import { Select, SelectOption } from '../../components/UI/Select/Select';
+// import { Select, SelectOption } from '../../components/UI/Select/Select';
 import { useTo } from '../../hooks/useTo';
 import { useGetAllProductsQuery } from '../../api/productApi';
 import { useGetAllCategoriesQuery } from '../../api/categoryApi';
 import { useCreatePromotionMutation } from '../../api/promotionApi';
 import { useUploadImageMutation } from '../../api/imageApi';
 import { eventBus, EventTypes } from '../../packages/EventBus';
-import { StockFormValues, convertToStockValues, convertToStock } from './stocksHelper';
-import { languages } from '../../constants/languages';
+// import { StockFormValues, convertToStockValues, convertToStock } from './stocksHelper';
 import { NotificationType } from '../../@types/entities/Notification';
 import { CreateStockFormDto } from '../../@types/dto/form/create-stock.dto';
+// import { Language } from '../../@types/entities/Language';
 import { PromotionCreateDto } from '../../@types/dto/promotion/create.dto';
-import { Language } from '../../@types/entities/Language';
 
 import noImage from '../../assets/images/no-image.svg';
 
 type RightContentProps = {
-  language: Language;
-  onChangeLanguage(option: SingleValue<SelectOption<Language>>): void;
+  // language: Language;
+  // onChangeLanguage(option: SingleValue<SelectOption<Language>>): void;
   onSave(): void;
   onCancel(): void;
 };
 
-function RightContent({ language, onChangeLanguage, onSave, onCancel }: RightContentProps) {
+function RightContent({
+  // language,
+  // onChangeLanguage,
+  onSave,
+  onCancel,
+}: RightContentProps) {
   return (
     <>
-      <Select
+      {/* <Select
         sx={{ width: '150px' }}
         value={language}
         options={languages}
         onChange={onChangeLanguage}
         isMulti={false}
-      />
+      /> */}
       <Button onClick={onSave} sx={{ margin: '0 10px' }}>
         Сохранить
       </Button>
@@ -61,55 +66,59 @@ function CreateStockView() {
   const [createPromotion] = useCreatePromotionMutation();
   const [uploadImage] = useUploadImageMutation();
 
-  const [language, setLanguage] = useState<Language>('ru');
-  const [stockValues, setStockValues] = useState({} as StockFormValues);
-  const [languageForChange, setLanguageForChange] = useState<Language | null>(null);
+  // const [language, setLanguage] = useState<Language>('ru');
+  // const [stockValues, setStockValues] = useState({} as StockFormValues);
+  // const [languageForChange, setLanguageForChange] = useState<Language | null>(null);
 
-  const [isValid, setIsValid] = useState({ ru: false, en: false });
+  // const [isValid, setIsValid] = useState({ ru: false, en: false });
 
   const submitBtnRef = useRef<HTMLButtonElement>(null);
 
-  const defaultValues = {
-    ...stockValues[language],
-    ...stockValues.common,
-    cardImage: stockValues.images?.card.full,
-    pageImage: stockValues.images?.page.full,
-  };
+  // const defaultValues = {
+  //   ...stockValues[language],
+  //   ...stockValues.common,
+  //   cardImage: stockValues.images?.card.full,
+  //   pageImage: stockValues.images?.page.full,
+  // };
 
-  const categories = categoriesData?.map(it => ({
-    label: it.title.ru,
-    value: it.key,
-  })) || [];
+  const categories =
+    categoriesData?.map(it => ({
+      label: it.title.ru,
+      value: it.key,
+    })) || [];
 
-  const products = productsData?.products.map(it => ({
-    id: it.id,
-    title: it.title.ru,
-    image: it.images[0]?.small || noImage,
-    category: it.category.key,
-    characteristics: it.characteristics,
-  })) || [];
+  const products =
+    productsData?.products.map(it => ({
+      id: it.id,
+      title: it.title.ru,
+      image: it.images[0]?.small || noImage,
+      category: it.category.key,
+      characteristics: it.characteristics,
+    })) || [];
 
   const goToStocks = () => to(Path.STOCKS);
 
   const submitStockForm = () => submitBtnRef?.current?.click();
 
-  const changeValidity = (value: boolean) => setIsValid({ ...isValid, [language]: value });
+  // const changeValidity = (value: boolean) => {
+  // setIsValid({ ...isValid, [language]: value });
+  // };
 
-  const selectLanguage = (option: SingleValue<SelectOption<Language>>) => {
-    if (!option) return;
+  // const selectLanguage = (option: SingleValue<SelectOption<Language>>) => {
+  //   if (!option) return;
 
-    submitStockForm();
+  //   submitStockForm();
 
-    if (!isValid[language]) {
-      eventBus.emit(EventTypes.notification, {
-        message: 'Необходимо заполнить данные для текущего языка',
-        type: NotificationType.DANGER,
-      });
-      return;
-    }
+  //   if (!isValid[language]) {
+  //     eventBus.emit(EventTypes.notification, {
+  //       message: 'Необходимо заполнить данные для текущего языка',
+  //       type: NotificationType.DANGER,
+  //     });
+  //     return;
+  //   }
 
-    setLanguageForChange(option.value);
-  };
+  //   setLanguageForChange(option.value);
+  // };
 
   const uploadPicture = async (file: File, label?: string) => {
     const formData = new FormData();
@@ -128,43 +137,122 @@ function CreateStockView() {
     return image;
   };
 
-  const changeStockValues = async (data: CreateStockFormDto) => {
-    const cardImage = typeof data.cardImage !== 'string' && await uploadPicture(data.cardImage, '1:1');
-    const pageImage = typeof data.pageImage !== 'string' && await uploadPicture(data.pageImage, '1:2');
+  // const changeStockValues = async (data: CreateStockFormDto) => {
+  //   const cardImage =
+  //     typeof data.cardImage !== 'string' &&
+  //     data.cardImage &&
+  //     (await uploadPicture(data.cardImage, '1:1'));
+  //   const pageImage =
+  //     typeof data.pageImage !== 'string' &&
+  //     data.pageImage &&
+  //     (await uploadPicture(data.pageImage, '1:2'));
+
+  //   if (!cardImage || !pageImage) return;
+
+  //   const images = { card: cardImage, page: pageImage };
+
+  //   const newStockValues = convertToStockValues(data, images, language);
+
+  //   const updatedStockValues = { ...stockValues, ...newStockValues };
+
+  //   setStockValues(updatedStockValues);
+  // };
+
+  // const save = async () => {
+  // submitStockForm();
+
+  // if (!isValid.ru || !isValid.en) {
+  // const invalidLanguages = languages
+  //   .filter(option => !isValid[option.value])
+  //   .map(option => option.label);
+
+  //   eventBus.emit(EventTypes.notification, {
+  //     message: `Заполните данные для следующих языков: ${invalidLanguages.join(', ')}`,
+  //     type: NotificationType.DANGER,
+  //   });
+
+  //   return;
+  // }
+
+  // const stock = convertToStock(stockValues);
+
+  //   try {
+  //     await createPromotion(stock).unwrap();
+
+  //     eventBus.emit(EventTypes.notification, {
+  //       message: 'Акция создана',
+  //       type: NotificationType.SUCCESS,
+  //     });
+
+  //     to(Path.STOCKS);
+  //   } catch (error) {
+  //     eventBus.emit(EventTypes.notification, {
+  //       message: 'Не удалось создать акцию',
+  //       type: NotificationType.DANGER,
+  //     });
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   if (languageForChange) {
+  //     setLanguage(languageForChange);
+  //     setLanguageForChange(null);
+  //   }
+  // }, [stockValues]);
+
+  const submit = async (data: CreateStockFormDto) => {
+    const cardImage =
+      !!data.smallPhoto &&
+      typeof data.smallPhoto !== 'string' &&
+      (await uploadPicture(data.smallPhoto, '1:1'));
+
+    const pageImage =
+      !!data.fullPhoto &&
+      typeof data.fullPhoto !== 'string' &&
+      (await uploadPicture(data.fullPhoto, '1:2'));
 
     if (!cardImage || !pageImage) return;
 
-    const images = { card: cardImage, page: pageImage };
-
-    const newStockValues = convertToStockValues(data, images, language);
-
-    const updatedStockValues = { ...stockValues, ...newStockValues };
-
-    setStockValues(updatedStockValues);
-  };
-
-  const save = async () => {
-    submitStockForm();
-
-    if (!isValid.ru || !isValid.en) {
-      const invalidLanguages = languages.filter(option => !isValid[option.value]).map(option => option.label);
-
-      eventBus.emit(EventTypes.notification, {
-        message: `Заполните данные для следующих языков: ${invalidLanguages.join(', ')}`,
-        type: NotificationType.DANGER,
-      });
-
-      return;
-    }
-
-    const stock = convertToStock(stockValues);
+    const promotion: PromotionCreateDto = {
+      title: {
+        ru: data.title,
+        en: '',
+      },
+      description: {
+        ru: data.description,
+        en: '',
+      },
+      cardImageId: cardImage.id,
+      pageImageId: pageImage.id,
+      discount: data.discount,
+      start: formatISO(data.start),
+      end: formatISO(data.end),
+      products: data.productIdList,
+      pageMeta: {
+        metaTitle: {
+          ru: data.metaTitle || '',
+          en: '',
+        },
+        metaDescription: {
+          ru: data.metaDescription || '',
+          en: '',
+        },
+        metaKeywords: {
+          ru: data.metaKeywords || '',
+          en: '',
+        },
+        isIndexed: !!data.isIndexed,
+      },
+    };
 
     try {
-      await createPromotion(stock as PromotionCreateDto).unwrap();
+      await createPromotion(promotion).unwrap();
+
       eventBus.emit(EventTypes.notification, {
         message: 'Акция создана',
         type: NotificationType.SUCCESS,
       });
+
       to(Path.STOCKS);
     } catch (error) {
       eventBus.emit(EventTypes.notification, {
@@ -174,34 +262,29 @@ function CreateStockView() {
     }
   };
 
-  useEffect(() => {
-    if (languageForChange) {
-      setLanguage(languageForChange);
-      setLanguageForChange(null);
-    }
-  }, [stockValues]);
-
   return (
     <div>
       <Header
         leftTitle="Создание акции"
-        rightContent={(
+        rightContent={
           <RightContent
-            language={language}
-            onChangeLanguage={selectLanguage}
+            // language={language}
+            // onChangeLanguage={selectLanguage}
             onCancel={goToStocks}
-            onSave={save}
+            // onSave={save}
+            onSave={submitStockForm}
           />
-        )}
+        }
       />
       <CreateStockForm
-        key={`stock-create/${language}`}
+        // key={`stock-create/${language}`}
         products={products}
         categories={categories}
-        defaultValues={defaultValues}
+        // defaultValues={defaultValues}
         submitBtnRef={submitBtnRef}
-        onValidityChange={changeValidity}
-        onSubmit={changeStockValues}
+        // onValidityChange={changeValidity}
+        // onSubmit={changeStockValues}
+        onSubmit={submit}
       />
     </div>
   );

@@ -100,12 +100,13 @@ export function ProductFullForm({
   }));
 
   return (
-    <Box sx={{ padding: '0 24px' }}>
+    <Box>
       <Tabs
         options={createProductTabOptions}
         value={activeTabId}
         onChange={onChangeTab}
       />
+
       <TabPanel value={activeTabId} index="settings">
         <ProductBasicSettingsForm
           categories={selectCategoryOptions}
@@ -114,12 +115,14 @@ export function ProductFullForm({
           onChange={handleChangeBasicSettingsForm}
         />
       </TabPanel>
+
       <TabPanel value={activeTabId} index="prices">
         <PriceProductForm
           defaultValues={fullFormState.priceSettings}
           onChange={onChangePrice}
         />
       </TabPanel>
+
       <TabPanel value={activeTabId} index="filters">
         {fullFormState.basicSettings.categoryKey === 'meat' && (
           <ProductFilterForm
@@ -136,6 +139,7 @@ export function ProductFullForm({
           />
         )}
       </TabPanel>
+
       <TabPanel value={activeTabId} index="recommended_products">
         <ProductSelectForm
           isLoading={isProductsLoading}

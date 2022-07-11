@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 
+import DeleteIcon from '@mui/icons-material/Delete';
+
 import { Box } from '../../UI/Box/Box';
 import { Table } from '../../UI/Table/Table';
 import { Typography } from '../../UI/Typography/Typography';
 import { IconButton } from '../../UI/IconButton/IconButton';
 import { Options } from '../../../constants/tabs';
 
-import busketIcon from '../../../assets/icons/table/busket.svg';
 import checkIcon from '../../../assets/icons/table/check.svg';
 
 const sx = {
@@ -76,7 +77,7 @@ export function RegistrationsTable({
         <Typography sx={sx.role}>{client.role}</Typography>,
         <>
           <IconButton component="button" onClick={() => onDelete(client.id)}>
-            <img src={busketIcon} alt="" />
+            <DeleteIcon />
           </IconButton>
           {!isApproved && (
             <IconButton component="button" onClick={() => onAccept(client.id)}>

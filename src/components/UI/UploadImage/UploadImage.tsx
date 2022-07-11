@@ -6,6 +6,10 @@ import { styled } from '@mui/material/styles';
 import { Typography } from '../Typography/Typography';
 import { Button } from '../Button/Button';
 
+const Input = styled('input')({
+  display: 'none',
+});
+
 const labelStyles: CSSProperties = {
   width: '100%',
   height: '220px',
@@ -17,15 +21,11 @@ const labelStyles: CSSProperties = {
   backgroundPosition: 'center',
 };
 
-const Input = styled('input')({
-  display: 'none',
-});
-
 type Props = {
   id: string;
   name?: string;
   label?: string;
-  value: File | null;
+  value: File | string | null;
   isError?: boolean;
   helperText?: string;
   allowedFileTypes?: ('image/jpeg' | 'image/png' | 'image/webp')[];
@@ -53,6 +53,12 @@ export function UploadImage({
       setImage(null);
       return;
     }
+
+    if (typeof value === 'string') {
+      setImage(value);
+      return;
+    }
+
     const fr = new FileReader();
     fr.readAsDataURL(value);
 
@@ -62,9 +68,9 @@ export function UploadImage({
   }, [value]);
 
   return (
-    <Stack sx={{ width: '340px', ...sx }} alignItems="center" spacing={2}>
+    <Stack sx={{ width: '100%', ...sx }} alignItems="center" spacing={2}>
       <Stack
-        sx={{ width: '100%' }}
+        sx={{ width: '100%', height: '35px' }}
         direction="row"
         alignItems="center"
         justifyContent="space-between"
@@ -72,7 +78,7 @@ export function UploadImage({
       >
         <Typography variant="body1">{label}</Typography>
         {value && (
-          <Button onClick={onDelete} size="small">
+          <Button variant="text" onClick={onDelete} size="small">
             Удалить
           </Button>
         )}

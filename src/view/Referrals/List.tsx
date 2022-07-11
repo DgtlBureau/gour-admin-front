@@ -59,7 +59,6 @@ function ListReferralCodesView() {
       });
       setIsCreateCodeModalOpen(false);
     } catch (error) {
-      console.log(error);
       eventBus.emit(EventTypes.notification, {
         message: 'Произошла ошибка',
         type: NotificationType.DANGER,
@@ -74,7 +73,6 @@ function ListReferralCodesView() {
         type: NotificationType.SUCCESS,
       });
     } catch (error) {
-      console.log(error);
       eventBus.emit(EventTypes.notification, {
         message: 'Произошла ошибка',
         type: NotificationType.DANGER,
@@ -89,7 +87,6 @@ function ListReferralCodesView() {
         type: NotificationType.SUCCESS,
       });
     } catch (error) {
-      console.log(error);
       eventBus.emit(EventTypes.notification, {
         message: 'Произошла ошибка',
         type: NotificationType.DANGER,
@@ -108,7 +105,7 @@ function ListReferralCodesView() {
     <div>
       <Header
         leftTitle="Рефералы"
-        rightContent={(
+        rightContent={
           <RightContent
             onUploadClick={() => {
               setIsExportModalOpen(true);
@@ -117,7 +114,7 @@ function ListReferralCodesView() {
               setIsCreateCodeModalOpen(true);
             }}
           />
-        )}
+        }
       />
       <Stack spacing={2}>
         {isLoading && <LinearProgress />}
@@ -147,7 +144,10 @@ function ListReferralCodesView() {
           setIsExportModalOpen(false);
         }}
         onExport={(period?: { start: Date; end: Date }) => {
-          const url = new URL('/api/referralCodes/export', process.env.REACT_APP_STORE_PATH);
+          const url = new URL(
+            '/api/referralCodes/export',
+            process.env.REACT_APP_STORE_PATH
+          );
           let name = 'referral_codes_export';
           if (period?.start) {
             url.searchParams.set('start', period.start.toISOString());

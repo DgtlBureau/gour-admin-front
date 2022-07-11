@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
+
 import AddBoxIcon from '@mui/icons-material/AddBox';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 import { Box } from '../../UI/Box/Box';
 import { Table } from '../../UI/Table/Table';
@@ -7,7 +9,6 @@ import { IconButton } from '../../UI/IconButton/IconButton';
 import { Typography } from '../../UI/Typography/Typography';
 import { Options } from '../../../constants/tabs';
 
-import busketIcon from '../../../assets/icons/table/busket.svg';
 import loginIcon from './assets/login.svg';
 
 const sx = {
@@ -68,7 +69,7 @@ export function UsersTable({
       </Typography>,
       <>
         <IconButton component="button" onClick={() => onDelete(user.uuid)}>
-          <img src={busketIcon} alt="" />
+          <DeleteIcon />
         </IconButton>
         {['CLIENT', 'COMPANY', 'COLLECTIVE_PURCHASE'].includes(user.role) ? (
           <>

@@ -1,6 +1,7 @@
 import { formatISO } from 'date-fns';
 
 import { CreateStockFormDto } from '../../@types/dto/form/create-stock.dto';
+import { PromotionCreateDto } from '../../@types/dto/promotion/create.dto';
 import { Image } from '../../@types/entities/Image';
 import { Language } from '../../@types/entities/Language';
 
@@ -18,7 +19,7 @@ export type CommonStockValues = {
   discount: number;
   productIdList: number[];
   isIndexed?: boolean;
-}
+};
 
 type StockImages = {
   card: Image;
@@ -26,16 +27,16 @@ type StockImages = {
 };
 
 export type StockFormValues = {
-  ru: TranslatableStockValues,
-  en: TranslatableStockValues,
-  common: CommonStockValues,
-  images: StockImages,
+  ru: TranslatableStockValues;
+  en: TranslatableStockValues;
+  common: CommonStockValues;
+  images: StockImages;
 };
 
 export const convertToStockValues = (
   data: CreateStockFormDto,
   images: StockImages,
-  language: Language,
+  language: Language
 ) => {
   const commonValues: CommonStockValues = {
     start: data.start,
@@ -56,36 +57,34 @@ export const convertToStockValues = (
   return { [language]: translatableValues, common: commonValues, images };
 };
 
-export const convertToStock = (values: StockFormValues) => (
-  {
-    title: {
-      ru: values.ru.title,
-      en: values.en.title,
+export const convertToStock = (values: StockFormValues): PromotionCreateDto => ({
+  title: {
+    ru: values.ru.title,
+    en: values.en.title,
+  },
+  description: {
+    ru: values.ru.description,
+    en: values.en.description,
+  },
+  cardImageId: values.images.card.id,
+  pageImageId: values.images.page.id,
+  discount: values.common.discount,
+  start: formatISO(values.common.start),
+  end: formatISO(values.common.end),
+  products: values.common.productIdList,
+  pageMeta: {
+    metaTitle: {
+      ru: values.ru.metaTitle || '',
+      en: values.en.metaTitle || '',
     },
-    description: {
-      ru: values.ru.description,
-      en: values.en.description,
+    metaDescription: {
+      ru: values.ru.metaDescription || '',
+      en: values.en.metaDescription || '',
     },
-    cardImageId: values.images.card.id,
-    pageImageId: values.images.page.id,
-    discount: values.common.discount,
-    start: formatISO(values.common.start),
-    end: formatISO(values.common.end),
-    products: values.common.productIdList,
-    pageMeta: {
-      metaTitle: {
-        ru: values.ru.metaTitle,
-        en: values.en.metaTitle,
-      },
-      metaDescription: {
-        ru: values.ru.metaDescription,
-        en: values.en.metaDescription,
-      },
-      metaKeywords: {
-        ru: values.ru.metaKeywords,
-        en: values.en.metaKeywords,
-      },
-      isIndexed: values.common.isIndexed,
+    metaKeywords: {
+      ru: values.ru.metaKeywords || '',
+      en: values.en.metaKeywords || '',
     },
-  }
-);
+    isIndexed: !!values.common.isIndexed,
+  },
+});

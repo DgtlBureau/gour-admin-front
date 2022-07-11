@@ -1,4 +1,4 @@
-import React, { BaseSyntheticEvent, useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { LinearProgress } from '@mui/material';
 import { Header } from '../../components/Header/Header';
 import { Button } from '../../components/UI/Button/Button';
@@ -15,7 +15,6 @@ import { eventBus, EventTypes } from '../../packages/EventBus';
 import { NotificationType } from '../../@types/entities/Notification';
 import { CreateCityDto } from '../../@types/dto/city/create.dto';
 import { UpdateCityDto } from '../../@types/dto/city/update.dto';
-import { City } from '../../@types/entities/City';
 import { CreateCityModal } from '../../components/Cities/CreateModal/CreateModal';
 
 type Props = {
@@ -35,9 +34,9 @@ function ListCitiesView() {
   });
   const { data: cities = [], isLoading, isError } = useGetCityListQuery();
 
-  const [fetchCreateCity, createCityData] = useCreateCityMutation();
-  const [fetchUpdateCity, updateCityData] = useUpdateCityMutation();
-  const [fetchDeleteCity, deleteCityData] = useDeleteCityMutation();
+  const [fetchCreateCity] = useCreateCityMutation();
+  const [fetchUpdateCity] = useUpdateCityMutation();
+  const [fetchDeleteCity] = useDeleteCityMutation();
 
   const onCreateClick = () => {
     setFormState({
@@ -63,7 +62,6 @@ function ListCitiesView() {
         type: NotificationType.SUCCESS,
       });
     } catch (error) {
-      console.log(error);
       eventBus.emit(EventTypes.notification, {
         message: 'Произошла ошибка',
         type: NotificationType.DANGER,
@@ -106,7 +104,6 @@ function ListCitiesView() {
         });
       }
     } catch (error) {
-      console.log(error);
       eventBus.emit(EventTypes.notification, {
         message: 'Произошла ошибка',
         type: NotificationType.DANGER,

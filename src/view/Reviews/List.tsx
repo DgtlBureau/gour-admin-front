@@ -1,8 +1,7 @@
 import { LinearProgress } from '@mui/material';
 import { format } from 'date-fns';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { NotificationType } from '../../@types/entities/Notification';
-import { useGetProductByIdQuery } from '../../api/productApi';
 import {
   useGetProductGradeListQuery,
   useUpdateProductGradeMutation,
@@ -34,12 +33,13 @@ function ListReviewsView() {
     withComments: true,
   });
 
-  const [fetchUpdateProductGrade, updateProductGradeData] =
-    useUpdateProductGradeMutation();
+  const [fetchUpdateProductGrade] = useUpdateProductGradeMutation();
 
   const transformedData: Comment[] = comments.map(comment => ({
     id: comment.id,
-    authorName: comment.client?.name || '',
+    authorName: comment.client
+      ? `${comment.client.lastName} ${comment.client.firstName}`
+      : 'Неизвестен',
     text: comment.comment,
     productName: comment.product?.title?.ru || '',
     date: format(new Date(comment.createdAt), 'dd.MM.yyyy') || '',
@@ -75,7 +75,6 @@ function ListReviewsView() {
         type: NotificationType.SUCCESS,
       });
     } catch (error) {
-      console.log(error);
       eventBus.emit(EventTypes.notification, {
         message: 'Произошла ошибка',
         type: NotificationType.DANGER,
@@ -95,7 +94,6 @@ function ListReviewsView() {
         type: NotificationType.SUCCESS,
       });
     } catch (error) {
-      console.log(error);
       eventBus.emit(EventTypes.notification, {
         message: 'Произошла ошибка',
         type: NotificationType.DANGER,
@@ -109,7 +107,9 @@ function ListReviewsView() {
 
   if (!isLoading && isError) return <Typography variant="h5">Возникла ошибка</Typography>;
 
-  if (!isLoading && !isError && comments.length === 0) return <Typography variant="h5">Отзывы отсутствуют</Typography>;
+  if (!isLoading && !isError && comments.length === 0) {
+    return <Typography variant="h5">Отзывы отсутствуют</Typography>;
+  }
 
   return (
     <div>

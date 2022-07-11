@@ -77,10 +77,7 @@ function CreateProductView() {
   const { data: categories = [] } = useGetAllCategoriesQuery();
 
   const { data: productsData, isLoading: isProductsLoading = false } =
-    useGetAllProductsQuery(
-      { withSimilarProducts: false, withMeta: false, withRoleDiscount: false },
-      { skip: activeTabId !== 'recommended_products' }
-    );
+    useGetAllProductsQuery({}, { skip: activeTabId !== 'recommended_products' });
 
   const uploadPhoto = async (image: File, i: number) => {
     const formData = new FormData();
@@ -111,8 +108,6 @@ function CreateProductView() {
       productSelect,
     } = fullFormState;
 
-    console.log('basicSettings', basicSettings);
-
     const characteristics =
       basicSettings.categoryKey === 'cheese' ? cheeseCategories : meatCategories;
 
@@ -137,7 +132,7 @@ function CreateProductView() {
       basicSettings.firstImage,
       basicSettings.secondImage,
       basicSettings.thirdImage,
-    ].forEach((image, i) => image && uploadPhoto(image, i));
+    ].forEach((image, i) => image && typeof image !== 'string' && uploadPhoto(image, i));
 
     const newProduct: ProductCreateDto = {
       title: {

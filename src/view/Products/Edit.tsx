@@ -85,15 +85,14 @@ function EditProductView() {
     },
     { skip: !productId }
   );
-  const { data: productsList } =
-    useGetAllProductsQuery(
-      {
-        withSimilarProducts: true,
-        withMeta: true,
-        withRoleDiscount: false,
-      },
-      { skip: activeTabId !== 'recommended_products' }
-    );
+  const { data: productsList } = useGetAllProductsQuery(
+    {
+      withSimilarProducts: true,
+      withMeta: true,
+      withRoleDiscount: false,
+    },
+    { skip: activeTabId !== 'recommended_products' }
+  );
 
   useEffect(() => {
     if (!product) return;
@@ -185,9 +184,13 @@ function EditProductView() {
 
   if (isLoading) return <ProgressLinear variant="query" />;
 
-  if (!isLoading && isError) return <Typography variant="h5">Произошла ошибка</Typography>;
+  if (!isLoading && isError) {
+    return <Typography variant="h5">Произошла ошибка</Typography>;
+  }
 
-  if (!isLoading && !isError && !product) return <Typography variant="h5">Продукт не найден</Typography>;
+  if (!isLoading && !isError && !product) {
+    return <Typography variant="h5">Продукт не найден</Typography>;
+  }
 
   return (
     <div>
@@ -199,7 +202,7 @@ function EditProductView() {
         activeTabId={activeTabId}
         onChangeTab={setActiveTabId}
         categories={categories}
-        products={productsList?.products || []}
+        products={productsList?.products.filter(it => it.id !== productId) || []}
         fullFormState={fullFormState}
         setFullFormState={setFullFormState}
         mode="edit"

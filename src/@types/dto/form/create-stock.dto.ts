@@ -1,8 +1,8 @@
 export type CreateStockFormDto = Readonly<{
   title: string;
   description: string;
-  cardImage: File | string;
-  pageImage: File | string;
+  smallPhoto?: File | string;
+  fullPhoto?: File | string;
   start: Date;
   end: Date;
   discount: number;

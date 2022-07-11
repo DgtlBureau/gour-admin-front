@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
+
 import { useSignoutMutation } from '../api/authApi';
-import Notifications from '../components/Notifications/Notifications';
 import Sidebar, {
   SidebarLinkedItem,
   SidebarActionItem,
@@ -11,6 +11,8 @@ import { Container } from '../components/UI/Container/Container';
 import { Path } from '../constants/routes';
 import { useTo } from '../hooks/useTo';
 import { getCurrentPage } from '../utils/getCurrentPage';
+import { useAppSelector } from '../hooks/store';
+import { selectCurrentUser } from '../store/selectors/auth';
 
 const sx = {
   height: '100%',
@@ -48,6 +50,8 @@ function PrivateLayout() {
 
   const currentPage = useMemo(() => getCurrentPage(pathname), [pathname]);
 
+  const currentUser = useAppSelector(selectCurrentUser);
+
   const onLinkedItemClick = (item: SidebarLinkedItem) => to(item.path);
 
   const onActionItemClick = async (item: SidebarActionItem) => {
@@ -70,7 +74,10 @@ function PrivateLayout() {
       <Sidebar
         linkedItems={linkedItems}
         actionItems={actionItems}
-        profileInfo={{ name: 'Иван', lastName: 'Иванов' }}
+        profileInfo={{
+          name: currentUser?.firstName || 'Иван',
+          lastName: currentUser?.lastName || 'Иванов',
+        }}
         defaultSelected={currentPage}
         onLinkedItemClick={onLinkedItemClick}
         onActionItemClick={onActionItemClick}

@@ -1,7 +1,7 @@
 import React, { CSSProperties, useEffect } from 'react';
 
 import { Box, Dialog } from '@mui/material';
-import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Typography } from '../../UI/Typography/Typography';
 import { CreateCityDto } from '../../../@types/dto/city/create.dto';

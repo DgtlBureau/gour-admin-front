@@ -25,7 +25,7 @@ type Props = {
   }[];
   defaultValues?: CreateStockFormDto;
   submitBtnRef?: RefObject<HTMLButtonElement>;
-  onValidityChange: (value: boolean) => void;
+  // onValidityChange: (value: boolean) => void;
   onSubmit: (data: CreateStockFormDto) => void;
 };
 
@@ -45,7 +45,7 @@ export function CreateStockForm({
   categories,
   defaultValues,
   submitBtnRef,
-  onValidityChange,
+  // onValidityChange,
   onSubmit,
 }: Props) {
   const [selectedTabKey, setSelectedTabKey] = useState<string>('basicSettings');
@@ -61,7 +61,7 @@ export function CreateStockForm({
     defaultValues,
   });
 
-  const isValid = values.formState.isValid && selectedProducts.length !== 0;
+  // const isValid = values.formState.isValid && selectedProducts.length !== 0;
 
   const selectProducts = (productIds: number[]) => {
     if (productIds.length === 0) return;
@@ -70,11 +70,12 @@ export function CreateStockForm({
   };
 
   const submit = (data: CreateStockFormDto) => {
-    if (selectedProducts.length === 0) setError('Пожалуйста, выберите товары, участвующие в акции');
-    else onSubmit({ ...data, productIdList: selectedProducts });
+    if (selectedProducts.length === 0) {
+      setError('Пожалуйста, выберите товары, участвующие в акции');
+    } else onSubmit({ ...data, productIdList: selectedProducts });
   };
 
-  useEffect(() => onValidityChange(isValid), [isValid]);
+  // useEffect(() => onValidityChange(isValid), [isValid]);
 
   useEffect(() => values.reset(defaultValues), [defaultValues]);
 
@@ -120,27 +121,23 @@ export function CreateStockForm({
                 </Grid>
 
                 <Grid item xs={12} container spacing={2}>
-                  <Grid item md={4}>
+                  <Grid item xs={4}>
                     <HFUploadPhoto
                       label="Фото 1:1"
                       name="fullPhoto"
                       id="fullPhoto"
                       allowedFileTypes={['image/jpeg', 'image/png', 'image/webp']}
-                      onDelete={() => {
-                        console.log('delete full photo');
-                      }}
+                      onDelete={() => values.resetField('fullPhoto')}
                     />
                   </Grid>
 
-                  <Grid item md={4}>
+                  <Grid item xs={4}>
                     <HFUploadPhoto
                       label="Фото 1:2"
                       name="smallPhoto"
                       id="smallPhoto"
                       allowedFileTypes={['image/jpeg', 'image/png', 'image/webp']}
-                      onDelete={() => {
-                        console.log('delete small photo');
-                      }}
+                      onDelete={() => values.resetField('smallPhoto')}
                     />
                   </Grid>
                 </Grid>
