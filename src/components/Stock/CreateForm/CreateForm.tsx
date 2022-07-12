@@ -5,7 +5,6 @@ import { Grid, FormControlLabel, FormLabel } from '@mui/material';
 
 import { Product, ProductSelectForm } from '../../Product/SelectForm/SelectForm';
 import { Box } from '../../UI/Box/Box';
-import { TabPanel } from '../../UI/Tabs/TabPanel';
 import { Tabs } from '../../UI/Tabs/Tabs';
 import { Typography } from '../../UI/Typography/Typography';
 import { RadioButton } from '../../UI/RadioButton/RadioButton';
@@ -25,8 +24,7 @@ type Props = {
   }[];
   defaultValues?: CreateStockFormDto;
   submitBtnRef?: RefObject<HTMLButtonElement>;
-  // onValidityChange: (value: boolean) => void;
-  onSubmit: (data: CreateStockFormDto) => void;
+  onChange: (data: CreateStockFormDto) => void;
 };
 
 const tabOptions = [
@@ -45,11 +43,9 @@ export function CreateStockForm({
   categories,
   defaultValues,
   submitBtnRef,
-  // onValidityChange,
-  onSubmit,
+  onChange,
 }: Props) {
   const [selectedTabKey, setSelectedTabKey] = useState<string>('basicSettings');
-
   const [selectedProducts, setSelectedProducts] = useState<number[]>(
     defaultValues?.productIdList || []
   );
@@ -58,10 +54,11 @@ export function CreateStockForm({
 
   const values = useForm<CreateStockFormDto>({
     resolver: yupResolver(schema),
+    mode: 'onChange',
     defaultValues,
   });
 
-  // const isValid = values.formState.isValid && selectedProducts.length !== 0;
+  const isSettings = selectedTabKey === 'basicSettings';
 
   const selectProducts = (productIds: number[]) => {
     if (productIds.length === 0) return;
@@ -72,24 +69,41 @@ export function CreateStockForm({
   const submit = (data: CreateStockFormDto) => {
     if (selectedProducts.length === 0) {
       setError('Пожалуйста, выберите товары, участвующие в акции');
-    } else onSubmit({ ...data, productIdList: selectedProducts });
+    } else {
+      onChange({ ...data, productIdList: selectedProducts });
+    }
   };
 
-  // useEffect(() => onValidityChange(isValid), [isValid]);
+  useEffect(() => {
+    values.reset(defaultValues);
+    selectProducts(defaultValues?.productIdList || []);
+  }, [defaultValues]);
 
-  useEffect(() => values.reset(defaultValues), [defaultValues]);
+  const resetField = (field: keyof CreateStockFormDto) => {
+    values.setValue(field, undefined);
+    // change(values.getValues());
+  };
 
   return (
     <Box>
-      <Tabs value={selectedTabKey} options={tabOptions} onChange={setSelectedTabKey} />
+      <Tabs
+        value={selectedTabKey}
+        options={tabOptions}
+        onChange={setSelectedTabKey}
+        sx={{ marginBottom: '20px' }}
+      />
       {error && (
         <Typography variant="body1" sx={{ color: 'red', marginTop: '20px' }}>
           {error}
         </Typography>
       )}
-      <TabPanel index={selectedTabKey} value="basicSettings">
+      <Box sx={{ display: isSettings ? 'flex' : 'none' }}>
         <FormProvider {...values}>
-          <form id="createStockForm" onSubmit={values.handleSubmit(submit)}>
+          <form
+            id="createStockForm"
+            onSubmit={values.handleSubmit(submit)}
+            // onChange={() => change(values.getValues())}
+          >
             <Grid container spacing={2} item md={12} lg={8}>
               <Grid item xs={12}>
                 <HFTextField name="title" label="Заголовок*" />
@@ -126,8 +140,9 @@ export function CreateStockForm({
                       label="Фото 1:1"
                       name="fullPhoto"
                       id="fullPhoto"
+                      defaultValue={values.getValues('fullPhoto')}
                       allowedFileTypes={['image/jpeg', 'image/png', 'image/webp']}
-                      onDelete={() => values.resetField('fullPhoto')}
+                      onDelete={() => resetField('fullPhoto')}
                     />
                   </Grid>
 
@@ -136,8 +151,9 @@ export function CreateStockForm({
                       label="Фото 1:2"
                       name="smallPhoto"
                       id="smallPhoto"
+                      defaultValue={values.getValues('smallPhoto')}
                       allowedFileTypes={['image/jpeg', 'image/png', 'image/webp']}
-                      onDelete={() => values.resetField('smallPhoto')}
+                      onDelete={() => resetField('smallPhoto')}
                     />
                   </Grid>
                 </Grid>
@@ -170,16 +186,16 @@ export function CreateStockForm({
             </button>
           </form>
         </FormProvider>
-      </TabPanel>
+      </Box>
 
-      <TabPanel index={selectedTabKey} value="products">
+      <Box sx={{ display: !isSettings ? 'flex' : 'none' }}>
         <ProductSelectForm
           selected={selectedProducts}
           categories={categories}
           products={products}
           onChange={selectProducts}
         />
-      </TabPanel>
+      </Box>
     </Box>
   );
 }

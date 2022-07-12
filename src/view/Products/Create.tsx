@@ -15,7 +15,6 @@ import {
   ProductFullForm,
 } from '../../components/Product/FullForm/FullForm';
 import { useGetClientRolesListQuery } from '../../api/clientRoleApi';
-import { Image } from '../../@types/entities/Image';
 
 type Props = {
   onSaveHandler: () => void;
@@ -70,33 +69,30 @@ function CreateProductView() {
   });
 
   const [fetchCreateProduct] = useCreateProductMutation();
-  const [uploadImage, { data: imageData }] = useUploadImageMutation();
-
-  const [images, setImages] = useState<Image[]>([]);
+  const [uploadImage] = useUploadImageMutation();
 
   const { data: categories = [] } = useGetAllCategoriesQuery();
 
   const { data: productsData, isLoading: isProductsLoading = false } =
     useGetAllProductsQuery({}, { skip: activeTabId !== 'recommended_products' });
 
-  const uploadPhoto = async (image: File, i: number) => {
+  const uploadPicture = async (file?: File | string, label?: string) => {
+    if (!file || typeof file === 'string') return undefined;
+
     const formData = new FormData();
 
-    formData.append('image', image);
+    formData.append('image', file);
 
-    try {
-      await uploadImage(formData).unwrap();
-      if (imageData) {
-        const updatedImages = images.slice();
-        updatedImages.splice(i, 1, imageData);
-        setImages(updatedImages);
-      }
-    } catch (error) {
+    const image = await uploadImage(formData).unwrap();
+
+    if (!image) {
       eventBus.emit(EventTypes.notification, {
-        message: `Произошла ошибка при загрузке фото ${i + 1}`,
+        message: `Произошла ошибка при загрузке фото ${label})`,
         type: NotificationType.DANGER,
       });
     }
+
+    return image;
   };
 
   const onSave = async () => {
@@ -128,11 +124,13 @@ function CreateProductView() {
         };
       }) || [];
 
-    [
-      basicSettings.firstImage,
-      basicSettings.secondImage,
-      basicSettings.thirdImage,
-    ].forEach((image, i) => image && typeof image !== 'string' && uploadPhoto(image, i));
+    const fistImage = await uploadPicture(basicSettings.firstImage, '1');
+    const secondImage = await uploadPicture(basicSettings.secondImage, '2');
+    const thirdImage = await uploadPicture(basicSettings.thirdImage, '3');
+
+    const images: number[] = [];
+
+    [fistImage, secondImage, thirdImage].forEach(it => it && images.push(it.id));
 
     const newProduct: ProductCreateDto = {
       title: {
@@ -143,7 +141,7 @@ function CreateProductView() {
         en: '',
         ru: basicSettings.description,
       },
-      images: images.map(image => image.id),
+      images,
       price: {
         cheeseCoin: +priceSettings.cheeseCoin,
       },
