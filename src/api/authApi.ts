@@ -6,7 +6,7 @@ import { ForgotPasswordDto } from '../@types/dto/auth/forgot-password.dto';
 import { RestorePasswordDto } from '../@types/dto/auth/restore-password.dto';
 import { SignupUserDto } from '../@types/dto/auth/signup-user.dto';
 
-const ROLE_HASH: Record<'admin'|'moderator', string> = {
+const ROLE_HASH: Record<'admin' | 'moderator', string> = {
   admin: process.env.REACT_APP_ROLE_ADMIN_CODE as string,
   moderator: process.env.REACT_APP_ROLE_MODERATOR_CODE as string,
 };

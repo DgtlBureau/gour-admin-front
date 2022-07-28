@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from 'react';
+import React from 'react';
 import { SxProps } from '@mui/material';
 import { Controller, useFormContext } from 'react-hook-form';
 
@@ -6,7 +6,7 @@ import { UploadImage } from '../UI/UploadImage/UploadImage';
 
 type Props = {
   name: string;
-  defaultValue?: string;
+  defaultValue?: string | File;
   label?: string;
   type?: string;
   sx?: SxProps;

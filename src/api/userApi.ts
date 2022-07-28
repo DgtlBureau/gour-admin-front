@@ -1,20 +1,20 @@
 import { commonApi } from './commonApi';
 import { UserCreateDto } from '../@types/dto/user/create.dto';
 import { UserGetListDto } from '../@types/dto/user/get-list.dto';
-import { IUser } from '../@types/entities/IUser';
+import { User } from '../@types/entities/User';
 
 const USERS_API_PATH = '/auth/apiUsers';
 const ROLES = ['ADMIN', 'CLIENT', 'MODERATOR'];
 
 export const userApi = commonApi.injectEndpoints({
   endpoints: builder => ({
-    getById: builder.query<IUser, number>({
+    getById: builder.query<User, number>({
       query: id => ({
         url: `${USERS_API_PATH}/${id}`,
         method: 'GET',
       }),
     }),
-    getAllUsers: builder.query<IUser[], UserGetListDto>({
+    getAllUsers: builder.query<User[], UserGetListDto>({
       query: () => ({
         url: USERS_API_PATH,
         method: 'GET',
@@ -22,7 +22,7 @@ export const userApi = commonApi.injectEndpoints({
           roles: JSON.stringify(ROLES),
         },
       }),
-      transformResponse(users: (IUser & {roles: IUser['role'][]})[]) {
+      transformResponse(users: (User & { roles: User['role'][] })[]) {
         return users.map(user => ({
           ...user,
           role: user.roles.filter(it => ROLES.includes(it.key))[0],

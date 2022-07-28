@@ -6,7 +6,7 @@ import { ProductGrade } from './ProductGrade';
 import { ProductModification } from './ProductModification';
 import { Price } from './Price';
 import { RoleDiscount } from './RoleDiscount';
-import { PageMeta } from './PageMeta';
+import { Meta } from './Meta';
 
 export type Product = {
   id: number;
@@ -22,5 +22,5 @@ export type Product = {
   price: Price;
   roleDiscounts: RoleDiscount[];
   characteristics: Record<string, string>;
-  meta: PageMeta;
+  meta: Meta;
 };

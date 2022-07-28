@@ -2,7 +2,8 @@ import { ClientRole } from './ClientRole';
 
 export type Client = {
   id: number;
-  name: string;
+  firstName: string;
+  lastName: string;
   phone: string;
   isApproved: boolean;
   role: ClientRole;

@@ -11,6 +11,17 @@ import { ProgressLinear } from '../../UI/ProgressLinear/ProgressLinear';
 import { ALL_CHARACTERISTICS } from '../../../constants/characteristics';
 import { TranslatableString } from '../../../@types/entities/TranslatableString';
 
+const sx = {
+  productsCount: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+  },
+  tabs: {
+    padding: '20px 0',
+  },
+};
+
 export type Product = {
   id: number;
   title: string;
@@ -59,16 +70,12 @@ export function ProductSelectForm({
   onChange,
   isLoading,
 }: ProductSelectFormProps) {
-  const [selectedProductIds, setSelectedProductIds] = useState<number[]>(selected);
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [selectedTabKey, setSelectedTabKey] = useState<string>('all');
   const [filteredProducts, setFilteredProducts] = useState<Product[]>(products);
   const [selectValues, setSelectValues] = useState<Record<string, string | undefined>>(
     {}
   );
-  useEffect(() => {
-    onChange(selectedProductIds);
-  }, [selectedProductIds]);
 
   const tabOptions = [
     ...defaultTabs,
@@ -78,28 +85,18 @@ export function ProductSelectForm({
     })),
   ];
 
-  useEffect(() => {
-    onChange(selectedProductIds);
-  }, [selectedProductIds]);
-
   const handleProductClick = (productId: number) => {
-    if (isProductSelected(productId, selectedProductIds)) {
-      const newSelectedProductsList = selectedProductIds.filter(id => id !== productId);
-      return setSelectedProductIds(newSelectedProductsList);
+    if (isProductSelected(productId, selected)) {
+      const newSelectedProductsList = selected.filter(id => id !== productId);
+      return onChange(newSelectedProductsList);
     }
-    return setSelectedProductIds(prevList => [...prevList, productId]);
+    return onChange([...selected, productId]);
   };
+
   const handleChangeTab = (tabKey: string) => {
     setSelectedTabKey(tabKey);
     setSelectValues({});
   };
-
-  useEffect(() => {
-    const query = searchQuery.trim().toLowerCase();
-    setFilteredProducts(
-      filterByAllParams(products, query, selectValues, selectedTabKey, selectedProductIds)
-    );
-  }, [products, searchQuery, selectedTabKey, selectValues]);
 
   const filteredCharacteristics = Object.keys(ALL_CHARACTERISTICS)
     .map(key => ({ ...ALL_CHARACTERISTICS[key], key }))
@@ -112,35 +109,44 @@ export function ProductSelectForm({
     return <ProgressLinear variant="query" />;
   }
 
+  useEffect(() => {
+    const query = searchQuery.trim().toLowerCase();
+    setFilteredProducts(
+      filterByAllParams(products, query, selectValues, selectedTabKey, selected)
+    );
+  }, [products, searchQuery, selectedTabKey, selectValues]);
+
   return (
     <Stack>
       <Grid container spacing={2}>
-        <Grid item xs={8}>
+        <Grid item xs={12} md={8} lg={6}>
           <TextField
             label="Поиск"
             value={searchQuery}
             onChange={e => setSearchQuery(e.target.value)}
           />
         </Grid>
-        <Grid item xs={4}>
+        <Grid item sx={sx.productsCount} xs={12} md={4} lg={6}>
           <Typography variant="body1">
             Количество добавленных товаров:
             {' '}
-            {selectedProductIds.length}
+            {selected.length}
           </Typography>
         </Grid>
       </Grid>
 
-      <Tabs value={selectedTabKey} options={tabOptions} onChange={handleChangeTab} />
+      <Tabs sx={sx.tabs} value={selectedTabKey} options={tabOptions} onChange={handleChangeTab} />
+
       <SelectsList
         characteristics={filteredCharacteristics}
         selectValues={selectValues}
         setSelectValues={setSelectValues}
       />
+
       <ProductSelectList
         products={filteredProducts}
         searchQuery={searchQuery}
-        checkProductSelect={(id: number) => isProductSelected(id, selectedProductIds)}
+        checkProductSelect={(id: number) => isProductSelected(id, selected)}
         onClickProduct={handleProductClick}
       />
     </Stack>

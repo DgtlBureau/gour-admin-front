@@ -65,6 +65,11 @@ export function ProductBasicSettingsForm({
 
   const change = () => onChange(values.getValues());
 
+  const resetField = (field: keyof ProductBasicSettingsFormDto) => {
+    values.setValue(field, undefined);
+    change();
+  };
+
   return (
     <FormProvider {...values}>
       <form
@@ -95,26 +100,20 @@ export function ProductBasicSettingsForm({
               id="firstImage"
               label="Фото 1"
               name="firstImage"
-              onDelete={() => {
-                values.setValue('firstImage', undefined);
-              }}
+              onDelete={() => resetField('firstImage')}
             />
             <HFUploadPhoto
               sx={sx.imageUpload}
               id="secondImage"
               label="Фото 2"
               name="secondImage"
-              onDelete={() => {
-                values.setValue('secondImage', undefined);
-              }}
+              onDelete={() => resetField('secondImage')}
             />
             <HFUploadPhoto
               id="thirdImage"
               label="Фото 3"
               name="thirdImage"
-              onDelete={() => {
-                values.setValue('thirdImage', undefined);
-              }}
+              onDelete={() => resetField('thirdImage')}
             />
           </Grid>
 

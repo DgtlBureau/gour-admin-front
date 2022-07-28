@@ -1,13 +1,15 @@
-import { ImageDto } from '../image.dto';
 import { TranslatableStringDto } from '../translatable-string.dto';
 import { TranslatableTextDto } from '../translatable-text.dto';
+import { Meta } from '../../entities/Meta';
 
 export type PromotionCreateDto = Readonly<{
   title: TranslatableStringDto;
   description: TranslatableTextDto;
-  cardImage: ImageDto;
-  pageImage: ImageDto;
+  cardImageId?: number;
+  pageImageId?: number;
   discount: number;
+  start: string;
   end: string;
   products: number[];
+  pageMeta: Meta;
 }>;

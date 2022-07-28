@@ -78,6 +78,7 @@ export function Select<V, isMulti extends boolean>({
           menu: base => ({
             ...base,
             fontFamily: font,
+            color: defaultTheme.palette.text.primary,
           }),
         }}
         {...props}

@@ -1,16 +1,14 @@
-import React, {
-  ChangeEvent,
-  ChangeEventHandler,
-  CSSProperties,
-  useEffect,
-  useState,
-} from 'react';
+import React, { ChangeEvent, CSSProperties, useEffect, useState } from 'react';
 import { PhotoCamera } from '@mui/icons-material';
 import { Stack, SxProps } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
 import { Typography } from '../Typography/Typography';
 import { Button } from '../Button/Button';
+
+const Input = styled('input')({
+  display: 'none',
+});
 
 const labelStyles: CSSProperties = {
   width: '100%',
@@ -27,10 +25,10 @@ type Props = {
   id: string;
   name?: string;
   label?: string;
-  value: File | null;
+  value: File | string | null;
   isError?: boolean;
   helperText?: string;
-  allowedFileTypes: ('image/jpeg' | 'image/png' | 'image/webp')[];
+  allowedFileTypes?: ('image/jpeg' | 'image/png' | 'image/webp')[];
   sx?: SxProps;
   onChange: (event: ChangeEvent<HTMLInputElement>) => void;
   onDelete: () => void;
@@ -43,15 +41,11 @@ export function UploadImage({
   helperText,
   label,
   value,
-  allowedFileTypes,
+  allowedFileTypes = ['image/jpeg', 'image/png', 'image/webp'],
   sx,
   onChange,
   onDelete,
 }: Props) {
-  const Input = styled('input')({
-    display: 'none',
-  });
-
   const [image, setImage] = useState<string | null>('');
 
   useEffect(() => {
@@ -59,6 +53,12 @@ export function UploadImage({
       setImage(null);
       return;
     }
+
+    if (typeof value === 'string') {
+      setImage(value);
+      return;
+    }
+
     const fr = new FileReader();
     fr.readAsDataURL(value);
 
@@ -68,9 +68,9 @@ export function UploadImage({
   }, [value]);
 
   return (
-    <Stack sx={{ width: '340px', ...sx }} alignItems="center" spacing={2}>
+    <Stack sx={{ width: '100%', ...sx }} alignItems="center" spacing={2}>
       <Stack
-        sx={{ width: '100%' }}
+        sx={{ width: '100%', height: '35px' }}
         direction="row"
         alignItems="center"
         justifyContent="space-between"
@@ -78,7 +78,7 @@ export function UploadImage({
       >
         <Typography variant="body1">{label}</Typography>
         {value && (
-          <Button onClick={onDelete} size="small">
+          <Button variant="text" onClick={onDelete} size="small">
             Удалить
           </Button>
         )}

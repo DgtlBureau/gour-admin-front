@@ -49,7 +49,7 @@ function ListUsersView() {
   const data: UserTableItem[] = [
     ...(users || []).map(it => ({
       login: it.login,
-      name: it.name,
+      name: `${it.lastName} ${it.firstName}`,
       role: it.role.key,
       uuid: it.apiUserUuid,
       createdAt: it.createdAt,
@@ -57,7 +57,7 @@ function ListUsersView() {
     ...(clients || [])
       .map(it => ({
         login: it.phone,
-        name: it.name,
+        name: `${it.lastName} ${it.firstName}`,
         role: it.role.key,
         uuid: `${it.id}`,
         createdAt: it.createdAt,
@@ -73,7 +73,8 @@ function ListUsersView() {
 
   const goToUserCreate = () => to(Path.USERS, 'create');
 
-  const onAddCheesecoins = (cheeseCoinData: AddCheesecoinsDto) => console.log(openedUserUuid, cheeseCoinData);
+  const onAddCheesecoins = (cheeseCoinData: AddCheesecoinsDto) =>
+    console.log(openedUserUuid, cheeseCoinData);
 
   const deleteUser = () => deleteUserById(userDeleteId);
 

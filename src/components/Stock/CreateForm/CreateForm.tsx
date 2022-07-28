@@ -1,17 +1,19 @@
-import { yupResolver } from '@hookform/resolvers/yup';
-import { Grid } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, RefObject } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { Grid, FormControlLabel, FormLabel } from '@mui/material';
 
-import { CreateStockFormDto } from '../../../@types/dto/form/create-stock.dto';
+import { Product, ProductSelectForm } from '../../Product/SelectForm/SelectForm';
+import { Box } from '../../UI/Box/Box';
+import { Tabs } from '../../UI/Tabs/Tabs';
+import { Typography } from '../../UI/Typography/Typography';
+import { RadioButton } from '../../UI/RadioButton/RadioButton';
 import { HFDatePicker } from '../../HookForm/HFDatePicker';
 import { HFTextField } from '../../HookForm/HFTextField';
+import { HFTextarea } from '../../HookForm/HFTextarea';
 import { HFUploadPhoto } from '../../HookForm/HFUploadPhoto';
-import { Product, ProductSelectForm } from '../../Product/SelectForm/SelectForm';
-import { TabPanel } from '../../UI/Tabs/TabPanel';
-import { Tabs } from '../../UI/Tabs/Tabs';
-import { Button } from '../../UI/Button/Button';
-import { Typography } from '../../UI/Typography/Typography';
+import { HFRadioGroup } from '../../HookForm/HFRadioGroup';
+import { CreateStockFormDto } from '../../../@types/dto/form/create-stock.dto';
 import schema from './validation';
 
 type Props = {
@@ -20,9 +22,9 @@ type Props = {
     label: string;
     value: string;
   }[];
-  defaultValues: CreateStockFormDto;
-  onSubmit: (data: CreateStockFormDto) => void;
-  onCancel: () => void;
+  defaultValues?: CreateStockFormDto;
+  submitBtnRef?: RefObject<HTMLButtonElement>;
+  onChange: (data: CreateStockFormDto) => void;
 };
 
 const tabOptions = [
@@ -40,133 +42,160 @@ export function CreateStockForm({
   products,
   categories,
   defaultValues,
-  onSubmit,
-  onCancel,
+  submitBtnRef,
+  onChange,
 }: Props) {
   const [selectedTabKey, setSelectedTabKey] = useState<string>('basicSettings');
-
-  const [selectedProducts, setSelectedProducts] = useState<number[]>([]);
+  const [selectedProducts, setSelectedProducts] = useState<number[]>(
+    defaultValues?.productIdList || []
+  );
 
   const [error, setError] = useState<string>('');
 
   const values = useForm<CreateStockFormDto>({
     resolver: yupResolver(schema),
+    mode: 'onChange',
     defaultValues,
   });
 
-  useEffect(() => {
-    if (selectedProducts.length === 0) return;
-    setError('');
-  }, [selectedProducts]);
+  const isSettings = selectedTabKey === 'basicSettings';
 
-  const handleSubmit = (data: CreateStockFormDto) => {
-    if (selectedProducts.length === 0) setError('Пожалуйста, выберите товары, участвующие в акции');
-    else {
-      onSubmit({
-        ...data,
-        productIdList: selectedProducts,
-      });
+  const selectProducts = (productIds: number[]) => {
+    if (productIds.length === 0) return;
+    setError('');
+    setSelectedProducts(productIds);
+  };
+
+  const submit = (data: CreateStockFormDto) => {
+    if (selectedProducts.length === 0) {
+      setError('Пожалуйста, выберите товары, участвующие в акции');
+    } else {
+      onChange({ ...data, productIdList: selectedProducts });
     }
   };
 
+  useEffect(() => {
+    values.reset(defaultValues);
+    selectProducts(defaultValues?.productIdList || []);
+  }, [defaultValues]);
+
+  const resetField = (field: keyof CreateStockFormDto) => {
+    values.setValue(field, undefined);
+    // change(values.getValues());
+  };
+
   return (
-    <>
-      <Grid container>
-        <Grid item xs={9}>
-          <Tabs
-            value={selectedTabKey}
-            options={tabOptions}
-            onChange={setSelectedTabKey}
-          />
-        </Grid>
-        <Grid item xs={3}>
-          <Button sx={{ margin: '0 10px 0 0' }} type="submit" form="createStockForm">
-            Сохранить
-          </Button>
-          <Button type="button" onClick={onCancel}>
-            Отмена
-          </Button>
-        </Grid>
-      </Grid>
+    <Box>
+      <Tabs
+        value={selectedTabKey}
+        options={tabOptions}
+        onChange={setSelectedTabKey}
+        sx={{ marginBottom: '20px' }}
+      />
       {error && (
-        <Typography variant="body1" sx={{ color: 'red' }}>
+        <Typography variant="body1" sx={{ color: 'red', marginTop: '20px' }}>
           {error}
         </Typography>
       )}
-      <TabPanel index={selectedTabKey} value="basicSettings">
+      <Box sx={{ display: isSettings ? 'flex' : 'none' }}>
         <FormProvider {...values}>
-          <form id="createStockForm" onSubmit={values.handleSubmit(handleSubmit)}>
-            <Grid container spacing={2}>
+          <form
+            id="createStockForm"
+            onSubmit={values.handleSubmit(submit)}
+            // onChange={() => change(values.getValues())}
+          >
+            <Grid container spacing={2} item md={12} lg={8}>
               <Grid item xs={12}>
-                <HFTextField name="title" label="Заголовок" />
+                <HFTextField name="title" label="Заголовок*" />
               </Grid>
+
               <Grid item xs={12}>
-                <HFTextField multiline name="description" label="Описание" />
+                <HFTextarea name="description" label="Описание" />
               </Grid>
+
               <Grid item xs={12} container spacing={2}>
                 <Grid item xs={4}>
                   <HFDatePicker
                     sx={{ width: '100%' }}
-                    name="startDate"
-                    label="Дата начала"
+                    name="start"
+                    label="Дата начала*"
                   />
                 </Grid>
+
                 <Grid item xs={4}>
                   <HFDatePicker
                     sx={{ width: '100%' }}
-                    name="endDate"
-                    label="Дата завершения"
+                    name="end"
+                    label="Дата завершения*"
                   />
                 </Grid>
+
                 <Grid item xs={4}>
-                  <HFTextField name="stockPercent" label="Процент скидки" />
+                  <HFTextField type="number" name="discount" label="Процент скидки*" />
                 </Grid>
+
                 <Grid item xs={12} container spacing={2}>
-                  <Grid item xs={5}>
+                  <Grid item xs={4}>
                     <HFUploadPhoto
                       label="Фото 1:1"
                       name="fullPhoto"
                       id="fullPhoto"
+                      defaultValue={values.getValues('fullPhoto')}
                       allowedFileTypes={['image/jpeg', 'image/png', 'image/webp']}
-                      onDelete={() => {
-                        console.log('delete full photo');
-                      }}
+                      onDelete={() => resetField('fullPhoto')}
                     />
                   </Grid>
-                  <Grid item xs={5}>
+
+                  <Grid item xs={4}>
                     <HFUploadPhoto
                       label="Фото 1:2"
                       name="smallPhoto"
                       id="smallPhoto"
+                      defaultValue={values.getValues('smallPhoto')}
                       allowedFileTypes={['image/jpeg', 'image/png', 'image/webp']}
-                      onDelete={() => {
-                        console.log('delete small photo');
-                      }}
+                      onDelete={() => resetField('smallPhoto')}
                     />
                   </Grid>
                 </Grid>
-                <Grid item xs={6}>
+
+                <Grid item xs={12}>
+                  <FormLabel>Индексация</FormLabel>
+                  <HFRadioGroup name="isIndexed">
+                    <FormControlLabel value control={<RadioButton />} label="Да" />
+                    <FormControlLabel
+                      value={false}
+                      control={<RadioButton />}
+                      label="Нет"
+                    />
+                  </HFRadioGroup>
+                </Grid>
+
+                <Grid item xs={12}>
                   <HFTextField name="metaTitle" label="metaTitle" />
-                </Grid>
-                <Grid item xs={6}>
-                  <HFTextField name="metaDescription" label="metaDescription" />
-                </Grid>
-                <Grid item xs={6}>
+                  <HFTextField
+                    sx={{ margin: '10px 0' }}
+                    name="metaDescription"
+                    label="metaDescription"
+                  />
                   <HFTextField name="metaKeywords" label="metaKeywords" />
                 </Grid>
               </Grid>
             </Grid>
+            <button type="submit" ref={submitBtnRef} style={{ display: 'none' }}>
+              {}
+            </button>
           </form>
         </FormProvider>
-      </TabPanel>
-      <TabPanel index={selectedTabKey} value="products">
+      </Box>
+
+      <Box sx={{ display: !isSettings ? 'flex' : 'none' }}>
         <ProductSelectForm
           selected={selectedProducts}
           categories={categories}
           products={products}
-          onChange={setSelectedProducts}
+          onChange={selectProducts}
         />
-      </TabPanel>
-    </>
+      </Box>
+    </Box>
   );
 }

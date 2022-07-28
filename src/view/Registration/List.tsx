@@ -49,7 +49,7 @@ function ListRegistrationsView() {
 
   const formattedClients: Client[] = clients.map(client => ({
     id: client.id,
-    name: client.name,
+    name: `${client.lastName} ${client.firstName}`,
     phone: client.phone,
     role: client.role.title,
     isApproved: client.isApproved,

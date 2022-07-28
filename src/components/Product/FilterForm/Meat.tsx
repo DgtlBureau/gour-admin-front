@@ -1,11 +1,10 @@
 import React, { useEffect } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
 
 import schema from './validationMeat';
 import { ProductFilterMeatFormDto } from '../../../@types/dto/form/product-filters.dto';
 import { HFSelect } from '../../HookForm/HFSelect';
-import { toSelectOptions } from '../../../utils/toSelectOptions';
 import {
   COMMON_CHARACTERISTICS,
   MEAT_CHARACTERISTICS,

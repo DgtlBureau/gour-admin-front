@@ -30,9 +30,13 @@
     }
   },
   "rules": {
+    "indent": "off",
+    "no-confusing-arrow": "off",
+    "implicit-arrow-linebreak": "off",
+    "react/jsx-wrap-multilines": "off",
     "import/no-cycle": "off",
     "no-param-reassign": ["error", { "props": false }],
-    "operator-linebreak": ["error", "after"],
+    "operator-linebreak": "off",
     "object-curly-newline": "off",
     "no-shadow": "off",
     "@typescript-eslint/no-shadow": ["error"],
@@ -46,7 +50,6 @@
     "import/extensions": "off",
     "semi": ["error", "always"],
     "react/jsx-props-no-spreading": "off",
-    "indent": ["error", 2, { "SwitchCase": 1 }],
     "arrow-parens": ["error", "as-needed"],
     "prefer-promise-reject-errors": ["error", { "allowEmptyReject": true }],
     "space-before-function-paren": [

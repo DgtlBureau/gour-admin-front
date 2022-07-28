@@ -25,6 +25,9 @@ const sx = {
   bodyCell: {
     fontSize: '14px',
   },
+  tabs: {
+    padding: '0 16px',
+  },
 };
 
 export type Row = {

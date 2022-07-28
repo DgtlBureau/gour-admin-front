@@ -12,6 +12,7 @@ import {
   useGetProductByIdQuery,
   useUpdateProductMutation,
 } from '../../api/productApi';
+import { useUploadImageMutation } from '../../api/imageApi';
 import { Header } from '../../components/Header/Header';
 import {
   FullFormType,
@@ -70,6 +71,7 @@ function EditProductView() {
     productSelect: [],
   });
 
+  const [uploadImage] = useUploadImageMutation();
   const [fetchUpdateProduct] = useUpdateProductMutation();
   const { data: categories = [] } = useGetAllCategoriesQuery();
   const {
@@ -85,15 +87,33 @@ function EditProductView() {
     },
     { skip: !productId }
   );
-  const { data: productsList } =
-    useGetAllProductsQuery(
-      {
-        withSimilarProducts: true,
-        withMeta: true,
-        withRoleDiscount: false,
-      },
-      { skip: activeTabId !== 'recommended_products' }
-    );
+  const { data: productsList } = useGetAllProductsQuery(
+    {
+      withSimilarProducts: true,
+      withMeta: true,
+      withRoleDiscount: false,
+    },
+    { skip: activeTabId !== 'recommended_products' }
+  );
+
+  const uploadPicture = async (file?: File, label?: string) => {
+    if (!file) return undefined;
+
+    const formData = new FormData();
+
+    formData.append('image', file);
+
+    const image = await uploadImage(formData).unwrap();
+
+    if (!image) {
+      eventBus.emit(EventTypes.notification, {
+        message: `Произошла ошибка при загрузке фото ${label})`,
+        type: NotificationType.DANGER,
+      });
+    }
+
+    return image;
+  };
 
   useEffect(() => {
     if (!product) return;
@@ -109,6 +129,9 @@ function EditProductView() {
         metaDescription: product.meta?.metaDescription[lang] || '',
         isIndexed: product.meta?.isIndexed || false,
         metaKeywords: product.meta?.metaKeywords[lang] || '',
+        firstImage: product.images[0]?.full,
+        secondImage: product.images[1]?.full,
+        thirdImage: product.images[2]?.full,
       },
       priceSettings: {
         discount: 0,
@@ -147,6 +170,23 @@ function EditProductView() {
       },
     ];
 
+    const firstImage =
+      typeof basicSettings.firstImage === 'string'
+        ? product?.images[0]
+        : await uploadPicture(basicSettings.firstImage, '1');
+    const secondImage =
+      typeof basicSettings.secondImage === 'string'
+        ? product?.images[1]
+        : await uploadPicture(basicSettings.secondImage, '2');
+    const thirdImage =
+      typeof basicSettings.thirdImage === 'string'
+        ? product?.images[2]
+        : await uploadPicture(basicSettings.thirdImage, '3');
+
+    const images: number[] = [];
+
+    [firstImage, secondImage, thirdImage].forEach(it => it && images.push(it.id));
+
     const productParams: ProductCreateDto = {
       title: {
         en: '',
@@ -156,7 +196,7 @@ function EditProductView() {
         en: '',
         ru: basicSettings.description,
       },
-      images: [],
+      images,
       price: {
         cheeseCoin: +priceSettings.cheeseCoin,
       },
@@ -185,9 +225,13 @@ function EditProductView() {
 
   if (isLoading) return <ProgressLinear variant="query" />;
 
-  if (!isLoading && isError) return <Typography variant="h5">Произошла ошибка</Typography>;
+  if (!isLoading && isError) {
+    return <Typography variant="h5">Произошла ошибка</Typography>;
+  }
 
-  if (!isLoading && !isError && !product) return <Typography variant="h5">Продукт не найден</Typography>;
+  if (!isLoading && !isError && !product) {
+    return <Typography variant="h5">Продукт не найден</Typography>;
+  }
 
   return (
     <div>
@@ -199,7 +243,7 @@ function EditProductView() {
         activeTabId={activeTabId}
         onChangeTab={setActiveTabId}
         categories={categories}
-        products={productsList?.products || []}
+        products={productsList?.products.filter(it => it.id !== productId) || []}
         fullFormState={fullFormState}
         setFullFormState={setFullFormState}
         mode="edit"

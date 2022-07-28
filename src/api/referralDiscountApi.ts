@@ -1,5 +1,4 @@
 import { commonApi } from './commonApi';
-import { ReferralCode } from '../@types/entities/ReferralCode';
 
 export const referralDiscountApi = commonApi.injectEndpoints({
   endpoints(builder) {

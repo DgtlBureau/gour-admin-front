@@ -1,12 +1,10 @@
 import React from 'react';
-import { SubmitHandler } from 'react-hook-form';
 
 import {
   ProductFilterCheeseFormDto,
   ProductFilterMeatFormDto,
 } from '../../../@types/dto/form/product-filters.dto';
 import { ProductCategory } from '../../../@types/dto/product/category.dto';
-import { useGetAllCategoriesQuery } from '../../../api/categoryApi';
 import { ProductFilterFormCheese } from './Cheese';
 import { FILTER } from './filterConstants';
 import { ProductFilterFormMeat } from './Meat';

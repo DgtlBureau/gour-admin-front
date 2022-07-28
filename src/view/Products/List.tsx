@@ -37,15 +37,7 @@ function ListProductsView() {
   const [deletedProductId, setDeletedProductId] = useState<number | null>(null);
 
   const { data: categories = [] } = useGetAllCategoriesQuery();
-  const {
-    data: productsData,
-    isLoading,
-    isError,
-  } = useGetAllProductsQuery({
-    withSimilarProducts: false,
-    withMeta: false,
-    withRoleDiscount: false,
-  });
+  const { data: productsData, isLoading, isError } = useGetAllProductsQuery({});
 
   const [fetchDeleteProduct, deleteProductData] = useDeleteProductMutation();
 

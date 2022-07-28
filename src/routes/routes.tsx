@@ -6,9 +6,6 @@ import PageNotFoundView from '../view/PageNotFound/PageNotFound';
 import EditProductView from '../view/Products/Edit';
 import CreateProductView from '../view/Products/Create';
 import ListProductsView from '../view/Products/List';
-import ListCategoriesView from '../view/Categories/List';
-import CreateCategoryView from '../view/Categories/Create';
-import EditCategoryView from '../view/Categories/Edit';
 
 import { RequireAuth } from './RequireAuth';
 import { RequirePublic } from './RequirePublic';
@@ -17,11 +14,8 @@ import ListStocksView from '../view/Stocks/List';
 import CreateStockView from '../view/Stocks/Create';
 import EditStockView from '../view/Stocks/Edit';
 import ListPagesView from '../view/Pages/List';
-import EditPageView from '../view/Pages/Edit';
-import CreatePageView from '../view/Pages/Create';
 import ListUsersView from '../view/Users/List';
 import CreateUserView from '../view/Users/Create';
-import EditUserView from '../view/Users/Edit';
 import ListReviewsView from '../view/Reviews/List';
 import ListCitiesView from '../view/Cities/List';
 import ListReferralCodesView from '../view/Referrals/List';
@@ -108,11 +102,7 @@ export function Routing() {
         <PrivateLayout />
       </RequireAuth>
     ),
-    children: [
-      { path: '', element: <ListPagesView /> },
-      { path: 'create', element: <CreatePageView /> },
-      { path: ':id', element: <EditPageView /> },
-    ],
+    children: [{ path: '', element: <ListPagesView /> }],
   };
 
   const usersRoutes = {
@@ -125,7 +115,6 @@ export function Routing() {
     children: [
       { path: '', element: <ListUsersView /> },
       { path: 'create', element: <CreateUserView /> },
-      { path: ':id', element: <EditUserView /> },
     ],
   };
 

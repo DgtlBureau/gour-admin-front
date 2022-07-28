@@ -1,8 +1,7 @@
 import React from 'react';
-
 import { Grid } from '@mui/material';
-import { ProductSelectCard } from './Card';
 
+import { ProductSelectCard } from './Card';
 import { Product } from './SelectForm';
 import { Typography } from '../../UI/Typography/Typography';
 
@@ -21,26 +20,26 @@ export function ProductSelectList({
 }: Props) {
   if (!products.length) {
     return (
-      <Typography sx={{ margin: '20px 0 0 0' }} variant="h5">
+      <Typography sx={{ marginTop: '20px' }} variant="h5">
         Товары не найдены
       </Typography>
     );
   }
   return (
-    <Grid sx={{ margin: '50px 0 0 0' }} container spacing={2}>
-      {products.map(product => (
-        <Grid item lg={3} key={product.id}>
-          <ProductSelectCard
-            image={product.image}
-            title={product.title}
-            searchQuery={searchQuery}
-            isSelected={checkProductSelect(product.id)}
-            onSelect={() => {
-              onClickProduct(product.id);
-            }}
-          />
-        </Grid>
-      ))}
+    <Grid sx={{ marginTop: '20px' }} container>
+      {
+        products.map(product => (
+          <Grid item xs={4} md={3} lg={2} key={product.id}>
+            <ProductSelectCard
+              image={product.image}
+              title={product.title || 'Без названия'}
+              searchQuery={searchQuery}
+              isSelected={checkProductSelect(product.id)}
+              onSelect={() => onClickProduct(product.id)}
+            />
+          </Grid>
+        ))
+      }
     </Grid>
   );
 }
