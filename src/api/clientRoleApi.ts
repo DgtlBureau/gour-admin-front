@@ -1,5 +1,6 @@
 import { ClientRole } from '../@types/entities/ClientRole';
 import { commonApi } from './commonApi';
+import { Path } from '../constants/routes';
 
 export const clientRoleApi = commonApi.injectEndpoints({
   endpoints(builder) {
@@ -7,8 +8,8 @@ export const clientRoleApi = commonApi.injectEndpoints({
       getClientRolesList: builder.query<ClientRole[], void>({
         query() {
           return {
-            method: 'get',
-            url: 'clientRoles',
+            method: 'GET',
+            url: Path.CLIENT_ROLES,
           };
         },
       }),

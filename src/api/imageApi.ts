@@ -6,7 +6,7 @@ export const imageApi = commonApi.injectEndpoints({
   endpoints: builder => ({
     uploadImage: builder.mutation<Image, FormData>({
       query: body => ({
-        url: `${Path.IMAGES}/upload`,
+        url: `${Path.IMAGES}/${Path.UPLOAD}`,
         method: 'POST',
         body,
       }),

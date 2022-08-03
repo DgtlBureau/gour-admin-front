@@ -1,5 +1,6 @@
 import { commonApi } from './commonApi';
 import { ReferralCode } from '../@types/entities/ReferralCode';
+import { Path } from '../constants/routes';
 
 export const referralCodeApi = commonApi.injectEndpoints({
   endpoints(builder) {
@@ -7,31 +8,32 @@ export const referralCodeApi = commonApi.injectEndpoints({
       getReferralCodesList: builder.query<ReferralCode[], void>({
         query() {
           return {
-            method: 'get',
-            url: 'referralCodes',
+            method: 'GET',
+            url: Path.REFERRAL_CODES,
           };
         },
-        providesTags: result => (result ?
-          [
-            ...result.map(({ id }) => ({ type: 'ReferralCode', id } as const)),
-            { type: 'ReferralCode', id: 'LIST' },
-          ] :
-          [{ type: 'ReferralCode', id: 'LIST' }]),
+        providesTags: result =>
+          result
+            ? [
+                ...result.map(({ id }) => ({ type: 'ReferralCode', id } as const)),
+                { type: 'ReferralCode', id: 'LIST' },
+              ]
+            : [{ type: 'ReferralCode', id: 'LIST' }],
       }),
       getReferralCode: builder.query<ReferralCode, number>({
         query(id) {
           return {
-            method: 'get',
-            url: `referralCodes/${id}`,
+            method: 'GET',
+            url: `${Path.REFERRAL_CODES}/${id}`,
           };
         },
-        providesTags: (result, error, id) => [{ type: 'ReferralCode', id }],
+        providesTags: (r, e, id) => [{ type: 'ReferralCode', id }],
       }),
       createReferralCode: builder.mutation<ReferralCode, Partial<ReferralCode>>({
         query(referralCode) {
           return {
-            method: 'post',
-            url: 'referralCodes',
+            method: 'POST',
+            url: Path.REFERRAL_CODES,
             body: referralCode,
           };
         },
@@ -40,8 +42,8 @@ export const referralCodeApi = commonApi.injectEndpoints({
       deleteReferralCode: builder.mutation<ReferralCode, number>({
         query(id) {
           return {
-            method: 'delete',
-            url: `referralCodes/${id}`,
+            method: 'DELETE',
+            url: `${Path.REFERRAL_CODES}/${id}`,
           };
         },
         invalidatesTags: [{ type: 'ReferralCode', id: 'LIST' }],

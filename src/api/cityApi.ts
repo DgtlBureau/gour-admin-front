@@ -1,5 +1,6 @@
 import { commonApi } from './commonApi';
 import { City } from '../@types/entities/City';
+import { Path } from '../constants/routes';
 
 export const cityApi = commonApi.injectEndpoints({
   endpoints(builder) {
@@ -7,31 +8,32 @@ export const cityApi = commonApi.injectEndpoints({
       getCityList: builder.query<City[], void>({
         query() {
           return {
-            method: 'get',
-            url: 'cities',
+            method: 'GET',
+            url: Path.CITIES,
           };
         },
-        providesTags: result => (result ?
-          [
-            ...result.map(({ id }) => ({ type: 'City', id } as const)),
-            { type: 'City', id: 'LIST' },
-          ] :
-          [{ type: 'City', id: 'LIST' }]),
+        providesTags: result =>
+          result
+            ? [
+                ...result.map(({ id }) => ({ type: 'City', id } as const)),
+                { type: 'City', id: 'LIST' },
+              ]
+            : [{ type: 'City', id: 'LIST' }],
       }),
       getCity: builder.query<City, number>({
         query(id) {
           return {
-            method: 'get',
-            url: `cities/${id}`,
+            method: 'GET',
+            url: `${Path.CITIES}/${id}`,
           };
         },
-        providesTags: (result, error, id) => [{ type: 'City', id }],
+        providesTags: (r, e, id) => [{ type: 'City', id }],
       }),
       createCity: builder.mutation<City, Partial<City>>({
         query(city) {
           return {
-            method: 'post',
-            url: 'cities',
+            method: 'POST',
+            url: Path.CITIES,
             body: city,
           };
         },
@@ -40,8 +42,8 @@ export const cityApi = commonApi.injectEndpoints({
       updateCity: builder.mutation<City, Partial<City> & Pick<City, 'id'>>({
         query(city) {
           return {
-            method: 'put',
-            url: `cities/${city.id}`,
+            method: 'PUT',
+            url: `${Path.CITIES}/${city.id}`,
             body: city,
           };
         },
@@ -50,8 +52,8 @@ export const cityApi = commonApi.injectEndpoints({
       deleteCity: builder.mutation<City, number>({
         query(id) {
           return {
-            method: 'delete',
-            url: `cities/${id}`,
+            method: 'DELETE',
+            url: `${Path.CITIES}/${id}`,
           };
         },
         invalidatesTags: [{ type: 'City', id: 'LIST' }],

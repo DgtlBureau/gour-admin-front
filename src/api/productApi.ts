@@ -12,18 +12,18 @@ export const productApi = commonApi.injectEndpoints({
   endpoints: builder => ({
     getProductById: builder.query<Product, ProductGetOneDto>({
       query: ({ id, ...params }) => ({
-        url: `${Path.GOODS}/${id}`,
+        url: `${Path.PRODUCTS}/${id}`,
         method: 'GET',
         params,
       }),
-      providesTags: (result, error, { id }) => [{ type: 'Product', id }],
+      providesTags: (r, e, { id }) => [{ type: 'Product', id }],
     }),
     getAllProducts: builder.query<
       { products: Product[]; totalCount: number },
       ProductGetListDto
     >({
       query: params => ({
-        url: `${Path.GOODS}`,
+        url: Path.PRODUCTS,
         method: 'GET',
         params,
       }),
@@ -34,16 +34,17 @@ export const productApi = commonApi.injectEndpoints({
           totalCount: +totalCount,
         };
       },
-      providesTags: result => (result ?
-        [
-          ...result.products.map(({ id }) => ({ type: 'Product', id } as const)),
-          { type: 'Product', id: 'LIST' },
-        ] :
-        [{ type: 'Product', id: 'LIST' }]),
+      providesTags: result =>
+        result
+          ? [
+              ...result.products.map(({ id }) => ({ type: 'Product', id } as const)),
+              { type: 'Product', id: 'LIST' },
+            ]
+          : [{ type: 'Product', id: 'LIST' }],
     }),
     createProduct: builder.mutation<void, ProductCreateDto>({
       query: body => ({
-        url: Path.GOODS,
+        url: Path.PRODUCTS,
         method: 'POST',
         body,
       }),
@@ -51,23 +52,23 @@ export const productApi = commonApi.injectEndpoints({
     }),
     createGrade: builder.mutation<void, ProductGradeCreateDto>({
       query: body => ({
-        url: `${Path.GOODS}/grade`,
+        url: `${Path.PRODUCTS}/${body.product}/${Path.GRADES}`,
         method: 'POST',
         body,
       }),
     }),
     updateProduct: builder.mutation<void, ProductUpdateDto>({
       query: ({ id, ...body }) => ({
-        url: `${Path.GOODS}/${id}`,
-        method: 'put',
+        url: `${Path.PRODUCTS}/${id}`,
+        method: 'PUT',
         body,
       }),
       invalidatesTags: (r, e, { id }) => [{ type: 'Product', id }],
     }),
     deleteProduct: builder.mutation<void, number>({
       query: id => ({
-        url: `${Path.GOODS}/${id}`,
-        method: 'delete',
+        url: `${Path.PRODUCTS}/${id}`,
+        method: 'DELETE',
       }),
       invalidatesTags: [{ type: 'Product', id: 'LIST' }],
     }),

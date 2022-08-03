@@ -157,7 +157,7 @@ function CreateProductView() {
         message: 'Товар создан',
         type: NotificationType.SUCCESS,
       });
-      to(Path.GOODS);
+      to(Path.PRODUCTS);
     } catch (error) {
       eventBus.emit(EventTypes.notification, {
         message: 'Произошла ошибка',
@@ -166,7 +166,7 @@ function CreateProductView() {
     }
   };
 
-  const onCancel = () => to(Path.GOODS);
+  const onCancel = () => to(Path.PRODUCTS);
 
   return (
     <div>

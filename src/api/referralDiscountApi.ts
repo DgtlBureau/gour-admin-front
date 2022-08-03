@@ -1,3 +1,4 @@
+import { Path } from '../constants/routes';
 import { commonApi } from './commonApi';
 
 export const referralDiscountApi = commonApi.injectEndpoints({
@@ -6,8 +7,8 @@ export const referralDiscountApi = commonApi.injectEndpoints({
       getReferralDiscount: builder.query<number, void>({
         query() {
           return {
-            method: 'get',
-            url: 'referralCodes/discount',
+            method: 'GET',
+            url: `${Path.REFERRAL_CODES}/${Path.DISCOUNT}`,
           };
         },
         providesTags: [{ type: 'ReferralDiscount', id: 0 }],
@@ -15,8 +16,8 @@ export const referralDiscountApi = commonApi.injectEndpoints({
       updateReferralDiscount: builder.mutation<void, { discount: number }>({
         query(discount) {
           return {
-            method: 'post',
-            url: 'referralCodes/discount',
+            method: 'POST',
+            url: `${Path.REFERRAL_CODES}/${Path.DISCOUNT}`,
             body: discount,
           };
         },

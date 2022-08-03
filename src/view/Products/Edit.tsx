@@ -212,7 +212,7 @@ function EditProductView() {
         message: 'Товар изменен',
         type: NotificationType.SUCCESS,
       });
-      to(Path.GOODS);
+      to(Path.PRODUCTS);
     } catch (error) {
       eventBus.emit(EventTypes.notification, {
         message: 'Произошла ошибка',
@@ -221,7 +221,7 @@ function EditProductView() {
     }
   };
 
-  const onCancel = () => to(Path.GOODS);
+  const onCancel = () => to(Path.PRODUCTS);
 
   if (isLoading) return <ProgressLinear variant="query" />;
 

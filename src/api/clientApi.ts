@@ -1,5 +1,6 @@
 import { Client } from '../@types/entities/Client';
 import { commonApi } from './commonApi';
+import { Path } from '../constants/routes';
 
 export const clientApi = commonApi.injectEndpoints({
   endpoints(builder) {
@@ -7,31 +8,32 @@ export const clientApi = commonApi.injectEndpoints({
       getClientsList: builder.query<Client[], void>({
         query() {
           return {
-            method: 'get',
-            url: 'clients',
+            method: 'GET',
+            url: Path.CLIENTS,
           };
         },
-        providesTags: result => (result ?
-          [
-            ...result.map(({ id }) => ({ type: 'Client', id } as const)),
-            { type: 'Client', id: 'LIST' },
-          ] :
-          [{ type: 'Client', id: 'LIST' }]),
+        providesTags: result =>
+          result
+            ? [
+                ...result.map(({ id }) => ({ type: 'Client', id } as const)),
+                { type: 'Client', id: 'LIST' },
+              ]
+            : [{ type: 'Client', id: 'LIST' }],
       }),
       getClient: builder.query<Client, number>({
         query(id) {
           return {
-            method: 'get',
-            url: `clients/${id}`,
+            method: 'GET',
+            url: `${Path.CLIENTS}/${id}`,
           };
         },
-        providesTags: (result, error, id) => [{ type: 'Client', id }],
+        providesTags: (r, e, id) => [{ type: 'Client', id }],
       }),
       updateClient: builder.mutation<Client, Partial<Client> & Pick<Client, 'id'>>({
         query(client) {
           return {
-            method: 'put',
-            url: `clients/${client.id}`,
+            method: 'PUT',
+            url: `${Path.CLIENTS}/${client.id}`,
             body: client,
           };
         },
@@ -40,8 +42,8 @@ export const clientApi = commonApi.injectEndpoints({
       deleteClient: builder.mutation<Client, number>({
         query(id) {
           return {
-            method: 'delete',
-            url: `clients/${id}`,
+            method: 'DELETE',
+            url: `${Path.CLIENTS}/${id}`,
           };
         },
         invalidatesTags: [{ type: 'Client', id: 'LIST' }],

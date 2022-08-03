@@ -32,7 +32,7 @@ export function Routing() {
     element: <MainLayout />,
     children: [
       { path: '*', element: <Navigate to={Path.ERROR_PAGE} /> },
-      { path: Path.HOME, element: <Navigate to={Path.GOODS} /> },
+      { path: Path.HOME, element: <Navigate to={Path.PRODUCTS} /> },
       { path: Path.ERROR_PAGE, element: <PageNotFoundView /> },
     ],
   };
@@ -54,7 +54,7 @@ export function Routing() {
   };
 
   const productsRoutes = {
-    path: Path.GOODS,
+    path: Path.PRODUCTS,
     element: (
       <RequireAuth>
         <PrivateLayout />

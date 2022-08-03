@@ -53,11 +53,11 @@ function ListProductsView() {
   const to = useTo();
 
   const onCreateClick = () => {
-    to(Path.GOODS, 'create');
+    to(Path.PRODUCTS, 'create');
   };
 
   const onEditClick = (id: number) => {
-    to(Path.GOODS, `${id}`);
+    to(Path.PRODUCTS, `${id}`);
   };
 
   const onDeleteClick = (id: number) => {
