@@ -6,7 +6,7 @@ import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import ruLocale from 'date-fns/locale/ru';
 
-import { SxProps, TextField } from '@mui/material';
+import { SxProps, TextField, TextFieldProps } from '@mui/material';
 
 type Props = {
   value?: string;
@@ -35,7 +35,7 @@ export function DatePicker({
         label={label}
         value={value}
         onChange={onChange}
-        renderInput={params => (
+        renderInput={(params: TextFieldProps) => (
           <TextField
             {...params}
             {...inputProps}
