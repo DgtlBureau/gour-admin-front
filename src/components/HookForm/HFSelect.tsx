@@ -1,6 +1,7 @@
 import React from 'react';
 import { SxProps } from '@mui/material';
 import { Controller, useFormContext } from 'react-hook-form';
+import { SingleValue } from 'react-select';
 
 import { Box } from '../UI/Box/Box';
 import { Select, SelectOption } from '../UI/Select/Select';
@@ -13,6 +14,7 @@ type Props<V> = {
   type?: string;
   label?: string;
   sx?: SxProps;
+  onChange?: (value: SingleValue<SelectOption<any>>) => void;
 };
 
 export function HFSelect<V>({ name, defaultValue, sx, ...props }: Props<V>) {
@@ -31,7 +33,10 @@ export function HFSelect<V>({ name, defaultValue, sx, ...props }: Props<V>) {
           <Select
             {...rest}
             isMulti={false}
-            onChange={newValue => onChange(newValue?.value)}
+            onChange={newValue => {
+              if (props.onChange) props.onChange(newValue?.value);
+              else onChange(newValue?.value);
+            }}
             isError={!!errors[name]}
             error={errors[name]?.message ?? ''}
             {...props}
