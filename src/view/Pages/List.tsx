@@ -1,15 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { SingleValue } from 'react-select';
 
+import {
+  useGetAllPagesQuery,
+  useCreatePageMutation,
+  useUpdatePageMutation,
+} from '../../api/pageApi';
 import { Box } from '../../components/UI/Box/Box';
 import { Button } from '../../components/UI/Button/Button';
 import { Select, SelectOption } from '../../components/UI/Select/Select';
 import { Tabs } from '../../components/UI/Tabs/Tabs';
 import { PagesAboutUsForm } from '../../components/AboutUs/PagesForm/PagesForm';
 import { Options } from '../../constants/tabs';
-import { useGetAllPagesQuery, useCreatePageMutation, useUpdatePageMutation } from '../../api/pageApi';
 import { convertPageForCreate, convertPageForUpdate } from './pagesHelper';
 import { PagesAboutFormDto } from '../../@types/dto/form/pages-about.dto';
+import { eventBus, EventTypes } from '../../packages/EventBus';
+import { NotificationType } from '../../@types/entities/Notification';
 
 const sx = {
   header: {
@@ -65,7 +71,7 @@ const selectOptions = [
     value: 'en',
     label: 'English',
   },
-] as { value: Language, label: string }[];
+] as { value: Language; label: string }[];
 
 function ListPagesView() {
   const { data: pages } = useGetAllPagesQuery();
@@ -75,13 +81,15 @@ function ListPagesView() {
 
   const [tabValue, setTabValue] = useState<string>(Options.MAIN);
   const [language, setLanguage] = useState<Language>('ru');
-  const [defaultValues, setDefaultValues] = useState<PagesAboutFormDto>({} as PagesAboutFormDto);
+  const [defaultValues, setDefaultValues] = useState<PagesAboutFormDto>(
+    {} as PagesAboutFormDto
+  );
 
   const currentPage = pages && pages.find(page => page.key === tabValue);
 
   const changeTab = (value: string) => setTabValue(value);
 
-  const selectLanguage = (option: SingleValue<SelectOption<Language>>) => option && setLanguage(option.value);
+  const selectLanguage = (value: string) => setLanguage(value as Language);
 
   const changeDefaultValues = () => {
     const values = {
@@ -96,15 +104,40 @@ function ListPagesView() {
     setDefaultValues(values);
   };
 
-  const create = (page: PagesAboutFormDto) => {
+  const create = async (page: PagesAboutFormDto) => {
     const newPage = convertPageForCreate(tabValue, page, language);
     createPage(newPage);
+
+    try {
+      await createPage(newPage).unwrap();
+      eventBus.emit(EventTypes.notification, {
+        message: 'Страница сохранена',
+        type: NotificationType.SUCCESS,
+      });
+    } catch (error) {
+      eventBus.emit(EventTypes.notification, {
+        message: 'Произошла ошибка',
+        type: NotificationType.DANGER,
+      });
+    }
   };
 
-  const update = (page: PagesAboutFormDto) => {
+  const update = async (page: PagesAboutFormDto) => {
     if (!currentPage) return;
     const updatedPage = convertPageForUpdate(tabValue, currentPage, page, language);
-    updatePage(updatedPage);
+
+    try {
+      await updatePage(updatedPage).unwrap();
+      eventBus.emit(EventTypes.notification, {
+        message: 'Страница обновлена',
+        type: NotificationType.SUCCESS,
+      });
+    } catch (error) {
+      eventBus.emit(EventTypes.notification, {
+        message: 'Произошла ошибка',
+        type: NotificationType.DANGER,
+      });
+    }
   };
 
   useEffect(() => changeDefaultValues(), [language, currentPage]);
@@ -115,7 +148,13 @@ function ListPagesView() {
         <Tabs options={tabs} value={tabValue} onChange={changeTab} />
 
         <Box sx={sx.actions}>
-          <Select sx={sx.select} value={language} options={selectOptions} onChange={selectLanguage} isMulti={false} />
+          {/* <Select
+            sx={sx.select}
+            value={language}
+            options={selectOptions}
+            onChange={selectLanguage}
+            isMulti={false}
+          /> */}
           <Button type="submit" form="pagesForm" variant="contained" sx={sx.saveBtn}>
             сохранить
           </Button>

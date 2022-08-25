@@ -1,8 +1,8 @@
 export enum Path {
   HOME = '/',
-  USERS = 'clients',
-  CITIES = 'cities',
   CLIENTS = 'clients',
+  USERS = 'users',
+  CITIES = 'cities',
   PRODUCTS = 'products',
   STOCKS = 'promotions',
   REVIEWS = 'reviews',

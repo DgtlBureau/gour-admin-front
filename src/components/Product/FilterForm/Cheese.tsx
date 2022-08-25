@@ -54,6 +54,7 @@ export function ProductFilterFormCheese({ onChange, defaultValues }: Props) {
               name={key}
               label={characteristic.label.ru}
               options={optionValues}
+              sx={{ marginBottom: '16px' }}
             />
           );
         })}

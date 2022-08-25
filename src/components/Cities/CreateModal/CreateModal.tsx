@@ -51,16 +51,16 @@ export function CreateCityModal({
             <Typography variant="h6">
               {mode === 'create' ? 'Добавление города' : 'Редактирование города'}
             </Typography>
-            <HFTextField
-              sx={{ margin: '10px 0' }}
-              label="Название (Рус)"
-              name="rusName"
-            />
-            <HFTextField label="Название (Eng)" name="engName" />
-            <Box sx={{ margin: '25px 0 0 0' }}>
+
+            <HFTextField sx={{ margin: '10px 0' }} label="Название" name="rusName" />
+
+            {/* <HFTextField label="Название (Eng)" name="engName" /> */}
+
+            <Box>
               <Button type="submit" sx={{ margin: '0 10px 0 0' }}>
                 Сохранить
               </Button>
+
               <Button variant="outlined" onClick={onCancel}>
                 Отменить
               </Button>

@@ -52,6 +52,7 @@ export function ProductFilterFormMeat({ onChange, defaultValues }: Props) {
               name={key}
               label={characteristic.label.ru}
               options={optionValues}
+              sx={{ marginBottom: '16px' }}
             />
           );
         })}
