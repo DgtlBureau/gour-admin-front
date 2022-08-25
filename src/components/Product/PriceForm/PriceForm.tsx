@@ -99,7 +99,7 @@ export function PriceProductForm({ defaultValues, onChange }: PriceProductFormPr
             <HFTextField
               sx={sx.input}
               defaultValue={`${defaultValues.discount || 0}`}
-              label="Размер скидки"
+              label="Размер скидки %"
               name="discount"
             />
           )}
