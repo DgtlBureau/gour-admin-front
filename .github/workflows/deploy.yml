@@ -48,28 +48,6 @@ jobs:
       - name: Download a single artifact
         uses: actions/download-artifact@v2
         with:
-
-
-      # Запуск сборки
-      - name: Build
-        run: npm run build
-        env:
-          REACT_APP_BACKEND_URL: ${{ secrets.API_URL }}
-      # Теперь загружаем артефакты
-      - name: Archive build
-        uses: actions/upload-artifact@v2
-        with:
-          name: build
-          path: build
-  deploy:
-    # укажем, что для деплоя нам нужно сначала собрать приложение
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      # загружаем ранее сохраненные артефакты
-      - name: Download a single artifact
-        uses: actions/download-artifact@v2
-        with:
           name: build
       # Дальше загружаем на сервер
       - name: Setup SSH
