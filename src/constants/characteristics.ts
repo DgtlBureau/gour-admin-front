@@ -18,6 +18,10 @@ export const COMMON_CHARACTERISTICS: Record<string, Characteristic> = {
     categoryKey: 'all',
     values: [
       {
+        key: 'Russia',
+        label: { ru: 'Россия', en: 'Russia' },
+      },
+      {
         key: 'Spain',
         label: { ru: 'Испания', en: 'Spain' },
       },
@@ -37,49 +41,52 @@ export const COMMON_CHARACTERISTICS: Record<string, Characteristic> = {
         key: 'GreatBritain',
         label: { ru: 'Великобритания', en: 'Great Britain' },
       },
+    ],
+  },
+  timeOfOrigin: {
+    label: {
+      ru: 'Выдержка',
+      en: 'Time of origin',
+    },
+    categoryKey: 'all',
+    values: [
       {
-        key: 'Russia',
-        label: { ru: 'Россия', en: 'Russia' },
+        key: 'without',
+        label: {
+          ru: 'Без выдержки',
+          en: 'Without exposure',
+        },
+      },
+      {
+        key: 'oneMonth',
+        label: {
+          ru: 'От 1 месяца',
+          en: 'From 1 month',
+        },
+      },
+      {
+        key: 'threeMonth',
+        label: {
+          ru: 'От 3 месяцев',
+          en: 'From 3 month',
+        },
+      },
+      {
+        key: 'sixMonth',
+        label: {
+          ru: 'От 6 месяцев',
+          en: 'From 6 month',
+        },
+      },
+      {
+        key: 'oneYear',
+        label: {
+          ru: 'От 1 года',
+          en: 'From 1 year',
+        },
       },
     ],
   },
-  // timeOfOrigin: {
-  //   label: {
-  //     ru: 'Выдержка',
-  //     en: 'Time of origin',
-  //   },
-  //   categoryKey: 'all',
-  //   values: [
-  //     {
-  //       key: 'oneMonth',
-  //       label: {
-  //         ru: 'От 1 месяца',
-  //         en: 'От 1 месяца',
-  //       },
-  //     },
-  //     {
-  //       key: 'threeMonth',
-  //       label: {
-  //         ru: 'От 3 месяцев',
-  //         en: 'От 3 месяцев',
-  //       },
-  //     },
-  //     {
-  //       key: 'sixMonth',
-  //       label: {
-  //         ru: 'От 6 месяцев',
-  //         en: 'От 6 месяцев',
-  //       },
-  //     },
-  //     {
-  //       key: 'oneYear',
-  //       label: {
-  //         ru: 'От 1 года',
-  //         en: 'От 1 года',
-  //       },
-  //     },
-  //   ],
-  // },
 };
 
 export const CHEESE_CHARACTERISTICS: Record<string, Characteristic> = {
@@ -93,7 +100,7 @@ export const CHEESE_CHARACTERISTICS: Record<string, Characteristic> = {
       {
         key: 'goatMilk',
         label: {
-          ru: 'Козье',
+          ru: 'Козье молоко',
           en: 'Goat milk',
         },
       },
@@ -101,13 +108,13 @@ export const CHEESE_CHARACTERISTICS: Record<string, Characteristic> = {
         key: 'cowMilk',
         label: {
           en: 'Cow milk',
-          ru: 'Коровье',
+          ru: 'Коровье молоко',
         },
       },
       {
         key: 'sheepMilk',
         label: {
-          ru: 'Овечье',
+          ru: 'Овечье молоко',
           en: 'Sheep milk',
         },
       },
@@ -120,154 +127,110 @@ export const CHEESE_CHARACTERISTICS: Record<string, Characteristic> = {
       },
     ],
   },
-  cheeseHardness: {
+  cheeseCategory: {
     label: {
-      ru: 'Твердость',
-      en: 'Hardness',
+      ru: 'Категория сыра',
+      en: 'cheeseCategory',
     },
     categoryKey: 'cheese',
     values: [
       {
-        key: 'verySolid',
+        key: 'freshCheeses',
         label: {
-          ru: 'очень твёрдый',
-          en: 'very solid',
+          ru: 'Свежий',
+          en: 'Fresh',
         },
       },
       {
-        key: 'solid',
+        key: 'softCheeses',
         label: {
-          ru: 'твёрдый',
-          en: 'solid',
+          ru: 'Мягкий',
+          en: 'Soft',
         },
       },
       {
-        key: 'semiSolid',
+        key: 'halfHard',
         label: {
-          ru: 'полутвёрдый',
-          en: 'semi-solid',
+          ru: 'Полутвёрдый',
+          en: 'Half-hard',
         },
       },
       {
-        key: 'semiSoft',
+        key: 'hardCheeses',
         label: {
-          ru: 'полумягкий',
-          en: 'semi-soft',
+          ru: 'Твердые',
+          en: 'Hard',
         },
       },
       {
-        key: 'soft',
+        key: 'blueWithMold',
         label: {
-          ru: 'мягкий',
-          en: 'soft',
+          ru: 'Голубой с плесенью',
+          en: 'Blue with mold',
         },
       },
     ],
   },
-  // cheeseCategory: {
-  //   label: {
-  //     ru: 'Категория сыра',
-  //     en: 'cheeseCategory',
-  //   },
-  //   categoryKey: 'cheese',
-  //   values: [
-  //     {
-  //       key: 'freshCheeses',
-  //       label: {
-  //         ru: 'Свежий',
-  //         en: 'Fresh',
-  //       },
-  //     },
-  //     {
-  //       key: 'softCheeses',
-  //       label: {
-  //         ru: 'Мягкий',
-  //         en: 'Soft',
-  //       },
-  //     },
-  //     {
-  //       key: 'halfHard',
-  //       label: {
-  //         ru: 'Полутвёрдый',
-  //         en: 'Half-hard',
-  //       },
-  //     },
-  //     {
-  //       key: 'hardCheeses',
-  //       label: {
-  //         ru: 'Твердые',
-  //         en: 'Hard',
-  //       },
-  //     },
-  //     {
-  //       key: 'blueWithMold',
-  //       label: {
-  //         ru: 'Голубой с плесенью',
-  //         en: 'Blue with mold',
-  //       },
-  //     },
-  //   ],
-  // },
-  // crustType: {
-  //   label: {
-  //     ru: 'Тип корочки',
-  //     en: 'crustType',
-  //   },
-  //   categoryKey: 'cheese',
-  //   values: [
-  //     {
-  //       key: 'withWhiteMold',
-  //       label: {
-  //         ru: 'С белой плесенью',
-  //         en: 'With white mold',
-  //       },
-  //     },
-  //     {
-  //       key: 'Washed',
-  //       label: {
-  //         ru: 'Мытая',
-  //         en: 'Washed',
-  //       },
-  //     },
-  //     {
-  //       key: 'notNoted',
-  //       label: {
-  //         ru: 'Не указано',
-  //         en: 'Not noted',
-  //       },
-  //     },
-  //   ],
-  // },
-  // rennet: {
-  //   label: {
-  //     ru: 'Наличие сычужного фермента',
-  //     en: 'The presence of rennet',
-  //   },
-  //   categoryKey: 'cheese',
-  //   values: [
-  //     {
-  //       key: 'yes',
-  //       label: {
-  //         ru: 'Да',
-  //         en: 'Yes',
-  //       },
-  //     },
-  //     {
-  //       key: 'no',
-  //       label: {
-  //         ru: 'Нет',
-  //         en: 'No',
-  //       },
-  //     },
-  //   ],
-  // },
+  crustType: {
+    label: {
+      ru: 'Тип корочки',
+      en: 'crustType',
+    },
+    categoryKey: 'cheese',
+    values: [
+      {
+        key: 'withWhiteMold',
+        label: {
+          ru: 'С белой плесенью',
+          en: 'With white mold',
+        },
+      },
+      {
+        key: 'washed',
+        label: {
+          ru: 'Мытая',
+          en: 'Washed',
+        },
+      },
+      {
+        key: 'notNoted',
+        label: {
+          ru: 'Не указано',
+          en: 'Not noted',
+        },
+      },
+    ],
+  },
+  rennet: {
+    label: {
+      ru: 'Наличие сычужного фермента',
+      en: 'The presence of rennet',
+    },
+    categoryKey: 'cheese',
+    values: [
+      {
+        key: 'yes',
+        label: {
+          ru: 'Да',
+          en: 'Yes',
+        },
+      },
+      {
+        key: 'no',
+        label: {
+          ru: 'Нет',
+          en: 'No',
+        },
+      },
+    ],
+  },
 };
 
 export const MEAT_CHARACTERISTICS: Record<string, Characteristic> = {
   meatType: {
     label: {
-      ru: 'Виды мяса',
-      en: 'Meat types',
+      ru: 'Тип мяса',
+      en: 'Meat type',
     },
     categoryKey: 'meat',
     values: [
@@ -286,60 +249,85 @@ export const MEAT_CHARACTERISTICS: Record<string, Characteristic> = {
         },
       },
       {
-        key: 'sheepMeat',
+        key: 'sheep',
         label: {
           ru: 'Овечье',
-          en: 'Sheep meat',
+          en: 'Sheep',
         },
       },
       {
-        key: 'goatMeat',
+        key: 'goat',
         label: {
           ru: 'Козье',
-          en: 'Goat meat',
+          en: 'Goat',
         },
       },
       {
         key: 'mixed',
         label: {
-          ru: 'смешанный',
-          en: 'mixed',
+          ru: 'Смешанный',
+          en: 'Mixed',
         },
       },
     ],
   },
-  meatHardness: {
-    label: { ru: 'Способ приготовления', en: 'Cooking method' },
+  productType: {
+    label: {
+      ru: 'Тип продукта',
+      en: 'Product type',
+    },
     categoryKey: 'meat',
     values: [
-      { key: 'salted', label: { ru: 'солёное', en: 'salted' } },
       {
-        key: 'rawCured',
-        label: { ru: 'сыро-вяленое', en: 'raw cured' },
+        key: 'sausage',
+        label: {
+          ru: 'Колбаса',
+          en: 'Sausage',
+        },
       },
       {
-        key: 'boiled',
-        label: { ru: 'варёное', en: 'boiled' },
+        key: 'gammon',
+        label: {
+          ru: 'Окорок',
+          en: 'Gammon',
+        },
       },
       {
-        key: 'raw',
-        label: { ru: 'сырое', en: 'Raw' },
+        key: 'lunchmeat',
+        label: {
+          ru: 'Нарезка',
+          en: 'Lunchmeat',
+        },
       },
       {
-        key: 'dried',
-        label: { ru: 'сушёное', en: 'dried' },
+        key: 'else',
+        label: {
+          ru: 'Другое',
+          en: 'Else',
+        },
       },
-      {
-        key: 'heatTreatment',
-        label: { ru: 'прошедшее термическую обработку', en: 'past heat treatment' },
-      },
+    ],
+  },
+  processingType: {
+    label: { ru: 'Тип обработки', en: 'Processing type' },
+    categoryKey: 'meat',
+    values: [
+      { key: 'boiled', label: { ru: 'Варёное', en: 'Boiled' } },
       {
         key: 'hotSmoked',
-        label: { ru: 'горячего копчения', en: 'Hot-smoked' },
+        label: { ru: 'Горячего копчения', en: 'Hot smoked' },
       },
       {
         key: 'coldSmoked',
-        label: { ru: 'холодного копчения', en: 'Cold-smoked' },
+        label: { ru: 'Холодного копчения', en: 'Cold-smoked' },
+      },
+      {
+        key: 'dried',
+        label: { ru: 'Вяленое', en: 'Dried' },
+      },
+      {
+        key: 'dryCured',
+        label: { ru: 'Сыровяленое', en: 'Dry-cured' },
       },
     ],
   },

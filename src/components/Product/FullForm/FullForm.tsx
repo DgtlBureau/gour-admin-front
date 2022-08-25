@@ -47,6 +47,7 @@ export function ProductFullForm({
   onChangeTab,
 }: ProductFullFormProps) {
   const handleChangeBasicSettingsForm = (data: ProductBasicSettingsFormDto) => {
+    console.log(data.categoryKey);
     setFullFormState(prevState => {
       if (prevState.basicSettings.categoryKey !== data.categoryKey) {
         return {
