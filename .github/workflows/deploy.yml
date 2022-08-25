@@ -27,7 +27,7 @@ jobs:
           # ключ для восстановления кеша
           restore-keys: npm-
       - name: Install dependencies
-        run: npm install
+        run: npm install --ignore-scripts
       # Запуск сборки
       - name: Build
         run: npm run build
