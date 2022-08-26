@@ -10,7 +10,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     container:
-      image: node:14.17.0-alpine
+      image: node:16.14.2-alpine
     steps:
       # клонирование репозитория
       - uses: actions/checkout@v2
