@@ -2,9 +2,7 @@ import React, { useEffect } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FormControlLabel, FormLabel, Grid } from '@mui/material';
-import { SingleValue } from 'react-select';
 
-import { SelectOption } from '../../UI/Select/Select';
 import { RadioButton } from '../../UI/RadioButton/RadioButton';
 import { HFTextField } from '../../HookForm/HFTextField';
 import { HFSelect } from '../../HookForm/HFSelect';
@@ -67,8 +65,8 @@ export function ProductBasicSettingsForm({
 
   const change = () => onChange(values.getValues());
 
-  const selectCategory = (newValue: SingleValue<SelectOption<any>>) => {
-    values.setValue('categoryKey', newValue?.value);
+  const selectCategory = (newValue: string | number) => {
+    values.setValue('categoryKey', newValue.toString());
     change();
   };
 

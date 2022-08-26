@@ -1,23 +1,22 @@
 import React from 'react';
 import { SxProps } from '@mui/material';
 import { Controller, useFormContext } from 'react-hook-form';
-import { SingleValue } from 'react-select';
 
 import { Box } from '../UI/Box/Box';
 import { Select, SelectOption } from '../UI/Select/Select';
 
-type Props<V> = {
+type Props = {
   name: string;
   placeholder: string;
-  options: SelectOption<V>[];
-  defaultValue?: SelectOption<V>['value'];
+  options: SelectOption[];
+  defaultValue?: SelectOption['value'];
   type?: string;
   label?: string;
   sx?: SxProps;
-  onChange?: (value: SingleValue<SelectOption<any>>) => void;
+  onChange?: (value: SelectOption['value']) => void;
 };
 
-export function HFSelect<V>({ name, defaultValue, sx, ...props }: Props<V>) {
+export function HFSelect({ name, defaultValue, sx, ...props }: Props) {
   const {
     control,
     formState: { errors },
@@ -32,10 +31,9 @@ export function HFSelect<V>({ name, defaultValue, sx, ...props }: Props<V>) {
         render={({ field: { ref, onChange, ...rest } }) => (
           <Select
             {...rest}
-            isMulti={false}
-            onChange={newValue => {
-              if (props.onChange) props.onChange(newValue?.value);
-              else onChange(newValue?.value);
+            onChange={value => {
+              if (props.onChange) props.onChange(value);
+              else onChange(value);
             }}
             isError={!!errors[name]}
             error={errors[name]?.message ?? ''}

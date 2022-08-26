@@ -28,7 +28,7 @@ export function CitiesTable({ cities, onDelete, onEdit }: CitiesTableProps) {
     id: i,
     cells: [
       city.name.ru,
-      city.name.en,
+      // city.name.en,
       <>
         <IconButton component="button" onClick={() => onDelete(city.id)}>
           <DeleteIcon />
@@ -42,7 +42,7 @@ export function CitiesTable({ cities, onDelete, onEdit }: CitiesTableProps) {
 
   return (
     <Table
-      rowTitleList={['Название (Рус)', 'Название (Eng)', 'Действие']}
+      rowTitleList={['Название', 'Действие']}
       rows={rows}
       rowsPerPage={rowsPerPage}
       page={page}
