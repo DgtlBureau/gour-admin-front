@@ -14,7 +14,7 @@ export const productGradeApi = commonApi.injectEndpoints({
             params,
           };
         },
-        providesTags: result =>
+        providesTags: (result = []) =>
           result
             ? [
                 ...result.map(({ id }) => ({ type: 'ProductGrade', id } as const)),
