@@ -1,9 +1,9 @@
 import React from 'react';
 
-import MUIDatePicker from '@mui/lab/DatePicker';
-import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import { DatePicker as MUIDatePicker } from '@mui/x-date-pickers/DatePicker';
+import { LocalizationProvider } from '@mui/x-date-pickers';
 
-import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import ruLocale from 'date-fns/locale/ru';
 
 import { SxProps, TextField, TextFieldProps } from '@mui/material';
@@ -29,7 +29,7 @@ export function DatePicker({
   ...inputProps
 }: Props) {
   return (
-    <LocalizationProvider dateAdapter={AdapterDateFns} locale={locale}>
+    <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={locale}>
       <MUIDatePicker
         mask="__.__.____"
         label={label}

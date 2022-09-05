@@ -31,7 +31,7 @@ function ListStocksView() {
 
   const stocks = data?.map(it => ({
     id: it.id,
-    image: it.cardImage.small,
+    image: it.cardImage?.small,
     title: it.title.ru,
     start: format(new Date(it.start), 'dd.MM.yyyy'),
     end: format(new Date(it.end), 'dd.MM.yyyy'),

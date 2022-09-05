@@ -62,8 +62,8 @@ function CreateStockView() {
     const values = {
       title: promotion?.title.ru || '',
       description: promotion?.description.ru || '',
-      smallPhoto: promotion?.cardImage.full,
-      fullPhoto: promotion?.pageImage.full,
+      smallPhoto: promotion?.cardImage?.full,
+      fullPhoto: promotion?.pageImage?.full,
       start: promotion?.start || new Date(),
       end: promotion?.end || new Date(),
       discount: promotion?.discount || 0,
@@ -91,7 +91,7 @@ function CreateStockView() {
       id: it.id,
       title: it.title.ru,
       image: it.images[0]?.small || noImage,
-      category: it.category.key,
+      category: it.category?.key,
       characteristics: it.characteristics,
     })) || [];
 

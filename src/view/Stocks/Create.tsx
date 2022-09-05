@@ -54,11 +54,11 @@ function CreateStockView() {
     })) || [];
 
   const products =
-    productsData?.products.map(it => ({
+    productsData?.products?.map(it => ({
       id: it.id,
       title: it.title.ru,
       image: it.images[0]?.small || noImage,
-      category: it.category.key,
+      category: it.category?.key,
       characteristics: it.characteristics,
     })) || [];
 
