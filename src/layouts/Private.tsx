@@ -13,6 +13,8 @@ import { useTo } from '../hooks/useTo';
 import { getCurrentPage } from '../utils/getCurrentPage';
 import { useAppSelector } from '../hooks/store';
 import { selectCurrentUser } from '../store/selectors/auth';
+import { eventBus, EventTypes } from '../packages/EventBus';
+import { NotificationType } from '../@types/entities/Notification';
 
 const sx = {
   height: '100%',
@@ -45,7 +47,9 @@ const actionItems = [
 
 function PrivateLayout() {
   const { pathname } = useLocation();
+
   const [signout] = useSignoutMutation();
+
   const to = useTo();
 
   const currentPage = useMemo(() => getCurrentPage(pathname), [pathname]);
@@ -54,15 +58,23 @@ function PrivateLayout() {
 
   const onLinkedItemClick = (item: SidebarLinkedItem) => to(item.path);
 
+  const logoutUser = async () => {
+    try {
+      await signout();
+
+      to(Path.AUTH, 'signin');
+    } catch (error) {
+      eventBus.emit(EventTypes.notification, {
+        message: 'Произошла ошибка',
+        type: NotificationType.DANGER,
+      });
+    }
+  };
+
   const onActionItemClick = async (item: SidebarActionItem) => {
     switch (item.action) {
       case 'signout':
-        try {
-          await signout();
-          to(Path.AUTH, 'signin');
-        } catch (error) {
-          console.error(error);
-        }
+        logoutUser();
         break;
       default:
         break;
