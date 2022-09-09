@@ -30,6 +30,7 @@
     }
   },
   "rules": {
+    "react/jsx-one-expression-per-line": "off",
     "indent": "off",
     "no-confusing-arrow": "off",
     "implicit-arrow-linebreak": "off",
