@@ -1,20 +1,21 @@
 import React, { useMemo } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 
-import { useSignoutMutation } from '../api/authApi';
 import Sidebar, {
   SidebarLinkedItem,
   SidebarActionItem,
 } from '../components/Sidebar/Sidebar';
 import { Box } from '../components/UI/Box/Box';
-import { Container } from '../components/UI/Container/Container';
+import { ProgressLinear } from '../components/UI/ProgressLinear/ProgressLinear';
 import { Path } from '../constants/routes';
 import { useTo } from '../hooks/useTo';
 import { getCurrentPage } from '../utils/getCurrentPage';
 import { useAppSelector } from '../hooks/store';
-import { selectCurrentUser } from '../store/selectors/auth';
+import { selectIsAuth } from '../store/selectors/auth';
+import { useSignoutMutation, useGetCurrentUserQuery } from '../api/authApi';
 import { eventBus, EventTypes } from '../packages/EventBus';
 import { NotificationType } from '../@types/entities/Notification';
+import { getErrorMessage } from '../utils/errorUtil';
 
 const sx = {
   height: '100%',
@@ -46,32 +47,34 @@ const actionItems = [
 ];
 
 function PrivateLayout() {
+  const to = useTo();
+
   const { pathname } = useLocation();
 
-  const [signout] = useSignoutMutation();
+  const { data: currentUser, isLoading, isError } = useGetCurrentUserQuery();
 
-  const to = useTo();
+  const isAuth = useAppSelector(selectIsAuth);
 
   const currentPage = useMemo(() => getCurrentPage(pathname), [pathname]);
 
-  const currentUser = useAppSelector(selectCurrentUser);
-
-  const onLinkedItemClick = (item: SidebarLinkedItem) => to(item.path);
+  const [signout] = useSignoutMutation();
 
   const logoutUser = async () => {
     try {
       await signout();
-
-      to(Path.AUTH, 'signin');
     } catch (error) {
+      const message = getErrorMessage(error);
+
       eventBus.emit(EventTypes.notification, {
-        message: 'Произошла ошибка',
+        message,
         type: NotificationType.DANGER,
       });
     }
   };
 
-  const onActionItemClick = async (item: SidebarActionItem) => {
+  const goToChapter = (item: SidebarLinkedItem) => to(item.path);
+
+  const performAction = async (item: SidebarActionItem) => {
     switch (item.action) {
       case 'signout':
         logoutUser();
@@ -80,6 +83,14 @@ function PrivateLayout() {
         break;
     }
   };
+
+  if (isLoading) return <ProgressLinear variant="query" />;
+
+  if (isError || !isAuth) {
+    to(Path.AUTH, 'signin');
+
+    return null;
+  }
 
   return (
     <Box sx={sx}>
@@ -91,12 +102,12 @@ function PrivateLayout() {
           lastName: currentUser?.lastName || 'Иванов',
         }}
         defaultSelected={currentPage}
-        onLinkedItemClick={onLinkedItemClick}
-        onActionItemClick={onActionItemClick}
+        onLinkedItemClick={goToChapter}
+        onActionItemClick={performAction}
       />
-      <Container sx={containerSx}>
+      <Box sx={containerSx}>
         <Outlet />
-      </Container>
+      </Box>
     </Box>
   );
 }
