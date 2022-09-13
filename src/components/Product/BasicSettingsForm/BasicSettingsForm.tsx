@@ -124,7 +124,7 @@ export function ProductBasicSettingsForm({
           </Grid>
 
           <Grid item md={8}>
-            <HFTextarea label="Описание" name="description" placeholder="Описание" />
+            <HFTextField name="description" label="Описание" multiline rows={4} />
           </Grid>
 
           <Grid item md={8}>

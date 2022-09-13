@@ -22,9 +22,9 @@ import ListReferralCodesView from '../view/Referrals/List';
 import AuthRestorePasswordView from '../view/Auth/RestorePassword';
 import { Path } from '../constants/routes';
 
-const AuthLayout = lazy(() => import('../layouts/AuthLayout'));
-const MainLayout = lazy(() => import('../layouts/MainLayout'));
-const PrivateLayout = lazy(() => import('../layouts/PrivateLayout'));
+const AuthLayout = lazy(() => import('../layouts/Auth'));
+const MainLayout = lazy(() => import('../layouts/Main'));
+const PrivateLayout = lazy(() => import('../layouts/Private'));
 
 export function Routing() {
   const mainRoutes = {

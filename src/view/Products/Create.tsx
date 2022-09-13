@@ -15,6 +15,7 @@ import {
   ProductFullForm,
 } from '../../components/Product/FullForm/FullForm';
 import { useGetClientRolesListQuery } from '../../api/clientRoleApi';
+import { getErrorMessage } from '../../utils/errorUtil';
 
 type Props = {
   onSaveHandler: () => void;
@@ -153,14 +154,18 @@ function CreateProductView() {
 
     try {
       await fetchCreateProduct(newProduct).unwrap();
+
       eventBus.emit(EventTypes.notification, {
         message: 'Товар создан',
         type: NotificationType.SUCCESS,
       });
+
       to(Path.PRODUCTS);
     } catch (error) {
+      const message = getErrorMessage(error);
+
       eventBus.emit(EventTypes.notification, {
-        message: 'Произошла ошибка',
+        message,
         type: NotificationType.DANGER,
       });
     }
