@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-
 import { LinearProgress } from '@mui/material';
+
 import { Box } from '../../UI/Box/Box';
 import { Button } from '../../UI/Button/Button';
 import { Typography } from '../../UI/Typography/Typography';
@@ -18,6 +18,7 @@ const sx = {
     padding: '10px 15px',
     border: '1px solid',
     borderColor: 'primary.main',
+    borderRadius: '4px',
   },
   field: {
     width: '400px',
@@ -50,14 +51,14 @@ export function ReferralCodeDiscountBlock({
     defaultValues: { discount },
   });
 
-  useEffect(() => {
-    values.reset({ discount });
-  }, [discount]);
-
   const submit = (data: ReferralDiscountEdit) => {
     onChange(data.discount);
     setIsEditing(false);
   };
+
+  useEffect(() => {
+    values.reset({ discount });
+  }, [discount]);
 
   if (isLoading) return <LinearProgress />;
 
