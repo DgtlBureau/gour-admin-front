@@ -4,13 +4,11 @@ import TrashIcon from '@mui/icons-material/DeleteForever';
 
 import { Table } from '../../UI/Table/Table';
 import { IconButton } from '../../UI/IconButton/IconButton';
+import { ReferralCode } from '../../../@types/entities/ReferralCode';
 
 export type ReferralCodeTableProps = {
-  codes: {
-    id: number;
-    label: string;
-  }[];
-  onRemove(id: number): void;
+  codes: ReferralCode[];
+  onRemove(code: ReferralCode): void;
 };
 
 export function ReferralCodeTable({ codes, onRemove }: ReferralCodeTableProps) {
@@ -27,8 +25,8 @@ export function ReferralCodeTable({ codes, onRemove }: ReferralCodeTableProps) {
   const rows = codes.map((code, i) => ({
     id: i,
     cells: [
-      code.label,
-      <IconButton component="button" onClick={() => onRemove(code.id)}>
+      code.code,
+      <IconButton component="button" onClick={() => onRemove(code)}>
         <TrashIcon />
       </IconButton>,
     ],

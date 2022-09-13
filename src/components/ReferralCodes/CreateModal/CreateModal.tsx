@@ -50,10 +50,7 @@ export function ReferralCodeCreateModal({
     values.reset({ code: '' });
   }, [isOpen]);
 
-  const submit = (data: ReferralCodeCreateDto) => {
-    console.log('test');
-    onSave(data.code);
-  };
+  const submit = (data: ReferralCodeCreateDto) => onSave(data.code);
 
   return (
     <Modal
