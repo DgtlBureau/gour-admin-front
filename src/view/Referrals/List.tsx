@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { LinearProgress, Stack } from '@mui/material';
-import { format } from 'date-fns';
 
+import { format } from 'date-fns';
 import {
   useCreateReferralCodeMutation,
   useDeleteReferralCodeMutation,
   useGetReferralCodesListQuery,
+  useExportReferralsMutation,
 } from '../../api/referralCodeApi';
 import {
   useGetReferralDiscountQuery,
@@ -21,9 +22,9 @@ import { Button } from '../../components/UI/Button/Button';
 import { Typography } from '../../components/UI/Typography/Typography';
 import { eventBus, EventTypes } from '../../packages/EventBus';
 import { NotificationType } from '../../@types/entities/Notification';
-import { downloadFileFromUrl } from '../../utils/loadFileUtil';
 import { getErrorMessage } from '../../utils/errorUtil';
 import { ReferralCode } from '../../@types/entities/ReferralCode';
+import { downloadFile } from '../../utils/fileUtil';
 
 type Props = {
   onCreateClick: () => void;
@@ -34,7 +35,7 @@ function RightContent({ onCreateClick, onUploadClick }: Props) {
   return (
     <>
       <Button sx={{ margin: '0 10px 0 0' }} onClick={onUploadClick}>
-        Выгрузить рефералы
+        Выгрузить рефералов
       </Button>
 
       <Button onClick={onCreateClick}>Добавить код</Button>
@@ -59,6 +60,7 @@ function ListReferralCodesView() {
   const [fetchDeleteReferralCode] = useDeleteReferralCodeMutation();
   const [fetchCreateReferralCode] = useCreateReferralCodeMutation();
   const [fetchUpdateReferralCodeDiscount] = useUpdateReferralDiscountMutation();
+  const [fetchExportReferrals] = useExportReferralsMutation();
 
   const createReferralCode = async (code: string) => {
     try {
@@ -96,23 +98,28 @@ function ListReferralCodesView() {
   };
   const closeDeleteCodeModal = () => setIsDeleteCodeModalOpen(false);
 
-  const exportCodes = (period?: { start: Date; end: Date }) => {
-    const url = new URL('/api/referralCodes/export', process.env.REACT_APP_STORE_PATH);
+  const exportReferralCodes = async (period?: { start: Date; end: Date }) => {
+    try {
+      const referralsTable = await fetchExportReferrals(period).unwrap();
 
-    let name = 'referral_codes_export';
+      const now = format(new Date(), 'dd/MM/yyyy');
 
-    if (period?.start) {
-      url.searchParams.set('start', period.start.toISOString());
+      downloadFile(referralsTable, `tastyoleg_referrals_${now}.xlsx`);
 
-      name += format(period.start, 'yyyy-MM-dd');
+      eventBus.emit(EventTypes.notification, {
+        message: 'Рефералы загружены',
+        type: NotificationType.SUCCESS,
+      });
+
+      closeExportModal();
+    } catch (error) {
+      const message = getErrorMessage(error);
+
+      eventBus.emit(EventTypes.notification, {
+        message,
+        type: NotificationType.DANGER,
+      });
     }
-    if (period?.end) {
-      url.searchParams.set('end', period.end.toISOString());
-
-      name += `-${format(period.start, 'yyyy-MM-dd')}`;
-    }
-
-    downloadFileFromUrl(url.href, name);
   };
 
   const deleteReferralCode = async () => {
@@ -120,11 +127,9 @@ function ListReferralCodesView() {
       await fetchDeleteReferralCode(referralCodeForDelete.id).unwrap();
 
       eventBus.emit(EventTypes.notification, {
-        message: 'Код успешно удален',
+        message: 'Код успешно удалён',
         type: NotificationType.SUCCESS,
       });
-
-      closeDeleteCodeModal();
     } catch (error) {
       const message = getErrorMessage(error);
 
@@ -201,7 +206,7 @@ function ListReferralCodesView() {
       <ReferralCodeExportModal
         isOpen={isExportModalOpen}
         onClose={closeExportModal}
-        onExport={exportCodes}
+        onExport={exportReferralCodes}
       />
     </div>
   );
