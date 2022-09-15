@@ -1,6 +1,7 @@
 import {
   ErrorWithMessage,
   ErrorWithDataMessage,
+  ErrorData,
 } from '../@types/entities/ErrorWithMessage';
 
 export function checkErrorMessage(error: unknown): error is ErrorWithMessage {
@@ -8,7 +9,7 @@ export function checkErrorMessage(error: unknown): error is ErrorWithMessage {
   const isNull = error === null;
 
   const withMessage = isObject && !isNull && 'message' in error;
-  const isStringMessage = typeof (error as Record<string, unknown>).message === 'string';
+  const isStringMessage = typeof (error as ErrorData).message === 'string';
 
   const withStringMessage = withMessage && isStringMessage;
 
@@ -19,10 +20,10 @@ export function checkErrorDataMessage(error: unknown): error is ErrorWithDataMes
   const isObject = typeof error === 'object';
   const isNull = error === null;
 
-  const withDataMessage =
-    isObject && !isNull && 'message' in (error as ErrorWithDataMessage).data;
+  const withData = isObject && !isNull && 'data' in error;
+  const withDataMessage = withData && 'message' in (error as { data: ErrorData }).data;
   const isStringDataMessage =
-    typeof (error as { data: Record<string, unknown> }).data.message === 'string';
+    typeof (error as { data: ErrorData }).data.message === 'string';
 
   const withStringDataMessage = withDataMessage && isStringDataMessage;
 

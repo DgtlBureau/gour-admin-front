@@ -11,7 +11,7 @@ export const referralDiscountApi = commonApi.injectEndpoints({
             url: `${Path.REFERRAL_CODES}/${Path.DISCOUNT}`,
           };
         },
-        providesTags: [{ type: 'ReferralDiscount', id: 0 }],
+        providesTags: () => ['ReferralDiscount'],
       }),
       updateReferralDiscount: builder.mutation<void, { discount: number }>({
         query(discount) {
@@ -21,7 +21,7 @@ export const referralDiscountApi = commonApi.injectEndpoints({
             body: discount,
           };
         },
-        invalidatesTags: [{ type: 'ReferralDiscount', id: 0 }],
+        invalidatesTags: () => ['ReferralDiscount'],
       }),
     };
   },

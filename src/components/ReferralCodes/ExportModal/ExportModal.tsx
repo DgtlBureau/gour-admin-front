@@ -56,6 +56,7 @@ export function ReferralCodeExportModal({ isOpen, onClose, onExport }: ExportMod
           sx={sx.radioGroup}
         >
           <FormControlLabel value control={<RadioButton />} label="За всё время" />
+
           <FormControlLabel
             value={false}
             control={<RadioButton />}
