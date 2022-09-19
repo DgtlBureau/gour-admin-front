@@ -35,7 +35,7 @@ type Props = {
   defaultValues?: ProductBasicSettingsFormDto;
   isLoading?: boolean;
   categories: {
-    value: string;
+    value: number;
     label: string;
   }[];
   mode: 'create' | 'edit';

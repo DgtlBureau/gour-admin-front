@@ -3,7 +3,7 @@ import React, { ChangeEvent, useState } from 'react';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 
-import { Category } from '../../../@types/entities/Category';
+import { Category, TopLevelCategory } from '../../../@types/entities/Category';
 import { Box } from '../../UI/Box/Box';
 import { Table } from '../../UI/Table/Table';
 import { IconButton } from '../../UI/IconButton/IconButton';
@@ -14,7 +14,7 @@ type CategoryActions = {
 };
 
 type Props = {
-  categories: Category[];
+  categories: TopLevelCategory[];
   onDelete: (categoryId: number) => void;
   onEdit: (categoryId: number) => void;
 };

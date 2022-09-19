@@ -3,6 +3,7 @@ import { ComponentStory, Meta } from '@storybook/react';
 
 import { ProductBasicSettingsForm } from './BasicSettingsForm';
 import { ProductBasicSettingsFormDto } from '../../../@types/dto/form/product-basic-settings.dto';
+import { generateMockId } from '../../../utils/wordHelper';
 
 export default {
   component: ProductBasicSettingsForm,
@@ -20,11 +21,11 @@ const defaultValues = {
 
 const categories = [
   {
-    value: 'cheese',
+    value: generateMockId(),
     label: 'Сыр',
   },
   {
-    value: 'meat',
+    value: generateMockId(),
     label: 'Мясо',
   },
 ];

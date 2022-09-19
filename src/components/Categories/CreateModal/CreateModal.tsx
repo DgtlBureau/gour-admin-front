@@ -2,14 +2,14 @@ import React from 'react';
 
 import { TranslatableStringDto } from '../../../@types/dto/translatable-string.dto';
 import { CategoryCreateDto } from '../../../@types/dto/category/create.dto';
-import { Category } from '../../../@types/entities/Category';
+import { NewCategory } from '../../../@types/entities/Category';
 import { Modal } from '../../UI/Modal/Modal';
 import { Button } from '../../UI/Button/Button';
 import { CreateCategoryForm } from '../CreateForm/CreateForm';
 
 export type CreateModalProps = {
   isOpen: boolean;
-  category?: Category;
+  category?: NewCategory;
   onSave: (category: CategoryCreateDto) => void;
   onClose: () => void;
 };
@@ -42,13 +42,13 @@ export function CreateCategoryModal({
   onSave,
   onClose,
 }: CreateModalProps) {
-  const modalTitle = category ?
-    'Редактирование категории товара' :
-    'Добавление категории товара';
+  const modalTitle = category
+    ? 'Редактирование категории товара'
+    : 'Добавление категории товара';
 
-  const defaultValues = category ?
-    { ru: category.title.ru, en: category.title.en } :
-    { ru: '', en: '' };
+  const defaultValues = category
+    ? { ru: category.title.ru, en: category.title.en }
+    : { ru: '', en: '' };
 
   const save = (title: TranslatableStringDto) => {
     const newCategory = {

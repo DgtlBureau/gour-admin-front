@@ -50,7 +50,7 @@ function CreateStockView() {
   const categories =
     categoriesData?.map(it => ({
       label: it.title.ru,
-      value: it.key,
+      value: it.id,
     })) || [];
 
   const products =
@@ -59,7 +59,8 @@ function CreateStockView() {
       title: it.title.ru,
       image: it.images[0]?.small || noImage,
       category: it.category?.key,
-      characteristics: it.characteristics,
+      categories: it.categories,
+      // characteristics: it.characteristics,
     })) || [];
 
   const goToStocks = () => to(Path.STOCKS);

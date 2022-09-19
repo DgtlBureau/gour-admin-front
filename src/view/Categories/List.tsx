@@ -31,46 +31,47 @@ function ListCategoriesView() {
 
   const { data } = useGetAllCategoriesQuery();
 
-  const [categoryId, setCategoryId] = useState(-1);
+  const [selectedCategoryId, setSelectedCategoryId] = useState(-1);
 
   const [isCreating, setIsCreating] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
 
-  const editingCategory = data?.find(it => it.id === categoryId);
+  const editingCategory = data?.find(it => it.id === selectedCategoryId); // FIXME: переписать функцию
 
   const openCreating = () => setIsCreating(true);
   const closeCreating = () => setIsCreating(false);
 
   const openEditing = (id: number) => {
-    setCategoryId(id);
+    setSelectedCategoryId(id);
     setIsEditing(true);
   };
   const closeEditing = () => {
-    setCategoryId(-1);
+    setSelectedCategoryId(-1);
     setIsEditing(false);
   };
 
   const openDeleting = (id: number) => {
-    setCategoryId(id);
+    setSelectedCategoryId(id);
     setIsDeleting(true);
   };
   const closeDeleting = () => {
-    setCategoryId(-1);
+    setSelectedCategoryId(-1);
     setIsDeleting(false);
   };
 
   const create = (category: CategoryCreateDto) => {
-    createCategory({ ...category, key: '' });
+    createCategory({ ...category }); // FIXME: fix
     closeCreating();
   };
   const edit = (category: CategoryCreateDto) => {
-    editCategory({ id: categoryId, ...category, key: '' });
+    editCategory({ id: selectedCategoryId, ...category });
     closeEditing();
   };
   const remove = async () => {
     try {
-      await deleteCategory(categoryId).unwrap();
+      await deleteCategory(selectedCategoryId).unwrap();
+
       eventBus.emit(EventTypes.notification, {
         message: 'Категория успешно создана',
         type: NotificationType.SUCCESS,

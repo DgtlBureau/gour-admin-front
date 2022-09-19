@@ -139,8 +139,8 @@ function EditProductView() {
         companyDiscount: 0,
         collectiveDiscount: 0,
       },
-      cheeseCategories: product.characteristics as ProductFilterCheeseFormDto,
-      meatCategories: product.characteristics as ProductFilterMeatFormDto,
+      // cheeseCategories: product.characteristics as ProductFilterCheeseFormDto, // FIXME:
+      // meatCategories: product.characteristics as ProductFilterMeatFormDto, // FIXME:
       productSelect,
     });
   }, [product]);
@@ -156,8 +156,9 @@ function EditProductView() {
     const characteristics =
       basicSettings.categoryKey === 'cheese' ? cheeseCategories : meatCategories;
 
-    const categoryId =
-      categories.find(category => category.key === basicSettings.categoryKey)?.id || 0;
+    const categoryId = 1; // FIXME: изменить логику
+    // const categoryId =
+    //   categories.find(category => category.key === basicSettings.categoryKey)?.id || 0;
 
     const roleDiscounts = [
       {
@@ -200,8 +201,9 @@ function EditProductView() {
       price: {
         cheeseCoin: +priceSettings.cheeseCoin,
       },
-      characteristics: characteristics || {},
-      category: categoryId,
+      categoryIds: [], // FIXME:
+      // characteristics: characteristics || {},
+      // category: categoryId,
       similarProducts: productSelect || [],
       roleDiscounts,
     };

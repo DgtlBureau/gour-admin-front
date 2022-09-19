@@ -1,7 +1,7 @@
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
-import { Category } from '../../../@types/entities/Category';
+import { LowLevelCategory, MidLevelCategory } from '../../../@types/entities/Category';
 import { CategoriesTable } from './Table';
 
 export default {
@@ -13,27 +13,45 @@ const Template: ComponentStory<typeof CategoriesTable> = function (args) {
   return <CategoriesTable {...args} />;
 };
 
-function generateCategories(id: number, eng: string, rus: string) {
+type SubCategories = Array<MidLevelCategory | LowLevelCategory> | null;
+function generateCategories<
+  P extends unknown[] | null = null,
+  S extends SubCategories = null
+>(id: number, title: { en: string; ru: string }, parentCategories: P, subCategories: S) {
   return {
     id,
-    title: {
-      ru: rus,
-      en: eng,
-    },
-    description: {},
-    icon: '',
-  } as Category;
+    title,
+    parentCategories,
+    subCategories,
+  };
 }
+
+const midGeneralCategory = generateCategories(
+  3,
+  { ru: 'Твердость', en: 'Твердость' },
+  null,
+  [
+    generateCategories(5, { ru: 'Твердый', en: 'Твердый' }, null, null),
+    generateCategories(6, { ru: 'Мягкий', en: 'Мягкий' }, null, null),
+    generateCategories(7, { ru: 'Полутвёрдый', en: 'Полутвёрдый' }, null, null),
+  ]
+);
 
 export const DefaultState = Template.bind({});
 DefaultState.args = {
   categories: [
-    generateCategories(1, 'Большой сыр', 'Big Cheese'),
-    generateCategories(2, 'Маленький сыр', 'Small Cheese'),
-    generateCategories(3, 'Сыр', 'Cheese'),
-    generateCategories(4, 'Сыр с плесенью', 'Cheese with plesen`'),
-    generateCategories(5, 'Большой сыр', 'Big Cheese'),
-    generateCategories(6, 'Большой сыр', 'Big Cheese'),
-    generateCategories(7, 'Большой сыр', 'Big Cheese'),
+    generateCategories(
+      1,
+      { ru: 'Сыр', en: 'Сыр' },
+      [],
+      [
+        midGeneralCategory,
+        generateCategories(4, { ru: 'С плесенью', en: 'С плесенью' }, null, [
+          generateCategories(8, { ru: 'Да', en: 'Да' }, null, null),
+          generateCategories(9, { ru: 'Нет', en: 'Нет' }, null, null),
+        ]),
+      ]
+    ),
+    generateCategories(2, { ru: 'Мясо', en: 'Мясо' }, [], [midGeneralCategory]),
   ],
 };

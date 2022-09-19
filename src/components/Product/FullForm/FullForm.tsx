@@ -6,7 +6,7 @@ import {
 } from '../../../@types/dto/form/product-filters.dto';
 import { ProductPriceFormDto } from '../../../@types/dto/form/product-price.dto';
 import { ProductCategory } from '../../../@types/dto/product/category.dto';
-import { Category } from '../../../@types/entities/Category';
+import { TopLevelCategory } from '../../../@types/entities/Category';
 import { Product } from '../../../@types/entities/Product';
 import { Box } from '../../UI/Box/Box';
 import { TabPanel } from '../../UI/Tabs/TabPanel';
@@ -29,7 +29,7 @@ type ProductFullFormProps = {
   activeTabId: string;
   onChangeTab: (tabId: string) => void;
   isProductsLoading?: boolean;
-  categories: Category[];
+  categories: TopLevelCategory[];
   products: Product[];
   mode: 'create' | 'edit';
   fullFormState: FullFormType;
@@ -91,11 +91,12 @@ export function ProductFullForm({
       title: product.title.ru,
       image: product.images[0]?.small || '',
       category: product.category?.key || '',
-      characteristics: product.characteristics,
+      categories: product.categories,
+      // characteristics: product.characteristics,
     })) || [];
 
   const selectCategoryOptions = categories.map(category => ({
-    value: category.key,
+    value: category.id,
     label: category.title.ru,
   }));
 

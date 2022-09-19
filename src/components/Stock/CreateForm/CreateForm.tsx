@@ -20,7 +20,7 @@ type Props = {
   products: Product[];
   categories: {
     label: string;
-    value: string;
+    value: number;
   }[];
   defaultValues?: CreateStockFormDto;
   submitBtnRef?: RefObject<HTMLButtonElement>;

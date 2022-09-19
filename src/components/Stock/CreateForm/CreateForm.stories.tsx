@@ -3,6 +3,7 @@ import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
 import { CreateStockForm } from './CreateForm';
+import { generateMockId } from '../../../utils/wordHelper';
 
 export default {
   title: 'CreateStockForm',
@@ -14,17 +15,18 @@ function createProduct(
   title: string,
   image: string,
   category: string,
-  characteristics: {
-    key: string;
-    value: string;
-  }[]
+  categories: any[] // FIXME:
+  // characteristics: {
+  //   key: string;
+  //   value: string;
+  // }[]
 ) {
   return {
     id,
     title,
     category,
     image,
-    characteristics: {},
+    categories: [] as any[],
   };
 }
 
@@ -35,6 +37,13 @@ const Template: ComponentStory<typeof CreateStockForm> = function (args) {
 export const DefaultState = Template.bind({});
 DefaultState.args = {
   products: [
+    {
+      categories: [],
+      category: '',
+      id: 1,
+      image: '',
+      title: '',
+    },
     createProduct(
       1,
       'Какое-то мясо',
@@ -130,11 +139,11 @@ DefaultState.args = {
   ],
   categories: [
     {
-      value: 'cheese',
+      value: generateMockId(),
       label: 'Сыры',
     },
     {
-      value: 'meat',
+      value: generateMockId(),
       label: 'Мясо',
     },
   ],

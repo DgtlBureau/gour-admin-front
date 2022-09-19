@@ -108,8 +108,9 @@ function CreateProductView() {
     const characteristics =
       basicSettings.categoryKey === 'cheese' ? cheeseCategories : meatCategories;
 
-    const categoryId =
-      categories.find(category => category.key === basicSettings.categoryKey)?.id || 0;
+    const categoryId = 1; // FIXME:
+    // const categoryId =
+    //   categories.find(category => category.key === basicSettings.categoryKey)?.id || 0;
 
     const roleDiscounts =
       roles.map(role => {
@@ -146,8 +147,7 @@ function CreateProductView() {
       price: {
         cheeseCoin: +priceSettings.cheeseCoin,
       },
-      characteristics: characteristics || {},
-      category: categoryId,
+      categoryIds: [], // FIXME: удалить category & characteristics из типа
       similarProducts: productSelect || [],
       roleDiscounts,
     };

@@ -53,7 +53,9 @@ export function ProductsTable({
   const changeTab = (id: string) => setSelectedId(id);
 
   const rows = products
-    .filter(product => product.categoryId === selectedId || selectedId === Options.ALL)
+    .filter(
+      product => product.categoryId === selectedId || selectedId === Options.ALL || true
+    )
     .map((product, i) => ({
       id: i,
       cells: [

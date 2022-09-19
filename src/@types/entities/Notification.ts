@@ -9,7 +9,7 @@ export enum NotificationType {
   DEFAULT = 'default',
 }
 export interface Notification extends Partial<iNotification> {
-  type: NotificationType;
+  type: iNotification['type'];
   message: string | ReactNode;
   title?: string;
   dismiss?: iNotificationDismiss;

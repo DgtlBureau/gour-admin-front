@@ -8,7 +8,7 @@ const tabSx = {
 export type TabsProps = {
   value: string;
   options: {
-    value: string;
+    value: string | number;
     label: string;
   }[];
   sx?: SxProps;

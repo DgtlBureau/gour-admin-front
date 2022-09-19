@@ -8,9 +8,10 @@ export const filterProductBySelects = (
   product: Product,
   selectsValues: Record<string, string | undefined>
 ) =>
-  Object.keys(product.characteristics).every(key => {
+  Object.keys(product.categories).every(key => {
     if (!selectsValues[key]) return true;
-    return selectsValues[key] === product.characteristics[key];
+    return false; // FIXME:
+    // return selectsValues[key] === product.categories[key]; // FIXME:
   });
 
 export const filterProductByTab = (
@@ -42,7 +43,7 @@ export const filterByAllParams = (
   selectedProductIds: number[]
 ) =>
   products.filter(product => {
-    const isPassedBySelects = filterProductBySelects(product, selectsValues);
+    const isPassedBySelects = true || filterProductBySelects(product, selectsValues); // FIXME:
     const isPassedByQuery = filterProductByQuery(product, query);
     const isPassedByTab = filterProductByTab(selectedTabKey, product, selectedProductIds);
 
