@@ -1,19 +1,15 @@
 import React from 'react';
 
-import { TranslatableStringDto } from '../../../@types/dto/translatable-string.dto';
 import { CategoryCreateDto } from '../../../@types/dto/category/create.dto';
 import { NewCategory } from '../../../@types/entities/Category';
 import { Modal } from '../../UI/Modal/Modal';
 import { Button } from '../../UI/Button/Button';
-import { CategoryForm, CreateCategoryForm } from '../CreateForm/CreateForm';
+import { CreateCategoryForm } from '../CreateForm/CreateForm';
 
 export type CreateModalProps = {
   isOpen: boolean;
-  category?: NewCategory;
-  categories: {
-    label: string;
-    value: number;
-  }[];
+  currentCategory?: NewCategory;
+  categories: NewCategory[];
   onSave: (category: CategoryCreateDto) => void;
   onClose: () => void;
 };
@@ -42,18 +38,23 @@ function ModalActions({ onCancel }: ModalActionsProps) {
 
 export function CreateCategoryModal({
   isOpen,
-  category,
+  currentCategory,
   categories,
   onSave,
   onClose,
 }: CreateModalProps) {
-  const modalTitle = category
+  const modalTitle = currentCategory
     ? 'Редактирование категории товара'
     : 'Добавление категории товара';
 
+  const formattedCategories = categories.map(category => ({
+    label: category.title.ru,
+    value: category.id,
+  }));
+
   const defaultValues: CategoryCreateDto = {
-    title: category?.title || { ru: '', en: '' },
-    parentCategoriesIds: (category?.parentCategories as number[] | null) || [],
+    title: currentCategory?.title || { ru: '', en: '' },
+    parentCategoriesIds: (currentCategory?.parentCategories as number[] | null) || [],
   };
 
   return (
@@ -64,7 +65,7 @@ export function CreateCategoryModal({
       onClose={onClose}
     >
       <CreateCategoryForm
-        categories={categories}
+        categories={formattedCategories}
         onSave={onSave}
         defaultValues={defaultValues}
       />

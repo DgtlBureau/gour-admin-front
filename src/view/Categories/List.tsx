@@ -29,7 +29,7 @@ function ListCategoriesView() {
   const [editCategory] = useUpdateCategoryMutation();
   const [deleteCategory] = useDeleteCategoryMutation();
 
-  const { data } = useGetAllCategoriesQuery();
+  const { data: categories = [] } = useGetAllCategoriesQuery();
 
   const [selectedCategoryId, setSelectedCategoryId] = useState(-1);
 
@@ -37,7 +37,7 @@ function ListCategoriesView() {
   const [isEditing, setIsEditing] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
 
-  const editingCategory = data?.find(it => it.id === selectedCategoryId); // FIXME: переписать функцию
+  const editingCategory = categories?.find(it => it.id === selectedCategoryId); // FIXME: переписать функцию
 
   const openCreating = () => setIsCreating(true);
   const closeCreating = () => setIsCreating(false);
@@ -92,17 +92,27 @@ function ListCategoriesView() {
         leftTitle="Категории"
         rightContent={<RightContent onClick={openCreating} />}
       />
-      {data ? (
-        <CategoriesTable categories={data} onDelete={openDeleting} onEdit={openEditing} />
+      {categories ? (
+        <CategoriesTable
+          categories={categories}
+          onDelete={openDeleting}
+          onEdit={openEditing}
+        />
       ) : (
         <Typography variant="body1">Список категорий пуст</Typography>
       )}
-      <CreateCategoryModal isOpen={isCreating} onSave={create} onClose={closeCreating} />
+      <CreateCategoryModal
+        isOpen={isCreating}
+        onSave={create}
+        onClose={closeCreating}
+        categories={categories}
+      />
       <CreateCategoryModal
         isOpen={isEditing}
         category={editingCategory}
         onSave={edit}
         onClose={closeEditing}
+        categories={categories}
       />
       <DeleteCategoryModal
         isOpen={isDeleting}
