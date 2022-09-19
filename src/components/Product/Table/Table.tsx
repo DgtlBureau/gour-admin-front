@@ -23,7 +23,7 @@ export type ProductsTableProps = {
   rowsPerPage: number;
   onChangeRowsPerPage: (rowPerPage: number) => void;
   onEdit(id: number): void;
-  onRemove(id: number): void;
+  onRemove(product: ProductTableDto): void;
 };
 
 export function ProductsTable({
@@ -68,7 +68,7 @@ export function ProductsTable({
           <IconButton onClick={() => onEdit(product.id)} component="symbol">
             <EditIcon />
           </IconButton>
-          <IconButton onClick={() => onRemove(product.id)} component="symbol">
+          <IconButton onClick={() => onRemove(product)} component="symbol">
             <DeleteIcon />
           </IconButton>
         </Box>,
