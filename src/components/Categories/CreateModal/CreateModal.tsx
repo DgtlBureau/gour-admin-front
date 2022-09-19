@@ -5,11 +5,15 @@ import { CategoryCreateDto } from '../../../@types/dto/category/create.dto';
 import { NewCategory } from '../../../@types/entities/Category';
 import { Modal } from '../../UI/Modal/Modal';
 import { Button } from '../../UI/Button/Button';
-import { CreateCategoryForm } from '../CreateForm/CreateForm';
+import { CategoryForm, CreateCategoryForm } from '../CreateForm/CreateForm';
 
 export type CreateModalProps = {
   isOpen: boolean;
   category?: NewCategory;
+  categories: {
+    label: string;
+    value: number;
+  }[];
   onSave: (category: CategoryCreateDto) => void;
   onClose: () => void;
 };
@@ -39,6 +43,7 @@ function ModalActions({ onCancel }: ModalActionsProps) {
 export function CreateCategoryModal({
   isOpen,
   category,
+  categories,
   onSave,
   onClose,
 }: CreateModalProps) {
@@ -46,21 +51,9 @@ export function CreateCategoryModal({
     ? 'Редактирование категории товара'
     : 'Добавление категории товара';
 
-  const defaultValues = category
-    ? { ru: category.title.ru, en: category.title.en }
-    : { ru: '', en: '' };
-
-  const save = (title: TranslatableStringDto) => {
-    const newCategory = {
-      title,
-      description: {
-        ru: '',
-        en: '',
-      },
-      icon: '',
-    } as CategoryCreateDto;
-
-    onSave(newCategory);
+  const defaultValues: CategoryCreateDto = {
+    title: category?.title || { ru: '', en: '' },
+    parentCategoriesIds: (category?.parentCategories as number[] | null) || [],
   };
 
   return (
@@ -70,7 +63,11 @@ export function CreateCategoryModal({
       actions={<ModalActions onCancel={onClose} />}
       onClose={onClose}
     >
-      <CreateCategoryForm onSave={save} defaultValues={defaultValues} />
+      <CreateCategoryForm
+        categories={categories}
+        onSave={onSave}
+        defaultValues={defaultValues}
+      />
     </Modal>
   );
 }

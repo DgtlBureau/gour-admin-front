@@ -15,5 +15,26 @@ const Template: ComponentStory<typeof CreateCategoryForm> = function (args) {
 
 export const DefaultState = Template.bind({});
 DefaultState.args = {
-  defaultValues: { ru: 'Сыр', en: 'Cheese' },
+  defaultValues: {
+    title: {
+      ru: 'Тест',
+      en: '',
+    },
+    parentCategoriesIds: [],
+    subCategoriesIds: [],
+  },
+  categories: [
+    {
+      label: 'Сыр',
+      value: 1,
+    },
+    {
+      label: 'Молоко',
+      value: 2,
+    },
+    {
+      label: 'Мясо',
+      value: 3,
+    },
+  ],
 };
