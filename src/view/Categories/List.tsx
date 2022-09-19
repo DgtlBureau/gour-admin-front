@@ -103,16 +103,16 @@ function ListCategoriesView() {
       )}
       <CreateCategoryModal
         isOpen={isCreating}
+        categories={categories}
         onSave={create}
         onClose={closeCreating}
-        categories={categories}
       />
       <CreateCategoryModal
         isOpen={isEditing}
-        category={editingCategory}
+        currentCategory={editingCategory}
+        categories={categories}
         onSave={edit}
         onClose={closeEditing}
-        categories={categories}
       />
       <DeleteCategoryModal
         isOpen={isDeleting}
