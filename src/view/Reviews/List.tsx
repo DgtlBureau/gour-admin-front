@@ -1,7 +1,7 @@
+import React, { useState } from 'react';
 import { LinearProgress } from '@mui/material';
 import { format } from 'date-fns';
-import React, { useState } from 'react';
-import { NotificationType } from '../../@types/entities/Notification';
+
 import {
   useGetProductGradeListQuery,
   useUpdateProductGradeMutation,
@@ -10,10 +10,12 @@ import {
   CommentModal,
   ConfirmReviewModal,
 } from '../../components/ConfirmReviewModal/ConfirmReviewModal';
+import { NotificationType } from '../../@types/entities/Notification';
 import { Header } from '../../components/Header/Header';
 import { Comment, ReviewTable } from '../../components/Review/Table/Table';
 import { Typography } from '../../components/UI/Typography/Typography';
 import { eventBus, EventTypes } from '../../packages/EventBus';
+import { getErrorMessage } from '../../utils/errorUtil';
 
 function ListReviewsView() {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -70,16 +72,20 @@ function ListReviewsView() {
         id: commentId,
         isApproved: false,
       }).unwrap();
+
       eventBus.emit(EventTypes.notification, {
-        message: 'Комментарий успешно подтвержден',
+        message: 'Комментарий отклонён',
         type: NotificationType.SUCCESS,
       });
     } catch (error) {
+      const message = getErrorMessage(error);
+
       eventBus.emit(EventTypes.notification, {
-        message: 'Произошла ошибка',
+        message,
         type: NotificationType.DANGER,
       });
     }
+
     setIsModalOpen(false);
   };
 
@@ -89,13 +95,16 @@ function ListReviewsView() {
         id: commentId,
         isApproved: true,
       }).unwrap();
+
       eventBus.emit(EventTypes.notification, {
-        message: 'Комментарий отклонен',
+        message: 'Комментарий подтверждён',
         type: NotificationType.SUCCESS,
       });
     } catch (error) {
+      const message = getErrorMessage(error);
+
       eventBus.emit(EventTypes.notification, {
-        message: 'Произошла ошибка',
+        message,
         type: NotificationType.DANGER,
       });
     }
