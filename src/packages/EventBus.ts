@@ -54,7 +54,7 @@ export const dispatchNotification = (
 ) => {
   eventBus.emit(EventTypes.notification, {
     message,
-    type: options.type ?? 'success',
+    type: options.type ?? NotificationType.SUCCESS,
     ...options,
   });
 };
