@@ -1,10 +1,10 @@
-FROM node:18.0.0 AS build
+FROM node:16 AS build
 
 WORKDIR /gour-admin-front
 
 COPY package*.json ./
 
-RUN npm ci --legacy-peer-deps
+RUN npm install --legacy-peer-deps
 
 COPY . .
 
