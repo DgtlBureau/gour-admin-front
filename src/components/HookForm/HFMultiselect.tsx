@@ -17,7 +17,7 @@ type Props = {
   onChange?: (value: SelectOption['value'][]) => void;
 };
 
-export function HFSelect({ name, defaultValue, sx, ...props }: Props) {
+export function HFMultiselect({ name, defaultValue, sx, ...props }: Props) {
   const {
     control,
     formState: { errors },
