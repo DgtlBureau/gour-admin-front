@@ -5,7 +5,7 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { CreateCategoryForm } from './CreateForm';
 
 export default {
-  title: 'Modals/CreateCategory',
+  title: 'Forms/CreateCategory',
   component: CreateCategoryForm,
 } as ComponentMeta<typeof CreateCategoryForm>;
 
@@ -14,27 +14,4 @@ const Template: ComponentStory<typeof CreateCategoryForm> = function (args) {
 };
 
 export const DefaultState = Template.bind({});
-DefaultState.args = {
-  defaultValues: {
-    title: {
-      ru: 'Тест',
-      en: '',
-    },
-    parentCategoriesIds: [],
-    subCategoriesIds: [],
-  },
-  categories: [
-    {
-      label: 'Сыр',
-      value: 1,
-    },
-    {
-      label: 'Молоко',
-      value: 2,
-    },
-    {
-      label: 'Мясо',
-      value: 3,
-    },
-  ],
-};
+DefaultState.args = {};

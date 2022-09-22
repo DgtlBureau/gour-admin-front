@@ -1,30 +1,10 @@
-import React, { ReactNode } from 'react';
-import { Modal as MUIModal } from '@mui/material';
+import React, { CSSProperties, ReactNode } from 'react';
+import { Modal as MUIModal, SxProps } from '@mui/material';
 
 import { Box } from '../Box/Box';
 import { Button } from '../Button/Button';
 import { Typography } from '../Typography/Typography';
-
-const sx = {
-  modal: {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    maxWidth: '690px',
-    padding: '24px',
-    bgcolor: 'background.default',
-  },
-  title: {
-    marginBottom: '10px',
-  },
-  body: {
-    marginBottom: '20px',
-  },
-  acceptBtn: {
-    marginRight: '10px',
-  },
-};
+import { modalStyles } from './Modal.styles';
 
 export type ModalProps = {
   isOpen: boolean;
@@ -35,6 +15,7 @@ export type ModalProps = {
   acceptText?: string;
   closeText?: string;
   formId?: string;
+  sx?: CSSProperties;
   onAccept?: () => void;
   onClose: () => void;
 };
@@ -48,17 +29,18 @@ export function Modal({
   acceptText = 'Принять',
   closeText = 'Отменить',
   formId,
+  sx = {},
   onAccept,
   onClose,
 }: ModalProps) {
   return (
     <MUIModal open={isOpen} onClose={onClose}>
-      <Box sx={sx.modal}>
-        <Typography sx={sx.title} variant="body2" color="primary">
+      <Box sx={{ ...modalStyles.modal, ...sx }}>
+        <Typography sx={modalStyles.title} variant="body2" color="primary">
           {title}
         </Typography>
 
-        <Box sx={sx.body}>
+        <Box sx={modalStyles.body}>
           {children || <Typography variant="body1">{description}</Typography>}
         </Box>
 
@@ -66,12 +48,17 @@ export function Modal({
           {actions || (
             <>
               {onAccept ? (
-                <Button size="small" sx={sx.acceptBtn} onClick={onAccept}>
+                <Button size="small" sx={modalStyles.acceptBtn} onClick={onAccept}>
                   {acceptText}
                 </Button>
               ) : (
                 !!formId && (
-                  <Button type="submit" form={formId} size="small" sx={sx.acceptBtn}>
+                  <Button
+                    type="submit"
+                    form={formId}
+                    size="small"
+                    sx={modalStyles.acceptBtn}
+                  >
                     {acceptText}
                   </Button>
                 )

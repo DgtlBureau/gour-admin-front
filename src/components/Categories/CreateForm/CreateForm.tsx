@@ -1,62 +1,138 @@
-import React from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { HFTextField } from '../../HookForm/HFTextField';
-import { HFSelect } from '../../HookForm/HFSelect';
-
-import type { CategoryCreateDto } from '../../../@types/dto/category/create.dto';
-import type { Category } from '../../../@types/entities/Category';
+import type { LowLevelCategory } from '../../../@types/entities/Category';
 import schema from './validation';
+import { Button } from '../../UI/Button/Button';
+import { TextField } from '../../UI/TextField/TextField';
+import { IconButton } from '../../UI/IconButton/IconButton';
+import { Typography } from '../../UI/Typography/Typography';
+import { sx } from './CreateForm.styles';
+
+type EditableLowCategory = {
+  title: string;
+  id?: number;
+};
+
+export type CreateFormType = {
+  title: string;
+  subCategories?: LowLevelCategory[];
+};
 
 type Props = {
-  defaultValues: CategoryCreateDto;
-  categories: {
-    label: string;
-    value: number;
-  }[];
-  onSave: SubmitHandler<CategoryCreateDto>;
+  defaultValues?: CreateFormType;
+  onSave: SubmitHandler<CreateFormType>;
 };
 
-export type CategoryForm = {
-  title: string;
-  parentCategoryId?: Category['id'];
-};
-
-export function CreateCategoryForm({ defaultValues, categories, onSave }: Props) {
-  const values = useForm<CategoryForm>({
+export function CreateCategoryForm({ defaultValues, onSave }: Props) {
+  const values = useForm<CreateFormType>({
     resolver: yupResolver(schema),
     defaultValues: {
-      title: defaultValues.title.ru,
-      parentCategoryId: defaultValues.parentCategoriesIds?.[0] || -1,
+      title: defaultValues?.title || '',
     },
   });
 
-  const handleSave = (data: CategoryForm) => {
-    const parentCategoriesIds = data.parentCategoryId
-      ? [data.parentCategoryId]
-      : undefined;
-    onSave({
-      title: {
-        ru: data.title,
-        en: '',
-      },
-      parentCategoriesIds,
+  const [subCategories, setSubCategories] = useState<Record<number, EditableLowCategory>>(
+    {}
+  );
+
+  useEffect(() => {
+    if (!defaultValues?.subCategories) return;
+    const defaultSubCategories = defaultValues.subCategories.reduce<
+      Record<number, EditableLowCategory>
+    >((acc, category) => {
+      const editableCategory = {
+        title: category.title.ru,
+        id: category.id,
+      };
+      acc[category.id] = editableCategory;
+      return acc;
+    }, {});
+
+    setSubCategories(defaultSubCategories);
+  }, [defaultValues?.subCategories]);
+
+  const canCreateCategory =
+    Object.keys(subCategories).every(categoryId => !!subCategories[+categoryId]?.title) ||
+    Object.keys(subCategories).length === 0;
+
+  const handleAddSubCategory = () => {
+    if (!canCreateCategory) return;
+    const id = Date.now();
+    const newCategory: EditableLowCategory = {
+      title: '',
+    };
+
+    setSubCategories(prevState => ({ ...prevState, [id]: newCategory }));
+  };
+
+  const handleChangeSubCategory = (e: ChangeEvent<HTMLInputElement>, id: number) => {
+    const { value } = e.target;
+    setSubCategories(prevState => {
+      const category = prevState[id];
+      if (!category) return prevState;
+      const mutableCategory = JSON.parse(JSON.stringify(category)) as EditableLowCategory;
+      mutableCategory.title = value;
+      return { ...prevState, [id]: mutableCategory };
     });
   };
 
-  const categoriesOptions = [{ label: 'Нет', value: -1 }, ...categories];
+  const handleDeleteSubCategory = (id: number) => {
+    setSubCategories(prevState => {
+      const mutableCategoriesObj = JSON.parse(
+        JSON.stringify(prevState)
+      ) as typeof prevState;
+      delete mutableCategoriesObj[id];
+      return mutableCategoriesObj;
+    });
+  };
+
+  const handleSave = (data: CreateFormType) => {
+    onSave({
+      title: data.title,
+      subCategories: [],
+    });
+  };
 
   return (
     <FormProvider {...values}>
-      <form id="createCategoryForm" onSubmit={values.handleSubmit(handleSave)}>
-        <HFTextField sx={{ margin: '10px 0' }} label="Название (Рус)" name="title" />
-        <HFSelect
-          name="parentCategoryId"
-          label="Родительская категория"
-          placeholder="Родительская категория"
-          options={categoriesOptions}
-        />
+      <form
+        style={sx.form}
+        id="createCategoryForm"
+        onSubmit={values.handleSubmit(handleSave)}
+      >
+        <HFTextField label="Название" name="title" />
+        {Object.keys(subCategories).length !== 0 && (
+          <Typography variant="body2" color="primary">
+            Подкатегории
+          </Typography>
+        )}
+        {Object.keys(subCategories).map(categoryId => {
+          const id = +categoryId;
+          const subCategory = subCategories[+categoryId];
+          if (!subCategory) return null;
+          const value = subCategory.title;
+          return (
+            <TextField
+              value={value}
+              endAdornment={
+                <IconButton
+                  onClick={() => handleDeleteSubCategory(id)}
+                  component="symbol"
+                >
+                  <DeleteForeverIcon />
+                </IconButton>
+              }
+              onChange={e => handleChangeSubCategory(e, id)}
+            />
+          );
+        })}
+        <Button disabled={!canCreateCategory} onClick={handleAddSubCategory}>
+          Добавить подкатегорию
+        </Button>
       </form>
     </FormProvider>
   );
