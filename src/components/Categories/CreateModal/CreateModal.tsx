@@ -1,7 +1,6 @@
 import React from 'react';
 
-import { CategoryCreateDto } from '../../../@types/dto/category/create.dto';
-import { MidLevelCategory, NewCategory } from '../../../@types/entities/Category';
+import { MidLevelCategory } from '../../../@types/entities/Category';
 import { Modal } from '../../UI/Modal/Modal';
 import { Button } from '../../UI/Button/Button';
 import { CreateCategoryForm, CreateFormType } from '../CreateForm/CreateForm';
@@ -9,7 +8,7 @@ import { CreateCategoryForm, CreateFormType } from '../CreateForm/CreateForm';
 export type CreateModalProps = {
   isOpen: boolean;
   currentCategory?: MidLevelCategory;
-  onSave: (category: CategoryCreateDto) => void;
+  onSave: (category: CreateFormType) => void;
   onClose: () => void;
 };
 
@@ -50,10 +49,6 @@ export function CreateCategoryModal({
     subCategories: currentCategory?.subCategories || [],
   };
 
-  const handleSave = (data: CreateFormType) => {
-    // onSave()
-  };
-
   return (
     <Modal
       isOpen={isOpen}
@@ -61,7 +56,7 @@ export function CreateCategoryModal({
       actions={<ModalActions onCancel={onClose} />}
       onClose={onClose}
     >
-      <CreateCategoryForm onSave={handleSave} defaultValues={defaultValues} />
+      <CreateCategoryForm onSave={onSave} defaultValues={defaultValues} />
     </Modal>
   );
 }

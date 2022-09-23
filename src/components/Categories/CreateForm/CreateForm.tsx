@@ -12,7 +12,7 @@ import { IconButton } from '../../UI/IconButton/IconButton';
 import { Typography } from '../../UI/Typography/Typography';
 import { sx } from './CreateForm.styles';
 
-type EditableLowCategory = {
+type EditableLowLevelCategory = {
   title: string;
   id?: number;
 };
@@ -21,6 +21,8 @@ export type CreateFormType = {
   title: string;
   subCategories?: LowLevelCategory[];
 };
+
+type SubCategoriesState = Record<number, EditableLowLevelCategory>;
 
 type Props = {
   defaultValues?: CreateFormType;
@@ -35,34 +37,35 @@ export function CreateCategoryForm({ defaultValues, onSave }: Props) {
     },
   });
 
-  const [subCategories, setSubCategories] = useState<Record<number, EditableLowCategory>>(
-    {}
-  );
+  const [subCategories, setSubCategories] = useState<SubCategoriesState>({});
+
+  const categoriesKeysArray = Object.keys(subCategories);
 
   useEffect(() => {
     if (!defaultValues?.subCategories) return;
-    const defaultSubCategories = defaultValues.subCategories.reduce<
-      Record<number, EditableLowCategory>
-    >((acc, category) => {
-      const editableCategory = {
-        title: category.title.ru,
-        id: category.id,
-      };
-      acc[category.id] = editableCategory;
-      return acc;
-    }, {});
+    const defaultSubCategories = defaultValues.subCategories.reduce<SubCategoriesState>(
+      (acc, category) => {
+        const editableCategory = {
+          title: category.title.ru,
+          id: category.id,
+        };
+        acc[category.id] = editableCategory;
+        return acc;
+      },
+      {}
+    );
 
     setSubCategories(defaultSubCategories);
   }, [defaultValues?.subCategories]);
 
   const canCreateCategory =
-    Object.keys(subCategories).every(categoryId => !!subCategories[+categoryId]?.title) ||
-    Object.keys(subCategories).length === 0;
+    categoriesKeysArray.every(categoryId => !!subCategories[+categoryId]?.title) ||
+    categoriesKeysArray.length === 0;
 
   const handleAddSubCategory = () => {
     if (!canCreateCategory) return;
     const id = Date.now();
-    const newCategory: EditableLowCategory = {
+    const newCategory: EditableLowLevelCategory = {
       title: '',
     };
 
@@ -74,7 +77,9 @@ export function CreateCategoryForm({ defaultValues, onSave }: Props) {
     setSubCategories(prevState => {
       const category = prevState[id];
       if (!category) return prevState;
-      const mutableCategory = JSON.parse(JSON.stringify(category)) as EditableLowCategory;
+      const mutableCategory = JSON.parse(
+        JSON.stringify(category)
+      ) as EditableLowLevelCategory;
       mutableCategory.title = value;
       return { ...prevState, [id]: mutableCategory };
     });
@@ -105,7 +110,7 @@ export function CreateCategoryForm({ defaultValues, onSave }: Props) {
         onSubmit={values.handleSubmit(handleSave)}
       >
         <HFTextField label="Название" name="title" />
-        {Object.keys(subCategories).length !== 0 && (
+        {categoriesKeysArray.length !== 0 && (
           <Typography variant="body2" color="primary">
             Подкатегории
           </Typography>
