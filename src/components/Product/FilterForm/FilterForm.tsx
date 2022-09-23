@@ -1,41 +1,86 @@
-import React from 'react';
+import { yupResolver } from '@hookform/resolvers/yup';
+import React, { useEffect, useMemo } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
 
-import {
-  ProductFilterCheeseFormDto,
-  ProductFilterMeatFormDto,
-} from '../../../@types/dto/form/product-filters.dto';
-import { ProductCategory } from '../../../@types/dto/product/category.dto';
-import { ProductFilterFormCheese } from './Cheese';
-import { FILTER } from './filterConstants';
-import { ProductFilterFormMeat } from './Meat';
+import { MidLevelCategory, TopLevelCategory } from '../../../@types/entities/Category';
+import { HFSelect } from '../../HookForm/HFSelect';
+import type { SelectOption } from '../../UI/Select/Select';
+import { Typography } from '../../UI/Typography/Typography';
+import schema from './validation';
 
 type Props = {
-  type: ProductCategory;
-  onChange: (
-    data: ProductFilterMeatFormDto | ProductFilterCheeseFormDto,
-    type: ProductCategory
-  ) => void;
-  cheeseDefaultValues?: ProductFilterCheeseFormDto;
-  meatDefaultValues?: ProductFilterMeatFormDto;
+  // eslint-disable-next-line react/require-default-props
+  defaultValues?: Record<string, number>;
+  productTypeId: string | number;
+  categories: TopLevelCategory[];
+  onChange: (categories: Record<string, number>) => void;
 };
 
-export function ProductFilterForm({
-  type,
+type CategoryOptions = { label: string; value: number; options: SelectOption[] };
+const formatCategoriesToOptions = (categories: MidLevelCategory[]): CategoryOptions[] =>
+  categories.map(category => ({
+    label: category.title.ru,
+    value: category.id,
+    options: category.subCategories.map(sub => ({
+      label: sub.title.ru,
+      value: sub.id,
+    })),
+  }));
+
+// eslint-disable-next-line prefer-arrow-callback
+export const ProductFilterForm = React.memo(function ProductFilterForm({
+  defaultValues,
+  productTypeId,
+  categories,
   onChange,
-  cheeseDefaultValues,
-  meatDefaultValues,
 }: Props) {
+  const values = useForm<Record<string, number>>({
+    resolver: yupResolver(schema),
+    mode: 'onBlur',
+    defaultValues,
+  });
+
+  useEffect(() => {
+    values.reset(defaultValues);
+  }, [defaultValues]);
+
+  const categoriesOptions = useMemo(() => {
+    const topCategory = categories.find(category => category.id === +productTypeId);
+    if (!topCategory) return [];
+    return formatCategoriesToOptions(topCategory.subCategories);
+  }, [productTypeId, categories]);
+
+  const handleChange = () => {
+    onChange(values.getValues());
+  };
+
+  if (!productTypeId) {
+    return (
+      <Typography>
+        Для выбора фильтров укажите категорию товара во вкладке &quot;Основные
+        настройки&quot;
+      </Typography>
+    );
+  }
+
   return (
-    <>
-      {type === FILTER.CHEESE && (
-        <ProductFilterFormCheese
-          defaultValues={cheeseDefaultValues}
-          onChange={onChange}
-        />
-      )}
-      {type === FILTER.MEAT && (
-        <ProductFilterFormMeat defaultValues={meatDefaultValues} onChange={onChange} />
-      )}
-    </>
+    <FormProvider {...values}>
+      <form
+        onBlur={() => {
+          handleChange();
+        }}
+      >
+        {categoriesOptions.map(categoryOption => (
+          <HFSelect
+            key={categoryOption.value}
+            placeholder={categoryOption.label}
+            name={categoryOption.value.toString()}
+            label={categoryOption.label}
+            options={categoryOption.options}
+            sx={{ marginBottom: '16px' }}
+          />
+        ))}
+      </form>
+    </FormProvider>
   );
-}
+});

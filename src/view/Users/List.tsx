@@ -50,7 +50,7 @@ function ListUsersView() {
     ...(users || []).map(it => ({
       login: it.login,
       name: `${it.lastName} ${it.firstName}`,
-      role: it.role.key,
+      role: it.role?.key,
       uuid: it.apiUserUuid,
       createdAt: it.createdAt,
     })),

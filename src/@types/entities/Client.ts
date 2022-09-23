@@ -6,6 +6,6 @@ export type Client = {
   lastName: string;
   phone: string;
   isApproved: boolean;
-  role: ClientRole;
+  role?: ClientRole;
   createdAt: string;
 };

@@ -40,18 +40,18 @@ const midGeneralCategory = generateCategories(
 export const DefaultState = Template.bind({});
 DefaultState.args = {
   categories: [
-    generateCategories(
-      1,
-      { ru: 'Сыр', en: 'Сыр' },
-      [],
-      [
-        midGeneralCategory,
-        generateCategories(4, { ru: 'С плесенью', en: 'С плесенью' }, null, [
-          generateCategories(8, { ru: 'Да', en: 'Да' }, null, null),
-          generateCategories(9, { ru: 'Нет', en: 'Нет' }, null, null),
-        ]),
-      ]
-    ),
-    generateCategories(2, { ru: 'Мясо', en: 'Мясо' }, [], [midGeneralCategory]),
-  ],
+    //   generateCategories(
+    //     1,
+    //     { ru: 'Сыр', en: 'Сыр' },
+    //     [],
+    //     [
+    //       midGeneralCategory,
+    //       generateCategories(4, { ru: 'С плесенью', en: 'С плесенью' }, null, [
+    //         generateCategories(8, { ru: 'Да', en: 'Да' }, null, null),
+    //         generateCategories(9, { ru: 'Нет', en: 'Нет' }, null, null),
+    //       ]),
+    //     ]
+    //   ),
+    //   generateCategories(2, { ru: 'Мясо', en: 'Мясо' }, [], [midGeneralCategory]),
+  ], // FIXME: добавить данные
 };

@@ -61,7 +61,7 @@ function ListCategoriesView() {
   };
 
   const create = (category: CategoryCreateDto) => {
-    createCategory({ ...category }); // FIXME: fix
+    createCategory(category);
     closeCreating();
   };
   const edit = (category: CategoryCreateDto) => {
@@ -77,7 +77,6 @@ function ListCategoriesView() {
         type: NotificationType.SUCCESS,
       });
     } catch (error) {
-      console.log(error);
       eventBus.emit(EventTypes.notification, {
         message: 'Произошла ошибка',
         type: NotificationType.DANGER,
@@ -92,7 +91,8 @@ function ListCategoriesView() {
         leftTitle="Категории"
         rightContent={<RightContent onClick={openCreating} />}
       />
-      {categories ? (
+      {/* FIXME: Миша исправит */}
+      {/* {categories ? (
         <CategoriesTable
           categories={categories}
           onDelete={openDeleting}
@@ -100,7 +100,7 @@ function ListCategoriesView() {
         />
       ) : (
         <Typography variant="body1">Список категорий пуст</Typography>
-      )}
+      )} */}
 
       <DeleteCategoryModal
         isOpen={isDeleting}

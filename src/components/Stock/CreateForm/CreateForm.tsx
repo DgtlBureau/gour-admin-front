@@ -84,8 +84,6 @@ export function CreateStockForm({
     // change(values.getValues());
   };
 
-  console.log(123, values.formState.errors);
-
   return (
     <Box>
       <Tabs
