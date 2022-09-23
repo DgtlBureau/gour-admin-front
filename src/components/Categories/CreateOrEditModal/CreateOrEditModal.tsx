@@ -1,16 +1,17 @@
 import React from 'react';
 
-import { TranslatableStringDto } from '../../../@types/dto/translatable-string.dto';
-import { CategoryCreateDto } from '../../../@types/dto/category/create.dto';
-import { NewCategory } from '../../../@types/entities/Category';
+import type { MidLevelCategory } from '../../../@types/entities/Category';
+import type { CreateFormType } from '../CreateOrEditForm/types';
+
 import { Modal } from '../../UI/Modal/Modal';
 import { Button } from '../../UI/Button/Button';
-import { CreateCategoryForm } from '../CreateForm/CreateForm';
+import { CreateOrEditCategoryForm } from '../CreateOrEditForm/CreateOrEditForm';
+import { getSubCategoriesObject } from '../categories.helper';
 
 export type CreateModalProps = {
   isOpen: boolean;
-  category?: NewCategory;
-  onSave: (category: CategoryCreateDto) => void;
+  currentCategory?: MidLevelCategory;
+  onSave: (category: CreateFormType) => void;
   onClose: () => void;
 };
 
@@ -36,31 +37,19 @@ function ModalActions({ onCancel }: ModalActionsProps) {
   );
 }
 
-export function CreateCategoryModal({
+export function CreateOrEditModalCategoryModal({
   isOpen,
-  category,
+  currentCategory,
   onSave,
   onClose,
 }: CreateModalProps) {
-  const modalTitle = category
+  const modalTitle = currentCategory
     ? 'Редактирование категории товара'
     : 'Добавление категории товара';
 
-  const defaultValues = category
-    ? { ru: category.title.ru, en: category.title.en }
-    : { ru: '', en: '' };
-
-  const save = (title: TranslatableStringDto) => {
-    const newCategory = {
-      title,
-      description: {
-        ru: '',
-        en: '',
-      },
-      icon: '',
-    } as CategoryCreateDto;
-
-    onSave(newCategory);
+  const defaultValues: CreateFormType = {
+    title: currentCategory?.title.ru || '',
+    subCategories: getSubCategoriesObject(currentCategory?.subCategories || []) || {},
   };
 
   return (
@@ -70,7 +59,7 @@ export function CreateCategoryModal({
       actions={<ModalActions onCancel={onClose} />}
       onClose={onClose}
     >
-      <CreateCategoryForm onSave={save} defaultValues={defaultValues} />
+      <CreateOrEditCategoryForm onSave={onSave} defaultValues={defaultValues} />
     </Modal>
   );
 }
