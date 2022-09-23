@@ -2,15 +2,15 @@ import React from 'react';
 
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
-import { CreateCategoryModal } from './CreateModal';
+import { CreateOrEditModalCategoryModal } from './CreateOrEditModal';
 
 export default {
   title: 'Modals/CreateCategory',
-  component: CreateCategoryModal,
-} as ComponentMeta<typeof CreateCategoryModal>;
+  component: CreateOrEditModalCategoryModal,
+} as ComponentMeta<typeof CreateOrEditModalCategoryModal>;
 
-const Template: ComponentStory<typeof CreateCategoryModal> = function (args) {
-  return <CreateCategoryModal {...args} />;
+const Template: ComponentStory<typeof CreateOrEditModalCategoryModal> = function (args) {
+  return <CreateOrEditModalCategoryModal {...args} />;
 };
 
 export const DefaultState = Template.bind({});

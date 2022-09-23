@@ -1,35 +1,26 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+
+import type { CreateFormType, EditableCategory, SubCategoriesState } from './types';
+
 import { HFTextField } from '../../HookForm/HFTextField';
-import type { LowLevelCategory } from '../../../@types/entities/Category';
-import schema from './validation';
 import { Button } from '../../UI/Button/Button';
 import { TextField } from '../../UI/TextField/TextField';
 import { IconButton } from '../../UI/IconButton/IconButton';
 import { Typography } from '../../UI/Typography/Typography';
-import { sx } from './CreateForm.styles';
+import { getSubCategoriesObject } from '../categories.helper';
 
-type EditableLowLevelCategory = {
-  title: string;
-  id?: number;
-};
-
-export type CreateFormType = {
-  title: string;
-  subCategories?: LowLevelCategory[];
-};
-
-type SubCategoriesState = Record<number, EditableLowLevelCategory>;
+import { sx } from './CreateOrEditForm.styles';
+import schema from './validation';
 
 type Props = {
   defaultValues?: CreateFormType;
   onSave: SubmitHandler<CreateFormType>;
 };
 
-export function CreateCategoryForm({ defaultValues, onSave }: Props) {
+export function CreateOrEditCategoryForm({ defaultValues, onSave }: Props) {
   const values = useForm<CreateFormType>({
     resolver: yupResolver(schema),
     defaultValues: {
@@ -37,38 +28,18 @@ export function CreateCategoryForm({ defaultValues, onSave }: Props) {
     },
   });
 
-  const [subCategories, setSubCategories] = useState<SubCategoriesState>({});
+  const [subCategories, setSubCategories] = useState<SubCategoriesState>(
+    () => defaultValues?.subCategories || {}
+  );
 
   const categoriesKeysArray = Object.keys(subCategories);
 
-  useEffect(() => {
-    if (!defaultValues?.subCategories) return;
-    const defaultSubCategories = defaultValues.subCategories.reduce<SubCategoriesState>(
-      (acc, category) => {
-        const editableCategory = {
-          title: category.title.ru,
-          id: category.id,
-        };
-        acc[category.id] = editableCategory;
-        return acc;
-      },
-      {}
-    );
-
-    setSubCategories(defaultSubCategories);
-  }, [defaultValues?.subCategories]);
-
-  const canCreateCategory =
-    categoriesKeysArray.every(categoryId => !!subCategories[+categoryId]?.title) ||
-    categoriesKeysArray.length === 0;
-
   const handleAddSubCategory = () => {
-    if (!canCreateCategory) return;
+    // TODO: доделать валидацию
     const id = Date.now();
-    const newCategory: EditableLowLevelCategory = {
+    const newCategory: EditableCategory = {
       title: '',
     };
-
     setSubCategories(prevState => ({ ...prevState, [id]: newCategory }));
   };
 
@@ -76,22 +47,15 @@ export function CreateCategoryForm({ defaultValues, onSave }: Props) {
     const { value } = e.target;
     setSubCategories(prevState => {
       const category = prevState[id];
-      if (!category) return prevState;
-      const mutableCategory = JSON.parse(
-        JSON.stringify(category)
-      ) as EditableLowLevelCategory;
-      mutableCategory.title = value;
-      return { ...prevState, [id]: mutableCategory };
+      category.title = value;
+      return { ...prevState, [id]: category };
     });
   };
 
   const handleDeleteSubCategory = (id: number) => {
     setSubCategories(prevState => {
-      const mutableCategoriesObj = JSON.parse(
-        JSON.stringify(prevState)
-      ) as typeof prevState;
-      delete mutableCategoriesObj[id];
-      return mutableCategoriesObj;
+      const { [id]: _, ...newState } = prevState;
+      return newState;
     });
   };
 
@@ -101,6 +65,10 @@ export function CreateCategoryForm({ defaultValues, onSave }: Props) {
       subCategories: [],
     });
   };
+
+  useEffect(() => {
+    values.setValue('subCategories', subCategories);
+  }, [subCategories]);
 
   return (
     <FormProvider {...values}>
@@ -115,14 +83,15 @@ export function CreateCategoryForm({ defaultValues, onSave }: Props) {
             Подкатегории
           </Typography>
         )}
-        {Object.keys(subCategories).map(categoryId => {
+        {categoriesKeysArray.map(categoryId => {
           const id = +categoryId;
-          const subCategory = subCategories[+categoryId];
-          if (!subCategory) return null;
+          const subCategory = subCategories[id];
           const value = subCategory.title;
           return (
             <TextField
+              key={id}
               value={value}
+              // isError={}
               endAdornment={
                 <IconButton
                   onClick={() => handleDeleteSubCategory(id)}
@@ -135,7 +104,11 @@ export function CreateCategoryForm({ defaultValues, onSave }: Props) {
             />
           );
         })}
-        <Button disabled={!canCreateCategory} onClick={handleAddSubCategory}>
+        <Button
+          // TODO: доделать валидацию
+          // disabled={!!values.formState.errors.subCategories}
+          onClick={handleAddSubCategory}
+        >
           Добавить подкатегорию
         </Button>
       </form>

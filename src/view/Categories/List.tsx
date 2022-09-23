@@ -5,7 +5,7 @@ import { Header } from '../../components/Header/Header';
 import { Button } from '../../components/UI/Button/Button';
 import { Typography } from '../../components/UI/Typography/Typography';
 import { CategoriesTable } from '../../components/Categories/Table/Table';
-import { CreateCategoryModal } from '../../components/Categories/CreateModal/CreateModal';
+import { CreateOrEditModalCategoryModal } from '../../components/Categories/CreateOrEditModal/CreateOrEditModal';
 import { DeleteCategoryModal } from '../../components/Categories/DeleteModal/DeleteModal';
 import {
   useGetAllCategoriesQuery,
@@ -101,19 +101,7 @@ function ListCategoriesView() {
       ) : (
         <Typography variant="body1">Список категорий пуст</Typography>
       )}
-      <CreateCategoryModal
-        isOpen={isCreating}
-        categories={categories}
-        onSave={create}
-        onClose={closeCreating}
-      />
-      <CreateCategoryModal
-        isOpen={isEditing}
-        currentCategory={editingCategory}
-        categories={categories}
-        onSave={edit}
-        onClose={closeEditing}
-      />
+
       <DeleteCategoryModal
         isOpen={isDeleting}
         onRemove={remove}

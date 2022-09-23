@@ -1,9 +1,12 @@
 import React from 'react';
 
-import { MidLevelCategory } from '../../../@types/entities/Category';
+import type { MidLevelCategory } from '../../../@types/entities/Category';
+import type { CreateFormType } from '../CreateOrEditForm/types';
+
 import { Modal } from '../../UI/Modal/Modal';
 import { Button } from '../../UI/Button/Button';
-import { CreateCategoryForm, CreateFormType } from '../CreateForm/CreateForm';
+import { CreateOrEditCategoryForm } from '../CreateOrEditForm/CreateOrEditForm';
+import { getSubCategoriesObject } from '../categories.helper';
 
 export type CreateModalProps = {
   isOpen: boolean;
@@ -34,7 +37,7 @@ function ModalActions({ onCancel }: ModalActionsProps) {
   );
 }
 
-export function CreateCategoryModal({
+export function CreateOrEditModalCategoryModal({
   isOpen,
   currentCategory,
   onSave,
@@ -46,7 +49,7 @@ export function CreateCategoryModal({
 
   const defaultValues: CreateFormType = {
     title: currentCategory?.title.ru || '',
-    subCategories: currentCategory?.subCategories || [],
+    subCategories: getSubCategoriesObject(currentCategory?.subCategories || []) || {},
   };
 
   return (
@@ -56,7 +59,7 @@ export function CreateCategoryModal({
       actions={<ModalActions onCancel={onClose} />}
       onClose={onClose}
     >
-      <CreateCategoryForm onSave={onSave} defaultValues={defaultValues} />
+      <CreateOrEditCategoryForm onSave={onSave} defaultValues={defaultValues} />
     </Modal>
   );
 }
