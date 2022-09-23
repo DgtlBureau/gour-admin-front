@@ -13,6 +13,7 @@ type Props = {
   isError?: boolean;
   type?: string;
   helperText?: string;
+  rows?: number;
   onChange?: ChangeEventHandler<HTMLInputElement>;
   onFocus?: FocusEventHandler<HTMLInputElement>;
   onBlur?: FocusEventHandler<HTMLInputElement>;

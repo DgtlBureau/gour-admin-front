@@ -9,7 +9,7 @@ import { Table } from '../../UI/Table/Table';
 
 export type CitiesTableProps = {
   cities: City[];
-  onDelete: (id: number) => void;
+  onDelete: (city: City) => void;
   onEdit: (id: number) => void;
 };
 
@@ -30,7 +30,7 @@ export function CitiesTable({ cities, onDelete, onEdit }: CitiesTableProps) {
       city.name.ru,
       // city.name.en,
       <>
-        <IconButton component="button" onClick={() => onDelete(city.id)}>
+        <IconButton component="button" onClick={() => onDelete(city)}>
           <DeleteIcon />
         </IconButton>
         <IconButton component="button" onClick={() => onEdit(city.id)}>

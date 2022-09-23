@@ -9,6 +9,7 @@ import MUITableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { TablePagination, LabelDisplayedRowsArgs } from '@mui/material';
 
+import { Typography } from '../Typography/Typography';
 import { Tabs, TabsProps } from '../Tabs/Tabs';
 
 const sx = {
@@ -87,33 +88,43 @@ export function Table({
             </MUITableRow>
           </MUITableHead>
           <MUITableBody>
-            {shownRows.map(row => (
-              <MUITableRow key={row.id}>
-                {row.cells.map((cell, i) => (
-                  <MUITableCell
-                    key={`${row.id}_${i}`}
-                    align="left"
-                    sx={{ ...sx.cell, ...sx.bodyCell }}
-                  >
-                    {cell}
-                  </MUITableCell>
-                ))}
+            {rows.length ? (
+              shownRows.map(row => (
+                <MUITableRow key={row.id}>
+                  {row.cells.map((cell, i) => (
+                    <MUITableCell
+                      key={`${row.id}_${i}`}
+                      align="left"
+                      sx={{ ...sx.cell, ...sx.bodyCell }}
+                    >
+                      {cell}
+                    </MUITableCell>
+                  ))}
+                </MUITableRow>
+              ))
+            ) : (
+              <MUITableRow>
+                <MUITableCell align="left" sx={{ ...sx.cell, ...sx.bodyCell }}>
+                  <Typography variant="body1">Нет записей</Typography>
+                </MUITableCell>
               </MUITableRow>
-            ))}
+            )}
           </MUITableBody>
         </MUITable>
 
-        <TablePagination
-          labelRowsPerPage="Записей на странице:"
-          labelDisplayedRows={getDisplayedRowsLabel}
-          rowsPerPageOptions={rowsPerPageOptions}
-          component="div"
-          count={rowsCount || rows.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={onPageChange}
-          onRowsPerPageChange={onRowsPerPageChange}
-        />
+        {rows.length > 5 && (
+          <TablePagination
+            labelRowsPerPage="Записей на странице:"
+            labelDisplayedRows={getDisplayedRowsLabel}
+            rowsPerPageOptions={rowsPerPageOptions}
+            component="div"
+            count={rowsCount || rows.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onPageChange={onPageChange}
+            onRowsPerPageChange={onRowsPerPageChange}
+          />
+        )}
       </MUITableContainer>
     </Paper>
   );

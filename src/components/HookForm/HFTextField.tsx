@@ -9,6 +9,7 @@ type Props = {
   multiline?: boolean;
   label?: string;
   type?: string;
+  rows?: number;
   sx?: SxProps;
 };
 
