@@ -1,11 +1,11 @@
 import React, { ChangeEvent, useState } from 'react';
-
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 
-import { Category, TopLevelCategory } from '../../../@types/entities/Category';
+import type { MidLevelCategory } from '../../../@types/entities/Category';
+
 import { Box } from '../../UI/Box/Box';
-import { Table } from '../../UI/Table/Table';
+import { Row, Table } from '../../UI/Table/Table';
 import { IconButton } from '../../UI/IconButton/IconButton';
 
 type CategoryActions = {
@@ -14,12 +14,12 @@ type CategoryActions = {
 };
 
 type Props = {
-  categories: TopLevelCategory[];
-  onDelete: (categoryId: number) => void;
-  onEdit: (categoryId: number) => void;
+  categories: MidLevelCategory[];
+  onDelete: (id: number) => void;
+  onEdit: (id: number) => void;
 };
 
-const tableHeader = ['Название (Рус)', 'Название (Eng)', 'Действие'];
+const tableHeader = ['Категория', 'Действие'];
 
 function RowActions({ onDelete, onEdit }: CategoryActions) {
   return (
@@ -49,11 +49,10 @@ export function CategoriesTable({ categories, onDelete, onEdit }: Props) {
     setPage(0);
   };
 
-  const row = categories.map((category, i) => ({
+  const rows: Row[] = categories.map((category, i) => ({
     id: i,
     cells: [
       category.title.ru,
-      category.title.en,
       <RowActions
         onDelete={() => onDelete(category.id)}
         onEdit={() => onEdit(category.id)}
@@ -64,7 +63,7 @@ export function CategoriesTable({ categories, onDelete, onEdit }: Props) {
   return (
     <Table
       rowTitleList={tableHeader}
-      rows={row}
+      rows={rows}
       page={page}
       rowsPerPage={rowsPerPage}
       rowsPerPageOptions={[5, 10, 15]}
