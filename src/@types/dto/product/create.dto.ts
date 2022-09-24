@@ -8,10 +8,8 @@ export type ProductCreateDto = Readonly<{
   images: number[];
   price: PriceDto;
   meta?: PageMetaDto;
-  // characteristics: Record<string, string>; // FIXME:
   categoryIds: number[];
   moyskladCode?: number;
-  // category: number;
   similarProducts?: number[];
   roleDiscounts?: {
     role: number;

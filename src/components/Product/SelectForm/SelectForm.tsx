@@ -144,11 +144,11 @@ export function ProductSelectForm({
         onChange={changeTab}
       />
 
-      <SelectsList
+      {/* <SelectsList
         characteristics={filteredCharacteristics}
         selectValues={selectValues}
         setSelectValues={setSelectValues}
-      />
+      /> */}
 
       <ProductSelectList
         products={filteredProducts}

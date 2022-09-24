@@ -11,7 +11,7 @@ export default {
 } as Meta;
 
 const defaultValues = {
-  categoryKey: 'cheese',
+  productType: null, // FIXME:
   title: '',
   metaTitle: '',
   metaDescription: '',
@@ -34,7 +34,7 @@ const Template: ComponentStory<typeof ProductBasicSettingsForm> = function (args
   return (
     <ProductBasicSettingsForm
       {...args}
-      categories={categories}
+      productTypes={categories}
       defaultValues={defaultValues}
       mode="create"
     />

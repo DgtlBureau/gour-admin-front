@@ -15,16 +15,19 @@ export const filterProductBySelects = (
   });
 
 export const filterProductByTab = (
-  tabId: string,
+  tabId: string | number,
   product: Product,
   selectedProductIds: number[]
 ) => {
-  switch (tabId) {
-    case 'selected':
-      return isProductSelected(product.id, selectedProductIds);
-    default:
-      return product.category === tabId || tabId === 'all';
+  if (tabId === 'selected') {
+    return isProductSelected(product.id, selectedProductIds);
   }
+
+  const isProductTypeId = typeof tabId === 'number'; // FIXME: бесполезная проверка, вроде как
+  if (isProductTypeId) {
+    return product.categories?.some(category => category.id === tabId);
+  }
+  return product.category === tabId || tabId === 'all';
 };
 
 // eslint-disable-next-line
