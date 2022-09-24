@@ -8,10 +8,12 @@ import { ProductsTable } from '../../components/Product/Table/Table';
 import { useDeleteProductMutation, useGetAllProductsQuery } from '../../api/productApi';
 import { ProgressLinear } from '../../components/UI/ProgressLinear/ProgressLinear';
 import { Typography } from '../../components/UI/Typography/Typography';
-import { ProductDeletePopup } from '../../components/Product/DeletePopup/DeletePopup';
+import { ProductDeleteModal } from '../../components/Product/DeleteModal/DeleteModal';
 import { eventBus, EventTypes } from '../../packages/EventBus';
 import { NotificationType } from '../../@types/entities/Notification';
 import { useGetAllCategoriesQuery } from '../../api/categoryApi';
+import { getErrorMessage } from '../../utils/errorUtil';
+import { ProductTableDto } from '../../@types/dto/table/products.dto';
 
 type Props = {
   onUploadClick: () => void;
@@ -45,7 +47,8 @@ function ListProductsView() {
 
   const [page, setPage] = useState<number>(0);
   const [rowsPerPage, setRowsPerPage] = useState<number>(5);
-  const [deletedProductId, setDeletedProductId] = useState<number | null>(null);
+  const [productForDelete, setProductForDelete] = useState<ProductTableDto | null>(null);
+  const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
 
   const { data: categories = [] } = useGetAllCategoriesQuery();
   const {
@@ -54,7 +57,7 @@ function ListProductsView() {
     isError,
   } = useGetAllProductsQuery({ withCategories: true });
 
-  const [fetchDeleteProduct, deleteProductData] = useDeleteProductMutation();
+  const [fetchDeleteProduct] = useDeleteProductMutation();
 
   const productsTableList = React.useMemo(() => {
     if (!productsData) return [];
@@ -69,52 +72,51 @@ function ListProductsView() {
 
   const to = useTo();
 
-  const onCreateClick = () => {
-    to(Path.PRODUCTS, 'create');
-  };
+  const goToProductCreate = () => to(Path.PRODUCTS, 'create');
 
-  const onEditClick = (id: number) => {
-    to(Path.PRODUCTS, `${id}`);
-  };
+  const goToProductEdit = (id: number) => to(Path.PRODUCTS, `${id}`);
 
-  const onDeleteClick = (id: number) => {
-    setDeletedProductId(id);
-  };
-
-  const onUploadClick = () => {
+  const uploadProductList = () => {
     console.log('uploading');
   };
 
-  const handleCloseModal = () => {
-    setDeletedProductId(null);
+  const openDeleteModal = (product: ProductTableDto) => {
+    setProductForDelete(product);
+    setDeleteModalIsOpen(true);
   };
 
-  const handleDeleteProduct = async () => {
-    if (!deletedProductId) return;
+  const closeDeleteModal = () => {
+    setProductForDelete(null);
+    setDeleteModalIsOpen(false);
+  };
+
+  const deleteProduct = async () => {
+    if (!productForDelete) return;
+
     try {
-      await fetchDeleteProduct(deletedProductId).unwrap();
-      if (deleteProductData.isSuccess) {
-        eventBus.emit(EventTypes.notification, {
-          message: 'Товар успешно удален',
-          type: NotificationType.SUCCESS,
-        });
-      }
+      await fetchDeleteProduct(productForDelete.id).unwrap();
+
+      eventBus.emit(EventTypes.notification, {
+        message: 'Товар успешно удален',
+        type: NotificationType.SUCCESS,
+      });
+
+      closeDeleteModal();
     } catch (error) {
-      if (deleteProductData.isError) {
-        eventBus.emit(EventTypes.notification, {
-          message: 'Возникла ошибка',
-          type: NotificationType.DANGER,
-        });
-      }
+      const message = getErrorMessage(error);
+
+      eventBus.emit(EventTypes.notification, {
+        message,
+        type: NotificationType.DANGER,
+      });
     }
-    setDeletedProductId(null);
+
+    setProductForDelete(null);
   };
 
-  const handleChangePage = (_: unknown, newPage: number) => {
-    setPage(newPage);
-  };
+  const changePage = (_: unknown, newPage: number) => setPage(newPage);
 
-  const handleChangeRowsPerPage = (newRowsPerPage: number) => {
+  const changeRowsPerPage = (newRowsPerPage: number) => {
     setRowsPerPage(newRowsPerPage);
     setPage(0);
   };
@@ -129,13 +131,19 @@ function ListProductsView() {
       <Header
         leftTitle="Товары"
         rightContent={
-          <RightContent onCreateClick={onCreateClick} onUploadClick={onUploadClick} />
+          <RightContent
+            onCreateClick={goToProductCreate}
+            onUploadClick={uploadProductList}
+          />
         }
       />
+
       {isLoading && <ProgressLinear variant="indeterminate" />}
+
       {!isLoading && isError && (
         <Typography variant="h5">Произошла ошибка, повторите попытку позже</Typography>
       )}
+
       {!isLoading && !isError && (
         <ProductsTable
           products={productsTableList}
@@ -143,17 +151,18 @@ function ListProductsView() {
           page={page}
           rowsCount={productsData?.totalCount || 0}
           rowsPerPage={rowsPerPage}
-          onChangePage={handleChangePage}
-          onChangeRowsPerPage={handleChangeRowsPerPage}
-          onEdit={onEditClick}
-          onRemove={onDeleteClick}
+          onChangePage={changePage}
+          onChangeRowsPerPage={changeRowsPerPage}
+          onEdit={goToProductEdit}
+          onRemove={openDeleteModal}
         />
       )}
 
-      <ProductDeletePopup
-        isOpen={deletedProductId !== null}
-        onCancel={handleCloseModal}
-        onSubmit={handleDeleteProduct}
+      <ProductDeleteModal
+        isOpen={deleteModalIsOpen}
+        productName={productForDelete?.title || ''}
+        onCancel={closeDeleteModal}
+        onDelete={deleteProduct}
       />
     </div>
   );

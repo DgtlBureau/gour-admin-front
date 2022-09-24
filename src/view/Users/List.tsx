@@ -17,7 +17,7 @@ import { AddCheesecoinsDto } from '../../@types/dto/add-cheesecoins.dto';
 const categories = [
   {
     value: Options.ALL,
-    label: 'Всё',
+    label: 'Все',
   },
   {
     value: Roles.ADMIN,
@@ -49,16 +49,16 @@ function ListUsersView() {
   const data: UserTableItem[] = [
     ...(users || []).map(it => ({
       login: it.login,
-      name: `${it.lastName} ${it.firstName}`,
-      role: it.role?.key,
+      name: `${it.firstName || 'Имя'} ${it.lastName || 'Фамилия'}`,
+      role: (it.role?.key as Roles) || '',
       uuid: it.apiUserUuid,
       createdAt: it.createdAt,
     })),
     ...(clients || [])
       .map(it => ({
         login: it.phone,
-        name: `${it.lastName} ${it.firstName}`,
-        role: it.role?.key || '',
+        name: `${it.firstName || 'Имя'} ${it.lastName || 'Фамилия'}`,
+        role: (it.role?.key as Roles) || '',
         uuid: `${it.id}`,
         createdAt: it.createdAt,
       }))

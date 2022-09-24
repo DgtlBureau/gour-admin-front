@@ -8,6 +8,7 @@ import { Table } from '../../UI/Table/Table';
 import { IconButton } from '../../UI/IconButton/IconButton';
 import { Typography } from '../../UI/Typography/Typography';
 import { Options } from '../../../constants/tabs';
+import { Roles } from '../../../constants/users/roles';
 
 import loginIcon from './assets/login.svg';
 
@@ -20,10 +21,16 @@ const sx = {
   },
 };
 
+const roles = {
+  [Roles.ADMIN]: 'Админ',
+  [Roles.MODERATOR]: 'Модератор',
+  [Roles.CLIENT]: 'Клиент',
+};
+
 export type UserTableItem = {
   login: string;
   name: string;
-  role: string;
+  role: Roles;
   uuid: string;
 };
 
@@ -65,7 +72,7 @@ export function UsersTable({
       user.name,
       user.login,
       <Typography variant="body1" sx={sx.role}>
-        {user.role}
+        {roles[user.role]}
       </Typography>,
       <>
         <IconButton component="button" onClick={() => onDelete(user.uuid)}>

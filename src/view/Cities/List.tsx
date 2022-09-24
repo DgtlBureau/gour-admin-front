@@ -161,7 +161,24 @@ function ListCitiesView() {
   }
 
   if (!isLoading && !isError && cities.length === 0) {
-    return <Typography variant="h5">Возникла ошибка</Typography>;
+    return (
+      <div>
+        <Header
+          leftTitle="Города"
+          rightContent={<RightContent onCreateClick={openCreateModal} />}
+        />
+
+        <Typography>Нет добавленных городов</Typography>
+
+        <CreateCityModal
+          isOpened={createModalMode !== 'closed'}
+          mode={createModalMode}
+          defaultValues={formState}
+          onSave={saveCity}
+          onCancel={closeCreateModal}
+        />
+      </div>
+    );
   }
 
   return (
