@@ -1,4 +1,4 @@
-import React, { ChangeEventHandler, FocusEventHandler } from 'react';
+import React, { ChangeEventHandler, FocusEventHandler, ReactNode } from 'react';
 import MUITextField from '@mui/material/TextField';
 import { SxProps } from '@mui/material';
 
@@ -14,6 +14,8 @@ type Props = {
   type?: string;
   helperText?: string;
   rows?: number;
+  startAdornment?: ReactNode;
+  endAdornment?: ReactNode;
   onChange?: ChangeEventHandler<HTMLInputElement>;
   onFocus?: FocusEventHandler<HTMLInputElement>;
   onBlur?: FocusEventHandler<HTMLInputElement>;
@@ -30,6 +32,8 @@ export function TextField({
   isError,
   helperText,
   name,
+  endAdornment,
+  startAdornment,
   onChange,
   onFocus,
   onBlur,
@@ -47,6 +51,10 @@ export function TextField({
       variant={variant}
       name={name}
       type={type}
+      InputProps={{
+        startAdornment,
+        endAdornment,
+      }}
       helperText={helperText}
       onChange={onChange}
       onFocus={onFocus}

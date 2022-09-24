@@ -1,6 +1,7 @@
 import React from 'react';
 import { ComponentStory, Meta } from '@storybook/react';
 import { Product, ProductSelectForm, ProductSelectFormProps } from './SelectForm';
+import { generateMockId } from '../../../utils/wordHelper';
 
 export default {
   component: ProductSelectForm,
@@ -18,11 +19,11 @@ const props: Partial<ProductSelectFormProps> = {
   products: [],
   categories: [
     {
-      value: 'cheese',
+      value: generateMockId(),
       label: 'Сыры',
     },
     {
-      value: 'meat',
+      value: generateMockId(),
       label: 'Мясо',
     },
   ],

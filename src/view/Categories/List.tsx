@@ -5,7 +5,7 @@ import { Header } from '../../components/Header/Header';
 import { Button } from '../../components/UI/Button/Button';
 import { Typography } from '../../components/UI/Typography/Typography';
 import { CategoriesTable } from '../../components/Categories/Table/Table';
-import { CreateCategoryModal } from '../../components/Categories/CreateModal/CreateModal';
+import { CreateOrEditModalCategoryModal } from '../../components/Categories/CreateOrEditModal/CreateOrEditModal';
 import { DeleteCategoryModal } from '../../components/Categories/DeleteModal/DeleteModal';
 import {
   useGetAllCategoriesQuery,
@@ -29,54 +29,54 @@ function ListCategoriesView() {
   const [editCategory] = useUpdateCategoryMutation();
   const [deleteCategory] = useDeleteCategoryMutation();
 
-  const { data } = useGetAllCategoriesQuery();
+  const { data: categories = [] } = useGetAllCategoriesQuery();
 
-  const [categoryId, setCategoryId] = useState(-1);
+  const [selectedCategoryId, setSelectedCategoryId] = useState(-1);
 
   const [isCreating, setIsCreating] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
 
-  const editingCategory = data?.find(it => it.id === categoryId);
+  const editingCategory = categories?.find(it => it.id === selectedCategoryId); // FIXME: переписать функцию
 
   const openCreating = () => setIsCreating(true);
   const closeCreating = () => setIsCreating(false);
 
   const openEditing = (id: number) => {
-    setCategoryId(id);
+    setSelectedCategoryId(id);
     setIsEditing(true);
   };
   const closeEditing = () => {
-    setCategoryId(-1);
+    setSelectedCategoryId(-1);
     setIsEditing(false);
   };
 
   const openDeleting = (id: number) => {
-    setCategoryId(id);
+    setSelectedCategoryId(id);
     setIsDeleting(true);
   };
   const closeDeleting = () => {
-    setCategoryId(-1);
+    setSelectedCategoryId(-1);
     setIsDeleting(false);
   };
 
   const create = (category: CategoryCreateDto) => {
-    createCategory({ ...category, key: '' });
+    createCategory(category);
     closeCreating();
   };
   const edit = (category: CategoryCreateDto) => {
-    editCategory({ id: categoryId, ...category, key: '' });
+    editCategory({ id: selectedCategoryId, ...category });
     closeEditing();
   };
   const remove = async () => {
     try {
-      await deleteCategory(categoryId).unwrap();
+      await deleteCategory(selectedCategoryId).unwrap();
+
       eventBus.emit(EventTypes.notification, {
         message: 'Категория успешно создана',
         type: NotificationType.SUCCESS,
       });
     } catch (error) {
-      console.log(error);
       eventBus.emit(EventTypes.notification, {
         message: 'Произошла ошибка',
         type: NotificationType.DANGER,
@@ -91,18 +91,17 @@ function ListCategoriesView() {
         leftTitle="Категории"
         rightContent={<RightContent onClick={openCreating} />}
       />
-      {data ? (
-        <CategoriesTable categories={data} onDelete={openDeleting} onEdit={openEditing} />
+      {/* FIXME: Миша исправит */}
+      {/* {categories ? (
+        <CategoriesTable
+          categories={categories}
+          onDelete={openDeleting}
+          onEdit={openEditing}
+        />
       ) : (
         <Typography variant="body1">Список категорий пуст</Typography>
-      )}
-      <CreateCategoryModal isOpen={isCreating} onSave={create} onClose={closeCreating} />
-      <CreateCategoryModal
-        isOpen={isEditing}
-        category={editingCategory}
-        onSave={edit}
-        onClose={closeEditing}
-      />
+      )} */}
+
       <DeleteCategoryModal
         isOpen={isDeleting}
         onRemove={remove}

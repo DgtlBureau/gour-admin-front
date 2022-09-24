@@ -1,12 +1,8 @@
 import React, { Dispatch, SetStateAction } from 'react';
 import { ProductBasicSettingsFormDto } from '../../../@types/dto/form/product-basic-settings.dto';
-import {
-  ProductFilterCheeseFormDto,
-  ProductFilterMeatFormDto,
-} from '../../../@types/dto/form/product-filters.dto';
+import {} from '../../../@types/dto/form/product-filters.dto';
 import { ProductPriceFormDto } from '../../../@types/dto/form/product-price.dto';
-import { ProductCategory } from '../../../@types/dto/product/category.dto';
-import { Category } from '../../../@types/entities/Category';
+import { TopLevelCategory } from '../../../@types/entities/Category';
 import { Product } from '../../../@types/entities/Product';
 import { Box } from '../../UI/Box/Box';
 import { TabPanel } from '../../UI/Tabs/TabPanel';
@@ -20,8 +16,8 @@ import { createProductTabOptions } from './fullFormConstants';
 export type FullFormType = {
   basicSettings: ProductBasicSettingsFormDto;
   priceSettings: ProductPriceFormDto;
-  cheeseCategories?: ProductFilterCheeseFormDto;
-  meatCategories?: ProductFilterMeatFormDto;
+  categoriesIds: Record<string, number>;
+  productType?: number;
   productSelect?: number[];
 };
 
@@ -29,7 +25,7 @@ type ProductFullFormProps = {
   activeTabId: string;
   onChangeTab: (tabId: string) => void;
   isProductsLoading?: boolean;
-  categories: Category[];
+  categories: TopLevelCategory[];
   products: Product[];
   mode: 'create' | 'edit';
   fullFormState: FullFormType;
@@ -48,7 +44,7 @@ export function ProductFullForm({
 }: ProductFullFormProps) {
   const handleChangeBasicSettingsForm = (data: ProductBasicSettingsFormDto) => {
     setFullFormState(prevState => {
-      if (prevState.basicSettings.categoryKey !== data.categoryKey) {
+      if (prevState.basicSettings.productType !== data.productType) {
         return {
           ...prevState,
           basicSettings: data,
@@ -64,26 +60,19 @@ export function ProductFullForm({
     setFullFormState(prevState => ({ ...prevState, priceSettings: data }));
   };
 
-  const onChangeFilterForm = (
-    data: ProductFilterCheeseFormDto | ProductFilterMeatFormDto,
-    type: ProductCategory
-  ) => {
-    if (type === 'cheese') {
-      setFullFormState(prevState => ({
-        ...prevState,
-        cheeseCategories: data as ProductFilterCheeseFormDto,
-      }));
-    } else {
-      setFullFormState(prevState => ({
-        ...prevState,
-        meatCategories: data as ProductFilterMeatFormDto,
-      }));
-    }
-  };
-
   const onChangeRecommended = (recommendedIds: number[]) => {
     setFullFormState(prevState => ({ ...prevState, productSelect: recommendedIds }));
   };
+
+  const onFilterFormChange = React.useCallback(
+    (selectedCategories: Record<string, number>) => {
+      setFullFormState(prevState => ({
+        ...prevState,
+        categoriesIds: selectedCategories,
+      }));
+    },
+    []
+  );
 
   const recommendedProducts: SelectProduct[] =
     products?.map(product => ({
@@ -91,11 +80,11 @@ export function ProductFullForm({
       title: product.title.ru,
       image: product.images[0]?.small || '',
       category: product.category?.key || '',
-      characteristics: product.characteristics,
+      categories: product.categories,
     })) || [];
 
-  const selectCategoryOptions = categories.map(category => ({
-    value: category.key,
+  const productTypeOptions = categories.map(category => ({
+    value: category.id,
     label: category.title.ru,
   }));
 
@@ -109,7 +98,7 @@ export function ProductFullForm({
 
       <TabPanel value={activeTabId} index="settings">
         <ProductBasicSettingsForm
-          categories={selectCategoryOptions}
+          productTypes={productTypeOptions}
           mode={mode}
           defaultValues={fullFormState.basicSettings}
           onChange={handleChangeBasicSettingsForm}
@@ -124,27 +113,19 @@ export function ProductFullForm({
       </TabPanel>
 
       <TabPanel value={activeTabId} index="filters">
-        {fullFormState.basicSettings.categoryKey === 'meat' && (
-          <ProductFilterForm
-            type="meat"
-            meatDefaultValues={fullFormState.meatCategories}
-            onChange={onChangeFilterForm}
-          />
-        )}
-        {fullFormState.basicSettings.categoryKey === 'cheese' && (
-          <ProductFilterForm
-            type="cheese"
-            cheeseDefaultValues={fullFormState.cheeseCategories}
-            onChange={onChangeFilterForm}
-          />
-        )}
+        <ProductFilterForm
+          defaultValues={fullFormState.categoriesIds}
+          productTypeId={fullFormState.basicSettings.productType as string}
+          categories={categories}
+          onChange={onFilterFormChange}
+        />
       </TabPanel>
 
       <TabPanel value={activeTabId} index="recommended_products">
         <ProductSelectForm
           isLoading={isProductsLoading}
           selected={fullFormState.productSelect || []}
-          categories={selectCategoryOptions}
+          categories={productTypeOptions}
           products={recommendedProducts}
           onChange={onChangeRecommended}
         />

@@ -16,3 +16,9 @@ export function getDeclensionWordByCount(count: number, variations: string[]) {
       return variations[0];
   }
 }
+
+export const generateMockId = (() => {
+  let id = 1;
+  // eslint-disable-next-line no-plusplus
+  return () => id++;
+})();

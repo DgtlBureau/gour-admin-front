@@ -41,7 +41,7 @@ function RightContent({ onSave, onCancel }: RightContentProps) {
   );
 }
 
-function CreateStockView() {
+function EditStockView() {
   const { id } = useParams();
 
   const to = useTo();
@@ -83,7 +83,7 @@ function CreateStockView() {
   const categories =
     categoriesData?.map(it => ({
       label: it.title.ru,
-      value: it.key,
+      value: it.id,
     })) || [];
 
   const products =
@@ -91,8 +91,8 @@ function CreateStockView() {
       id: it.id,
       title: it.title.ru,
       image: it.images[0]?.small || noImage,
-      category: it.category?.key,
-      characteristics: it.characteristics,
+      category: it.category?.key, // FIXME: удалить использование category
+      categories: it.categories,
     })) || [];
 
   const goToStocks = () => to(Path.STOCKS);
@@ -205,4 +205,4 @@ function CreateStockView() {
   );
 }
 
-export default CreateStockView;
+export default EditStockView;

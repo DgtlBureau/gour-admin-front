@@ -6,7 +6,6 @@ import { FormControlLabel, FormLabel, Grid } from '@mui/material';
 import { RadioButton } from '../../UI/RadioButton/RadioButton';
 import { HFTextField } from '../../HookForm/HFTextField';
 import { HFSelect } from '../../HookForm/HFSelect';
-import { HFTextarea } from '../../HookForm/HFTextarea';
 import { HFRadioGroup } from '../../HookForm/HFRadioGroup';
 import { HFUploadPhoto } from '../../HookForm/HFUploadPhoto';
 import { ProductBasicSettingsFormDto } from '../../../@types/dto/form/product-basic-settings.dto';
@@ -34,8 +33,8 @@ const sx = {
 type Props = {
   defaultValues?: ProductBasicSettingsFormDto;
   isLoading?: boolean;
-  categories: {
-    value: string;
+  productTypes: {
+    value: number;
     label: string;
   }[];
   mode: 'create' | 'edit';
@@ -45,7 +44,7 @@ type Props = {
 export function ProductBasicSettingsForm({
   onChange,
   defaultValues,
-  categories,
+  productTypes,
   mode,
 }: Props) {
   const values = useForm<ProductBasicSettingsFormDto>({
@@ -66,7 +65,7 @@ export function ProductBasicSettingsForm({
   const change = () => onChange(values.getValues());
 
   const selectCategory = (newValue: string | number) => {
-    values.setValue('categoryKey', newValue.toString());
+    values.setValue('productType', newValue.toString()); // FIXME: исправить на number
     change();
   };
 
@@ -87,18 +86,17 @@ export function ProductBasicSettingsForm({
             <Grid item md>
               <HFTextField name="title" label="Название" />
             </Grid>
-            {mode === 'create' && (
-              <Grid item md={4}>
-                <HFSelect
-                  sx={sx.category}
-                  label="Категория"
-                  options={categories}
-                  name="categoryKey"
-                  placeholder="Категория"
-                  onChange={selectCategory}
-                />
-              </Grid>
-            )}
+            {/* {mode === 'create' && ( */}
+            <Grid item md={4}>
+              <HFSelect
+                sx={sx.category}
+                label="Категория"
+                options={productTypes}
+                name="productType"
+                placeholder="Категория"
+                onChange={selectCategory}
+              />
+            </Grid>
           </Grid>
           <Grid item md={8} sx={sx.images}>
             <HFUploadPhoto

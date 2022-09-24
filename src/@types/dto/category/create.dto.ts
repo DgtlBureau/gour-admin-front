@@ -1,9 +1,7 @@
-import { TranslatableStringDto } from '../translatable-string.dto';
-import { TranslatableTextDto } from '../translatable-text.dto';
+import { TranslatableString } from '../../entities/TranslatableString';
 
 export type CategoryCreateDto = Readonly<{
-  title: TranslatableStringDto;
-  description: TranslatableTextDto;
-  icon: string;
-  key: string;
+  title: TranslatableString;
+  subCategoriesIds?: number[];
+  parentCategoriesIds?: number[];
 }>;

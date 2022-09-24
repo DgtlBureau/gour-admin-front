@@ -8,22 +8,26 @@ export const filterProductBySelects = (
   product: Product,
   selectsValues: Record<string, string | undefined>
 ) =>
-  Object.keys(product.characteristics).every(key => {
+  Object.keys(product.categories).every(key => {
     if (!selectsValues[key]) return true;
-    return selectsValues[key] === product.characteristics[key];
+    return false; // FIXME:
+    // return selectsValues[key] === product.categories[key]; // FIXME:
   });
 
 export const filterProductByTab = (
-  tabId: string,
+  tabId: string | number,
   product: Product,
   selectedProductIds: number[]
 ) => {
-  switch (tabId) {
-    case 'selected':
-      return isProductSelected(product.id, selectedProductIds);
-    default:
-      return product.category === tabId || tabId === 'all';
+  if (tabId === 'selected') {
+    return isProductSelected(product.id, selectedProductIds);
   }
+
+  const isProductTypeId = typeof tabId === 'number'; // FIXME: бесполезная проверка, вроде как
+  if (isProductTypeId) {
+    return product.categories?.some(category => category.id === tabId);
+  }
+  return product.category === tabId || tabId === 'all';
 };
 
 // eslint-disable-next-line
@@ -42,7 +46,7 @@ export const filterByAllParams = (
   selectedProductIds: number[]
 ) =>
   products.filter(product => {
-    const isPassedBySelects = filterProductBySelects(product, selectsValues);
+    const isPassedBySelects = true || filterProductBySelects(product, selectsValues); // FIXME:
     const isPassedByQuery = filterProductByQuery(product, query);
     const isPassedByTab = filterProductByTab(selectedTabKey, product, selectedProductIds);
 

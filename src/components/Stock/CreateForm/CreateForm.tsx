@@ -20,7 +20,7 @@ type Props = {
   products: Product[];
   categories: {
     label: string;
-    value: string;
+    value: number;
   }[];
   defaultValues?: CreateStockFormDto;
   submitBtnRef?: RefObject<HTMLButtonElement>;
@@ -83,8 +83,6 @@ export function CreateStockForm({
     values.setValue(field, undefined);
     // change(values.getValues());
   };
-
-  console.log(123, values.formState.errors);
 
   return (
     <Box>

@@ -10,6 +10,7 @@ import { isProductSelected, filterByAllParams } from './selectHelper';
 import { ProgressLinear } from '../../UI/ProgressLinear/ProgressLinear';
 import { ALL_CHARACTERISTICS } from '../../../constants/characteristics';
 import { TranslatableString } from '../../../@types/entities/TranslatableString';
+import { TopLevelCategory } from '../../../@types/entities/Category';
 
 const sx = {
   productsCount: {
@@ -27,7 +28,8 @@ export type Product = {
   title: string;
   image: string;
   category: string;
-  characteristics: { [key in string]: string };
+  // characteristics: { [key in string]: string };
+  categories: TopLevelCategory[];
 };
 
 export type SelectCharacteristic = {
@@ -43,7 +45,7 @@ export type SelectCharacteristic = {
 export type ProductSelectFormProps = {
   selected: number[];
   categories: {
-    value: string;
+    value: number;
     label: string;
   }[];
   products: Product[];
@@ -142,11 +144,11 @@ export function ProductSelectForm({
         onChange={changeTab}
       />
 
-      <SelectsList
+      {/* <SelectsList
         characteristics={filteredCharacteristics}
         selectValues={selectValues}
         setSelectValues={setSelectValues}
-      />
+      /> */}
 
       <ProductSelectList
         products={filteredProducts}

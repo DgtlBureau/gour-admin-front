@@ -52,7 +52,7 @@ function CreateProductView() {
   const [activeTabId, setActiveTabId] = useState('settings');
   const [fullFormState, setFullFormState] = useState<FullFormType>({
     basicSettings: {
-      categoryKey: 'cheese',
+      productType: null,
       title: '',
       description: '',
       metaTitle: '',
@@ -66,6 +66,7 @@ function CreateProductView() {
       companyDiscount: 0,
       collectiveDiscount: 0,
     },
+    categoriesIds: {},
     productSelect: [],
   });
 
@@ -75,7 +76,10 @@ function CreateProductView() {
   const { data: categories = [] } = useGetAllCategoriesQuery();
 
   const { data: productsData, isLoading: isProductsLoading = false } =
-    useGetAllProductsQuery({}, { skip: activeTabId !== 'recommended_products' });
+    useGetAllProductsQuery(
+      { withCategories: true },
+      { skip: activeTabId !== 'recommended_products' }
+    );
 
   const uploadPicture = async (file?: File | string, label?: string) => {
     if (!file || typeof file === 'string') return undefined;
@@ -97,33 +101,21 @@ function CreateProductView() {
   };
 
   const onSave = async () => {
-    const {
-      basicSettings,
-      priceSettings,
-      cheeseCategories,
-      meatCategories,
-      productSelect,
-    } = fullFormState;
+    const { basicSettings, priceSettings, productSelect } = fullFormState;
 
-    const characteristics =
-      basicSettings.categoryKey === 'cheese' ? cheeseCategories : meatCategories;
+    const productTypeId = Number(fullFormState.basicSettings.productType);
+    const categoryIds = [
+      ...Object.values(fullFormState.categoriesIds),
+      productTypeId,
+    ].filter(i => i);
 
-    const categoryId =
-      categories.find(category => category.key === basicSettings.categoryKey)?.id || 0;
-
-    const roleDiscounts =
-      roles.map(role => {
-        if (role.key === 'COMPANY') {
-          return {
-            role: role.id,
-            cheeseCoin: priceSettings.companyDiscount,
-          };
-        }
-        return {
-          role: role.id,
-          cheeseCoin: priceSettings.collectiveDiscount,
-        };
-      }) || [];
+    const roleDiscounts = roles.map(role => ({
+      role: role.id,
+      cheeseCoin:
+        role.key === 'COMPANY'
+          ? priceSettings.companyDiscount
+          : priceSettings.collectiveDiscount,
+    }));
 
     const fistImage = await uploadPicture(basicSettings.firstImage, '1');
     const secondImage = await uploadPicture(basicSettings.secondImage, '2');
@@ -146,8 +138,7 @@ function CreateProductView() {
       price: {
         cheeseCoin: +priceSettings.cheeseCoin,
       },
-      characteristics: characteristics || {},
-      category: categoryId,
+      categoryIds,
       similarProducts: productSelect || [],
       roleDiscounts,
     };
