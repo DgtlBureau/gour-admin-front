@@ -2,7 +2,7 @@ import { commonApi } from './commonApi';
 import { Path } from '../constants/routes';
 import { CategoryCreateDto } from '../@types/dto/category/create.dto';
 import { CategoryUpdateDto } from '../@types/dto/category/update.dto';
-import { TopLevelCategory } from '../@types/entities/Category';
+import { Category, TopLevelCategory } from '../@types/entities/Category';
 
 export const categoryApi = commonApi.injectEndpoints({
   endpoints: builder => ({
@@ -19,7 +19,7 @@ export const categoryApi = commonApi.injectEndpoints({
             ]
           : [{ type: 'Category', id: 'LIST' }],
     }),
-    createCategory: builder.mutation<void, CategoryCreateDto>({
+    createCategory: builder.mutation<Category, CategoryCreateDto>({
       query: body => ({
         url: Path.CATEGORIES,
         method: 'POST',

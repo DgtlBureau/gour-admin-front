@@ -2,7 +2,10 @@ import React from 'react';
 import { Accordion, AccordionDetails, AccordionSummary } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
-import type { TopLevelCategory } from '../../../@types/entities/Category';
+import type {
+  MidLevelCategory,
+  TopLevelCategory,
+} from '../../../@types/entities/Category';
 
 import { Box } from '../../UI/Box/Box';
 import { Button } from '../../UI/Button/Button';
@@ -13,10 +16,10 @@ import { sx } from './ProductType.styles';
 
 type Props = {
   productType: TopLevelCategory;
-  onEdit: () => void;
-  onDelete: () => void;
-  onCreateCategory: () => void;
-  onEditCategory: (id: number) => void;
+  onEdit: (productTypeId: number) => void;
+  onDelete: (productTypeId: number) => void;
+  onCreateCategory: (productType: TopLevelCategory) => void;
+  onEditCategory: (category: MidLevelCategory, productType: TopLevelCategory) => void;
   onDeleteCategory: (id: number) => void;
 };
 
@@ -34,10 +37,10 @@ export function CategoryProductType({
         <Box sx={sx.header}>
           <Typography variant="h6">{productType.title.ru}</Typography>
           <Box sx={sx.buttons}>
-            <Button variant="outlined" onClick={onEdit}>
+            <Button variant="outlined" onClick={() => onEdit(productType.id)}>
               Редактировать
             </Button>
-            <Button variant="outlined" onClick={onDelete}>
+            <Button variant="outlined" onClick={() => onDelete(productType.id)}>
               Удалить
             </Button>
           </Box>
@@ -46,11 +49,11 @@ export function CategoryProductType({
       <AccordionDetails>
         <CategoriesTable
           categories={productType.subCategories || []}
-          onEdit={onEditCategory}
+          onEdit={category => onEditCategory(category, productType)}
           onDelete={onDeleteCategory}
         />
         <Box sx={sx.bottomButton}>
-          <Button onClick={onCreateCategory}>Создать категорию</Button>
+          <Button onClick={() => onCreateCategory(productType)}>Создать категорию</Button>
         </Box>
       </AccordionDetails>
     </Accordion>

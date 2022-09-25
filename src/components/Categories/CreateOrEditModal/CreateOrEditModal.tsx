@@ -11,7 +11,8 @@ import { getSubCategoriesObject } from '../categories.helper';
 export type CreateModalProps = {
   isOpen: boolean;
   currentCategory?: MidLevelCategory;
-  onSave: (category: CreateFormType) => void;
+  onUpdate: (category: CreateFormType) => void;
+  onCreate: (category: CreateFormType) => void;
   onClose: () => void;
 };
 
@@ -40,7 +41,8 @@ function ModalActions({ onCancel }: ModalActionsProps) {
 export function CreateOrEditModalCategoryModal({
   isOpen,
   currentCategory,
-  onSave,
+  onUpdate,
+  onCreate,
   onClose,
 }: CreateModalProps) {
   const modalTitle = currentCategory
@@ -52,6 +54,14 @@ export function CreateOrEditModalCategoryModal({
     subCategories: getSubCategoriesObject(currentCategory?.subCategories || []) || {},
   };
 
+  const handleSave = (data: CreateFormType) => {
+    if (currentCategory) {
+      onUpdate(data);
+    } else {
+      onCreate(data);
+    }
+  };
+
   return (
     <Modal
       isOpen={isOpen}
@@ -59,7 +69,7 @@ export function CreateOrEditModalCategoryModal({
       actions={<ModalActions onCancel={onClose} />}
       onClose={onClose}
     >
-      <CreateOrEditCategoryForm onSave={onSave} defaultValues={defaultValues} />
+      <CreateOrEditCategoryForm onSave={handleSave} defaultValues={defaultValues} />
     </Modal>
   );
 }
