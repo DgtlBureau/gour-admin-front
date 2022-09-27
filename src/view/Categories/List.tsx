@@ -217,7 +217,6 @@ function ListCategoriesView() {
 
       setOpenedProductTypeId(null);
     } catch (error) {
-      console.log(error);
       eventBus.emit(EventTypes.notification, {
         message: 'Ошибка создания типа продукта',
         type: NotificationType.DANGER,

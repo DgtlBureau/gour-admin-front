@@ -125,7 +125,7 @@ export function ProductFullForm({
         <ProductSelectForm
           isLoading={isProductsLoading}
           selected={fullFormState.productSelect || []}
-          categories={productTypeOptions}
+          categories={categories}
           products={recommendedProducts}
           onChange={onChangeRecommended}
         />

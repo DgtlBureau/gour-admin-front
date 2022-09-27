@@ -9,7 +9,7 @@ import { Table } from '../../UI/Table/Table';
 import { ProductTableDto } from '../../../@types/dto/table/products.dto';
 import { Options } from '../../../constants/tabs';
 
-const titleList = ['Фото', 'Название', 'Категория', 'Цена', 'Действие'];
+const titleList = ['Фото', 'Название', 'Цена', 'Действие'];
 
 export type ProductsTableProps = {
   products: ProductTableDto[];
@@ -63,8 +63,6 @@ export function ProductsTable({
           <img style={{ height: '100%' }} src={product.image} alt="product" />
         </Box>,
         product.title,
-        categories.find(category => product.categoriesIds.includes(category.id))?.label ||
-          'нет категории',
         `${product.price}₡`,
         <Box>
           <IconButton onClick={() => onEdit(product.id)} component="symbol">
