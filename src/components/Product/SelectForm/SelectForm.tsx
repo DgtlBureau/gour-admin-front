@@ -80,6 +80,7 @@ export function ProductSelectForm({
     categories.find(topCategory => topCategory.id === selectedTabKey)?.subCategories ||
     [];
 
+
   const selectProduct = (productId: number) => {
     if (isProductSelected(productId, selected)) {
       const newSelectedProductsList = selected.filter(id => id !== productId);
