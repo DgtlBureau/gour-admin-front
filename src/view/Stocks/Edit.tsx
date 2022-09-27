@@ -46,7 +46,7 @@ function EditStockView() {
 
   const to = useTo();
 
-  const { data: productsData } = useGetAllProductsQuery({});
+  const { data: productsData } = useGetAllProductsQuery({ withCategories: true });
   const { data: categoriesData } = useGetAllCategoriesQuery();
   const { data: promotion, isLoading, isError } = useGetPromotionByIdQuery(Number(id));
 
@@ -79,12 +79,6 @@ function EditStockView() {
 
   const submitBtnRef = useRef<HTMLButtonElement>(null);
   const submitStockForm = () => submitBtnRef?.current?.click();
-
-  const categories =
-    categoriesData?.map(it => ({
-      label: it.title.ru,
-      value: it.id,
-    })) || [];
 
   const products =
     productsData?.products.map(it => ({
@@ -196,7 +190,7 @@ function EditStockView() {
       <CreateStockForm
         key={`stock-create/${id}`}
         products={products}
-        categories={categories}
+        categories={categoriesData || []}
         defaultValues={defaultValues}
         submitBtnRef={submitBtnRef}
         onChange={save}
