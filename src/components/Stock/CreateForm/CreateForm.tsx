@@ -3,7 +3,8 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Grid, FormControlLabel, FormLabel } from '@mui/material';
 
-import { Product, ProductSelectForm } from '../../Product/SelectForm/SelectForm';
+import { ProductSelectForm } from '../../Product/SelectForm/SelectForm';
+import { Product } from '../../Product/SelectForm/types';
 import { Box } from '../../UI/Box/Box';
 import { Tabs } from '../../UI/Tabs/Tabs';
 import { Typography } from '../../UI/Typography/Typography';

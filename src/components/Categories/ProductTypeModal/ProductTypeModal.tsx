@@ -1,7 +1,8 @@
-import { yupResolver } from '@hookform/resolvers/yup';
 import React, { useEffect } from 'react';
+import { yupResolver } from '@hookform/resolvers/yup';
 import { FormProvider, useForm } from 'react-hook-form';
-import { Category, TopLevelCategory } from '../../../@types/entities/Category';
+
+import { TopLevelCategory } from '../../../@types/entities/Category';
 import { HFTextField } from '../../HookForm/HFTextField';
 import { Button } from '../../UI/Button/Button';
 import { Modal } from '../../UI/Modal/Modal';

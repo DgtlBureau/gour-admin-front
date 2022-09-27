@@ -5,22 +5,27 @@ const tabSx = {
   minWidth: 0,
 };
 
-export type TabsProps = {
-  value: string | number;
+export type TabsProps<T> = {
+  value: T;
   options: {
-    value: string | number;
+    value: T;
     label: string;
   }[];
   sx?: SxProps;
-  onChange: (val: string) => void;
+  onChange: (val: T) => void;
 };
 
-export function Tabs({ value, options, sx, onChange }: TabsProps) {
+export function Tabs<T = string | number>({
+  value,
+  options,
+  sx,
+  onChange,
+}: TabsProps<T>) {
   return (
     <MUITabs
       color="accent.main"
       value={value}
-      onChange={(_, newValue: string) => onChange(newValue)}
+      onChange={(_, newValue: T) => onChange(newValue)}
       sx={sx}
     >
       {options.map(option => (
@@ -28,7 +33,7 @@ export function Tabs({ value, options, sx, onChange }: TabsProps) {
           sx={tabSx}
           label={option.label}
           value={option.value}
-          key={option.value}
+          key={String(option.value)}
           color="secondary"
         />
       ))}

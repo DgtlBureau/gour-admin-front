@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import {
-  ProductFilterCheeseFormDto,
-  ProductFilterMeatFormDto,
-} from '../../@types/dto/form/product-filters.dto';
+
 import { ProductCreateDto } from '../../@types/dto/product/create.dto';
 import { NotificationType } from '../../@types/entities/Notification';
 import { useGetAllCategoriesQuery } from '../../api/categoryApi';
@@ -123,9 +120,8 @@ function EditProductView() {
     const productSelect =
       product.similarProducts?.map(similarProduct => similarProduct.id) || [];
 
-    // FIXME: переписать на number тип, не критично
     // TODO: обработка старых продуктов, можно удалить в будущем
-    const productType = product.categories[0].id?.toString() || null;
+    const productType = product.categories[0].id || null;
     const categoriesIds =
       product.categories[0].subCategories?.reduce(
         (acc, midCategory) => ({
@@ -137,7 +133,7 @@ function EditProductView() {
 
     setFullFormState({
       basicSettings: {
-        productType, // FIXME: исправить тип
+        productType,
         title: product.title[lang] || '',
         description: product.description[lang] || '',
         metaTitle: product.meta?.metaTitle[lang] || '',

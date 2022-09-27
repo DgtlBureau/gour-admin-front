@@ -36,8 +36,8 @@ export type Row = {
   cells: ReactNode[];
 };
 
-type Props = {
-  tabs?: TabsProps;
+type Props<T = string | number> = {
+  tabs?: TabsProps<T>;
   rowTitleList: string[];
   rows: Row[];
   rowsCount?: number;
@@ -48,7 +48,7 @@ type Props = {
   onRowsPerPageChange: (event: ChangeEvent<HTMLInputElement>) => void;
 };
 
-export function Table({
+export function Table<T = string | number>({
   tabs,
   rowTitleList,
   rows,
@@ -58,7 +58,7 @@ export function Table({
   rowsCount,
   onPageChange,
   onRowsPerPageChange,
-}: Props) {
+}: Props<T>) {
   const shownRows =
     rowsPerPage > 0
       ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)

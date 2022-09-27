@@ -65,7 +65,7 @@ export function ProductBasicSettingsForm({
   const change = () => onChange(values.getValues());
 
   const selectCategory = (newValue: string | number) => {
-    values.setValue('productType', newValue.toString()); // FIXME: исправить на number
+    values.setValue('productType', Number(newValue));
     change();
   };
 
@@ -86,7 +86,6 @@ export function ProductBasicSettingsForm({
             <Grid item md>
               <HFTextField name="title" label="Название" />
             </Grid>
-            {/* {mode === 'create' && ( */}
             <Grid item md={4}>
               <HFSelect
                 sx={sx.category}

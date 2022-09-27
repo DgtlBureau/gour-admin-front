@@ -1,6 +1,5 @@
 import React, { Dispatch, SetStateAction } from 'react';
 import { ProductBasicSettingsFormDto } from '../../../@types/dto/form/product-basic-settings.dto';
-import {} from '../../../@types/dto/form/product-filters.dto';
 import { ProductPriceFormDto } from '../../../@types/dto/form/product-price.dto';
 import { TopLevelCategory } from '../../../@types/entities/Category';
 import { Product } from '../../../@types/entities/Product';
@@ -10,7 +9,8 @@ import { Tabs } from '../../UI/Tabs/Tabs';
 import { ProductBasicSettingsForm } from '../BasicSettingsForm/BasicSettingsForm';
 import { ProductFilterForm } from '../FilterForm/FilterForm';
 import { PriceProductForm } from '../PriceForm/PriceForm';
-import { Product as SelectProduct, ProductSelectForm } from '../SelectForm/SelectForm';
+import { ProductSelectForm } from '../SelectForm/SelectForm';
+import type { Product as SelectProduct } from '../SelectForm/types';
 import { createProductTabOptions } from './fullFormConstants';
 
 export type FullFormType = {
@@ -79,7 +79,6 @@ export function ProductFullForm({
       id: product.id,
       title: product.title.ru,
       image: product.images[0]?.small || '',
-      category: product.category?.key || '',
       categories: product.categories,
     })) || [];
 
@@ -115,7 +114,7 @@ export function ProductFullForm({
       <TabPanel value={activeTabId} index="filters">
         <ProductFilterForm
           defaultValues={fullFormState.categoriesIds}
-          productTypeId={fullFormState.basicSettings.productType as string}
+          productTypeId={fullFormState.basicSettings.productType}
           categories={categories}
           onChange={onFilterFormChange}
         />

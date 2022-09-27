@@ -7,7 +7,7 @@ import { Box } from '../../UI/Box/Box';
 import { IconButton } from '../../UI/IconButton/IconButton';
 import { Table } from '../../UI/Table/Table';
 import { ProductTableDto } from '../../../@types/dto/table/products.dto';
-import { Options } from '../../../constants/tabs';
+import { TabsKeys } from '../SelectForm/types';
 
 const titleList = ['Фото', 'Название', 'Цена', 'Действие'];
 
@@ -37,24 +37,24 @@ export function ProductsTable({
   onEdit,
   onRemove,
 }: ProductsTableProps) {
-  const [selectedId, setSelectedId] = useState<string>(Options.ALL);
+  const [selectedId, setSelectedId] = useState<TabsKeys>('all');
 
   const tabsOptions = [
     {
-      value: Options.ALL,
+      value: 'all',
       label: 'Всё',
-    },
+    } as const,
     ...categories.map(category => ({
       value: category.id,
       label: category.label,
     })),
   ];
 
-  const changeTab = (id: string) => setSelectedId(id);
+  const changeTab = (id: TabsKeys) => setSelectedId(id);
 
   const rows = products
     .filter(
-      product => product.categoriesIds.includes(+selectedId) || selectedId === Options.ALL
+      product => product.categoriesIds.includes(+selectedId) || selectedId === 'all'
     )
     .map((product, i) => ({
       id: i,
@@ -83,7 +83,7 @@ export function ProductsTable({
 
   return (
     <Box>
-      <Table
+      <Table<TabsKeys>
         tabs={tabs}
         rowTitleList={titleList}
         rows={rows}

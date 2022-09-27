@@ -11,9 +11,8 @@ export type ProductUpdateDto = Readonly<
     images: number[];
     price: PriceDto;
     meta?: PageMetaDto;
-    // characteristics: Record<string, string | number>; // FIXME:
     moyskladCode?: number;
-    category: number; // FIXME:
+    categoryIds?: number[];
     similarProducts?: number[];
     roleDiscounts?: {
       role: number;
