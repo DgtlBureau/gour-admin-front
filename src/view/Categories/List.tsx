@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 
-import { CategoryCreateDto } from '../../@types/dto/category/create.dto';
 import { Header } from '../../components/Header/Header';
 import { Button } from '../../components/UI/Button/Button';
 import { Typography } from '../../components/UI/Typography/Typography';
@@ -15,10 +14,7 @@ import {
 import { eventBus, EventTypes } from '../../packages/EventBus';
 import { NotificationType } from '../../@types/entities/Notification';
 import { CategoryProductType } from '../../components/Categories/ProductType/ProductType';
-import type {
-  CreateFormType,
-  EditableCategory,
-} from '../../components/Categories/CreateOrEditForm/types';
+import type { CreateFormType } from '../../components/Categories/CreateOrEditForm/types';
 import { MidLevelCategory, TopLevelCategory } from '../../@types/entities/Category';
 import { ProductTypeModal } from '../../components/Categories/ProductTypeModal/ProductTypeModal';
 import { getEditedCategories } from '../../components/Categories/categories.helper';
@@ -165,7 +161,6 @@ function ListCategoriesView() {
           parentCategoriesIds: [categoryId],
         }).unwrap();
       });
-
       const updatedCategoriesPromises = editedSubCategories.map(async subCategory => {
         if (!subCategory.id) return;
         editCategory({
@@ -176,7 +171,6 @@ function ListCategoriesView() {
           },
         }).unwrap();
       });
-
       await Promise.all([...newSubCategoriesPromises, ...updatedCategoriesPromises]);
       eventBus.emit(EventTypes.notification, {
         message: 'Категория обновлена',
