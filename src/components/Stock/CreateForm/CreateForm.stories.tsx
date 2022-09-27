@@ -26,7 +26,7 @@ function createProduct(
     title,
     category,
     image,
-    categories: [] as any[],
+    categories: [],
   };
 }
 
@@ -137,14 +137,5 @@ DefaultState.args = {
       ]
     ),
   ],
-  categories: [
-    {
-      value: generateMockId(),
-      label: 'Сыры',
-    },
-    {
-      value: generateMockId(),
-      label: 'Мясо',
-    },
-  ],
+  categories: [],
 };

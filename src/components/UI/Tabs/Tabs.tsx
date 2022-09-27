@@ -6,7 +6,7 @@ const tabSx = {
 };
 
 export type TabsProps = {
-  value: string;
+  value: string | number;
   options: {
     value: string | number;
     label: string;

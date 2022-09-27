@@ -14,14 +14,12 @@ import { HFTextarea } from '../../HookForm/HFTextarea';
 import { HFUploadPhoto } from '../../HookForm/HFUploadPhoto';
 import { HFRadioGroup } from '../../HookForm/HFRadioGroup';
 import { CreateStockFormDto } from '../../../@types/dto/form/create-stock.dto';
+import { TopLevelCategory } from '../../../@types/entities/Category';
 import schema from './validation';
 
 type Props = {
   products: Product[];
-  categories: {
-    label: string;
-    value: number;
-  }[];
+  categories: TopLevelCategory[];
   defaultValues?: CreateStockFormDto;
   submitBtnRef?: RefObject<HTMLButtonElement>;
   onChange: (data: CreateStockFormDto) => void;

@@ -32,22 +32,9 @@ export type Product = {
   categories: TopLevelCategory[];
 };
 
-export type SelectCharacteristic = {
-  key: string;
-  label: TranslatableString;
-  categoryKey: string;
-  values: {
-    key: string;
-    label: TranslatableString;
-  }[];
-};
-
 export type ProductSelectFormProps = {
   selected: number[];
-  categories: {
-    value: number;
-    label: string;
-  }[];
+  categories: TopLevelCategory[];
   products: Product[];
   isLoading?: boolean;
   onChange(selected: number[]): void;
@@ -73,27 +60,25 @@ export function ProductSelectForm({
   onChange,
 }: ProductSelectFormProps) {
   const [searchQuery, setSearchQuery] = useState<string>('');
-  const [selectedTabKey, setSelectedTabKey] = useState<string>('all');
-  const [filteredProducts, setFilteredProducts] = useState<Product[]>(products);
-  const [selectValues, setSelectValues] = useState<Record<string, string | undefined>>(
-    {}
-  );
+  const [selectedTabKey, setSelectedTabKey] = useState<string | number>('all');
+  const [selectValues, setSelectValues] = useState<Record<string, string | number>>({});
+
+  const filteredProducts = React.useMemo<Product[]>(() => {
+    const query = searchQuery.trim().toLowerCase();
+    return filterByAllParams(products, query, selectValues, selectedTabKey, selected);
+  }, [products, searchQuery, selectedTabKey, selectValues]);
 
   const tabOptions = [
     ...defaultTabs,
     ...categories.map(category => ({
-      value: category.value,
-      label: category.label,
+      value: category.id,
+      label: category.title.ru,
     })),
   ];
 
-  const filteredCharacteristics = Object.keys(ALL_CHARACTERISTICS)
-    .map(key => ({ ...ALL_CHARACTERISTICS[key], key }))
-    .filter(
-      characteristic =>
-        characteristic.categoryKey === selectedTabKey ||
-        characteristic.categoryKey === 'all'
-    );
+  const filteredCharacteristics =
+    categories.find(topCategory => topCategory.id === selectedTabKey)?.subCategories ||
+    [];
 
   const selectProduct = (productId: number) => {
     if (isProductSelected(productId, selected)) {
@@ -109,14 +94,6 @@ export function ProductSelectForm({
     setSelectedTabKey(tabKey);
     setSelectValues({});
   };
-
-  useEffect(() => {
-    const query = searchQuery.trim().toLowerCase();
-
-    setFilteredProducts(
-      filterByAllParams(products, query, selectValues, selectedTabKey, selected)
-    );
-  }, [products, searchQuery, selectedTabKey, selectValues]);
 
   return (
     <Stack>
@@ -144,11 +121,11 @@ export function ProductSelectForm({
         onChange={changeTab}
       />
 
-      {/* <SelectsList
-        characteristics={filteredCharacteristics}
+      <SelectsList
+        categories={filteredCharacteristics}
         selectValues={selectValues}
         setSelectValues={setSelectValues}
-      /> */}
+      />
 
       <ProductSelectList
         products={filteredProducts}

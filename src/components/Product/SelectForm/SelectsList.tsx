@@ -1,17 +1,17 @@
 import { Grid } from '@mui/material';
 import React, { Dispatch, SetStateAction } from 'react';
+import { MidLevelCategory } from '../../../@types/entities/Category';
 
 import { Select } from '../../UI/Select/Select';
-import { SelectCharacteristic } from './SelectForm';
 
 type Props = {
-  characteristics: SelectCharacteristic[];
-  selectValues: Record<string, string | undefined>;
-  setSelectValues: Dispatch<SetStateAction<Record<string, string | undefined>>>;
+  categories: MidLevelCategory[];
+  selectValues: Record<string, string | number>;
+  setSelectValues: Dispatch<SetStateAction<Record<string, string | number>>>;
 };
 
-export function SelectsList({ characteristics, selectValues, setSelectValues }: Props) {
-  const handleChangeSelect = (newValue: string, characteristicKey: string) =>
+export function SelectsList({ categories, selectValues, setSelectValues }: Props) {
+  const handleChangeSelect = (newValue: string | number, characteristicKey: number) =>
     setSelectValues(prevList => ({
       ...prevList,
       [characteristicKey]: newValue,
@@ -19,24 +19,24 @@ export function SelectsList({ characteristics, selectValues, setSelectValues }: 
 
   return (
     <Grid container spacing={2}>
-      {characteristics.map(characteristic => (
-        <Grid item xs={6} md={4} lg={3} key={characteristic.key}>
+      {categories.map(midCategory => (
+        <Grid item xs={6} md={4} lg={3} key={midCategory.id}>
           <Select
-            label={characteristic.label.ru}
+            label={midCategory.title.ru}
             // placeholder={characteristic.label.ru}
-            value={selectValues[characteristic.key] || ''}
+            value={selectValues[midCategory.id]}
             options={[
               {
                 value: '',
-                label: characteristic.label.ru,
+                label: midCategory.title.ru,
               },
-              ...characteristic.values.map(value => ({
-                value: value.key,
-                label: value.label.ru,
+              ...midCategory.subCategories.map(lowCategory => ({
+                value: lowCategory.id,
+                label: lowCategory.title.ru,
               })),
             ]}
             onChange={newValue => {
-              handleChangeSelect(newValue.toString(), characteristic.key);
+              handleChangeSelect(newValue, midCategory.id);
             }}
           />
         </Grid>

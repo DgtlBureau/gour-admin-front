@@ -18,14 +18,14 @@ export const DefaultProductSelectForm = Template.bind({});
 const props: Partial<ProductSelectFormProps> = {
   products: [],
   categories: [
-    {
-      value: generateMockId(),
-      label: 'Сыры',
-    },
-    {
-      value: generateMockId(),
-      label: 'Мясо',
-    },
+    // {
+    //   value: generateMockId(),
+    //   label: 'Сыры',
+    // },
+    // {
+    //   value: generateMockId(),
+    //   label: 'Мясо',
+    // },
   ],
 };
 
