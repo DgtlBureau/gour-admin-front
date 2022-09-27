@@ -21,6 +21,7 @@ import type {
 } from '../../components/Categories/CreateOrEditForm/types';
 import { MidLevelCategory, TopLevelCategory } from '../../@types/entities/Category';
 import { ProductTypeModal } from '../../components/Categories/ProductTypeModal/ProductTypeModal';
+import { getEditedCategories } from '../../components/Categories/categories.helper';
 
 type RightContentProps = {
   onClick: () => void;
@@ -140,6 +141,12 @@ function ListCategoriesView() {
       : [];
 
     const newSubCategories = subCategoriesArray.filter(subCategory => !subCategory.id);
+    const createdCategories = subCategoriesArray.filter(subCategory => !!subCategory.id);
+
+    const editedSubCategories = getEditedCategories(
+      createdCategories,
+      openedCategory.category.subCategories
+    );
 
     try {
       await editCategory({
@@ -159,7 +166,18 @@ function ListCategoriesView() {
         }).unwrap();
       });
 
-      await Promise.all(newSubCategoriesPromises);
+      const updatedCategoriesPromises = editedSubCategories.map(async subCategory => {
+        if (!subCategory.id) return;
+        editCategory({
+          id: subCategory.id,
+          title: {
+            ru: subCategory.title,
+            en: '',
+          },
+        }).unwrap();
+      });
+
+      await Promise.all([...newSubCategoriesPromises, ...updatedCategoriesPromises]);
       eventBus.emit(EventTypes.notification, {
         message: 'Категория обновлена',
         type: NotificationType.SUCCESS,
