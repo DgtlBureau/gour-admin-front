@@ -50,9 +50,8 @@ export function Notifications() {
         case NotificationType.WARNING:
           return 'Внимание!';
         default:
-          break;
+          return null;
       }
-      return null;
     };
 
     eventBus.on(EventTypes.notification, res => {

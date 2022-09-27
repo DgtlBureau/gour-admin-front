@@ -38,7 +38,7 @@ function RightContent({ onSave, onCancel }: RightContentProps) {
 function CreateStockView() {
   const to = useTo();
 
-  const { data: productsData } = useGetAllProductsQuery({});
+  const { data: productsData } = useGetAllProductsQuery({ withCategories: true });
   const { data: categoriesData } = useGetAllCategoriesQuery();
 
   const [createPromotion] = useCreatePromotionMutation();
@@ -47,19 +47,13 @@ function CreateStockView() {
   const submitBtnRef = useRef<HTMLButtonElement>(null);
   const submitStockForm = () => submitBtnRef?.current?.click();
 
-  const categories =
-    categoriesData?.map(it => ({
-      label: it.title.ru,
-      value: it.key,
-    })) || [];
-
   const products =
     productsData?.products?.map(it => ({
       id: it.id,
       title: it.title.ru,
       image: it.images[0]?.small || noImage,
       category: it.category?.key,
-      characteristics: it.characteristics,
+      categories: it.categories,
     })) || [];
 
   const goToStocks = () => to(Path.STOCKS);
@@ -144,7 +138,7 @@ function CreateStockView() {
       />
       <CreateStockForm
         products={products}
-        categories={categories}
+        categories={categoriesData || []}
         submitBtnRef={submitBtnRef}
         onChange={save}
       />

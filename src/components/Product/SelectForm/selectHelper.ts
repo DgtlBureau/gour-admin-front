@@ -6,24 +6,27 @@ export const isProductSelected = (productId: number, selectedProductIds: number[
 
 export const filterProductBySelects = (
   product: Product,
-  selectsValues: Record<string, string | undefined>
+  selectsValues: Record<string, string | number>
 ) =>
-  Object.keys(product.characteristics).every(key => {
-    if (!selectsValues[key]) return true;
-    return selectsValues[key] === product.characteristics[key];
+  Object.values(selectsValues).every(categoryId => {
+    if (!categoryId) return true;
+    return product.categories.find(productCategory => productCategory.id === categoryId);
   });
 
 export const filterProductByTab = (
-  tabId: string,
+  tabId: string | number,
   product: Product,
   selectedProductIds: number[]
 ) => {
-  switch (tabId) {
-    case 'selected':
-      return isProductSelected(product.id, selectedProductIds);
-    default:
-      return product.category === tabId || tabId === 'all';
+  if (tabId === 'selected') {
+    return isProductSelected(product.id, selectedProductIds);
   }
+
+  const isProductTypeId = typeof tabId === 'number';
+  if (isProductTypeId) {
+    return product.categories?.some(category => category.id === tabId);
+  }
+  return product.category === tabId || tabId === 'all';
 };
 
 // eslint-disable-next-line
@@ -37,8 +40,8 @@ export const filterProductByQuery = (product: Product, searchQuery: string) => {
 export const filterByAllParams = (
   products: Product[],
   query: string,
-  selectsValues: Record<string, string | undefined>,
-  selectedTabKey: string,
+  selectsValues: Record<string, string | number>,
+  selectedTabKey: string | number,
   selectedProductIds: number[]
 ) =>
   products.filter(product => {

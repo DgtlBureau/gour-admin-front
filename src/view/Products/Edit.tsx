@@ -54,7 +54,7 @@ function EditProductView() {
   const [activeTabId, setActiveTabId] = useState('settings');
   const [fullFormState, setFullFormState] = useState<FullFormType>({
     basicSettings: {
-      categoryKey: 'cheese',
+      productType: null,
       title: '',
       description: '',
       metaTitle: '',
@@ -69,6 +69,7 @@ function EditProductView() {
       collectiveDiscount: 0,
     },
     productSelect: [],
+    categoriesIds: {},
   });
 
   const [uploadImage] = useUploadImageMutation();
@@ -84,6 +85,7 @@ function EditProductView() {
       withSimilarProducts: true,
       withMeta: true,
       withRoleDiscount: true,
+      withCategories: true,
     },
     { skip: !productId }
   );
@@ -92,6 +94,7 @@ function EditProductView() {
       withSimilarProducts: true,
       withMeta: true,
       withRoleDiscount: false,
+      withCategories: true,
     },
     { skip: activeTabId !== 'recommended_products' }
   );
@@ -120,9 +123,21 @@ function EditProductView() {
     const productSelect =
       product.similarProducts?.map(similarProduct => similarProduct.id) || [];
 
+    // FIXME: переписать на number тип, не критично
+    // TODO: обработка старых продуктов, можно удалить в будущем
+    const productType = product.categories[0].id?.toString() || null;
+    const categoriesIds =
+      product.categories[0].subCategories?.reduce(
+        (acc, midCategory) => ({
+          ...acc,
+          [midCategory.id]: midCategory.subCategories[0].id,
+        }),
+        {}
+      ) || [];
+
     setFullFormState({
       basicSettings: {
-        categoryKey: product.category.key,
+        productType, // FIXME: исправить тип
         title: product.title[lang] || '',
         description: product.description[lang] || '',
         metaTitle: product.meta?.metaTitle[lang] || '',
@@ -139,25 +154,19 @@ function EditProductView() {
         companyDiscount: 0,
         collectiveDiscount: 0,
       },
-      cheeseCategories: product.characteristics as ProductFilterCheeseFormDto,
-      meatCategories: product.characteristics as ProductFilterMeatFormDto,
+      categoriesIds,
       productSelect,
     });
   }, [product]);
 
   const onSave = async () => {
-    const {
-      basicSettings,
-      priceSettings,
-      cheeseCategories,
-      meatCategories,
-      productSelect,
-    } = fullFormState;
-    const characteristics =
-      basicSettings.categoryKey === 'cheese' ? cheeseCategories : meatCategories;
+    const { basicSettings, priceSettings, productSelect } = fullFormState;
 
-    const categoryId =
-      categories.find(category => category.key === basicSettings.categoryKey)?.id || 0;
+    const productTypeId = Number(fullFormState.basicSettings.productType);
+    const categoryIds = [
+      ...Object.values(fullFormState.categoriesIds),
+      productTypeId,
+    ].filter(i => i);
 
     const roleDiscounts = [
       {
@@ -200,8 +209,7 @@ function EditProductView() {
       price: {
         cheeseCoin: +priceSettings.cheeseCoin,
       },
-      characteristics: characteristics || {},
-      category: categoryId,
+      categoryIds,
       similarProducts: productSelect || [],
       roleDiscounts,
     };

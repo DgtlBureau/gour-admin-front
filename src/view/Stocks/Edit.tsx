@@ -41,12 +41,12 @@ function RightContent({ onSave, onCancel }: RightContentProps) {
   );
 }
 
-function CreateStockView() {
+function EditStockView() {
   const { id } = useParams();
 
   const to = useTo();
 
-  const { data: productsData } = useGetAllProductsQuery({});
+  const { data: productsData } = useGetAllProductsQuery({ withCategories: true });
   const { data: categoriesData } = useGetAllCategoriesQuery();
   const { data: promotion, isLoading, isError } = useGetPromotionByIdQuery(Number(id));
 
@@ -80,19 +80,13 @@ function CreateStockView() {
   const submitBtnRef = useRef<HTMLButtonElement>(null);
   const submitStockForm = () => submitBtnRef?.current?.click();
 
-  const categories =
-    categoriesData?.map(it => ({
-      label: it.title.ru,
-      value: it.key,
-    })) || [];
-
   const products =
     productsData?.products.map(it => ({
       id: it.id,
       title: it.title.ru,
       image: it.images[0]?.small || noImage,
-      category: it.category?.key,
-      characteristics: it.characteristics,
+      category: it.category?.key, // FIXME: удалить использование category
+      categories: it.categories,
     })) || [];
 
   const goToStocks = () => to(Path.STOCKS);
@@ -196,7 +190,7 @@ function CreateStockView() {
       <CreateStockForm
         key={`stock-create/${id}`}
         products={products}
-        categories={categories}
+        categories={categoriesData || []}
         defaultValues={defaultValues}
         submitBtnRef={submitBtnRef}
         onChange={save}
@@ -205,4 +199,4 @@ function CreateStockView() {
   );
 }
 
-export default CreateStockView;
+export default EditStockView;

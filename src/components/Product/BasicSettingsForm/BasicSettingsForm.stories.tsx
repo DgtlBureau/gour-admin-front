@@ -3,6 +3,7 @@ import { ComponentStory, Meta } from '@storybook/react';
 
 import { ProductBasicSettingsForm } from './BasicSettingsForm';
 import { ProductBasicSettingsFormDto } from '../../../@types/dto/form/product-basic-settings.dto';
+import { generateMockId } from '../../../utils/wordHelper';
 
 export default {
   component: ProductBasicSettingsForm,
@@ -10,7 +11,7 @@ export default {
 } as Meta;
 
 const defaultValues = {
-  categoryKey: 'cheese',
+  productType: null, // FIXME:
   title: '',
   metaTitle: '',
   metaDescription: '',
@@ -20,11 +21,11 @@ const defaultValues = {
 
 const categories = [
   {
-    value: 'cheese',
+    value: generateMockId(),
     label: 'Сыр',
   },
   {
-    value: 'meat',
+    value: generateMockId(),
     label: 'Мясо',
   },
 ];
@@ -33,7 +34,7 @@ const Template: ComponentStory<typeof ProductBasicSettingsForm> = function (args
   return (
     <ProductBasicSettingsForm
       {...args}
-      categories={categories}
+      productTypes={categories}
       defaultValues={defaultValues}
       mode="create"
     />

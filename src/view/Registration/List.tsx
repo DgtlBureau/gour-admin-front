@@ -23,7 +23,6 @@ function ListRegistrationsView() {
         type: NotificationType.SUCCESS,
       });
     } catch (error) {
-      console.log(error);
       eventBus.emit(EventTypes.notification, {
         message: 'Возникла ошибка',
         type: NotificationType.DANGER,
@@ -39,7 +38,6 @@ function ListRegistrationsView() {
         type: NotificationType.SUCCESS,
       });
     } catch (error) {
-      console.log(error);
       eventBus.emit(EventTypes.notification, {
         message: 'Возникла ошибка',
         type: NotificationType.DANGER,
@@ -51,7 +49,7 @@ function ListRegistrationsView() {
     id: client.id,
     name: `${client.lastName} ${client.firstName}`,
     phone: client.phone,
-    role: client.role.title,
+    role: client.role?.title || '',
     isApproved: client.isApproved,
   }));
 

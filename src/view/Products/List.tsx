@@ -31,6 +31,17 @@ function RightContent({ onUploadClick, onCreateClick }: Props) {
   );
 }
 
+// const getLinearProductCategories = (categories: TopLevelCategory[]) => {
+//   const getCategories = (category: AnyLevelCategory): number[] => {
+
+//     const flattenCategories = category.subCategories?.map(getCategories) || [];
+
+//     return [category.id, 1];
+//   };
+
+//   return [...categories.map(getCategories)];
+// };
+
 function ListProductsView() {
   const lang = 'ru'; // TODO: смена языка
 
@@ -40,18 +51,24 @@ function ListProductsView() {
   const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
 
   const { data: categories = [] } = useGetAllCategoriesQuery();
-  const { data: productsData, isLoading, isError } = useGetAllProductsQuery({});
+  const {
+    data: productsData,
+    isLoading,
+    isError,
+  } = useGetAllProductsQuery({ withCategories: true });
 
   const [fetchDeleteProduct] = useDeleteProductMutation();
 
-  const newProductsList =
-    productsData?.products?.map(product => ({
+  const productsTableList = React.useMemo(() => {
+    if (!productsData) return [];
+    return productsData.products.map(product => ({
       id: product.id,
       image: product.images[0]?.small || '',
       title: product.title[lang] || '',
-      categoryId: `${product.category?.id}`,
+      categoriesIds: product.categories?.map(c => c.id) || [],
       price: product.price.cheeseCoin || 0,
-    })) || [];
+    }));
+  }, [productsData]);
 
   const to = useTo();
 
@@ -129,8 +146,8 @@ function ListProductsView() {
 
       {!isLoading && !isError && (
         <ProductsTable
-          products={newProductsList}
-          categories={formattedCategories}
+          products={productsTableList}
+          categories={formattedCategories as any} // FIXME:
           page={page}
           rowsCount={productsData?.totalCount || 0}
           rowsPerPage={rowsPerPage}

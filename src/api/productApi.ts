@@ -7,6 +7,48 @@ import { ProductUpdateDto } from '../@types/dto/product/update.dto';
 import { ProductGradeCreateDto } from '../@types/dto/product/create-grade.dto';
 import { ProductGetOneDto } from '../@types/dto/product/get-one.dto';
 import { ProductGetListDto } from '../@types/dto/product/get-list.dto';
+import {
+  CategoryWithParents,
+  LowLevelCategory,
+  MidLevelCategory,
+  TopLevelCategory,
+} from '../@types/entities/Category';
+
+// FIXME: вынести в глобальный тип
+type ProductDto = Omit<Product, 'categories'> & { categories: CategoryWithParents[] };
+
+// FIXME: в хелперы
+const takeCategoryFromSubCategory = (
+  categoryDto: CategoryWithParents
+): MidLevelCategory => {
+  const { parentCategories, ...subCategory } = categoryDto;
+  const midLevelCategory = (parentCategories as MidLevelCategory[])[0];
+  return {
+    ...midLevelCategory,
+    subCategories: [subCategory as LowLevelCategory],
+  };
+};
+
+const transformProductCategories = (product: ProductDto) => {
+  // с бэка прилетают категории в формате массива подкатегорий с parentCategories
+  // исправляю это, создав дерево категорий
+
+  let topCategory = {} as TopLevelCategory;
+  const midCategories: MidLevelCategory[] = [];
+
+  product.categories.forEach(category => {
+    if (category.parentCategories.length === 0) {
+      topCategory = category as TopLevelCategory;
+    } else {
+      midCategories.push(takeCategoryFromSubCategory(category));
+    }
+  });
+
+  return {
+    ...product,
+    categories: [{ ...topCategory, subCategories: midCategories }],
+  };
+};
 
 export const productApi = commonApi.injectEndpoints({
   endpoints: builder => ({
@@ -17,6 +59,7 @@ export const productApi = commonApi.injectEndpoints({
         params,
       }),
       providesTags: (r, e, { id }) => [{ type: 'Product', id }],
+      transformResponse: transformProductCategories,
     }),
     getAllProducts: builder.query<
       { products: Product[]; totalCount: number },
