@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import type { MidLevelCategory } from '../../../@types/entities/Category';
 import type { CreateFormType } from '../CreateOrEditForm/types';
@@ -13,6 +13,7 @@ export type CreateModalProps = {
   currentCategory?: MidLevelCategory;
   onUpdate: (category: CreateFormType) => void;
   onCreate: (category: CreateFormType) => void;
+  onDeleteSubCategory: (id: number) => void;
   onClose: () => void;
 };
 
@@ -44,6 +45,7 @@ export function CreateOrEditModalCategoryModal({
   onUpdate,
   onCreate,
   onClose,
+  onDeleteSubCategory,
 }: CreateModalProps) {
   const modalTitle = currentCategory
     ? 'Редактирование категории товара'
@@ -53,6 +55,10 @@ export function CreateOrEditModalCategoryModal({
     title: currentCategory?.title.ru || '',
     subCategories: getSubCategoriesObject(currentCategory?.subCategories || []) || {},
   };
+
+  useEffect(() => {
+    console.log(currentCategory?.subCategories);
+  }, [currentCategory]);
 
   const handleSave = (data: CreateFormType) => {
     if (currentCategory) {
@@ -69,7 +75,11 @@ export function CreateOrEditModalCategoryModal({
       actions={<ModalActions onCancel={onClose} />}
       onClose={onClose}
     >
-      <CreateOrEditCategoryForm onSave={handleSave} defaultValues={defaultValues} />
+      <CreateOrEditCategoryForm
+        onSave={handleSave}
+        onDeleteSubCategory={onDeleteSubCategory}
+        defaultValues={defaultValues}
+      />
     </Modal>
   );
 }
