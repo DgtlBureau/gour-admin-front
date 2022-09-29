@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Grid, Stack } from '@mui/material';
 
 import { Typography } from '../../UI/Typography/Typography';
@@ -6,11 +6,9 @@ import { TextField } from '../../UI/TextField/TextField';
 import { ProductSelectList } from './CardsList';
 import { SelectsList } from './SelectsList';
 import { Tabs } from '../../UI/Tabs/Tabs';
-import { isProductSelected, filterByAllParams } from './selectHelper';
+import { isProductSelected, filterByAllParams, defaultTabs } from './selectHelper';
 import { ProgressLinear } from '../../UI/ProgressLinear/ProgressLinear';
-import { ALL_CHARACTERISTICS } from '../../../constants/characteristics';
-import { TranslatableString } from '../../../@types/entities/TranslatableString';
-import { TopLevelCategory } from '../../../@types/entities/Category';
+import { TabsKeys, ProductSelectFormProps, Product } from './types';
 
 const sx = {
   productsCount: {
@@ -23,35 +21,6 @@ const sx = {
   },
 };
 
-export type Product = {
-  id: number;
-  title: string;
-  image: string;
-  category: string;
-  // characteristics: { [key in string]: string };
-  categories: TopLevelCategory[];
-};
-
-export type ProductSelectFormProps = {
-  selected: number[];
-  categories: TopLevelCategory[];
-  products: Product[];
-  isLoading?: boolean;
-  onChange(selected: number[]): void;
-};
-
-const TAB_ALL = {
-  value: 'all',
-  label: 'Все',
-};
-
-const TAB_SELECTED = {
-  value: 'selected',
-  label: 'Выбранные товары',
-};
-
-const defaultTabs = [TAB_ALL, TAB_SELECTED];
-
 export function ProductSelectForm({
   selected,
   products,
@@ -59,8 +28,8 @@ export function ProductSelectForm({
   isLoading,
   onChange,
 }: ProductSelectFormProps) {
-  const [searchQuery, setSearchQuery] = useState<string>('');
-  const [selectedTabKey, setSelectedTabKey] = useState<string | number>('all');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedTabKey, setSelectedTabKey] = useState<TabsKeys>('all');
   const [selectValues, setSelectValues] = useState<Record<string, string | number>>({});
 
   const filteredProducts = React.useMemo<Product[]>(() => {
@@ -76,7 +45,7 @@ export function ProductSelectForm({
     })),
   ];
 
-  const filteredCharacteristics =
+  const categoriesForFilters =
     categories.find(topCategory => topCategory.id === selectedTabKey)?.subCategories ||
     [];
 
@@ -90,7 +59,7 @@ export function ProductSelectForm({
     return onChange([...selected, productId]);
   };
 
-  const changeTab = (tabKey: string) => {
+  const changeTab = (tabKey: TabsKeys) => {
     setSelectedTabKey(tabKey);
     setSelectValues({});
   };
@@ -122,7 +91,7 @@ export function ProductSelectForm({
       />
 
       <SelectsList
-        categories={filteredCharacteristics}
+        categories={categoriesForFilters}
         selectValues={selectValues}
         setSelectValues={setSelectValues}
       />

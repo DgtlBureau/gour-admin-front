@@ -2,7 +2,7 @@ import React from 'react';
 import { Grid } from '@mui/material';
 
 import { ProductSelectCard } from './Card';
-import { Product } from './SelectForm';
+import { Product } from './types';
 import { Typography } from '../../UI/Typography/Typography';
 
 type Props = {
@@ -27,19 +27,17 @@ export function ProductSelectList({
   }
   return (
     <Grid sx={{ marginTop: '20px' }} container>
-      {
-        products.map(product => (
-          <Grid item xs={4} md={3} lg={2} key={product.id}>
-            <ProductSelectCard
-              image={product.image}
-              title={product.title || 'Без названия'}
-              searchQuery={searchQuery}
-              isSelected={checkProductSelect(product.id)}
-              onSelect={() => onClickProduct(product.id)}
-            />
-          </Grid>
-        ))
-      }
+      {products.map(product => (
+        <Grid item xs={4} md={3} lg={2} key={product.id}>
+          <ProductSelectCard
+            image={product.image}
+            title={product.title || 'Без названия'}
+            searchQuery={searchQuery}
+            isSelected={checkProductSelect(product.id)}
+            onSelect={() => onClickProduct(product.id)}
+          />
+        </Grid>
+      ))}
     </Grid>
   );
 }

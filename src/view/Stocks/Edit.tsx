@@ -85,7 +85,6 @@ function EditStockView() {
       id: it.id,
       title: it.title.ru,
       image: it.images[0]?.small || noImage,
-      category: it.category?.key, // FIXME: удалить использование category
       categories: it.categories,
     })) || [];
 

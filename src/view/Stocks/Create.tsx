@@ -52,7 +52,6 @@ function CreateStockView() {
       id: it.id,
       title: it.title.ru,
       image: it.images[0]?.small || noImage,
-      category: it.category?.key,
       categories: it.categories,
     })) || [];
 

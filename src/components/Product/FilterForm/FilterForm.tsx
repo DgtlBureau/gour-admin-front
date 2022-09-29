@@ -11,7 +11,7 @@ import schema from './validation';
 type Props = {
   // eslint-disable-next-line react/require-default-props
   defaultValues?: Record<string, number>;
-  productTypeId: string | number;
+  productTypeId: number | null;
   categories: TopLevelCategory[];
   onChange: (categories: Record<string, number>) => void;
 };
@@ -45,7 +45,9 @@ export const ProductFilterForm = React.memo(function ProductFilterForm({
   }, [defaultValues]);
 
   const categoriesOptions = useMemo(() => {
-    const topCategory = categories.find(category => category.id === +productTypeId);
+    const topCategory = categories.find(
+      category => category.id === Number(productTypeId)
+    );
     if (!topCategory) return [];
     return formatCategoriesToOptions(topCategory.subCategories);
   }, [productTypeId, categories]);

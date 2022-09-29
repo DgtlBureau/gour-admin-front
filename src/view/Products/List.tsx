@@ -31,17 +31,6 @@ function RightContent({ onUploadClick, onCreateClick }: Props) {
   );
 }
 
-// const getLinearProductCategories = (categories: TopLevelCategory[]) => {
-//   const getCategories = (category: AnyLevelCategory): number[] => {
-
-//     const flattenCategories = category.subCategories?.map(getCategories) || [];
-
-//     return [category.id, 1];
-//   };
-
-//   return [...categories.map(getCategories)];
-// };
-
 function ListProductsView() {
   const lang = 'ru'; // TODO: смена языка
 
@@ -123,7 +112,7 @@ function ListProductsView() {
 
   const formattedCategories = categories.map(category => ({
     label: category.title?.ru || '',
-    id: `${category.id}`,
+    id: category.id,
   }));
 
   return (
@@ -147,7 +136,7 @@ function ListProductsView() {
       {!isLoading && !isError && (
         <ProductsTable
           products={productsTableList}
-          categories={formattedCategories as any} // FIXME:
+          categories={formattedCategories}
           page={page}
           rowsCount={productsData?.totalCount || 0}
           rowsPerPage={rowsPerPage}
