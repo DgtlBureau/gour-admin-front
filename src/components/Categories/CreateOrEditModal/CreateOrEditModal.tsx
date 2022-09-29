@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import type { MidLevelCategory } from '../../../@types/entities/Category';
 import type { CreateFormType } from '../CreateOrEditForm/types';
@@ -11,8 +11,7 @@ import { getSubCategoriesObject } from '../categories.helper';
 export type CreateModalProps = {
   isOpen: boolean;
   currentCategory?: MidLevelCategory;
-  onUpdate: (category: CreateFormType) => void;
-  onCreate: (category: CreateFormType) => void;
+  onSubmit: (category: CreateFormType) => void;
   onDeleteSubCategory: (id: number) => void;
   onClose: () => void;
 };
@@ -42,8 +41,7 @@ function ModalActions({ onCancel }: ModalActionsProps) {
 export function CreateOrEditModalCategoryModal({
   isOpen,
   currentCategory,
-  onUpdate,
-  onCreate,
+  onSubmit,
   onClose,
   onDeleteSubCategory,
 }: CreateModalProps) {
@@ -56,18 +54,6 @@ export function CreateOrEditModalCategoryModal({
     subCategories: getSubCategoriesObject(currentCategory?.subCategories || []) || {},
   };
 
-  useEffect(() => {
-    console.log(currentCategory?.subCategories);
-  }, [currentCategory]);
-
-  const handleSave = (data: CreateFormType) => {
-    if (currentCategory) {
-      onUpdate(data);
-    } else {
-      onCreate(data);
-    }
-  };
-
   return (
     <Modal
       isOpen={isOpen}
@@ -76,7 +62,7 @@ export function CreateOrEditModalCategoryModal({
       onClose={onClose}
     >
       <CreateOrEditCategoryForm
-        onSave={handleSave}
+        onSave={onSubmit}
         onDeleteSubCategory={onDeleteSubCategory}
         defaultValues={defaultValues}
       />

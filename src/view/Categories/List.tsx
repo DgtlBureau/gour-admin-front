@@ -11,7 +11,7 @@ import {
   useUpdateCategoryMutation,
   useDeleteCategoryMutation,
 } from '../../api/categoryApi';
-import { eventBus, EventTypes } from '../../packages/EventBus';
+import { dispatchNotification, eventBus, EventTypes } from '../../packages/EventBus';
 import { NotificationType } from '../../@types/entities/Notification';
 import { CategoryProductType } from '../../components/Categories/ProductType/ProductType';
 import type { CreateFormType } from '../../components/Categories/CreateOrEditForm/types';
@@ -34,28 +34,33 @@ function ListCategoriesView() {
 
   const { data: categories = [] } = useGetAllCategoriesQuery();
 
-  // FIXME: убрать undefined
   const [openedCategory, setOpenedCategory] =
-    useState<
-      | { category: MidLevelCategory | undefined; parentCategory: TopLevelCategory }
-      | undefined
-    >(undefined);
+    useState<{ category?: MidLevelCategory; parentCategory: TopLevelCategory } | null>(
+      null
+    );
 
-  const [openedProductTypeId, setOpenedProductTypeId] = useState<number | null>(null);
+  const [productTypeModal, setProductTypeModal] =
+    useState<{
+      mode: 'create' | 'edit';
+      productType?: TopLevelCategory;
+    } | null>(null);
+
   const [isCategoryCreating, setIsCategoryCreating] = useState<number | null>(null);
-  const [deletedId, setDeletedId] = useState<number | null>();
-  const [isDeleting, setIsDeleting] = useState(false);
-
-  const openedProductType = categories.find(
-    category => category.id === openedProductTypeId
-  );
+  const [deletedId, setDeletedId] = useState<number | null>(null);
 
   const createProductType = () => {
-    setOpenedProductTypeId(-1);
+    setProductTypeModal({
+      mode: 'create',
+    });
   };
 
   const editProductType = (id: number) => {
-    setOpenedProductTypeId(id);
+    const productType = categories.find(category => category);
+    if (!productType) return;
+    setProductTypeModal({
+      productType,
+      mode: 'edit',
+    });
   };
 
   const openCreateCategory = (parentCategory: TopLevelCategory) => {
@@ -69,24 +74,13 @@ function ListCategoriesView() {
     setOpenedCategory({ category, parentCategory });
   };
 
-  const openDeleting = (id: number) => {
-    setDeletedId(id);
-    setIsDeleting(true);
-  };
-
-  const closeDeleting = () => {
-    setDeletedId(null);
-    setIsDeleting(false);
-  };
-
   const handleCreateCategory = async (data: CreateFormType) => {
+    const isParentCategoryExist = openedCategory?.parentCategory;
+    if (!isParentCategoryExist) return;
+
     const { title, subCategories } = data;
 
-    if (!openedCategory?.parentCategory) return;
-
-    const subCategoriesArray = subCategories
-      ? Object.keys(subCategories).map(subCategoryId => subCategories[+subCategoryId])
-      : [];
+    const subCategoriesArray = subCategories ? Object.values(subCategories) : [];
 
     const newSubCategories = subCategoriesArray.filter(subCategory => !subCategory.id);
 
@@ -111,15 +105,10 @@ function ListCategoriesView() {
 
       await Promise.all(newSubCategoriesPromises);
 
-      setOpenedCategory(undefined);
-      eventBus.emit(EventTypes.notification, {
-        message: 'Категория создана!',
-        type: NotificationType.SUCCESS,
-      });
+      setOpenedCategory(null);
+      dispatchNotification('Категория создана!');
     } catch (error) {
-      console.log(error);
-      eventBus.emit(EventTypes.notification, {
-        message: 'Ошибка создания категории',
+      dispatchNotification('Ошибка создания категории', {
         type: NotificationType.DANGER,
       });
     }
@@ -132,9 +121,7 @@ function ListCategoriesView() {
 
     const categoryId = openedCategory.category.id;
 
-    const subCategoriesArray = subCategories
-      ? Object.keys(subCategories).map(subCategoryId => subCategories[+subCategoryId])
-      : [];
+    const subCategoriesArray = subCategories ? Object.values(subCategories) : [];
 
     const newSubCategories = subCategoriesArray.filter(subCategory => !subCategory.id);
     const createdCategories = subCategoriesArray.filter(subCategory => !!subCategory.id);
@@ -145,7 +132,7 @@ function ListCategoriesView() {
     );
 
     try {
-      await editCategory({
+      const category = editCategory({
         id: categoryId,
         title: {
           ru: title,
@@ -171,75 +158,63 @@ function ListCategoriesView() {
           },
         }).unwrap();
       });
-      await Promise.all([...newSubCategoriesPromises, ...updatedCategoriesPromises]);
-      eventBus.emit(EventTypes.notification, {
-        message: 'Категория обновлена',
-        type: NotificationType.SUCCESS,
-      });
-      setOpenedCategory(undefined);
+      await Promise.all([
+        category,
+        ...newSubCategoriesPromises,
+        ...updatedCategoriesPromises,
+      ]);
+      dispatchNotification('Категория обновлена');
+      setOpenedCategory(null);
     } catch (error) {
-      console.log(error);
-      eventBus.emit(EventTypes.notification, {
-        message: 'Ошибка обновления категории',
+      dispatchNotification('Ошибка обновления категории', {
         type: NotificationType.DANGER,
       });
     }
   };
 
   const handleSaveProductType = async (data: { title: string }) => {
-    if (!openedProductTypeId) return;
     try {
-      if (openedProductTypeId === -1) {
+      if (productTypeModal?.mode === 'create') {
         await createCategory({
           title: {
             ru: data.title,
             en: '',
           },
         }).unwrap();
-        eventBus.emit(EventTypes.notification, {
-          message: 'Тип продукта создан',
-          type: NotificationType.SUCCESS,
-        });
-        setOpenedProductTypeId(null);
-      } else {
+        dispatchNotification('Тип продукта создан');
+        setProductTypeModal(null);
+      }
+
+      if (productTypeModal?.mode === 'edit' && productTypeModal.productType) {
         await editCategory({
-          id: openedProductTypeId,
+          id: productTypeModal.productType.id,
           title: {
             ru: data.title,
             en: '',
           },
         }).unwrap();
-        eventBus.emit(EventTypes.notification, {
-          message: 'Тип продукта обновлен',
-          type: NotificationType.SUCCESS,
-        });
+        dispatchNotification('Тип продукта обновлен');
       }
 
-      setOpenedProductTypeId(null);
+      setProductTypeModal(null);
     } catch (error) {
-      eventBus.emit(EventTypes.notification, {
-        message: 'Ошибка создания типа продукта',
+      dispatchNotification('Ошибка создания типа продукта', {
         type: NotificationType.DANGER,
       });
     }
   };
 
   const handleDelete = async () => {
-    if (!deletedId) return;
     try {
-      await deleteCategory(deletedId).unwrap();
-      eventBus.emit(EventTypes.notification, {
-        message: 'Категория удалена',
-        type: NotificationType.SUCCESS,
-      });
+      await deleteCategory(deletedId!).unwrap();
+      dispatchNotification('Категория удалена');
     } catch (error) {
-      eventBus.emit(EventTypes.notification, {
-        message: 'Произошла ошибка',
+      dispatchNotification('Произошла ошибка', {
         type: NotificationType.DANGER,
       });
     }
-    setOpenedCategory(undefined);
-    closeDeleting();
+    setOpenedCategory(null);
+    setDeletedId(null);
   };
 
   return (
@@ -254,10 +229,10 @@ function ListCategoriesView() {
             key={productType.id}
             productType={productType}
             onEdit={editProductType}
-            onDelete={openDeleting}
+            onDelete={setDeletedId}
             onCreateCategory={openCreateCategory}
             onEditCategory={openEditingCategory}
-            onDeleteCategory={openDeleting}
+            onDeleteCategory={setDeletedId}
           />
         ))
       ) : (
@@ -265,28 +240,27 @@ function ListCategoriesView() {
       )}
 
       <ProductTypeModal
-        isOpen={!!openedProductTypeId}
-        productType={openedProductType}
-        onClose={() => setOpenedProductTypeId(null)}
+        isOpen={!!productTypeModal}
+        productType={productTypeModal?.productType}
+        onClose={() => setProductTypeModal(null)}
         onSave={handleSaveProductType}
       />
 
       <CreateOrEditModalCategoryModal
         isOpen={!!openedCategory || !!isCategoryCreating}
         currentCategory={openedCategory?.category}
-        onUpdate={handleUpdateCategory}
-        onCreate={handleCreateCategory}
-        onDeleteSubCategory={openDeleting}
+        onSubmit={openedCategory?.category ? handleUpdateCategory : handleCreateCategory}
+        onDeleteSubCategory={setDeletedId}
         onClose={() => {
-          setOpenedCategory(undefined);
+          setOpenedCategory(null);
           setIsCategoryCreating(null);
         }}
       />
 
       <DeleteCategoryModal
-        isOpen={isDeleting}
+        isOpen={!!deletedId}
         onRemove={handleDelete}
-        onClose={closeDeleting}
+        onClose={() => setDeletedId(null)}
       />
     </div>
   );

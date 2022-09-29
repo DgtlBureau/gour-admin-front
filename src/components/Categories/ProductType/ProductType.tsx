@@ -37,10 +37,22 @@ export function CategoryProductType({
         <Box sx={sx.header}>
           <Typography variant="h6">{productType.title.ru}</Typography>
           <Box sx={sx.buttons}>
-            <Button variant="outlined" onClick={() => onEdit(productType.id)}>
+            <Button
+              variant="outlined"
+              onClick={e => {
+                e.stopPropagation();
+                onEdit(productType.id);
+              }}
+            >
               Редактировать
             </Button>
-            <Button variant="outlined" onClick={() => onDelete(productType.id)}>
+            <Button
+              variant="outlined"
+              onClick={e => {
+                e.stopPropagation();
+                onDelete(productType.id);
+              }}
+            >
               Удалить
             </Button>
           </Box>
@@ -48,7 +60,7 @@ export function CategoryProductType({
       </AccordionSummary>
       <AccordionDetails>
         <CategoriesTable
-          categories={productType.subCategories || []}
+          categories={productType.subCategories}
           onEdit={category => onEditCategory(category, productType)}
           onDelete={onDeleteCategory}
         />

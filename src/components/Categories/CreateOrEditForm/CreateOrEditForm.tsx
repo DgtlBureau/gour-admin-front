@@ -58,7 +58,8 @@ export function CreateOrEditCategoryForm({
   };
 
   const handleDeleteSubCategory = (id: number) => {
-    if (subCategories[id].id) {
+    const isIdExist = subCategories[id].id;
+    if (isIdExist) {
       onDeleteSubCategory(id);
     } else {
       setSubCategories(prevState => {
@@ -74,10 +75,6 @@ export function CreateOrEditCategoryForm({
       subCategories,
     });
   };
-
-  useEffect(() => {
-    values.setValue('subCategories', subCategories);
-  }, [subCategories]);
 
   return (
     <FormProvider {...values}>

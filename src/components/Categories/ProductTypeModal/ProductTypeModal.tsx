@@ -53,7 +53,7 @@ export function ProductTypeModal({ isOpen, productType, onClose, onSave }: Props
   return (
     <Modal
       isOpen={!!isOpen}
-      title="Создание типа товара"
+      title={productType ? 'Редактирование типа продукта' : 'Создание типа продукта'}
       onClose={onClose}
       actions={<ModalActions onCancel={onClose} />}
     >

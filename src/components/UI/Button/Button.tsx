@@ -1,4 +1,4 @@
-import React, { ElementType, ReactNode } from 'react';
+import React, { ElementType, MouseEvent, ReactNode } from 'react';
 import MUIButton from '@mui/material/Button';
 import { SxProps } from '@mui/material';
 import { ProgressCircular } from '../ProgressCircular/ProgressCircular';
@@ -9,7 +9,7 @@ type Props = {
   isLoading?: boolean;
   type?: 'button' | 'submit' | 'reset';
   size?: 'small' | 'medium' | 'large';
-  onClick?: () => void;
+  onClick?: (e: MouseEvent<HTMLButtonElement>) => void;
   disabled?: boolean;
   component?: ElementType;
   fullWidth?: boolean;

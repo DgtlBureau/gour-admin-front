@@ -18,8 +18,8 @@ export function getEditedCategories(
   oldCategories: LowLevelCategory[]
 ) {
   return newCategories.filter(category => {
-    const oldCategory = oldCategories.find(it => it.id === category.id);
-    if (!oldCategory) return false;
+    if (!category.id) return false;
+    const oldCategory = oldCategories[category.id];
     return oldCategory.title.ru !== category.title;
   });
 }
