@@ -16,7 +16,7 @@ type CategoryActions = {
 type Props = {
   categories: MidLevelCategory[];
   onDelete: (id: number) => void;
-  onEdit: (id: number) => void;
+  onEdit: (category: MidLevelCategory) => void;
 };
 
 const tableHeader = ['Категория', 'Действие'];
@@ -55,7 +55,7 @@ export function CategoriesTable({ categories, onDelete, onEdit }: Props) {
       category.title.ru,
       <RowActions
         onDelete={() => onDelete(category.id)}
-        onEdit={() => onEdit(category.id)}
+        onEdit={() => onEdit(category)}
       />,
     ],
   }));

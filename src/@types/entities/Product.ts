@@ -1,7 +1,7 @@
 import { TranslatableString } from './TranslatableString';
 import { TranslatableText } from './TranslatableText';
 import { Image } from './Image';
-import { Category, TopLevelCategory } from './Category';
+import { TopLevelCategory } from './Category';
 import { ProductGrade } from './ProductGrade';
 import { ProductModification } from './ProductModification';
 import { Price } from './Price';
@@ -14,14 +14,13 @@ export type Product = {
   description: TranslatableText;
   moyskladCode: number;
   images: Image[];
-  category: Category;
+  category: TopLevelCategory[];
   productGrades: ProductGrade[];
   grade: number;
   similarProducts: Product[];
   pieces: ProductModification[];
   price: Price;
   roleDiscounts: RoleDiscount[];
-  // characteristics: Record<string, string>;
   categories: TopLevelCategory[];
   meta: Meta;
 };

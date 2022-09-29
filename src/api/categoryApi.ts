@@ -2,7 +2,7 @@ import { commonApi } from './commonApi';
 import { Path } from '../constants/routes';
 import { CategoryCreateDto } from '../@types/dto/category/create.dto';
 import { CategoryUpdateDto } from '../@types/dto/category/update.dto';
-import { TopLevelCategory } from '../@types/entities/Category';
+import { LowLevelCategory, TopLevelCategory } from '../@types/entities/Category';
 
 export const categoryApi = commonApi.injectEndpoints({
   endpoints: builder => ({
@@ -19,7 +19,7 @@ export const categoryApi = commonApi.injectEndpoints({
             ]
           : [{ type: 'Category', id: 'LIST' }],
     }),
-    createCategory: builder.mutation<void, CategoryCreateDto>({
+    createCategory: builder.mutation<LowLevelCategory, CategoryCreateDto>({
       query: body => ({
         url: Path.CATEGORIES,
         method: 'POST',
@@ -36,7 +36,6 @@ export const categoryApi = commonApi.injectEndpoints({
       invalidatesTags: [{ type: 'Category', id: 'LIST' }],
     }),
     deleteCategory: builder.mutation<void, number>({
-      // FIXME: чекнуть реализацию
       query: id => ({
         url: `${Path.CATEGORIES}/${id}`,
         method: 'DELETE',

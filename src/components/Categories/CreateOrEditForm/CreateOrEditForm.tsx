@@ -18,9 +18,14 @@ import schema from './validation';
 type Props = {
   defaultValues?: CreateFormType;
   onSave: SubmitHandler<CreateFormType>;
+  onDeleteSubCategory: (id: number) => void;
 };
 
-export function CreateOrEditCategoryForm({ defaultValues, onSave }: Props) {
+export function CreateOrEditCategoryForm({
+  defaultValues,
+  onSave,
+  onDeleteSubCategory,
+}: Props) {
   const values = useForm<CreateFormType>({
     resolver: yupResolver(schema),
     defaultValues: {
@@ -53,22 +58,23 @@ export function CreateOrEditCategoryForm({ defaultValues, onSave }: Props) {
   };
 
   const handleDeleteSubCategory = (id: number) => {
-    setSubCategories(prevState => {
-      const { [id]: _, ...newState } = prevState;
-      return newState;
-    });
+    const isIdExist = subCategories[id].id;
+    if (isIdExist) {
+      onDeleteSubCategory(id);
+    } else {
+      setSubCategories(prevState => {
+        const { [id]: _, ...newState } = prevState;
+        return newState;
+      });
+    }
   };
 
   const handleSave = (data: CreateFormType) => {
     onSave({
       title: data.title,
-      subCategories: [],
+      subCategories,
     });
   };
-
-  useEffect(() => {
-    values.setValue('subCategories', subCategories);
-  }, [subCategories]);
 
   return (
     <FormProvider {...values}>

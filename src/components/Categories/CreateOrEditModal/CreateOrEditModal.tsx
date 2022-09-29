@@ -11,7 +11,8 @@ import { getSubCategoriesObject } from '../categories.helper';
 export type CreateModalProps = {
   isOpen: boolean;
   currentCategory?: MidLevelCategory;
-  onSave: (category: CreateFormType) => void;
+  onSubmit: (category: CreateFormType) => void;
+  onDeleteSubCategory: (id: number) => void;
   onClose: () => void;
 };
 
@@ -40,8 +41,9 @@ function ModalActions({ onCancel }: ModalActionsProps) {
 export function CreateOrEditModalCategoryModal({
   isOpen,
   currentCategory,
-  onSave,
+  onSubmit,
   onClose,
+  onDeleteSubCategory,
 }: CreateModalProps) {
   const modalTitle = currentCategory
     ? 'Редактирование категории товара'
@@ -59,7 +61,11 @@ export function CreateOrEditModalCategoryModal({
       actions={<ModalActions onCancel={onClose} />}
       onClose={onClose}
     >
-      <CreateOrEditCategoryForm onSave={onSave} defaultValues={defaultValues} />
+      <CreateOrEditCategoryForm
+        onSave={onSubmit}
+        onDeleteSubCategory={onDeleteSubCategory}
+        defaultValues={defaultValues}
+      />
     </Modal>
   );
 }

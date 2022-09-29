@@ -30,6 +30,7 @@ const containerSx = {
 };
 
 const linkedItems: SidebarLinkedItem[] = [
+  { label: 'Категории', path: Path.CATEGORIES },
   { label: 'Товары', path: Path.PRODUCTS },
   { label: 'Акции', path: Path.STOCKS },
   { label: 'Пользователи', path: Path.USERS },
