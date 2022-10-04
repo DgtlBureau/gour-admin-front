@@ -19,7 +19,8 @@ export function getEditedCategories(
 ) {
   return newCategories.filter(category => {
     if (!category.id) return false;
-    const oldCategory = oldCategories[category.id];
+    const oldCategory = oldCategories.find(it => it.id === category.id);
+    if (!oldCategory) return false;
     return oldCategory.title.ru !== category.title;
   });
 }
