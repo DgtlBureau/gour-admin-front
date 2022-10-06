@@ -71,9 +71,11 @@ export function UsersTable({
     cells: [
       user.name,
       user.login,
-      <Typography variant="body1" sx={sx.role}>
-        {roles[user.role]}
-      </Typography>,
+      roles[user.role] ? (
+        <Typography variant="body1" sx={sx.role}>
+          {roles[user.role]}
+        </Typography>
+      ) : null,
       <>
         <IconButton component="button" onClick={() => onDelete(user.uuid)}>
           <DeleteIcon />
@@ -84,7 +86,7 @@ export function UsersTable({
               <AddBoxIcon />
             </IconButton>
             <a
-              href={`${process.env.REACT_APP_STORE_PATH}/api/clients/${user.uuid}/login`}
+              href={`${process.env.REACT_APP_BACKEND_URL}/clients/${user.uuid}/login`}
               target="_blank"
               rel="noreferrer"
             >
