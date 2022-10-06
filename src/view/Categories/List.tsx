@@ -55,8 +55,7 @@ function ListCategoriesView() {
   };
 
   const editProductType = (id: number) => {
-    const productType = categories.find(category => category);
-    if (!productType) return;
+    const productType = categories.find(category => category.id === id);
     setProductTypeModal({
       productType,
       mode: 'edit',
