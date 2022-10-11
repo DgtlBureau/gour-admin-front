@@ -35,8 +35,6 @@ export function CreateOrEditCategoryForm({
     },
   });
 
-  const { watch } = values;
-
   const [subCategories, setSubCategories] = useState<SubCategoriesState>(
     () => defaultValues?.subCategories || {}
   );
@@ -80,11 +78,6 @@ export function CreateOrEditCategoryForm({
       subCategories,
     });
   };
-
-  useEffect(() => {
-    const subscription = watch((value, { name, type }) => console.log(name, type));
-    return () => subscription.unsubscribe();
-  }, [watch]);
 
   return (
     <FormProvider {...values}>

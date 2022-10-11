@@ -7,8 +7,13 @@ export type EditableCategory = {
 
 export type SubCategoriesState = Record<number, EditableCategory>;
 
+export enum CategoryHasDiscount {
+  YES = 'Yes',
+  NO = 'No',
+}
+
 export type CreateFormType = {
   title: string;
-  hasDiscount?: 'Yes' | 'No';
+  hasDiscount?: CategoryHasDiscount;
   subCategories?: SubCategoriesState;
 };

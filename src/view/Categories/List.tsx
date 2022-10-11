@@ -15,6 +15,7 @@ import { dispatchNotification, eventBus, EventTypes } from '../../packages/Event
 import { NotificationType } from '../../@types/entities/Notification';
 import { CategoryProductType } from '../../components/Categories/ProductType/ProductType';
 import type { CreateFormType } from '../../components/Categories/CreateOrEditForm/types';
+import { CategoryHasDiscount } from '../../components/Categories/CreateOrEditForm/types';
 import { MidLevelCategory, TopLevelCategory } from '../../@types/entities/Category';
 import { ProductTypeModal } from '../../components/Categories/ProductTypeModal/ProductTypeModal';
 import { getEditedCategories } from '../../components/Categories/categories.helper';
@@ -115,7 +116,6 @@ function ListCategoriesView() {
   };
 
   const handleUpdateCategory = async (data: CreateFormType) => {
-    console.log('data :', data);
     const { title, hasDiscount, subCategories } = data;
 
     if (!openedCategory?.category) return;
@@ -139,7 +139,7 @@ function ListCategoriesView() {
           ru: title,
           en: '',
         },
-        hasDiscount: hasDiscount === 'Yes',
+        hasDiscount: hasDiscount === CategoryHasDiscount.YES,
       });
       const newSubCategoriesPromises = newSubCategories.map(async subCategory => {
         createCategory({
