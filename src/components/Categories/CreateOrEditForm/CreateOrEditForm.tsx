@@ -2,15 +2,16 @@ import React, { ChangeEvent, useEffect, useState } from 'react';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import { FormControlLabel, Radio } from '@mui/material';
 
 import type { CreateFormType, EditableCategory, SubCategoriesState } from './types';
 
 import { HFTextField } from '../../HookForm/HFTextField';
-import { Button } from '../../UI/Button/Button';
+import { HFRadioGroup } from '../../HookForm/HFRadioGroup';
 import { TextField } from '../../UI/TextField/TextField';
 import { IconButton } from '../../UI/IconButton/IconButton';
 import { Typography } from '../../UI/Typography/Typography';
-import { getSubCategoriesObject } from '../categories.helper';
+import { Button } from '../../UI/Button/Button';
 
 import { sx } from './CreateOrEditForm.styles';
 import schema from './validation';
@@ -30,8 +31,11 @@ export function CreateOrEditCategoryForm({
     resolver: yupResolver(schema),
     defaultValues: {
       title: defaultValues?.title || '',
+      hasDiscount: defaultValues?.hasDiscount,
     },
   });
+
+  const { watch } = values;
 
   const [subCategories, setSubCategories] = useState<SubCategoriesState>(
     () => defaultValues?.subCategories || {}
@@ -72,9 +76,15 @@ export function CreateOrEditCategoryForm({
   const handleSave = (data: CreateFormType) => {
     onSave({
       title: data.title,
+      hasDiscount: data.hasDiscount,
       subCategories,
     });
   };
+
+  useEffect(() => {
+    const subscription = watch((value, { name, type }) => console.log(name, type));
+    return () => subscription.unsubscribe();
+  }, [watch]);
 
   return (
     <FormProvider {...values}>
@@ -84,6 +94,10 @@ export function CreateOrEditCategoryForm({
         onSubmit={values.handleSubmit(handleSave)}
       >
         <HFTextField label="Название" name="title" />
+        <HFRadioGroup name="hasDiscount">
+          <FormControlLabel value="Yes" control={<Radio />} label="Да" />
+          <FormControlLabel value="No" control={<Radio />} label="Нет" />
+        </HFRadioGroup>
         {categoriesKeysArray.length !== 0 && (
           <Typography variant="body2" color="primary">
             Подкатегории

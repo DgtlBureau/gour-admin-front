@@ -51,6 +51,7 @@ export function CreateOrEditModalCategoryModal({
 
   const defaultValues: CreateFormType = {
     title: currentCategory?.title.ru || '',
+    hasDiscount: currentCategory?.hasDiscount ? 'Yes' : 'No',
     subCategories: getSubCategoriesObject(currentCategory?.subCategories || []) || {},
   };
 

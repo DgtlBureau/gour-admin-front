@@ -77,7 +77,7 @@ function ListCategoriesView() {
     const isParentCategoryExist = openedCategory?.parentCategory;
     if (!isParentCategoryExist) return;
 
-    const { title, subCategories } = data;
+    const { title, hasDiscount, subCategories } = data;
 
     const subCategoriesArray = subCategories ? Object.values(subCategories) : [];
 
@@ -89,6 +89,7 @@ function ListCategoriesView() {
           ru: title,
           en: '',
         },
+        hasDiscount: hasDiscount === 'Yes',
         parentCategoriesIds: [openedCategory.parentCategory.id],
       }).unwrap();
 
@@ -114,7 +115,8 @@ function ListCategoriesView() {
   };
 
   const handleUpdateCategory = async (data: CreateFormType) => {
-    const { title, subCategories } = data;
+    console.log('data :', data);
+    const { title, hasDiscount, subCategories } = data;
 
     if (!openedCategory?.category) return;
 
@@ -137,6 +139,7 @@ function ListCategoriesView() {
           ru: title,
           en: '',
         },
+        hasDiscount: hasDiscount === 'Yes',
       });
       const newSubCategoriesPromises = newSubCategories.map(async subCategory => {
         createCategory({

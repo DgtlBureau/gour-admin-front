@@ -9,5 +9,6 @@ export type SubCategoriesState = Record<number, EditableCategory>;
 
 export type CreateFormType = {
   title: string;
+  hasDiscount?: 'Yes' | 'No';
   subCategories?: SubCategoriesState;
 };
