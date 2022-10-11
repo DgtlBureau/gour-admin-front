@@ -106,8 +106,6 @@ function ListPagesView() {
 
   const create = async (page: PagesAboutFormDto) => {
     const newPage = convertPageForCreate(tabValue, page, language);
-    createPage(newPage);
-
     try {
       await createPage(newPage).unwrap();
       eventBus.emit(EventTypes.notification, {
