@@ -4,7 +4,12 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { FormControlLabel, Radio } from '@mui/material';
 
-import type { CreateFormType, EditableCategory, SubCategoriesState } from './types';
+import {
+  CategoryHasDiscount,
+  CreateFormType,
+  EditableCategory,
+  SubCategoriesState,
+} from './types';
 
 import { HFTextField } from '../../HookForm/HFTextField';
 import { HFRadioGroup } from '../../HookForm/HFRadioGroup';
@@ -88,8 +93,16 @@ export function CreateOrEditCategoryForm({
       >
         <HFTextField label="Название" name="title" />
         <HFRadioGroup name="hasDiscount">
-          <FormControlLabel value="Yes" control={<Radio />} label="Да" />
-          <FormControlLabel value="No" control={<Radio />} label="Нет" />
+          <FormControlLabel
+            value={CategoryHasDiscount.YES}
+            control={<Radio />}
+            label="Да"
+          />
+          <FormControlLabel
+            value={CategoryHasDiscount.NO}
+            control={<Radio />}
+            label="Нет"
+          />
         </HFRadioGroup>
         {categoriesKeysArray.length !== 0 && (
           <Typography variant="body2" color="primary">

@@ -90,7 +90,7 @@ function ListCategoriesView() {
           ru: title,
           en: '',
         },
-        hasDiscount: hasDiscount === 'Yes',
+        hasDiscount: hasDiscount === CategoryHasDiscount.YES,
         parentCategoriesIds: [openedCategory.parentCategory.id],
       }).unwrap();
 
