@@ -43,7 +43,7 @@ const tabs = [
     label: 'Главная',
   },
   {
-    value: Options.PURCHASE,
+    value: Options.RULES,
     label: 'Покупка и возврат',
   },
   {
