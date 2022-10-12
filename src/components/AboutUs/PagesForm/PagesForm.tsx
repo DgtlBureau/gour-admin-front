@@ -8,6 +8,8 @@ import { HFTextarea } from '../../HookForm/HFTextarea';
 import schema from './validation';
 import { HFRadioGroup } from '../../HookForm/HFRadioGroup';
 import { PagesAboutFormDto } from '../../../@types/dto/form/pages-about.dto';
+import { TextEditor } from '../../UI/TextEditor/TextEditor';
+import { HFTextEditor } from '../../HookForm/HFTextEditor';
 
 type Props = {
   defaultValues?: PagesAboutFormDto;
@@ -33,7 +35,7 @@ export function PagesAboutUsForm({ defaultValues, onSubmit }: Props) {
             <HFTextField label="Заголовок" name="title" />
           </Grid>
           <Grid item xs={12}>
-            <HFTextarea label="Описание" name="description" />
+            <HFTextEditor name="description" />
           </Grid>
           <Grid item xs={8}>
             <FormLabel>Индексация</FormLabel>

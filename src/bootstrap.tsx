@@ -14,6 +14,7 @@ import Notifications from './components/Notifications/Notifications';
 import { defaultTheme } from './themes';
 
 import 'animate.css/animate.min.css';
+import 'react-quill/dist/quill.snow.css';
 import 'react-notifications-component/dist/theme.css';
 
 if (['development', 'production'].includes(process.env.NODE_ENV)) {
