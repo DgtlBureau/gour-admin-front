@@ -1,28 +1,18 @@
 import { Dialog } from '@mui/material';
 import React, { CSSProperties } from 'react';
+import { Comment } from '../Review/Table/Table';
+
 import { Box } from '../UI/Box/Box';
 import { Button } from '../UI/Button/Button';
 import { Typography } from '../UI/Typography/Typography';
-
-export type CommentModal = {
-  id: number;
-  authorName: string;
-  text: string;
-  productName: string;
-  date: string;
-};
+import { sx } from './ConfirmReviewModal.styles';
 
 type Props = {
-  comment: CommentModal;
+  comment: Comment;
   isOpened: boolean;
   onConfirm: () => void;
   onReject: () => void;
   onCancel: () => void;
-};
-
-const wrapperBoxStyles: CSSProperties = {
-  maxWidth: '690px',
-  padding: '25px',
 };
 
 export function ConfirmReviewModal({
@@ -34,7 +24,7 @@ export function ConfirmReviewModal({
 }: Props) {
   return (
     <Dialog open={isOpened} onClose={onCancel}>
-      <Box sx={wrapperBoxStyles}>
+      <Box sx={sx.wrapper}>
         <Typography sx={{ margin: '0 0 10px 0' }} variant="body1">
           {comment.authorName}
         </Typography>
@@ -44,17 +34,21 @@ export function ConfirmReviewModal({
         </Typography>
         <Typography variant="body1">{comment.date}</Typography>
         <Box sx={{ margin: '25px 0 0 0' }}>
-          <Button type="button" variant="contained" onClick={onConfirm}>
-            принять
-          </Button>
-          <Button
-            sx={{ margin: '0 0 0 10px' }}
-            type="button"
-            variant="outlined"
-            onClick={onReject}
-          >
-            отклонить
-          </Button>
+          {comment.isConfirmed !== true && (
+            <Button type="button" variant="contained" onClick={onConfirm}>
+              принять
+            </Button>
+          )}
+          {comment.isConfirmed !== false && (
+            <Button
+              sx={{ margin: '0 0 0 10px' }}
+              type="button"
+              variant="outlined"
+              onClick={onReject}
+            >
+              отклонить
+            </Button>
+          )}
         </Box>
       </Box>
     </Dialog>

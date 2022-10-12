@@ -6,10 +6,7 @@ import {
   useGetProductGradeListQuery,
   useUpdateProductGradeMutation,
 } from '../../api/productGradeApi';
-import {
-  CommentModal,
-  ConfirmReviewModal,
-} from '../../components/ConfirmReviewModal/ConfirmReviewModal';
+import { ConfirmReviewModal } from '../../components/ConfirmReviewModal/ConfirmReviewModal';
 import { NotificationType } from '../../@types/entities/Notification';
 import { Header } from '../../components/Header/Header';
 import { Comment, ReviewTable } from '../../components/Review/Table/Table';
@@ -18,14 +15,7 @@ import { eventBus, EventTypes } from '../../packages/EventBus';
 import { getErrorMessage } from '../../utils/errorUtil';
 
 function ListReviewsView() {
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [openedReviewData, setOpenedReviewData] = useState<CommentModal>({
-    id: 0,
-    authorName: '',
-    text: '',
-    productName: '',
-    date: '',
-  });
+  const [openedReview, setOpenedReview] = useState<Comment | null>(null);
 
   const {
     data: comments = [],
@@ -37,7 +27,7 @@ function ListReviewsView() {
 
   const [fetchUpdateProductGrade] = useUpdateProductGradeMutation();
 
-  const transformedData: Comment[] = comments.map(comment => ({
+  const formattedComments: Comment[] = comments.map(comment => ({
     id: comment.id,
     authorName: comment.client
       ? `${comment.client.lastName} ${comment.client.firstName}`
@@ -48,28 +38,31 @@ function ListReviewsView() {
     isConfirmed: comment.isApproved,
   }));
 
-  const onClickFullReview = (id: number) => {
-    const openedComment = transformedData.find(comment => comment.id === id);
-
+  const openReview = (id: number) => {
+    const openedComment = formattedComments.find(comment => comment.id === id);
     if (!openedComment) return;
-    setIsModalOpen(true);
-    setOpenedReviewData({
-      id: openedComment.id,
-      authorName: openedComment.authorName || '',
-      text: openedComment.text || '',
-      productName: openedComment.productName || '',
-      date: openedComment.date || '',
+    const { authorName, date, productName, text, isConfirmed } = openedComment;
+    setOpenedReview({
+      id,
+      authorName,
+      date,
+      productName,
+      text,
+      isConfirmed,
     });
   };
 
   const handleCancel = () => {
-    setIsModalOpen(false);
+    setOpenedReview(null);
   };
 
-  const handleReject = async (commentId: number) => {
+  const handleReject = async () => {
+    const id = openedReview?.id;
+    if (!id) return;
+
     try {
       await fetchUpdateProductGrade({
-        id: commentId,
+        id,
         isApproved: false,
       }).unwrap();
 
@@ -86,13 +79,16 @@ function ListReviewsView() {
       });
     }
 
-    setIsModalOpen(false);
+    setOpenedReview(null);
   };
 
-  const handleApprove = async (commentId: number) => {
+  const handleApprove = async () => {
+    const id = openedReview?.id;
+    if (!id) return;
+
     try {
       await fetchUpdateProductGrade({
-        id: commentId,
+        id,
         isApproved: true,
       }).unwrap();
 
@@ -109,7 +105,7 @@ function ListReviewsView() {
       });
     }
 
-    setIsModalOpen(false);
+    setOpenedReview(null);
   };
 
   if (isLoading) return <LinearProgress />;
@@ -123,12 +119,22 @@ function ListReviewsView() {
   return (
     <div>
       <Header leftTitle="Отзывы" />
-      <ReviewTable comments={transformedData} onClickFullReview={onClickFullReview} />
+      <ReviewTable comments={formattedComments} onClickFullReview={openReview} />
       <ConfirmReviewModal
-        isOpened={isModalOpen}
-        comment={openedReviewData}
-        onConfirm={() => handleApprove(openedReviewData.id)}
-        onReject={() => handleReject(openedReviewData.id)}
+        isOpened={!!openedReview}
+        // FIXME:
+        comment={
+          openedReview || {
+            id: 0,
+            authorName: '',
+            date: '',
+            productName: '',
+            text: '',
+            isConfirmed: null,
+          }
+        }
+        onConfirm={handleApprove}
+        onReject={handleReject}
         onCancel={handleCancel}
       />
     </div>
