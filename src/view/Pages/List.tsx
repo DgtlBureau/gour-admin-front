@@ -51,10 +51,6 @@ const tabs = [
     label: 'Конфиденциальность',
   },
   {
-    value: Options.COOKIE,
-    label: 'Cookie',
-  },
-  {
     value: Options.AGREEMENT,
     label: 'Соглашение',
   },
