@@ -32,6 +32,7 @@ export type UserTableItem = {
   name: string;
   role: Roles;
   uuid: string;
+  balance?: number;
 };
 
 export type UsersTableProps = {
@@ -41,7 +42,7 @@ export type UsersTableProps = {
     label: string;
   }[];
   onDelete: (uuid: string) => void;
-  onAddCheesecoins: (uuid: string) => void;
+  onAddCheesecoins: (data: { balance: number; uuid: string }) => void;
 };
 
 export function UsersTable({
@@ -82,7 +83,12 @@ export function UsersTable({
         </IconButton>
         {['CLIENT', 'COMPANY', 'COLLECTIVE_PURCHASE'].includes(user.role) ? (
           <>
-            <IconButton component="button" onClick={() => onAddCheesecoins(user.uuid)}>
+            <IconButton
+              component="button"
+              onClick={() => {
+                onAddCheesecoins({ uuid: user.uuid, balance: user.balance || 0 });
+              }}
+            >
               <AddBoxIcon />
             </IconButton>
             <a

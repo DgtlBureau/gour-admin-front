@@ -13,6 +13,8 @@ import { Options } from '../../constants/tabs';
 import { useGetClientsListQuery } from '../../api/clientApi';
 import { UserAddCheesecoinsModal } from '../../components/Users/AddCheesecoinsModal/AddCheesecoinsModal';
 import { AddCheesecoinsDto } from '../../@types/dto/add-cheesecoins.dto';
+import { Client } from '../../@types/entities/Client';
+import { formatClientsList, formatUsersList } from './users.helper';
 
 const categories = [
   {
@@ -47,34 +49,27 @@ function ListUsersView() {
   const [deleteUserById] = useDeleteUserMutation();
 
   const data: UserTableItem[] = [
-    ...(users || []).map(it => ({
-      login: it.login,
-      name: `${it.firstName || 'Имя'} ${it.lastName || 'Фамилия'}`,
-      role: (it.role?.key as Roles) || '',
-      uuid: it.apiUserUuid,
-      createdAt: it.createdAt,
-    })),
-    ...(clients || [])
-      .map(it => ({
-        login: it.phone,
-        name: `${it.firstName || 'Имя'} ${it.lastName || 'Фамилия'}`,
-        role: (it.role?.key as Roles) || '',
-        uuid: `${it.id}`,
-        createdAt: it.createdAt,
-      }))
-      .sort((a, b) => (a.createdAt < b.createdAt ? -1 : 1)),
+    ...formatUsersList(users || []),
+    ...formatClientsList(clients || []),
   ];
 
   const [isDeleting, setIsDeleting] = useState(false);
-  const [openedUserUuid, setOpenedUserUuid] = useState<string | null>(null);
+  const [openedBalance, setOpenedBalance] =
+    useState<{
+      balance: number;
+      uuid: string;
+    } | null>(null);
+
   const [userDeleteId, setUserDeleteId] = useState('');
 
   const to = useTo();
 
   const goToUserCreate = () => to(Path.USERS, 'create');
 
-  const onAddCheesecoins = (cheeseCoinData: AddCheesecoinsDto) =>
-    console.log(openedUserUuid, cheeseCoinData);
+  const onAddCheesecoins = (cheeseCoinData: AddCheesecoinsDto) => {
+    if (!openedBalance) return;
+    console.log(openedBalance?.uuid, cheeseCoinData);
+  };
 
   const deleteUser = () => deleteUserById(userDeleteId);
 
@@ -98,7 +93,7 @@ function ListUsersView() {
           users={data}
           categories={categories}
           onDelete={openDeleteModal}
-          onAddCheesecoins={uuid => setOpenedUserUuid(uuid)}
+          onAddCheesecoins={setOpenedBalance}
         />
       ) : (
         <Typography variant="body1">Список пользователей пуст</Typography>
@@ -112,9 +107,10 @@ function ListUsersView() {
         onClose={closeDeleteModal}
       />
       <UserAddCheesecoinsModal
-        isOpened={!!openedUserUuid}
-        onClose={() => setOpenedUserUuid(null)}
-        title="Добавить сырные шарики"
+        isOpened={!!openedBalance}
+        onClose={() => setOpenedBalance(null)}
+        defaultValues={{ count: openedBalance?.balance || 0 }}
+        title="Баланс чизкоинов"
         onSubmit={onAddCheesecoins}
       />
     </div>
