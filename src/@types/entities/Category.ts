@@ -1,3 +1,4 @@
+import { boolean } from 'yup';
 import { TranslatableString } from './TranslatableString';
 
 type CategoryLayout<Sub = unknown, Parent = unknown> = {
@@ -5,6 +6,7 @@ type CategoryLayout<Sub = unknown, Parent = unknown> = {
   title: TranslatableString;
   parentCategories: Parent;
   subCategories: Sub;
+  hasDiscount?: boolean;
 };
 
 export type LowLevelCategory = CategoryLayout<null, null>;
