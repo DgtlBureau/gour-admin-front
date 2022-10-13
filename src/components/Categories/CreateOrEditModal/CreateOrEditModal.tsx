@@ -2,6 +2,7 @@ import React from 'react';
 
 import type { MidLevelCategory } from '../../../@types/entities/Category';
 import type { CreateFormType } from '../CreateOrEditForm/types';
+import { CategoryHasDiscount } from '../CreateOrEditForm/types';
 
 import { Modal } from '../../UI/Modal/Modal';
 import { Button } from '../../UI/Button/Button';
@@ -51,6 +52,9 @@ export function CreateOrEditModalCategoryModal({
 
   const defaultValues: CreateFormType = {
     title: currentCategory?.title.ru || '',
+    hasDiscount: currentCategory?.hasDiscount
+      ? CategoryHasDiscount.YES
+      : CategoryHasDiscount.NO,
     subCategories: getSubCategoriesObject(currentCategory?.subCategories || []) || {},
   };
 

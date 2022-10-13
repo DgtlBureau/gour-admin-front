@@ -5,4 +5,5 @@ export default yup.object().shape({
   description: yup.string().required('Описание обязательно'),
   productType: yup.string().required('Категория товара обязательна').nullable(),
   isIndexed: yup.bool(),
+  moyskladId: yup.string().required('ID моего склада обязательно'),
 });

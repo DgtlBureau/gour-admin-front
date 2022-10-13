@@ -124,12 +124,17 @@ export function ProductBasicSettingsForm({
             <HFTextField name="description" label="Описание" multiline rows={4} />
           </Grid>
 
-          <Grid item md={8}>
-            <FormLabel>Индексация</FormLabel>
-            <HFRadioGroup name="isIndexed">
-              <FormControlLabel value control={<RadioButton />} label="Да" />
-              <FormControlLabel value={false} control={<RadioButton />} label="Нет" />
-            </HFRadioGroup>
+          <Grid item md={12} sx={sx.header}>
+            <Grid item md={4} sx={{ marginRight: '10px' }}>
+              <HFTextField name="moyskladId" label="ID товара в МойСклад" />
+            </Grid>
+            <Grid item>
+              <FormLabel>Индексация</FormLabel>
+              <HFRadioGroup name="isIndexed">
+                <FormControlLabel value control={<RadioButton />} label="Да" />
+                <FormControlLabel value={false} control={<RadioButton />} label="Нет" />
+              </HFRadioGroup>
+            </Grid>
           </Grid>
 
           <Grid item md={8}>
