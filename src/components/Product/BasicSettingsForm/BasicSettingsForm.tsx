@@ -8,6 +8,7 @@ import { HFTextField } from '../../HookForm/HFTextField';
 import { HFSelect } from '../../HookForm/HFSelect';
 import { HFRadioGroup } from '../../HookForm/HFRadioGroup';
 import { HFUploadPhoto } from '../../HookForm/HFUploadPhoto';
+import { HFTextEditor } from '../../HookForm/HFTextEditor';
 import { ProductBasicSettingsFormDto } from '../../../@types/dto/form/product-basic-settings.dto';
 import schema from './validation';
 
@@ -74,6 +75,15 @@ export function ProductBasicSettingsForm({
     change();
   };
 
+  useEffect(() => {
+    const subscription = values.watch((_, { name }) => {
+      if (name === 'description') {
+        change();
+      }
+    });
+    return () => subscription.unsubscribe();
+  }, [values.watch]);
+
   return (
     <FormProvider {...values}>
       <form
@@ -121,7 +131,7 @@ export function ProductBasicSettingsForm({
           </Grid>
 
           <Grid item md={8}>
-            <HFTextField name="description" label="Описание" multiline rows={4} />
+            <HFTextEditor name="description" label="Описание" />
           </Grid>
 
           <Grid item md={12} sx={sx.header}>
