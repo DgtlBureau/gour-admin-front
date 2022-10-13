@@ -92,7 +92,7 @@ export function CreateStockForm({
         sx={{ marginBottom: '20px' }}
       />
       {error && (
-        <Typography variant="body1" sx={{ color: 'red', marginTop: '20px' }}>
+        <Typography variant="body1" sx={{ color: 'red', margin: '20px 0' }}>
           {error}
         </Typography>
       )}
