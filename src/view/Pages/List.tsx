@@ -43,7 +43,7 @@ const tabs = [
     label: 'Главная',
   },
   {
-    value: Options.PURCHASE,
+    value: Options.RULES,
     label: 'Покупка и возврат',
   },
   {
@@ -51,7 +51,7 @@ const tabs = [
     label: 'Конфиденциальность',
   },
   {
-    value: Options.AGREEMENT,
+    value: Options.OFERTA,
     label: 'Соглашение',
   },
 ];
