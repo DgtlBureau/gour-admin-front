@@ -36,6 +36,7 @@ export function UserAddCheesecoinsModal({
   return (
     <Modal
       isOpen={isOpened}
+      acceptText="Сохранить"
       title={title}
       onAccept={() => values.handleSubmit(onSubmit)}
       onClose={onClose}
