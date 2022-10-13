@@ -23,4 +23,5 @@ export type Product = {
   roleDiscounts: RoleDiscount[];
   categories: TopLevelCategory[];
   meta: Meta;
+  moyskladId: number | null;
 };

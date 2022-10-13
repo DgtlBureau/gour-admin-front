@@ -59,6 +59,7 @@ function CreateProductView() {
       metaDescription: '',
       isIndexed: true,
       metaKeywords: '',
+      moyskladId: '',
     },
     priceSettings: {
       discount: 0,
@@ -101,6 +102,7 @@ function CreateProductView() {
   };
 
   const onSave = async () => {
+    console.log('fullFormState :>> ', fullFormState);
     const { basicSettings, priceSettings, productSelect } = fullFormState;
 
     const productTypeId = Number(fullFormState.basicSettings.productType);
@@ -141,6 +143,7 @@ function CreateProductView() {
       categoryIds,
       similarProducts: productSelect || [],
       roleDiscounts,
+      moyskladId: basicSettings.moyskladId || null,
     };
 
     try {
