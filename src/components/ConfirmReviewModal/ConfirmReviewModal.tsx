@@ -1,8 +1,13 @@
-import { Dialog } from '@mui/material';
 import React, { CSSProperties } from 'react';
+import { Dialog } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
+
 import { Box } from '../UI/Box/Box';
 import { Button } from '../UI/Button/Button';
+import { IconButton } from '../UI/IconButton/IconButton';
 import { Typography } from '../UI/Typography/Typography';
+
+import { sx } from './ConfirmReviewModal.style';
 
 export type CommentModal = {
   id: number;
@@ -20,11 +25,6 @@ type Props = {
   onCancel: () => void;
 };
 
-const wrapperBoxStyles: CSSProperties = {
-  maxWidth: '690px',
-  padding: '25px',
-};
-
 export function ConfirmReviewModal({
   comment,
   isOpened,
@@ -34,7 +34,13 @@ export function ConfirmReviewModal({
 }: Props) {
   return (
     <Dialog open={isOpened} onClose={onCancel}>
-      <Box sx={wrapperBoxStyles}>
+      <Box sx={sx.modal}>
+        <Box sx={sx.header}>
+          <Typography variant="h5">Принять отзыв?</Typography>
+          <IconButton onClick={onCancel} component="symbol">
+            <CloseIcon />
+          </IconButton>
+        </Box>
         <Typography sx={{ margin: '0 0 10px 0' }} variant="body1">
           {comment.authorName}
         </Typography>
@@ -43,16 +49,11 @@ export function ConfirmReviewModal({
           {comment.productName}
         </Typography>
         <Typography variant="body1">{comment.date}</Typography>
-        <Box sx={{ margin: '25px 0 0 0' }}>
+        <Box sx={sx.buttons}>
           <Button type="button" variant="contained" onClick={onConfirm}>
             принять
           </Button>
-          <Button
-            sx={{ margin: '0 0 0 10px' }}
-            type="button"
-            variant="outlined"
-            onClick={onReject}
-          >
+          <Button type="button" variant="outlined" onClick={onReject}>
             отклонить
           </Button>
         </Box>
