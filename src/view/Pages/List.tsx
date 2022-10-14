@@ -51,7 +51,7 @@ const tabs = [
     label: 'Конфиденциальность',
   },
   {
-    value: Options.AGREEMENT,
+    value: Options.OFERTA,
     label: 'Соглашение',
   },
 ];

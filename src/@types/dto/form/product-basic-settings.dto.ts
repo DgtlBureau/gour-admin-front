@@ -9,4 +9,5 @@ export type ProductBasicSettingsFormDto = Readonly<{
   metaDescription: string;
   isIndexed: boolean;
   metaKeywords: string;
+  moyskladId: string;
 }>;
