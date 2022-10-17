@@ -3,7 +3,7 @@ import { useForm, SubmitHandler, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 import { Button } from '../../UI/Button/Button';
-import { Link as CustomLink } from '../../UI/Link/Link';
+import { Link } from '../../UI/Link/Link';
 import { Box } from '../../UI/Box/Box';
 import { HFTextField } from '../../HookForm/HFTextField';
 
@@ -56,7 +56,7 @@ export function AuthSignInForm({ onSubmit, isLoading }: Props) {
       <form onSubmit={values.handleSubmit(submitHandler)}>
         <Box sx={boxSx}>
           <Typography sx={sxTitle}>Вход</Typography>
-          <HFTextField sx={sxInput} name="login" label="Логин" />
+          <HFTextField sx={sxInput} name="email" label="Email" />
           <HFTextField sx={sxInput} label="Пароль" name="password" type="password" />
           <Button
             isLoading={isLoading}
@@ -68,7 +68,7 @@ export function AuthSignInForm({ onSubmit, isLoading }: Props) {
             Войти
           </Button>
           <p>
-            <CustomLink path="/auth/forgot-password">Забыли пароль?</CustomLink>
+            <Link href="/auth/forgot-password">Забыли пароль?</Link>
           </p>
         </Box>
       </form>
