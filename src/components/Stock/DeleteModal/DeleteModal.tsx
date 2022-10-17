@@ -15,6 +15,8 @@ export function DeleteModal({ isOpen, onDelete, onClose }: DeleteModalProps) {
       title="Удаление акции"
       description="Вы действительно хотите удалить акцию?"
       onAccept={onDelete}
+      acceptText="Да"
+      closeText="Нет"
       onClose={onClose}
     />
   );

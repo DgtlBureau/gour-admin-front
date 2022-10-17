@@ -16,4 +16,5 @@ export type ProductCreateDto = Readonly<{
     rub?: number;
     eur?: number;
   }[];
+  moyskladId: string | null;
 }>;

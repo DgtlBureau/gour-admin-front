@@ -6,9 +6,8 @@ export enum Options {
   ACTUAL = 'ACTUAL',
   PAST = 'PAST',
 
-  MAIN = 'MAIN',
-  PURCHASE = 'PURCHASE',
-  PRIVACY = 'PRIVACY',
-  COOKIE = 'COOKIE',
-  AGREEMENT = 'AGREEMENT',
+  MAIN = 'main',
+  RULES = 'rules',
+  PRIVACY = 'privacy',
+  OFERTA = 'oferta',
 }

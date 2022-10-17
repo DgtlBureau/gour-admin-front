@@ -58,6 +58,7 @@ function EditProductView() {
       metaDescription: '',
       isIndexed: true,
       metaKeywords: '',
+      moyskladId: '',
     },
     priceSettings: {
       discount: 0,
@@ -143,6 +144,7 @@ function EditProductView() {
         firstImage: product.images[0]?.full,
         secondImage: product.images[1]?.full,
         thirdImage: product.images[2]?.full,
+        moyskladId: product.moyskladId?.toString() || '',
       },
       priceSettings: {
         discount: 0,
@@ -208,6 +210,8 @@ function EditProductView() {
       categoryIds,
       similarProducts: productSelect || [],
       roleDiscounts,
+      moyskladId: basicSettings.moyskladId || null,
+      // TODO: добавить валидацию перед отправкой
     };
 
     try {
