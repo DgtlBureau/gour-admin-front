@@ -4,10 +4,10 @@ import { Product } from './Product';
 export type ProductGrade = {
   id: number;
   product: Product;
-  client: User;
+  client?: User;
   value: number;
   comment: string;
   createdAt: string;
-  isApproved: boolean;
+  isApproved: boolean | null;
   productId: number;
 };

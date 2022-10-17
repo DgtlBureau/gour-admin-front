@@ -1,24 +1,19 @@
 import React, { CSSProperties } from 'react';
+
 import { Dialog } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 
+import { getReviewStatus } from '../Review/review.helper';
+import { Comment } from '../Review/Table/Table';
 import { Box } from '../UI/Box/Box';
 import { Button } from '../UI/Button/Button';
 import { IconButton } from '../UI/IconButton/IconButton';
 import { Typography } from '../UI/Typography/Typography';
 
-import { sx } from './ConfirmReviewModal.style';
-
-export type CommentModal = {
-  id: number;
-  authorName: string;
-  text: string;
-  productName: string;
-  date: string;
-};
+import { sx } from './ConfirmReviewModal.styles';
 
 type Props = {
-  comment: CommentModal;
+  comment: Comment;
   isOpened: boolean;
   onConfirm: () => void;
   onReject: () => void;
@@ -32,6 +27,7 @@ export function ConfirmReviewModal({
   onReject,
   onCancel,
 }: Props) {
+  const commentStatus = getReviewStatus(comment.isConfirmed);
   return (
     <Dialog open={isOpened} onClose={onCancel}>
       <Box sx={sx.modal}>
@@ -50,12 +46,16 @@ export function ConfirmReviewModal({
         </Typography>
         <Typography variant="body1">{comment.date}</Typography>
         <Box sx={sx.buttons}>
-          <Button type="button" variant="contained" onClick={onConfirm}>
-            принять
-          </Button>
-          <Button type="button" variant="outlined" onClick={onReject}>
-            отклонить
-          </Button>
+          {commentStatus !== 'accept' && (
+            <Button type="button" variant="contained" onClick={onConfirm}>
+              принять
+            </Button>
+          )}
+          {commentStatus !== 'reject' && (
+            <Button type="button" variant="outlined" onClick={onReject}>
+              отклонить
+            </Button>
+          )}
         </Box>
       </Box>
     </Dialog>
