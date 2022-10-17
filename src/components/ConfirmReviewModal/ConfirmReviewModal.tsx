@@ -1,5 +1,6 @@
 import { Dialog } from '@mui/material';
 import React, { CSSProperties } from 'react';
+import { getReviewStatus } from '../Review/review.helper';
 import { Comment } from '../Review/Table/Table';
 
 import { Box } from '../UI/Box/Box';
@@ -22,6 +23,7 @@ export function ConfirmReviewModal({
   onReject,
   onCancel,
 }: Props) {
+  const commentStatus = getReviewStatus(comment.isConfirmed);
   return (
     <Dialog open={isOpened} onClose={onCancel}>
       <Box sx={sx.wrapper}>
@@ -34,14 +36,14 @@ export function ConfirmReviewModal({
         </Typography>
         <Typography variant="body1">{comment.date}</Typography>
         <Box sx={{ margin: '25px 0 0 0' }}>
-          {comment.isConfirmed !== true && (
+          {commentStatus !== 'accept' && (
             <Button type="button" variant="contained" onClick={onConfirm}>
               принять
             </Button>
           )}
-          {comment.isConfirmed !== false && (
+          {commentStatus !== 'reject' && (
             <Button
-              sx={{ margin: '0 0 0 10px' }}
+              sx={sx.rejectButton}
               type="button"
               variant="outlined"
               onClick={onReject}
