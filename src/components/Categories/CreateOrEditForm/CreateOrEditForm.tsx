@@ -2,7 +2,7 @@ import React, { ChangeEvent, useEffect, useState } from 'react';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import { FormControlLabel, Radio } from '@mui/material';
+import { FormControlLabel, FormLabel, Radio } from '@mui/material';
 
 import {
   CategoryHasDiscount,
@@ -92,6 +92,7 @@ export function CreateOrEditCategoryForm({
         onSubmit={values.handleSubmit(handleSave)}
       >
         <HFTextField label="Название" name="title" />
+        <Typography variant="body2">Участие в скидочной программе</Typography>
         <HFRadioGroup name="hasDiscount">
           <FormControlLabel
             value={CategoryHasDiscount.YES}
