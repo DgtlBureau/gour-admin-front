@@ -1,11 +1,12 @@
-import { commonApi } from './commonApi';
-import { User } from '../@types/entities/User';
-import { SignInDto } from '../@types/dto/auth/signin.dto';
-import { Tokens } from '../@types/dto/auth/tokens.dto';
-import { ForgotPasswordDto } from '../@types/dto/auth/forgot-password.dto';
-import { RestorePasswordDto } from '../@types/dto/auth/restore-password.dto';
-import { SignupUserDto } from '../@types/dto/auth/signup-user.dto';
+import { ForgotPasswordDto } from 'types/dto/auth/forgot-password.dto';
+import { RestorePasswordDto } from 'types/dto/auth/restore-password.dto';
+import { SignInDto } from 'types/dto/auth/signin.dto';
+import { SignupUserDto } from 'types/dto/auth/signup-user.dto';
+import { Tokens } from 'types/dto/auth/tokens.dto';
+import { User } from 'types/entities/User';
+
 import { Path } from '../constants/routes';
+import { commonApi } from './commonApi';
 
 const ROLE_HASH: Record<'admin' | 'moderator', string> = {
   admin: process.env.REACT_APP_ROLE_ADMIN_CODE as string,

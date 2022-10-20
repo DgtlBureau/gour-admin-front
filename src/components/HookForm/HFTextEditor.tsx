@@ -1,8 +1,10 @@
 import React from 'react';
-import { SxProps } from '@mui/material';
 import { Controller, useFormContext } from 'react-hook-form';
-import { TextField } from '../UI/TextField/TextField';
-import { TextEditor } from '../UI/TextEditor/TextEditor';
+
+import { SxProps } from '@mui/material';
+
+import { TextEditor } from 'components/UI/TextEditor/TextEditor';
+import { TextField } from 'components/UI/TextField/TextField';
 
 type Props = {
   name: string;

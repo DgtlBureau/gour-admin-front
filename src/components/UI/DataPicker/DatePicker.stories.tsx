@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
 
 import { DatePicker } from './DatePicker';
 
@@ -15,6 +15,4 @@ const Template: ComponentStory<typeof DatePicker> = function (args) {
 
 export const DefaultState = Template.bind({});
 
-DefaultState.args = {
-
-};
+DefaultState.args = {};

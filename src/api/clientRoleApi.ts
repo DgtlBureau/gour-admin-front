@@ -1,6 +1,7 @@
-import { ClientRole } from '../@types/entities/ClientRole';
-import { commonApi } from './commonApi';
+import { ClientRole } from 'types/entities/ClientRole';
+
 import { Path } from '../constants/routes';
+import { commonApi } from './commonApi';
 
 export const clientRoleApi = commonApi.injectEndpoints({
   endpoints(builder) {

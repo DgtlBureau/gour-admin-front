@@ -1,8 +1,9 @@
 import React from 'react';
-import { SxProps } from '@mui/material';
 import { Controller, useFormContext } from 'react-hook-form';
 
-import { UploadImage } from '../UI/UploadImage/UploadImage';
+import { SxProps } from '@mui/material';
+
+import { UploadImage } from 'components/UI/UploadImage/UploadImage';
 
 type Props = {
   name: string;

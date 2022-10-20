@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react';
+
+import { Path } from 'constants/routes';
+
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
-import { Typography } from '../UI/Typography/Typography';
-import { Path } from '../../constants/routes';
+
+import { Typography } from 'components/UI/Typography/Typography';
 
 const boxSx = {
   width: 210,
@@ -89,10 +92,10 @@ export default function Sidebar({
 
   return (
     <div>
-      <Drawer anchor="left" variant="permanent">
-        <Box sx={boxSx} role="presentation">
+      <Drawer anchor='left' variant='permanent'>
+        <Box sx={boxSx} role='presentation'>
           <List>
-            <Typography sx={typographySx} variant="h5">
+            <Typography sx={typographySx} variant='h5'>
               {profileInfo.name}
               &nbsp;
               {profileInfo.lastName}

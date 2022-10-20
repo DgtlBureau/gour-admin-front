@@ -1,17 +1,10 @@
 import React from 'react';
 
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
 
 import { StockTable } from './Table';
 
-function generateStock(
-  id: number,
-  image: string,
-  title: string,
-  start: string,
-  end: string,
-  isActual: boolean
-) {
+function generateStock(id: number, image: string, title: string, start: string, end: string, isActual: boolean) {
   return {
     image,
     title,
@@ -41,7 +34,7 @@ DefaultState.args = {
       'title 1',
       '22.02.2022',
       '22.03.2022',
-      true
+      true,
     ),
     generateStock(2, 'image', 'title 1', '22.02.2022', '22.03.2022', true),
     generateStock(3, 'image', 'Прошедшая', '22.02.2022', '22.03.2022', false),

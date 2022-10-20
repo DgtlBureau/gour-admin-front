@@ -1,14 +1,20 @@
 import React, { useEffect } from 'react';
-import { SignInDto } from '../../@types/dto/auth/signin.dto';
-import { NotificationType } from '../../@types/entities/Notification';
-import { useSigninMutation } from '../../api/authApi';
-import { AuthSignInForm } from '../../components/Auth/SignInForm/SignInForm';
-import { Path } from '../../constants/routes';
+
+import { Path } from 'constants/routes';
+
+import { useSigninMutation } from 'api/authApi';
+import { setIsAuth } from 'store/slices/authSlice';
+
+import { AuthSignInForm } from 'components/Auth/SignInForm/SignInForm';
+
+import { SignInDto } from 'types/dto/auth/signin.dto';
+import { NotificationType } from 'types/entities/Notification';
+
+import { EventTypes, eventBus } from 'packages/EventBus';
+
 import { useAppDispatch } from '../../hooks/store';
 import { useLocation } from '../../hooks/useLocation';
 import { useTo } from '../../hooks/useTo';
-import { eventBus, EventTypes } from '../../packages/EventBus';
-import { setIsAuth } from '../../store/slices/authSlice';
 
 type State = {
   from: { pathname: string };

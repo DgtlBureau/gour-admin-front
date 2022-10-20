@@ -1,6 +1,9 @@
+/* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { ChangeEventHandler } from 'react';
+
 import { Stack } from '@mui/material';
 import { styled } from '@mui/material/styles';
+
 import { Button } from '../Button/Button';
 
 type Props = {
@@ -15,16 +18,10 @@ export function UploadFile({ id, allowedFileTypes, onChange }: Props) {
   });
 
   return (
-    <Stack direction="row" alignItems="center" spacing={2}>
+    <Stack direction='row' alignItems='center' spacing={2}>
       <label htmlFor={id}>
-        <Input
-          accept={allowedFileTypes.join(',')}
-          onChange={onChange}
-          id={id}
-          multiple
-          type="file"
-        />
-        <Button variant="contained" component="span">
+        <Input accept={allowedFileTypes.join(',')} onChange={onChange} id={id} multiple type='file' />
+        <Button variant='contained' component='span'>
           Загрузить
         </Button>
       </label>

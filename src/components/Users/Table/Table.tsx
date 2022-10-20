@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
 
+import { Options } from 'constants/tabs';
+import { Roles } from 'constants/users/roles';
+
+import { Box } from 'components/UI/Box/Box';
+import { IconButton } from 'components/UI/IconButton/IconButton';
+import { Table } from 'components/UI/Table/Table';
+import { Typography } from 'components/UI/Typography/Typography';
+
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import DeleteIcon from '@mui/icons-material/Delete';
-
-import { Box } from '../../UI/Box/Box';
-import { Table } from '../../UI/Table/Table';
-import { IconButton } from '../../UI/IconButton/IconButton';
-import { Typography } from '../../UI/Typography/Typography';
-import { Options } from '../../../constants/tabs';
-import { Roles } from '../../../constants/users/roles';
 
 import loginIcon from './assets/login.svg';
 
@@ -44,12 +45,7 @@ export type UsersTableProps = {
   onAddCheesecoins: (uuid: string) => void;
 };
 
-export function UsersTable({
-  users,
-  categories,
-  onDelete,
-  onAddCheesecoins,
-}: UsersTableProps) {
+export function UsersTable({ users, categories, onDelete, onAddCheesecoins }: UsersTableProps) {
   const [tabsValue, setTabsValue] = useState<string>(Options.ALL);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -63,8 +59,7 @@ export function UsersTable({
     setPage(0);
   };
 
-  const filteredUsers =
-    tabsValue === Options.ALL ? users : users.filter(user => user.role === tabsValue);
+  const filteredUsers = tabsValue === Options.ALL ? users : users.filter(user => user.role === tabsValue);
 
   const rows = filteredUsers.map((user, i) => ({
     id: i,
@@ -72,26 +67,26 @@ export function UsersTable({
       user.name,
       user.login,
       roles[user.role] ? (
-        <Typography variant="body1" sx={sx.role}>
+        <Typography variant='body1' sx={sx.role}>
           {roles[user.role]}
         </Typography>
       ) : null,
       <>
-        <IconButton component="button" onClick={() => onDelete(user.uuid)}>
+        <IconButton component='button' onClick={() => onDelete(user.uuid)}>
           <DeleteIcon />
         </IconButton>
         {['CLIENT', 'COMPANY', 'COLLECTIVE_PURCHASE'].includes(user.role) ? (
           <>
-            <IconButton component="button" onClick={() => onAddCheesecoins(user.uuid)}>
+            <IconButton component='button' onClick={() => onAddCheesecoins(user.uuid)}>
               <AddBoxIcon />
             </IconButton>
             <a
               href={`${process.env.REACT_APP_BACKEND_URL}/clients/${user.uuid}/login`}
-              target="_blank"
-              rel="noreferrer"
+              target='_blank'
+              rel='noreferrer'
             >
-              <IconButton component="div">
-                <img src={loginIcon} alt="" />
+              <IconButton component='div'>
+                <img src={loginIcon} alt='' />
               </IconButton>
             </a>
           </>

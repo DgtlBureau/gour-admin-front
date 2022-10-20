@@ -1,12 +1,12 @@
-import { TranslatableString } from './TranslatableString';
-import { TranslatableText } from './TranslatableText';
-import { Image } from './Image';
 import { TopLevelCategory } from './Category';
+import { Image } from './Image';
+import { Meta } from './Meta';
+import { Price } from './Price';
 import { ProductGrade } from './ProductGrade';
 import { ProductModification } from './ProductModification';
-import { Price } from './Price';
 import { RoleDiscount } from './RoleDiscount';
-import { Meta } from './Meta';
+import { TranslatableString } from './TranslatableString';
+import { TranslatableText } from './TranslatableText';
 
 export type Product = {
   id: number;

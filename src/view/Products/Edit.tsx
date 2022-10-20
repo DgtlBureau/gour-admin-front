@@ -1,26 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { ProductCreateDto } from '../../@types/dto/product/create.dto';
-import { NotificationType } from '../../@types/entities/Notification';
-import { useGetAllCategoriesQuery } from '../../api/categoryApi';
-import {
-  useGetAllProductsQuery,
-  useGetProductByIdQuery,
-  useUpdateProductMutation,
-} from '../../api/productApi';
-import { useUploadImageMutation } from '../../api/imageApi';
-import { Header } from '../../components/Header/Header';
-import {
-  FullFormType,
-  ProductFullForm,
-} from '../../components/Product/FullForm/FullForm';
-import { Button } from '../../components/UI/Button/Button';
-import { ProgressLinear } from '../../components/UI/ProgressLinear/ProgressLinear';
-import { Typography } from '../../components/UI/Typography/Typography';
-import { Path } from '../../constants/routes';
+import { Path } from 'constants/routes';
+
+import { useGetAllCategoriesQuery } from 'api/categoryApi';
+import { useUploadImageMutation } from 'api/imageApi';
+import { useGetAllProductsQuery, useGetProductByIdQuery, useUpdateProductMutation } from 'api/productApi';
+
+import { Header } from 'components/Header/Header';
+import { FullFormType, ProductFullForm } from 'components/Product/FullForm/FullForm';
+import { Button } from 'components/UI/Button/Button';
+import { ProgressLinear } from 'components/UI/ProgressLinear/ProgressLinear';
+import { Typography } from 'components/UI/Typography/Typography';
+
+import { ProductCreateDto } from 'types/dto/product/create.dto';
+import { NotificationType } from 'types/entities/Notification';
+
+import { EventTypes, eventBus } from 'packages/EventBus';
+
 import { useTo } from '../../hooks/useTo';
-import { eventBus, EventTypes } from '../../packages/EventBus';
 
 type Props = {
   onSaveClick: () => void;
@@ -33,7 +31,7 @@ function RightContent({ onSaveClick, onCancelHandler }: Props) {
       <Button onClick={onSaveClick} sx={{ marginRight: '10px' }}>
         Сохранить
       </Button>
-      <Button variant="outlined" onClick={onCancelHandler}>
+      <Button variant='outlined' onClick={onCancelHandler}>
         Отмена
       </Button>
     </>
@@ -85,7 +83,7 @@ function EditProductView() {
       withRoleDiscount: true,
       withCategories: true,
     },
-    { skip: !productId }
+    { skip: !productId },
   );
   const { data: productsList } = useGetAllProductsQuery(
     {
@@ -94,7 +92,7 @@ function EditProductView() {
       withRoleDiscount: false,
       withCategories: true,
     },
-    { skip: activeTabId !== 'recommended_products' }
+    { skip: activeTabId !== 'recommended_products' },
   );
 
   const uploadPicture = async (file?: File, label?: string) => {
@@ -118,8 +116,7 @@ function EditProductView() {
 
   useEffect(() => {
     if (!product) return;
-    const productSelect =
-      product.similarProducts?.map(similarProduct => similarProduct.id) || [];
+    const productSelect = product.similarProducts?.map(similarProduct => similarProduct.id) || [];
 
     // TODO: обработка старых продуктов, можно удалить в будущем
     const productType = product.categories[0].id || null;
@@ -129,7 +126,7 @@ function EditProductView() {
           ...acc,
           [midCategory.id]: midCategory.subCategories[0].id,
         }),
-        {}
+        {},
       ) || [];
 
     setFullFormState({
@@ -161,10 +158,7 @@ function EditProductView() {
     const { basicSettings, priceSettings, productSelect } = fullFormState;
 
     const productTypeId = Number(fullFormState.basicSettings.productType);
-    const categoryIds = [
-      ...Object.values(fullFormState.categoriesIds),
-      productTypeId,
-    ].filter(i => i);
+    const categoryIds = [...Object.values(fullFormState.categoriesIds), productTypeId].filter(i => i);
 
     const roleDiscounts = [
       {
@@ -231,20 +225,20 @@ function EditProductView() {
 
   const onCancel = () => to(Path.PRODUCTS);
 
-  if (isLoading) return <ProgressLinear variant="query" />;
+  if (isLoading) return <ProgressLinear variant='query' />;
 
   if (!isLoading && isError) {
-    return <Typography variant="h5">Произошла ошибка</Typography>;
+    return <Typography variant='h5'>Произошла ошибка</Typography>;
   }
 
   if (!isLoading && !isError && !product) {
-    return <Typography variant="h5">Продукт не найден</Typography>;
+    return <Typography variant='h5'>Продукт не найден</Typography>;
   }
 
   return (
     <div>
       <Header
-        leftTitle="Редактирование товара"
+        leftTitle='Редактирование товара'
         rightContent={<RightContent onSaveClick={onSave} onCancelHandler={onCancel} />}
       />
       <ProductFullForm
@@ -254,7 +248,7 @@ function EditProductView() {
         products={productsList?.products.filter(it => it.id !== productId) || []}
         fullFormState={fullFormState}
         setFullFormState={setFullFormState}
-        mode="edit"
+        mode='edit'
       />
     </div>
   );

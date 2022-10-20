@@ -1,7 +1,9 @@
 import React from 'react';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
 
-import { LowLevelCategory, MidLevelCategory } from '../../../@types/entities/Category';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
+
+import { LowLevelCategory, MidLevelCategory } from 'types/entities/Category';
+
 import { CategoriesTable } from './Table';
 
 export default {
@@ -14,10 +16,12 @@ const Template: ComponentStory<typeof CategoriesTable> = function (args) {
 };
 
 type SubCategories = Array<MidLevelCategory | LowLevelCategory> | null;
-function generateCategories<
-  P extends unknown[] | null = null,
-  S extends SubCategories = null
->(id: number, title: { en: string; ru: string }, parentCategories: P, subCategories: S) {
+function generateCategories<P extends unknown[] | null = null, S extends SubCategories = null>(
+  id: number,
+  title: { en: string; ru: string },
+  parentCategories: P,
+  subCategories: S,
+) {
   return {
     id,
     title,
@@ -26,16 +30,11 @@ function generateCategories<
   };
 }
 
-const midGeneralCategory = generateCategories(
-  3,
-  { ru: 'Твердость', en: 'Твердость' },
-  null,
-  [
-    generateCategories(5, { ru: 'Твердый', en: 'Твердый' }, null, null),
-    generateCategories(6, { ru: 'Мягкий', en: 'Мягкий' }, null, null),
-    generateCategories(7, { ru: 'Полутвёрдый', en: 'Полутвёрдый' }, null, null),
-  ]
-);
+const midGeneralCategory = generateCategories(3, { ru: 'Твердость', en: 'Твердость' }, null, [
+  generateCategories(5, { ru: 'Твердый', en: 'Твердый' }, null, null),
+  generateCategories(6, { ru: 'Мягкий', en: 'Мягкий' }, null, null),
+  generateCategories(7, { ru: 'Полутвёрдый', en: 'Полутвёрдый' }, null, null),
+]);
 
 export const DefaultState = Template.bind({});
 DefaultState.args = {

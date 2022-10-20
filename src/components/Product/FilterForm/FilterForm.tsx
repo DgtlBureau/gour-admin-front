@@ -1,11 +1,14 @@
-import { yupResolver } from '@hookform/resolvers/yup';
 import React, { useEffect, useMemo } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
-import { MidLevelCategory, TopLevelCategory } from '../../../@types/entities/Category';
+import { yupResolver } from '@hookform/resolvers/yup';
+
+import type { SelectOption } from 'components/UI/Select/Select';
+import { Typography } from 'components/UI/Typography/Typography';
+
+import { MidLevelCategory, TopLevelCategory } from 'types/entities/Category';
+
 import { HFSelect } from '../../HookForm/HFSelect';
-import type { SelectOption } from '../../UI/Select/Select';
-import { Typography } from '../../UI/Typography/Typography';
 import schema from './validation';
 
 type Props = {
@@ -45,9 +48,7 @@ export const ProductFilterForm = React.memo(function ProductFilterForm({
   }, [defaultValues]);
 
   const categoriesOptions = useMemo(() => {
-    const topCategory = categories.find(
-      category => category.id === Number(productTypeId)
-    );
+    const topCategory = categories.find(category => category.id === Number(productTypeId));
     if (!topCategory) return [];
     return formatCategoriesToOptions(topCategory.subCategories);
   }, [productTypeId, categories]);
@@ -58,10 +59,7 @@ export const ProductFilterForm = React.memo(function ProductFilterForm({
 
   if (!productTypeId) {
     return (
-      <Typography>
-        Для выбора фильтров укажите категорию товара во вкладке &quot;Основные
-        настройки&quot;
-      </Typography>
+      <Typography>Для выбора фильтров укажите категорию товара во вкладке &quot;Основные настройки&quot;</Typography>
     );
   }
 

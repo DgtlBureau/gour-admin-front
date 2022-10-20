@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { Modal } from '../../UI/Modal/Modal';
-import { Typography } from '../../UI/Typography/Typography';
+import { Modal } from 'components/UI/Modal/Modal';
+import { Typography } from 'components/UI/Typography/Typography';
 
 type Comment = {
   authorName: string;
@@ -33,19 +33,9 @@ function ModalBody({ text, productName, date }: ModalBodyProps) {
   );
 }
 
-export function ConfirmReviewModal({
-  comment,
-  isOpen,
-  onConfirm,
-  onCancel,
-}: ConfirmReviewModalProps) {
+export function ConfirmReviewModal({ comment, isOpen, onConfirm, onCancel }: ConfirmReviewModalProps) {
   return (
-    <Modal
-      isOpen={isOpen}
-      title={comment.authorName}
-      onAccept={onConfirm}
-      onClose={onCancel}
-    >
+    <Modal isOpen={isOpen} title={comment.authorName} onAccept={onConfirm} onClose={onCancel}>
       <ModalBody {...comment} />
     </Modal>
   );

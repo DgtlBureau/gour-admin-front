@@ -1,8 +1,9 @@
 import React, { ChangeEvent, useState } from 'react';
 
-import { ComponentStory, ComponentMeta } from '@storybook/react';
-
 import fr from 'date-fns/esm/locale/fr/index.js';
+
+import { ComponentMeta, ComponentStory } from '@storybook/react';
+
 import { UploadImage } from './UploadImage';
 
 export default {

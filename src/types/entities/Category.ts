@@ -1,4 +1,5 @@
 import { boolean } from 'yup';
+
 import { TranslatableString } from './TranslatableString';
 
 type CategoryLayout<Sub = unknown, Parent = unknown> = {

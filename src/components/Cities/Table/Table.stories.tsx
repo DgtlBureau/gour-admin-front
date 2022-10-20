@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { ComponentStory, Meta } from '@storybook/react';
 
 import { CitiesTable, CitiesTableProps } from './Table';

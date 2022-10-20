@@ -1,7 +1,8 @@
-import { commonApi } from './commonApi';
-import { ProductGrade } from '../@types/entities/ProductGrade';
-import { ProductGradeGetListDto } from '../@types/dto/productGrade/product-grade.get-list.dto';
+import { ProductGradeGetListDto } from 'types/dto/productGrade/product-grade.get-list.dto';
+import { ProductGrade } from 'types/entities/ProductGrade';
+
 import { Path } from '../constants/routes';
+import { commonApi } from './commonApi';
 
 export const productGradeApi = commonApi.injectEndpoints({
   endpoints(builder) {
@@ -16,16 +17,10 @@ export const productGradeApi = commonApi.injectEndpoints({
         },
         providesTags: (result = []) =>
           result
-            ? [
-                ...result.map(({ id }) => ({ type: 'ProductGrade', id } as const)),
-                { type: 'ProductGrade', id: 'LIST' },
-              ]
+            ? [...result.map(({ id }) => ({ type: 'ProductGrade', id } as const)), { type: 'ProductGrade', id: 'LIST' }]
             : [{ type: 'ProductGrade', id: 'LIST' }],
       }),
-      updateProductGrade: builder.mutation<
-        ProductGrade,
-        Pick<ProductGrade, 'isApproved' | 'id'>
-      >({
+      updateProductGrade: builder.mutation<ProductGrade, Pick<ProductGrade, 'isApproved' | 'id'>>({
         query(grade: Pick<ProductGrade, 'isApproved' | 'id'>) {
           return {
             method: 'PUT',
@@ -39,5 +34,4 @@ export const productGradeApi = commonApi.injectEndpoints({
   },
 });
 
-export const { useGetProductGradeListQuery, useUpdateProductGradeMutation } =
-  productGradeApi;
+export const { useGetProductGradeListQuery, useUpdateProductGradeMutation } = productGradeApi;

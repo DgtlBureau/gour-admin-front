@@ -1,21 +1,26 @@
 import React, { useRef } from 'react';
+
+import { Path } from 'constants/routes';
 import { formatISO } from 'date-fns';
 
-import { CreateStockForm } from '../../components/Stock/CreateForm/CreateForm';
-import { Header } from '../../components/Header/Header';
-import { Button } from '../../components/UI/Button/Button';
-import { Path } from '../../constants/routes';
-import { useTo } from '../../hooks/useTo';
-import { useGetAllProductsQuery } from '../../api/productApi';
-import { useGetAllCategoriesQuery } from '../../api/categoryApi';
-import { useCreatePromotionMutation } from '../../api/promotionApi';
-import { useUploadImageMutation } from '../../api/imageApi';
-import { eventBus, EventTypes } from '../../packages/EventBus';
-import { NotificationType } from '../../@types/entities/Notification';
-import { CreateStockFormDto } from '../../@types/dto/form/create-stock.dto';
-import { PromotionCreateDto } from '../../@types/dto/promotion/create.dto';
+import { useGetAllCategoriesQuery } from 'api/categoryApi';
+import { useUploadImageMutation } from 'api/imageApi';
+import { useGetAllProductsQuery } from 'api/productApi';
+import { useCreatePromotionMutation } from 'api/promotionApi';
 
-import noImage from '../../assets/images/no-image.svg';
+import { Header } from 'components/Header/Header';
+import { CreateStockForm } from 'components/Stock/CreateForm/CreateForm';
+import { Button } from 'components/UI/Button/Button';
+
+import { CreateStockFormDto } from 'types/dto/form/create-stock.dto';
+import { PromotionCreateDto } from 'types/dto/promotion/create.dto';
+import { NotificationType } from 'types/entities/Notification';
+
+import { EventTypes, eventBus } from 'packages/EventBus';
+
+import noImage from 'assets/images/no-image.svg';
+
+import { useTo } from '../../hooks/useTo';
 
 type RightContentProps = {
   onSave(): void;
@@ -28,7 +33,7 @@ function RightContent({ onSave, onCancel }: RightContentProps) {
       <Button onClick={onSave} sx={{ margin: '0 10px' }}>
         Сохранить
       </Button>
-      <Button variant="outlined" onClick={onCancel}>
+      <Button variant='outlined' onClick={onCancel}>
         Отмена
       </Button>
     </>
@@ -132,7 +137,7 @@ function CreateStockView() {
   return (
     <div>
       <Header
-        leftTitle="Создание акции"
+        leftTitle='Создание акции'
         rightContent={<RightContent onCancel={goToStocks} onSave={submitStockForm} />}
       />
       <CreateStockForm

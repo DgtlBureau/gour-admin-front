@@ -1,21 +1,23 @@
 import React, { useState } from 'react';
 
-import { ProductCreateDto } from '../../@types/dto/product/create.dto';
-import { useGetAllCategoriesQuery } from '../../api/categoryApi';
-import { useCreateProductMutation, useGetAllProductsQuery } from '../../api/productApi';
-import { useUploadImageMutation } from '../../api/imageApi';
-import { Header } from '../../components/Header/Header';
-import { Button } from '../../components/UI/Button/Button';
-import { Path } from '../../constants/routes';
+import { Path } from 'constants/routes';
+
+import { useGetAllCategoriesQuery } from 'api/categoryApi';
+import { useGetClientRolesListQuery } from 'api/clientRoleApi';
+import { useUploadImageMutation } from 'api/imageApi';
+import { useCreateProductMutation, useGetAllProductsQuery } from 'api/productApi';
+
+import { Header } from 'components/Header/Header';
+import { FullFormType, ProductFullForm } from 'components/Product/FullForm/FullForm';
+import { Button } from 'components/UI/Button/Button';
+
+import { ProductCreateDto } from 'types/dto/product/create.dto';
+import { NotificationType } from 'types/entities/Notification';
+
+import { EventTypes, eventBus } from 'packages/EventBus';
+import { getErrorMessage } from 'utils/errorUtil';
+
 import { useTo } from '../../hooks/useTo';
-import { NotificationType } from '../../@types/entities/Notification';
-import { eventBus, EventTypes } from '../../packages/EventBus';
-import {
-  FullFormType,
-  ProductFullForm,
-} from '../../components/Product/FullForm/FullForm';
-import { useGetClientRolesListQuery } from '../../api/clientRoleApi';
-import { getErrorMessage } from '../../utils/errorUtil';
 
 type Props = {
   onSaveHandler: () => void;
@@ -25,15 +27,10 @@ type Props = {
 function RightContent({ onSaveHandler, onCancelHandler }: Props) {
   return (
     <>
-      <Button
-        type="submit"
-        form="productPriceForm"
-        onClick={onSaveHandler}
-        sx={{ marginRight: '10px' }}
-      >
+      <Button type='submit' form='productPriceForm' onClick={onSaveHandler} sx={{ marginRight: '10px' }}>
         Сохранить
       </Button>
-      <Button variant="outlined" onClick={onCancelHandler}>
+      <Button variant='outlined' onClick={onCancelHandler}>
         Отмена
       </Button>
     </>
@@ -45,9 +42,7 @@ function CreateProductView() {
 
   const { data: clientRolesList = [] } = useGetClientRolesListQuery();
 
-  const roles = clientRolesList.filter(
-    role => role.key === 'COMPANY' || role.key === 'COLLECTIVE_PURCHASE'
-  );
+  const roles = clientRolesList.filter(role => role.key === 'COMPANY' || role.key === 'COLLECTIVE_PURCHASE');
 
   const [activeTabId, setActiveTabId] = useState('settings');
   const [fullFormState, setFullFormState] = useState<FullFormType>({
@@ -76,11 +71,10 @@ function CreateProductView() {
 
   const { data: categories = [] } = useGetAllCategoriesQuery();
 
-  const { data: productsData, isLoading: isProductsLoading = false } =
-    useGetAllProductsQuery(
-      { withCategories: true },
-      { skip: activeTabId !== 'recommended_products' }
-    );
+  const { data: productsData, isLoading: isProductsLoading = false } = useGetAllProductsQuery(
+    { withCategories: true },
+    { skip: activeTabId !== 'recommended_products' },
+  );
 
   const uploadPicture = async (file?: File | string, label?: string) => {
     if (!file || typeof file === 'string') return undefined;
@@ -106,17 +100,11 @@ function CreateProductView() {
     const { basicSettings, priceSettings, productSelect } = fullFormState;
 
     const productTypeId = Number(fullFormState.basicSettings.productType);
-    const categoryIds = [
-      ...Object.values(fullFormState.categoriesIds),
-      productTypeId,
-    ].filter(i => i);
+    const categoryIds = [...Object.values(fullFormState.categoriesIds), productTypeId].filter(i => i);
 
     const roleDiscounts = roles.map(role => ({
       role: role.id,
-      cheeseCoin:
-        role.key === 'COMPANY'
-          ? priceSettings.companyDiscount
-          : priceSettings.collectiveDiscount,
+      cheeseCoin: role.key === 'COMPANY' ? priceSettings.companyDiscount : priceSettings.collectiveDiscount,
     }));
 
     const fistImage = await uploadPicture(basicSettings.firstImage, '1');
@@ -170,7 +158,7 @@ function CreateProductView() {
   return (
     <div>
       <Header
-        leftTitle="Создание товара"
+        leftTitle='Создание товара'
         rightContent={<RightContent onSaveHandler={onSave} onCancelHandler={onCancel} />}
       />
       <ProductFullForm
@@ -181,7 +169,7 @@ function CreateProductView() {
         products={productsData?.products || []}
         fullFormState={fullFormState}
         setFullFormState={setFullFormState}
-        mode="create"
+        mode='create'
       />
     </div>
   );

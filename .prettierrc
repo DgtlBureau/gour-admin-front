@@ -1,5 +1,25 @@
 {
+  "semi": true,
+  "printWidth": 120,
   "singleQuote": true,
-  "printWidth": 90,
-  "arrowParens": "avoid"
+  "tabWidth": 2,
+  "trailingComma": "all",
+  "jsxSingleQuote": true,
+  "bracketSpacing": true,
+  "arrowParens": "avoid",
+  "importOrder": [
+    "^(react)",
+    "<THIRD_PARTY_MODULES>",
+    "^@(?!mui/icons-material)",
+    "^(store|api|http|routes)",
+    "^layouts",
+    "^components/(.*)$",
+    "^types",
+    "^(hooks|helpers|packages|utils)",
+    "^(assets|@mui/icons-material/)",
+    "^themes",
+    "^[./]"
+  ],
+  "importOrderSeparation": true,
+  "importOrderSortSpecifiers": true
 }

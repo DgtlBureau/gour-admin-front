@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { ComponentStory, Meta } from '@storybook/react';
 
 import { CreateUserForm, CreateUserFormProps } from './CreateForm';
@@ -13,7 +14,6 @@ const Template: ComponentStory<typeof CreateUserForm> = function (args: CreateUs
 };
 export const DefaultCreateUserForm = Template.bind({});
 
-const props: Partial<CreateUserFormProps> = {
-};
+const props: Partial<CreateUserFormProps> = {};
 
 DefaultCreateUserForm.args = props;

@@ -1,19 +1,24 @@
 import React, { useState } from 'react';
 
-import { Button } from '../../components/UI/Button/Button';
-import { Path } from '../../constants/routes';
+import { Path } from 'constants/routes';
+
+import { useGetAllCategoriesQuery } from 'api/categoryApi';
+import { useDeleteProductMutation, useGetAllProductsQuery } from 'api/productApi';
+
+import { Header } from 'components/Header/Header';
+import { ProductDeleteModal } from 'components/Product/DeleteModal/DeleteModal';
+import { ProductsTable } from 'components/Product/Table/Table';
+import { Button } from 'components/UI/Button/Button';
+import { ProgressLinear } from 'components/UI/ProgressLinear/ProgressLinear';
+import { Typography } from 'components/UI/Typography/Typography';
+
+import { ProductTableDto } from 'types/dto/table/products.dto';
+import { NotificationType } from 'types/entities/Notification';
+
+import { EventTypes, eventBus } from 'packages/EventBus';
+import { getErrorMessage } from 'utils/errorUtil';
+
 import { useTo } from '../../hooks/useTo';
-import { Header } from '../../components/Header/Header';
-import { ProductsTable } from '../../components/Product/Table/Table';
-import { useDeleteProductMutation, useGetAllProductsQuery } from '../../api/productApi';
-import { ProgressLinear } from '../../components/UI/ProgressLinear/ProgressLinear';
-import { Typography } from '../../components/UI/Typography/Typography';
-import { ProductDeleteModal } from '../../components/Product/DeleteModal/DeleteModal';
-import { eventBus, EventTypes } from '../../packages/EventBus';
-import { NotificationType } from '../../@types/entities/Notification';
-import { useGetAllCategoriesQuery } from '../../api/categoryApi';
-import { getErrorMessage } from '../../utils/errorUtil';
-import { ProductTableDto } from '../../@types/dto/table/products.dto';
 
 type Props = {
   onUploadClick: () => void;
@@ -23,7 +28,7 @@ type Props = {
 function RightContent({ onUploadClick, onCreateClick }: Props) {
   return (
     <>
-      <Button variant="outlined" onClick={onUploadClick} sx={{ marginRight: '10px' }}>
+      <Button variant='outlined' onClick={onUploadClick} sx={{ marginRight: '10px' }}>
         Выгрузить базу для 1с
       </Button>
       <Button onClick={onCreateClick}>Добавить товар</Button>
@@ -40,11 +45,7 @@ function ListProductsView() {
   const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
 
   const { data: categories = [] } = useGetAllCategoriesQuery();
-  const {
-    data: productsData,
-    isLoading,
-    isError,
-  } = useGetAllProductsQuery({ withCategories: true });
+  const { data: productsData, isLoading, isError } = useGetAllProductsQuery({ withCategories: true });
 
   const [fetchDeleteProduct] = useDeleteProductMutation();
 
@@ -118,20 +119,13 @@ function ListProductsView() {
   return (
     <div>
       <Header
-        leftTitle="Товары"
-        rightContent={
-          <RightContent
-            onCreateClick={goToProductCreate}
-            onUploadClick={uploadProductList}
-          />
-        }
+        leftTitle='Товары'
+        rightContent={<RightContent onCreateClick={goToProductCreate} onUploadClick={uploadProductList} />}
       />
 
-      {isLoading && <ProgressLinear variant="indeterminate" />}
+      {isLoading && <ProgressLinear variant='indeterminate' />}
 
-      {!isLoading && isError && (
-        <Typography variant="h5">Произошла ошибка, повторите попытку позже</Typography>
-      )}
+      {!isLoading && isError && <Typography variant='h5'>Произошла ошибка, повторите попытку позже</Typography>}
 
       {!isLoading && !isError && (
         <ProductsTable

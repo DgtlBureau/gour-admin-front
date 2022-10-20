@@ -1,10 +1,10 @@
 import React from 'react';
-import { SxProps } from '@mui/material';
 import { Controller, useFormContext } from 'react-hook-form';
 
-import { Box } from '../UI/Box/Box';
+import { SxProps } from '@mui/material';
 
-import { Multiselect, SelectOption } from '../UI/Multiselect/Multiselect';
+import { Box } from 'components/UI/Box/Box';
+import { Multiselect, SelectOption } from 'components/UI/Multiselect/Multiselect';
 
 type Props = {
   name: string;

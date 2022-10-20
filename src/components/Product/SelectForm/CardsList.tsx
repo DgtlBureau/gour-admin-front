@@ -1,9 +1,11 @@
 import React from 'react';
+
 import { Grid } from '@mui/material';
+
+import { Typography } from 'components/UI/Typography/Typography';
 
 import { ProductSelectCard } from './Card';
 import { Product } from './types';
-import { Typography } from '../../UI/Typography/Typography';
 
 type Props = {
   products: Product[];
@@ -12,15 +14,10 @@ type Props = {
   onClickProduct: (id: number) => void;
 };
 
-export function ProductSelectList({
-  products,
-  searchQuery,
-  onClickProduct,
-  checkProductSelect,
-}: Props) {
+export function ProductSelectList({ products, searchQuery, onClickProduct, checkProductSelect }: Props) {
   if (!products.length) {
     return (
-      <Typography sx={{ marginTop: '20px' }} variant="h5">
+      <Typography sx={{ marginTop: '20px' }} variant='h5'>
         Товары не найдены
       </Typography>
     );

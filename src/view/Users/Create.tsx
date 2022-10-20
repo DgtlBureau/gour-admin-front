@@ -1,14 +1,19 @@
 import React, { useEffect } from 'react';
 
-import { Header } from '../../components/Header/Header';
-import { Button } from '../../components/UI/Button/Button';
-import { CreateUserForm } from '../../components/Users/CreateForm/CreateForm';
-import { Path } from '../../constants/routes';
+import { Path } from 'constants/routes';
+
+import { useSignupWithoutPasswordMutation } from 'api/authApi';
+
+import { Header } from 'components/Header/Header';
+import { Button } from 'components/UI/Button/Button';
+import { CreateUserForm } from 'components/Users/CreateForm/CreateForm';
+
+import { SignupUserDto } from 'types/dto/auth/signup-user.dto';
+import { NotificationType } from 'types/entities/Notification';
+
+import { EventTypes, eventBus } from 'packages/EventBus';
+
 import { useTo } from '../../hooks/useTo';
-import { eventBus, EventTypes } from '../../packages/EventBus';
-import { useSignupWithoutPasswordMutation } from '../../api/authApi';
-import { NotificationType } from '../../@types/entities/Notification';
-import { SignupUserDto } from '../../@types/dto/auth/signup-user.dto';
 
 type Props = {
   onCancel: () => void;
@@ -17,10 +22,10 @@ type Props = {
 function RightContent({ onCancel }: Props) {
   return (
     <>
-      <Button form="createUserForm" type="submit" sx={{ marginRight: '10px' }}>
+      <Button form='createUserForm' type='submit' sx={{ marginRight: '10px' }}>
         Сохранить
       </Button>
-      <Button variant="outlined" onClick={onCancel}>
+      <Button variant='outlined' onClick={onCancel}>
         Отмена
       </Button>
     </>
@@ -53,12 +58,7 @@ function CreateUserView() {
 
   return (
     <div>
-      <Header
-        leftTitle="Добавление пользователя"
-        rightContent={
-          <RightContent onCancel={cancel} />
-        }
-      />
+      <Header leftTitle='Добавление пользователя' rightContent={<RightContent onCancel={cancel} />} />
       <CreateUserForm onSubmit={submit} />
     </div>
   );

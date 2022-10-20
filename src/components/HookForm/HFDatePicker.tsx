@@ -1,7 +1,9 @@
 import React from 'react';
-import { SxProps } from '@mui/material';
 import { Controller, useFormContext } from 'react-hook-form';
-import { DatePicker } from '../UI/DataPicker/DatePicker';
+
+import { SxProps } from '@mui/material';
+
+import { DatePicker } from 'components/UI/DataPicker/DatePicker';
 
 type Props = {
   name: string;
@@ -23,12 +25,7 @@ export function HFDatePicker({ name, defaultValue, ...props }: Props) {
       control={control}
       defaultValue={defaultValue || ''}
       render={({ field: { ref, ...rest } }) => (
-        <DatePicker
-          {...rest}
-          isError={!!errors[name]}
-          helperText={errors[name]?.message ?? ''}
-          {...props}
-        />
+        <DatePicker {...rest} isError={!!errors[name]} helperText={errors[name]?.message ?? ''} {...props} />
       )}
     />
   );

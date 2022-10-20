@@ -4,20 +4,13 @@ import { Product, TabsKeys } from './types';
 export const isProductSelected = (productId: number, selectedProductIds: number[]) =>
   selectedProductIds.includes(productId);
 
-export const filterProductBySelects = (
-  product: Product,
-  selectsValues: Record<string, string | number>
-) =>
+export const filterProductBySelects = (product: Product, selectsValues: Record<string, string | number>) =>
   Object.values(selectsValues).every(categoryId => {
     if (!categoryId) return true;
     return product.categories.find(productCategory => productCategory.id === categoryId);
   });
 
-export const filterProductByTab = (
-  tabId: TabsKeys,
-  product: Product,
-  selectedProductIds: number[]
-) => {
+export const filterProductByTab = (tabId: TabsKeys, product: Product, selectedProductIds: number[]) => {
   if (tabId === 'selected') return isProductSelected(product.id, selectedProductIds);
 
   if (tabId === 'all') return true;
@@ -38,7 +31,7 @@ export const filterByAllParams = (
   query: string,
   selectsValues: Record<string, string | number>,
   selectedTabKey: TabsKeys,
-  selectedProductIds: number[]
+  selectedProductIds: number[],
 ) =>
   products.filter(product => {
     const isPassedBySelects = true || filterProductBySelects(product, selectsValues); // FIXME:

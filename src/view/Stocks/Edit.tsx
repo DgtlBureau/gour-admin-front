@@ -1,27 +1,29 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
+
+import { Path } from 'constants/routes';
 import { formatISO } from 'date-fns';
 
-import {
-  useGetPromotionByIdQuery,
-  useUpdatePromotionMutation,
-} from '../../api/promotionApi';
-import { CreateStockForm } from '../../components/Stock/CreateForm/CreateForm';
-import { Header } from '../../components/Header/Header';
-import { Button } from '../../components/UI/Button/Button';
-import { Typography } from '../../components/UI/Typography/Typography';
-import { ProgressLinear } from '../../components/UI/ProgressLinear/ProgressLinear';
-import { Path } from '../../constants/routes';
-import { useTo } from '../../hooks/useTo';
-import { useGetAllProductsQuery } from '../../api/productApi';
-import { useGetAllCategoriesQuery } from '../../api/categoryApi';
-import { useUploadImageMutation } from '../../api/imageApi';
-import { eventBus, EventTypes } from '../../packages/EventBus';
-import { PromotionUpdateDto } from '../../@types/dto/promotion/update.dto';
-import { CreateStockFormDto } from '../../@types/dto/form/create-stock.dto';
-import { NotificationType } from '../../@types/entities/Notification';
+import { useGetAllCategoriesQuery } from 'api/categoryApi';
+import { useUploadImageMutation } from 'api/imageApi';
+import { useGetAllProductsQuery } from 'api/productApi';
+import { useGetPromotionByIdQuery, useUpdatePromotionMutation } from 'api/promotionApi';
 
-import noImage from '../../assets/images/no-image.svg';
+import { Header } from 'components/Header/Header';
+import { CreateStockForm } from 'components/Stock/CreateForm/CreateForm';
+import { Button } from 'components/UI/Button/Button';
+import { ProgressLinear } from 'components/UI/ProgressLinear/ProgressLinear';
+import { Typography } from 'components/UI/Typography/Typography';
+
+import { CreateStockFormDto } from 'types/dto/form/create-stock.dto';
+import { PromotionUpdateDto } from 'types/dto/promotion/update.dto';
+import { NotificationType } from 'types/entities/Notification';
+
+import { EventTypes, eventBus } from 'packages/EventBus';
+
+import noImage from 'assets/images/no-image.svg';
+
+import { useTo } from '../../hooks/useTo';
 
 type RightContentProps = {
   onSave(): void;
@@ -34,7 +36,7 @@ function RightContent({ onSave, onCancel }: RightContentProps) {
       <Button onClick={onSave} sx={{ margin: '0 10px' }}>
         Сохранить
       </Button>
-      <Button variant="outlined" onClick={onCancel}>
+      <Button variant='outlined' onClick={onCancel}>
         Отмена
       </Button>
     </>
@@ -53,8 +55,7 @@ function EditStockView() {
   const [updatePromotion] = useUpdatePromotionMutation();
   const [uploadImage] = useUploadImageMutation();
 
-  const [defaultValues, setDefaultValues] =
-    useState<CreateStockFormDto | undefined>(undefined);
+  const [defaultValues, setDefaultValues] = useState<CreateStockFormDto | undefined>(undefined);
 
   useEffect(() => {
     if (!promotion) return;
@@ -111,13 +112,9 @@ function EditStockView() {
 
   const save = async (data: CreateStockFormDto) => {
     const cardImage =
-      typeof data.smallPhoto === 'string'
-        ? promotion?.cardImage
-        : await uploadPicture(data.smallPhoto, '1:1');
+      typeof data.smallPhoto === 'string' ? promotion?.cardImage : await uploadPicture(data.smallPhoto, '1:1');
     const pageImage =
-      typeof data.fullPhoto === 'string'
-        ? promotion?.pageImage
-        : await uploadPicture(data.fullPhoto, '1:2');
+      typeof data.fullPhoto === 'string' ? promotion?.pageImage : await uploadPicture(data.fullPhoto, '1:2');
 
     const updatedPromotion: PromotionUpdateDto = {
       id: Number(id),
@@ -169,20 +166,20 @@ function EditStockView() {
     }
   };
 
-  if (isLoading) return <ProgressLinear variant="query" />;
+  if (isLoading) return <ProgressLinear variant='query' />;
 
   if (!isLoading && isError) {
-    return <Typography variant="h5">Произошла ошибка</Typography>;
+    return <Typography variant='h5'>Произошла ошибка</Typography>;
   }
 
   if (!isLoading && !isError && !promotion) {
-    return <Typography variant="h5">Акция не найдена</Typography>;
+    return <Typography variant='h5'>Акция не найдена</Typography>;
   }
 
   return (
     <div>
       <Header
-        leftTitle="Редактирование акции"
+        leftTitle='Редактирование акции'
         rightContent={<RightContent onCancel={goToStocks} onSave={submitStockForm} />}
       />
 

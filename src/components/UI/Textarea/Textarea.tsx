@@ -1,13 +1,11 @@
-import React, {
-  ChangeEventHandler,
-  CSSProperties,
-  FocusEventHandler,
-} from 'react';
+import React, { CSSProperties, ChangeEventHandler, FocusEventHandler } from 'react';
+
 import MUITextareaAutosize from '@mui/material/TextareaAutosize';
+
+import { defaultTheme as t } from 'themes';
 
 import { Box } from '../Box/Box';
 import { Typography } from '../Typography/Typography';
-import { defaultTheme as t } from '../../../themes';
 
 const textareaSx: CSSProperties = {
   overflow: 'auto',
@@ -54,28 +52,17 @@ type Props = {
   onFocus?: FocusEventHandler<HTMLTextAreaElement>;
 };
 
-export function Textarea({
-  label,
-  minRows = 1,
-  sx,
-  isError,
-  error,
-  ...props
-}: Props) {
+export function Textarea({ label, minRows = 1, sx, isError, error, ...props }: Props) {
   return (
     <Box sx={{ ...boxSx, ...(isError && errorSx) }}>
       {label && (
-        <Typography variant="body2" color={(isError && 'error') || 'primary'}>
+        <Typography variant='body2' color={(isError && 'error') || 'primary'}>
           {label}
         </Typography>
       )}
-      <MUITextareaAutosize
-        {...props}
-        minRows={minRows}
-        style={{ ...textareaSx, ...sx, ...(isError && errorSx) }}
-      />
+      <MUITextareaAutosize {...props} minRows={minRows} style={{ ...textareaSx, ...sx, ...(isError && errorSx) }} />
       {isError && (
-        <Typography variant="body2" color="error">
+        <Typography variant='body2' color='error'>
           {error}
         </Typography>
       )}

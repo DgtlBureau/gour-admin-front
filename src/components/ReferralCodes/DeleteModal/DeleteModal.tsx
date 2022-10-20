@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { Modal } from '../../UI/Modal/Modal';
-import { Button } from '../../UI/Button/Button';
+import { Button } from 'components/UI/Button/Button';
+import { Modal } from 'components/UI/Modal/Modal';
 
 type ModalActionsProps = {
   onDelete: () => void;
@@ -18,27 +18,22 @@ export type ReferralCodeDeleteModalProps = {
 function ModalActions({ onDelete, onClose }: ModalActionsProps) {
   return (
     <>
-      <Button size="small" type="submit" onClick={onDelete} sx={{ marginRight: '10px' }}>
+      <Button size='small' type='submit' onClick={onDelete} sx={{ marginRight: '10px' }}>
         Да
       </Button>
 
-      <Button variant="outlined" size="small" onClick={onClose}>
+      <Button variant='outlined' size='small' onClick={onClose}>
         Нет
       </Button>
     </>
   );
 }
 
-export function ReferralCodeDeleteModal({
-  isOpen,
-  referralCode,
-  onDelete,
-  onClose,
-}: ReferralCodeDeleteModalProps) {
+export function ReferralCodeDeleteModal({ isOpen, referralCode, onDelete, onClose }: ReferralCodeDeleteModalProps) {
   return (
     <Modal
       isOpen={isOpen}
-      title="Вы действительно хотите удалить реферальный код?"
+      title='Вы действительно хотите удалить реферальный код?'
       description={`Код: ${referralCode}`}
       actions={<ModalActions onDelete={onDelete} onClose={onClose} />}
       onClose={onClose}

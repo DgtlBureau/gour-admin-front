@@ -1,12 +1,14 @@
 import React, { useEffect } from 'react';
-import { yupResolver } from '@hookform/resolvers/yup';
 import { FormProvider, useForm } from 'react-hook-form';
 
-import { TopLevelCategory } from '../../../@types/entities/Category';
-import { HFTextField } from '../../HookForm/HFTextField';
-import { Button } from '../../UI/Button/Button';
-import { Modal } from '../../UI/Modal/Modal';
+import { yupResolver } from '@hookform/resolvers/yup';
 
+import { Button } from 'components/UI/Button/Button';
+import { Modal } from 'components/UI/Modal/Modal';
+
+import { TopLevelCategory } from 'types/entities/Category';
+
+import { HFTextField } from '../../HookForm/HFTextField';
 import schema from './validation';
 
 type FormType = {
@@ -27,15 +29,10 @@ type ModalActionsProps = {
 function ModalActions({ onCancel }: ModalActionsProps) {
   return (
     <>
-      <Button
-        form="createProductTypeForm"
-        type="submit"
-        size="small"
-        sx={{ marginRight: '10px' }}
-      >
+      <Button form='createProductTypeForm' type='submit' size='small' sx={{ marginRight: '10px' }}>
         Сохранить
       </Button>
-      <Button variant="outlined" size="small" onClick={onCancel}>
+      <Button variant='outlined' size='small' onClick={onCancel}>
         Отменить
       </Button>
     </>
@@ -59,8 +56,8 @@ export function ProductTypeModal({ isOpen, productType, onClose, onSave }: Props
       actions={<ModalActions onCancel={onClose} />}
     >
       <FormProvider {...values}>
-        <form id="createProductTypeForm" onSubmit={values.handleSubmit(onSave)}>
-          <HFTextField name="title" />
+        <form id='createProductTypeForm' onSubmit={values.handleSubmit(onSave)}>
+          <HFTextField name='title' />
         </form>
       </FormProvider>
     </Modal>

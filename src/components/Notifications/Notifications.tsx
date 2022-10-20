@@ -1,11 +1,15 @@
 import React, { useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
 import { Store, iNotification } from 'react-notifications-component';
-import { eventBus, EventTypes } from '../../packages/EventBus';
+import { useLocation } from 'react-router-dom';
+
+import { Path } from 'constants/routes';
+
+import { NotificationType } from 'types/entities/Notification';
+
+import { EventTypes, eventBus } from 'packages/EventBus';
+
 import { useQuery } from '../../hooks/useQuery';
 import { useTo } from '../../hooks/useTo';
-import { Path } from '../../constants/routes';
-import { NotificationType } from '../../@types/entities/Notification';
 
 export const baseNotification: iNotification = {
   insert: 'bottom',

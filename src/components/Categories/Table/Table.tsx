@@ -1,12 +1,13 @@
 import React, { ChangeEvent, useState } from 'react';
-import EditIcon from '@mui/icons-material/Edit';
+
+import { Box } from 'components/UI/Box/Box';
+import { IconButton } from 'components/UI/IconButton/IconButton';
+import { Row, Table } from 'components/UI/Table/Table';
+
+import type { MidLevelCategory } from 'types/entities/Category';
+
 import DeleteIcon from '@mui/icons-material/Delete';
-
-import type { MidLevelCategory } from '../../../@types/entities/Category';
-
-import { Box } from '../../UI/Box/Box';
-import { Row, Table } from '../../UI/Table/Table';
-import { IconButton } from '../../UI/IconButton/IconButton';
+import EditIcon from '@mui/icons-material/Edit';
 
 type CategoryActions = {
   onDelete: () => void;
@@ -24,10 +25,10 @@ const tableHeader = ['Категория', 'Действие'];
 function RowActions({ onDelete, onEdit }: CategoryActions) {
   return (
     <Box>
-      <IconButton onClick={onEdit} component="symbol">
+      <IconButton onClick={onEdit} component='symbol'>
         <EditIcon />
       </IconButton>
-      <IconButton onClick={onDelete} component="symbol">
+      <IconButton onClick={onDelete} component='symbol'>
         <DeleteIcon />
       </IconButton>
     </Box>
@@ -42,22 +43,14 @@ export function CategoriesTable({ categories, onDelete, onEdit }: Props) {
     setPage(newPage);
   };
 
-  const handleChangeRowsPerPage = (
-    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
+  const handleChangeRowsPerPage = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
 
   const rows: Row[] = categories.map((category, i) => ({
     id: i,
-    cells: [
-      category.title.ru,
-      <RowActions
-        onDelete={() => onDelete(category.id)}
-        onEdit={() => onEdit(category)}
-      />,
-    ],
+    cells: [category.title.ru, <RowActions onDelete={() => onDelete(category.id)} onEdit={() => onEdit(category)} />],
   }));
 
   return (

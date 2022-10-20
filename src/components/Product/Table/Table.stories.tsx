@@ -1,17 +1,17 @@
 import React from 'react';
 
 import { ComponentStory, Meta } from '@storybook/react';
+
+import { generateMockId } from 'utils/wordHelper';
+
 import { ProductsTable, ProductsTableProps } from './Table';
-import { generateMockId } from '../../../utils/wordHelper';
 
 export default {
   component: ProductsTable,
   title: 'Tables/Products',
 } as Meta;
 
-const Template: ComponentStory<typeof ProductsTable> = function (
-  args: ProductsTableProps
-) {
+const Template: ComponentStory<typeof ProductsTable> = function (args: ProductsTableProps) {
   return <ProductsTable {...args} />;
 };
 export const DefaultProductsTable = Template.bind({});

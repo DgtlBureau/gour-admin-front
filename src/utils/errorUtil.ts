@@ -1,8 +1,4 @@
-import {
-  ErrorWithMessage,
-  ErrorWithDataMessage,
-  ErrorData,
-} from '../@types/entities/ErrorWithMessage';
+import { ErrorData, ErrorWithDataMessage, ErrorWithMessage } from 'types/entities/ErrorWithMessage';
 
 export function checkErrorMessage(error: unknown): error is ErrorWithMessage {
   const isObject = typeof error === 'object';
@@ -22,8 +18,7 @@ export function checkErrorDataMessage(error: unknown): error is ErrorWithDataMes
 
   const withData = isObject && !isNull && 'data' in error;
   const withDataMessage = withData && 'message' in (error as { data: ErrorData }).data;
-  const isStringDataMessage =
-    typeof (error as { data: ErrorData }).data.message === 'string';
+  const isStringDataMessage = typeof (error as { data: ErrorData }).data.message === 'string';
 
   const withStringDataMessage = withDataMessage && isStringDataMessage;
 

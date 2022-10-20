@@ -1,11 +1,14 @@
 import React, { useEffect } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
+
 import { yupResolver } from '@hookform/resolvers/yup';
 
-import { Modal } from '../../UI/Modal/Modal';
-import { Button } from '../../UI/Button/Button';
+import { Button } from 'components/UI/Button/Button';
+import { Modal } from 'components/UI/Modal/Modal';
+
+import { ReferralCodeCreateDto } from 'types/dto/referral/create-code.dto';
+
 import { HFTextField } from '../../HookForm/HFTextField';
-import { ReferralCodeCreateDto } from '../../../@types/dto/referral/create-code.dto';
 import schema from './validation';
 
 type ModalActionsProps = {
@@ -21,26 +24,17 @@ export type ReferralCodeCreateModalProps = {
 function ModalActions({ onClose }: ModalActionsProps) {
   return (
     <>
-      <Button
-        size="small"
-        type="submit"
-        form="referralCreateForm"
-        sx={{ marginRight: '10px' }}
-      >
+      <Button size='small' type='submit' form='referralCreateForm' sx={{ marginRight: '10px' }}>
         Сохранить
       </Button>
-      <Button variant="outlined" size="small" onClick={onClose}>
+      <Button variant='outlined' size='small' onClick={onClose}>
         Отменить
       </Button>
     </>
   );
 }
 
-export function ReferralCodeCreateModal({
-  isOpen,
-  onSave,
-  onClose,
-}: ReferralCodeCreateModalProps) {
+export function ReferralCodeCreateModal({ isOpen, onSave, onClose }: ReferralCodeCreateModalProps) {
   const values = useForm<ReferralCodeCreateDto>({
     resolver: yupResolver(schema),
     mode: 'onBlur',
@@ -55,17 +49,13 @@ export function ReferralCodeCreateModal({
   return (
     <Modal
       isOpen={isOpen}
-      title="Добавление реферального кода"
+      title='Добавление реферального кода'
       actions={<ModalActions onClose={onClose} />}
       onClose={onClose}
     >
       <FormProvider {...values}>
-        <form id="referralCreateForm" onSubmit={values.handleSubmit(submit)}>
-          <HFTextField
-            label="Введите реферальный код"
-            name="code"
-            sx={{ width: '640px' }}
-          />
+        <form id='referralCreateForm' onSubmit={values.handleSubmit(submit)}>
+          <HFTextField label='Введите реферальный код' name='code' sx={{ width: '640px' }} />
         </form>
       </FormProvider>
     </Modal>

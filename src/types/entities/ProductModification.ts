@@ -1,6 +1,6 @@
 import { Product } from './Product';
-import { Warehouse } from './Warehouse';
 import { TranslatableString } from './TranslatableString';
+import { Warehouse } from './Warehouse';
 
 export type ProductModification = {
   title: TranslatableString;

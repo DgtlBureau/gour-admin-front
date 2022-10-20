@@ -1,6 +1,7 @@
-import { Client } from '../@types/entities/Client';
-import { commonApi } from './commonApi';
+import { Client } from 'types/entities/Client';
+
 import { Path } from '../constants/routes';
+import { commonApi } from './commonApi';
 
 export const clientApi = commonApi.injectEndpoints({
   endpoints(builder) {
@@ -14,10 +15,7 @@ export const clientApi = commonApi.injectEndpoints({
         },
         providesTags: result =>
           result
-            ? [
-                ...result.map(({ id }) => ({ type: 'Client', id } as const)),
-                { type: 'Client', id: 'LIST' },
-              ]
+            ? [...result.map(({ id }) => ({ type: 'Client', id } as const)), { type: 'Client', id: 'LIST' }]
             : [{ type: 'Client', id: 'LIST' }],
       }),
       getClient: builder.query<Client, number>({
@@ -52,9 +50,5 @@ export const clientApi = commonApi.injectEndpoints({
   },
 });
 
-export const {
-  useGetClientQuery,
-  useGetClientsListQuery,
-  useDeleteClientMutation,
-  useUpdateClientMutation,
-} = clientApi;
+export const { useGetClientQuery, useGetClientsListQuery, useDeleteClientMutation, useUpdateClientMutation } =
+  clientApi;

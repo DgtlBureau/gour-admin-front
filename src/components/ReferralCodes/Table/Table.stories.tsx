@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { ComponentStory, Meta } from '@storybook/react';
 
 import { ReferralCodeTable, ReferralCodeTableProps } from './Table';
@@ -10,9 +11,7 @@ export default {
   title: 'Tables/ReferralCodes',
 } as Meta;
 
-const Template: ComponentStory<typeof ReferralCodeTable> = function (
-  args: ReferralCodeTableProps
-) {
+const Template: ComponentStory<typeof ReferralCodeTable> = function (args: ReferralCodeTableProps) {
   return <ReferralCodeTable {...args} />;
 };
 export const DefaultReferralCodeTable = Template.bind({});

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
 
 import { Multiselect } from './Multiselect';
 

@@ -1,21 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { SingleValue } from 'react-select';
 
-import {
-  useGetAllPagesQuery,
-  useCreatePageMutation,
-  useUpdatePageMutation,
-} from '../../api/pageApi';
-import { Box } from '../../components/UI/Box/Box';
-import { Button } from '../../components/UI/Button/Button';
-import { Select, SelectOption } from '../../components/UI/Select/Select';
-import { Tabs } from '../../components/UI/Tabs/Tabs';
-import { PagesAboutUsForm } from '../../components/AboutUs/PagesForm/PagesForm';
-import { Options } from '../../constants/tabs';
+import { Options } from 'constants/tabs';
+
+import { useCreatePageMutation, useGetAllPagesQuery, useUpdatePageMutation } from 'api/pageApi';
+
+import { PagesAboutUsForm } from 'components/AboutUs/PagesForm/PagesForm';
+import { Box } from 'components/UI/Box/Box';
+import { Button } from 'components/UI/Button/Button';
+import { Select, SelectOption } from 'components/UI/Select/Select';
+import { Tabs } from 'components/UI/Tabs/Tabs';
+
+import { PagesAboutFormDto } from 'types/dto/form/pages-about.dto';
+import { NotificationType } from 'types/entities/Notification';
+
+import { EventTypes, eventBus } from 'packages/EventBus';
+
 import { convertPageForCreate, convertPageForUpdate } from './pagesHelper';
-import { PagesAboutFormDto } from '../../@types/dto/form/pages-about.dto';
-import { eventBus, EventTypes } from '../../packages/EventBus';
-import { NotificationType } from '../../@types/entities/Notification';
 
 const sx = {
   header: {
@@ -77,9 +78,7 @@ function ListPagesView() {
 
   const [tabValue, setTabValue] = useState<string>(Options.MAIN);
   const [language, setLanguage] = useState<Language>('ru');
-  const [defaultValues, setDefaultValues] = useState<PagesAboutFormDto>(
-    {} as PagesAboutFormDto
-  );
+  const [defaultValues, setDefaultValues] = useState<PagesAboutFormDto>({} as PagesAboutFormDto);
 
   const currentPage = pages && pages.find(page => page.key === tabValue);
 
@@ -149,7 +148,7 @@ function ListPagesView() {
             onChange={selectLanguage}
             isMulti={false}
           /> */}
-          <Button type="submit" form="pagesForm" variant="contained" sx={sx.saveBtn}>
+          <Button type='submit' form='pagesForm' variant='contained' sx={sx.saveBtn}>
             сохранить
           </Button>
         </Box>

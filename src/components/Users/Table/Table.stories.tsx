@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { ComponentStory, Meta } from '@storybook/react';
+
 import { UsersTable, UsersTableProps } from './Table';
 
 export default {

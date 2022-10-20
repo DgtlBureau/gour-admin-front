@@ -1,18 +1,20 @@
 import React, { useState } from 'react';
-import { LinearProgress } from '@mui/material';
+
 import { format } from 'date-fns';
 
-import {
-  useGetProductGradeListQuery,
-  useUpdateProductGradeMutation,
-} from '../../api/productGradeApi';
-import { ConfirmReviewModal } from '../../components/ConfirmReviewModal/ConfirmReviewModal';
-import { NotificationType } from '../../@types/entities/Notification';
-import { Header } from '../../components/Header/Header';
-import { Comment, ReviewTable } from '../../components/Review/Table/Table';
-import { Typography } from '../../components/UI/Typography/Typography';
-import { eventBus, EventTypes } from '../../packages/EventBus';
-import { getErrorMessage } from '../../utils/errorUtil';
+import { LinearProgress } from '@mui/material';
+
+import { useGetProductGradeListQuery, useUpdateProductGradeMutation } from 'api/productGradeApi';
+
+import { ConfirmReviewModal } from 'components/ConfirmReviewModal/ConfirmReviewModal';
+import { Header } from 'components/Header/Header';
+import { Comment, ReviewTable } from 'components/Review/Table/Table';
+import { Typography } from 'components/UI/Typography/Typography';
+
+import { NotificationType } from 'types/entities/Notification';
+
+import { EventTypes, eventBus } from 'packages/EventBus';
+import { getErrorMessage } from 'utils/errorUtil';
 
 function ListReviewsView() {
   const [openedReview, setOpenedReview] = useState<Comment | null>(null);
@@ -29,9 +31,7 @@ function ListReviewsView() {
 
   const formattedComments: Comment[] = comments.map(comment => ({
     id: comment.id,
-    authorName: comment.client
-      ? `${comment.client.lastName} ${comment.client.firstName}`
-      : 'Неизвестен',
+    authorName: comment.client ? `${comment.client.lastName} ${comment.client.firstName}` : 'Неизвестен',
     text: comment.comment,
     productName: comment.product?.title?.ru || '',
     date: format(new Date(comment.createdAt), 'dd.MM.yyyy') || '',
@@ -110,15 +110,15 @@ function ListReviewsView() {
 
   if (isLoading) return <LinearProgress />;
 
-  if (!isLoading && isError) return <Typography variant="h5">Возникла ошибка</Typography>;
+  if (!isLoading && isError) return <Typography variant='h5'>Возникла ошибка</Typography>;
 
   if (!isLoading && !isError && comments.length === 0) {
-    return <Typography variant="h5">Отзывы отсутствуют</Typography>;
+    return <Typography variant='h5'>Отзывы отсутствуют</Typography>;
   }
 
   return (
     <div>
-      <Header leftTitle="Отзывы" />
+      <Header leftTitle='Отзывы' />
       <ReviewTable comments={formattedComments} onClickFullReview={openReview} />
       <ConfirmReviewModal
         isOpened={!!openedReview}

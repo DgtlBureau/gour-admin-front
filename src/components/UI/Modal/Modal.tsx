@@ -1,4 +1,5 @@
 import React, { CSSProperties, ReactNode } from 'react';
+
 import { Modal as MUIModal, SxProps } from '@mui/material';
 
 import { Box } from '../Box/Box';
@@ -36,34 +37,27 @@ export function Modal({
   return (
     <MUIModal open={isOpen} onClose={onClose}>
       <Box sx={{ ...modalStyles.modal, ...sx }}>
-        <Typography sx={modalStyles.title} variant="body2" color="primary">
+        <Typography sx={modalStyles.title} variant='body2' color='primary'>
           {title}
         </Typography>
 
-        <Box sx={modalStyles.body}>
-          {children || <Typography variant="body1">{description}</Typography>}
-        </Box>
+        <Box sx={modalStyles.body}>{children || <Typography variant='body1'>{description}</Typography>}</Box>
 
         <Box>
           {actions || (
             <>
               {onAccept ? (
-                <Button size="small" sx={modalStyles.acceptBtn} onClick={onAccept}>
+                <Button size='small' sx={modalStyles.acceptBtn} onClick={onAccept}>
                   {acceptText}
                 </Button>
               ) : (
                 !!formId && (
-                  <Button
-                    type="submit"
-                    form={formId}
-                    size="small"
-                    sx={modalStyles.acceptBtn}
-                  >
+                  <Button type='submit' form={formId} size='small' sx={modalStyles.acceptBtn}>
                     {acceptText}
                   </Button>
                 )
               )}
-              <Button variant="outlined" size="small" onClick={onClose}>
+              <Button variant='outlined' size='small' onClick={onClose}>
                 {closeText}
               </Button>
             </>

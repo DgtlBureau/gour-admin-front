@@ -1,24 +1,20 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
+
 import { yupResolver } from '@hookform/resolvers/yup';
-import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { FormControlLabel, FormLabel, Radio } from '@mui/material';
 
-import {
-  CategoryHasDiscount,
-  CreateFormType,
-  EditableCategory,
-  SubCategoriesState,
-} from './types';
+import { Button } from 'components/UI/Button/Button';
+import { IconButton } from 'components/UI/IconButton/IconButton';
+import { TextField } from 'components/UI/TextField/TextField';
+import { Typography } from 'components/UI/Typography/Typography';
 
-import { HFTextField } from '../../HookForm/HFTextField';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+
 import { HFRadioGroup } from '../../HookForm/HFRadioGroup';
-import { TextField } from '../../UI/TextField/TextField';
-import { IconButton } from '../../UI/IconButton/IconButton';
-import { Typography } from '../../UI/Typography/Typography';
-import { Button } from '../../UI/Button/Button';
-
+import { HFTextField } from '../../HookForm/HFTextField';
 import { sx } from './CreateOrEditForm.styles';
+import { CategoryHasDiscount, CreateFormType, EditableCategory, SubCategoriesState } from './types';
 import schema from './validation';
 
 type Props = {
@@ -27,11 +23,7 @@ type Props = {
   onDeleteSubCategory: (id: number) => void;
 };
 
-export function CreateOrEditCategoryForm({
-  defaultValues,
-  onSave,
-  onDeleteSubCategory,
-}: Props) {
+export function CreateOrEditCategoryForm({ defaultValues, onSave, onDeleteSubCategory }: Props) {
   const values = useForm<CreateFormType>({
     resolver: yupResolver(schema),
     defaultValues: {
@@ -40,9 +32,7 @@ export function CreateOrEditCategoryForm({
     },
   });
 
-  const [subCategories, setSubCategories] = useState<SubCategoriesState>(
-    () => defaultValues?.subCategories || {}
-  );
+  const [subCategories, setSubCategories] = useState<SubCategoriesState>(() => defaultValues?.subCategories || {});
 
   const categoriesKeysArray = Object.keys(subCategories);
 
@@ -86,27 +76,15 @@ export function CreateOrEditCategoryForm({
 
   return (
     <FormProvider {...values}>
-      <form
-        style={sx.form}
-        id="createCategoryForm"
-        onSubmit={values.handleSubmit(handleSave)}
-      >
-        <HFTextField label="Название" name="title" />
-        <Typography variant="body2">Участие в скидочной программе</Typography>
-        <HFRadioGroup name="hasDiscount">
-          <FormControlLabel
-            value={CategoryHasDiscount.YES}
-            control={<Radio />}
-            label="Да"
-          />
-          <FormControlLabel
-            value={CategoryHasDiscount.NO}
-            control={<Radio />}
-            label="Нет"
-          />
+      <form style={sx.form} id='createCategoryForm' onSubmit={values.handleSubmit(handleSave)}>
+        <HFTextField label='Название' name='title' />
+        <Typography variant='body2'>Участие в скидочной программе</Typography>
+        <HFRadioGroup name='hasDiscount'>
+          <FormControlLabel value={CategoryHasDiscount.YES} control={<Radio />} label='Да' />
+          <FormControlLabel value={CategoryHasDiscount.NO} control={<Radio />} label='Нет' />
         </HFRadioGroup>
         {categoriesKeysArray.length !== 0 && (
-          <Typography variant="body2" color="primary">
+          <Typography variant='body2' color='primary'>
             Подкатегории
           </Typography>
         )}
@@ -120,10 +98,7 @@ export function CreateOrEditCategoryForm({
               value={value}
               // isError={}
               endAdornment={
-                <IconButton
-                  onClick={() => handleDeleteSubCategory(id)}
-                  component="symbol"
-                >
+                <IconButton onClick={() => handleDeleteSubCategory(id)} component='symbol'>
                   <DeleteForeverIcon />
                 </IconButton>
               }

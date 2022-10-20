@@ -1,21 +1,23 @@
 import React, { useMemo } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 
-import Sidebar, {
-  SidebarLinkedItem,
-  SidebarActionItem,
-} from '../components/Sidebar/Sidebar';
-import { Box } from '../components/UI/Box/Box';
-import { ProgressLinear } from '../components/UI/ProgressLinear/ProgressLinear';
-import { Path } from '../constants/routes';
-import { useTo } from '../hooks/useTo';
-import { getCurrentPage } from '../utils/getCurrentPage';
+import { Path } from 'constants/routes';
+
+import { useGetCurrentUserQuery, useSignoutMutation } from 'api/authApi';
+import { selectIsAuth } from 'store/selectors/auth';
+
+import Sidebar, { SidebarActionItem, SidebarLinkedItem } from 'components/Sidebar/Sidebar';
+import { Box } from 'components/UI/Box/Box';
+import { ProgressLinear } from 'components/UI/ProgressLinear/ProgressLinear';
+
+import { NotificationType } from 'types/entities/Notification';
+
+import { EventTypes, eventBus } from 'packages/EventBus';
+import { getErrorMessage } from 'utils/errorUtil';
+import { getCurrentPage } from 'utils/getCurrentPage';
+
 import { useAppSelector } from '../hooks/store';
-import { selectIsAuth } from '../store/selectors/auth';
-import { useSignoutMutation, useGetCurrentUserQuery } from '../api/authApi';
-import { eventBus, EventTypes } from '../packages/EventBus';
-import { NotificationType } from '../@types/entities/Notification';
-import { getErrorMessage } from '../utils/errorUtil';
+import { useTo } from '../hooks/useTo';
 
 const sx = {
   height: '100%',
@@ -85,7 +87,7 @@ function PrivateLayout() {
     }
   };
 
-  if (isLoading) return <ProgressLinear variant="query" />;
+  if (isLoading) return <ProgressLinear variant='query' />;
 
   if (isError || !isAuth) {
     to(Path.AUTH, 'signin');

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
 
 import { SelectCard } from './SelectCard';
 
@@ -24,8 +24,7 @@ const Template: ComponentStory<typeof SelectCard> = function (args) {
 export const DefaultSelectCard = Template.bind({});
 
 DefaultSelectCard.args = {
-  image:
-    'https://posta-magazine.ru/wp-content/uploads/2020/01/l_main_goatcheese-places_posta-magazine.jpg',
+  image: 'https://posta-magazine.ru/wp-content/uploads/2020/01/l_main_goatcheese-places_posta-magazine.jpg',
   title: 'Вкусный сыр',
   searchQuery: '',
 };

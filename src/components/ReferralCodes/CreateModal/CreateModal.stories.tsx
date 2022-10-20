@@ -1,7 +1,8 @@
 import React from 'react';
+
 import { ComponentStory, Meta } from '@storybook/react';
 
-import { ReferralCodeCreateModalProps, ReferralCodeCreateModal } from './CreateModal';
+import { ReferralCodeCreateModal, ReferralCodeCreateModalProps } from './CreateModal';
 
 export default {
   component: ReferralCodeCreateModal,

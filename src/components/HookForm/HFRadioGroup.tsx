@@ -1,6 +1,7 @@
 import React, { ReactNode } from 'react';
-import { RadioGroup, SxProps } from '@mui/material';
 import { Controller, useFormContext } from 'react-hook-form';
+
+import { RadioGroup, SxProps } from '@mui/material';
 
 type Props = {
   name: string;

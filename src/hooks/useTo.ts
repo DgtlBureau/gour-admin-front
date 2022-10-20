@@ -1,4 +1,5 @@
-import { useNavigate, NavigateOptions, generatePath, Params } from 'react-router-dom';
+import { NavigateOptions, Params, generatePath, useNavigate } from 'react-router-dom';
+
 import { Path } from '../constants/routes';
 import { getQueryParamsStr } from '../utils/getQueryParamsStr';
 

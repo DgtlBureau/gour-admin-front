@@ -1,4 +1,4 @@
-import { TopLevelCategory } from '../../../@types/entities/Category';
+import { TopLevelCategory } from 'types/entities/Category';
 
 export type Product = {
   id: number;
