@@ -10,6 +10,8 @@ import { Typography } from 'components/UI/Typography/Typography';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 
+import { Path } from '../../../constants/routes';
+import { Link } from '../../UI/Link/Link';
 import sx from './Table.styles';
 
 const tabsOptions = [
@@ -37,20 +39,19 @@ export type Stock = {
 };
 
 type RowActionsProps = {
-  onEdit: () => void;
+  stockId: number;
   onDelete: () => void;
 };
 
 type StockTableProps = {
   stocksList: Stock[];
-  onEdit: (stockId: number) => void;
   onDelete: (stockId: number) => void;
 };
 
-function RowActions({ onDelete, onEdit }: RowActionsProps) {
+function RowActions({ stockId, onDelete }: RowActionsProps) {
   return (
     <Box>
-      <IconButton onClick={onEdit} component='symbol'>
+      <IconButton href={`/${Path.STOCKS}/${stockId}`} component={Link}>
         <EditIcon />
       </IconButton>
       <IconButton onClick={onDelete} component='symbol'>
@@ -60,7 +61,7 @@ function RowActions({ onDelete, onEdit }: RowActionsProps) {
   );
 }
 
-export function StockTable({ stocksList, onEdit, onDelete }: StockTableProps) {
+export function StockTable({ stocksList, onDelete }: StockTableProps) {
   const [page, setPage] = useState<number>(0);
   const [tabValue, setTabValue] = useState<string>(Options.ALL);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -93,11 +94,9 @@ export function StockTable({ stocksList, onEdit, onDelete }: StockTableProps) {
           {stock.isActual ? 'Актуальное' : 'Прошедшее'}
         </Typography>,
         <RowActions
+          stockId={stock.id}
           onDelete={() => {
             onDelete(stock.id);
-          }}
-          onEdit={() => {
-            onEdit(stock.id);
           }}
         />,
       ],

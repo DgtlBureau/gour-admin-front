@@ -9,6 +9,8 @@ import { ProductTableDto } from 'types/dto/table/products.dto';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 
+import { Path } from '../../../constants/routes';
+import { Link } from '../../UI/Link/Link';
 import { TabsKeys } from '../SelectForm/types';
 
 const titleList = ['Фото', 'Название', 'Цена', 'Действие'];
@@ -24,7 +26,6 @@ export type ProductsTableProps = {
   onChangePage: (_: unknown, newPage: number) => void;
   rowsPerPage: number;
   onChangeRowsPerPage: (rowPerPage: number) => void;
-  onEdit(id: number): void;
   onRemove(product: ProductTableDto): void;
 };
 
@@ -36,7 +37,6 @@ export function ProductsTable({
   rowsPerPage,
   onChangePage,
   onChangeRowsPerPage,
-  onEdit,
   onRemove,
 }: ProductsTableProps) {
   const [selectedId, setSelectedId] = useState<TabsKeys>('all');
@@ -65,7 +65,7 @@ export function ProductsTable({
         product.title,
         `${product.price}₡`,
         <Box>
-          <IconButton onClick={() => onEdit(product.id)} component='symbol'>
+          <IconButton href={`/${Path.PRODUCTS}/${product.id}`} component={Link}>
             <EditIcon />
           </IconButton>
           <IconButton onClick={() => onRemove(product)} component='symbol'>

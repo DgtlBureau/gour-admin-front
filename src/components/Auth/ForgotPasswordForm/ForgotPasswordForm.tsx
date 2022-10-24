@@ -1,6 +1,8 @@
 import React from 'react';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 
+import { Path } from 'constants/routes';
+
 import { yupResolver } from '@hookform/resolvers/yup';
 
 import { Box } from 'components/UI/Box/Box';
@@ -57,7 +59,7 @@ export function AuthForgotPasswordForm({ onSubmit, isLoading }: Props) {
             Отправить
           </Button>
           <p>
-            <CustomLink path='/auth/signin'>Я не забыл пароль =]</CustomLink>
+            <CustomLink href={`${Path.AUTH}/${Path.SIGNIN}`}>Я не забыл пароль =]</CustomLink>
           </p>
         </Box>
       </form>

@@ -18,20 +18,22 @@ import { getErrorMessage } from 'utils/errorUtil';
 
 import defaultImage from 'assets/images/default.svg';
 
-import { useTo } from '../../hooks/useTo';
+import { Link } from '../../components/UI/Link/Link';
+import { Path } from '../../constants/routes';
 
 type Props = {
   onUploadClick: () => void;
-  onCreateClick: () => void;
 };
 
-function RightContent({ onUploadClick, onCreateClick }: Props) {
+function RightContent({ onUploadClick }: Props) {
   return (
     <>
       <Button variant='outlined' onClick={onUploadClick} sx={{ marginRight: '10px' }}>
         Выгрузить базу для 1с
       </Button>
-      <Button onClick={onCreateClick}>Добавить товар</Button>
+      <Button href={`/${Path.PRODUCTS}/create`} component={Link}>
+        Добавить товар
+      </Button>
     </>
   );
 }
@@ -59,8 +61,6 @@ function ListProductsView() {
       price: product.price.cheeseCoin || 0,
     }));
   }, [productsData]);
-
-  const { toProductCreate, toProductEdit } = useTo();
 
   const uploadProductList = () => {
     console.log('uploading');
@@ -114,10 +114,7 @@ function ListProductsView() {
 
   return (
     <div>
-      <Header
-        leftTitle='Товары'
-        rightContent={<RightContent onCreateClick={toProductCreate} onUploadClick={uploadProductList} />}
-      />
+      <Header leftTitle='Товары' rightContent={<RightContent onUploadClick={uploadProductList} />} />
 
       {isLoading && <ProgressLinear variant='indeterminate' />}
 
@@ -132,7 +129,6 @@ function ListProductsView() {
           rowsPerPage={rowsPerPage}
           onChangePage={changePage}
           onChangeRowsPerPage={changeRowsPerPage}
-          onEdit={toProductEdit}
           onRemove={openDeleteModal}
         />
       )}

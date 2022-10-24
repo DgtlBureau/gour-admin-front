@@ -104,8 +104,7 @@ function PrivateLayout() {
           name: currentUser?.firstName || 'Иван',
           lastName: currentUser?.lastName || 'Иванов',
         }}
-        defaultSelected={currentPage}
-        onLinkedItemClick={goToChapter}
+        selected={currentPage}
         onActionItemClick={performAction}
       />
       <Box sx={containerSx}>
