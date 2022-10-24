@@ -26,5 +26,33 @@ export const useTo = () => {
     });
   };
 
-  return to;
+  const toSignIn = () => to(Path.AUTH, 'signin');
+  const toSignUp = () => to(Path.AUTH, 'signup');
+
+  const toStockList = () => to(Path.STOCKS);
+  const toStockCreate = () => to(Path.STOCKS, 'create');
+  const toStockEdit = (id: number) => to(Path.STOCKS, id.toString());
+
+  const toUserList = () => to(Path.USERS);
+  const toUserCreate = () => to(Path.USERS, 'create');
+  const toUserEdit = (id: number) => to(Path.USERS, id.toString());
+
+  const toProductList = () => to(Path.PRODUCTS);
+  const toProductCreate = () => to(Path.PRODUCTS, 'create');
+  const toProductEdit = (id: number) => to(Path.PRODUCTS, id.toString());
+
+  return {
+    to,
+    toSignIn,
+    toSignUp,
+    toStockList,
+    toStockCreate,
+    toStockEdit,
+    toUserList,
+    toUserCreate,
+    toUserEdit,
+    toProductList,
+    toProductCreate,
+    toProductEdit,
+  };
 };
