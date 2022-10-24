@@ -1,11 +1,14 @@
 import React from 'react';
-import { useForm, SubmitHandler, FormProvider } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { Box } from '../../UI/Box/Box';
-import { HFTextField } from '../../HookForm/HFTextField';
+import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 
+import { yupResolver } from '@hookform/resolvers/yup';
+
+import { Box } from 'components/UI/Box/Box';
+
+import { ProductRecommendedFormDto } from 'types/dto/form/product-recommended.dto';
+
+import { HFTextField } from '../../HookForm/HFTextField';
 import schema from './validation';
-import { ProductRecommendedFormDto } from '../../../@types/dto/form/product-recommended.dto';
 
 const boxSx = {
   display: 'flex',
@@ -41,7 +44,7 @@ export function ProductRecommendedForm({ onSubmit, defaultValues }: Props) {
     <FormProvider {...values}>
       <form id={productFormId} onSubmit={values.handleSubmit(submitHandler)}>
         <Box sx={boxSx}>
-          <HFTextField name="test" label="test" />
+          <HFTextField name='test' label='test' />
         </Box>
       </form>
     </FormProvider>

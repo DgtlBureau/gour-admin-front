@@ -1,15 +1,18 @@
 import React from 'react';
-import { useForm, FormProvider } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
+
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FormControlLabel, Stack } from '@mui/material';
 
-import schema from './validation';
-import { Box } from '../../UI/Box/Box';
-import { RadioButton } from '../../UI/RadioButton/RadioButton';
-import { HFTextField } from '../../HookForm/HFTextField';
+import { Box } from 'components/UI/Box/Box';
+import { RadioButton } from 'components/UI/RadioButton/RadioButton';
+import { Typography } from 'components/UI/Typography/Typography';
+
+import { SignupUserDto } from 'types/dto/auth/signup-user.dto';
+
 import { HFRadioGroup } from '../../HookForm/HFRadioGroup';
-import { Typography } from '../../UI/Typography/Typography';
-import { SignupUserDto } from '../../../@types/dto/auth/signup-user.dto';
+import { HFTextField } from '../../HookForm/HFTextField';
+import schema from './validation';
 
 const sx = {
   form: {
@@ -44,26 +47,18 @@ export function CreateUserForm({ onSubmit }: CreateUserFormProps) {
 
   return (
     <FormProvider {...values}>
-      <form id="createUserForm" onSubmit={values.handleSubmit(submitHandler)}>
+      <form id='createUserForm' onSubmit={values.handleSubmit(submitHandler)}>
         <Stack spacing={2} sx={sx.form}>
-          <HFTextField name="name" label="Имя" />
-          <HFTextField name="surname" label="Фамилия" />
-          <HFTextField name="email" label="Email" />
-          <HFRadioGroup name="role" sx={sx.radioGroup}>
-            <Typography variant="body2" color="primary">
+          <HFTextField name='name' label='Имя' />
+          <HFTextField name='surname' label='Фамилия' />
+          <HFTextField name='email' label='Email' />
+          <HFRadioGroup name='role' sx={sx.radioGroup}>
+            <Typography variant='body2' color='primary'>
               Роль
             </Typography>
             <Box sx={sx.radios}>
-              <FormControlLabel
-                value="admin"
-                control={<RadioButton />}
-                label="Администратор"
-              />
-              <FormControlLabel
-                value="moderator"
-                control={<RadioButton />}
-                label="Модератор"
-              />
+              <FormControlLabel value='admin' control={<RadioButton />} label='Администратор' />
+              <FormControlLabel value='moderator' control={<RadioButton />} label='Модератор' />
             </Box>
           </HFRadioGroup>
         </Stack>

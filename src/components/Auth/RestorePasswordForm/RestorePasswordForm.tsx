@@ -1,13 +1,16 @@
 import React from 'react';
-import { useForm, SubmitHandler, FormProvider } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { Button } from '../../UI/Button/Button';
-import { Box } from '../../UI/Box/Box';
-import { HFTextField } from '../../HookForm/HFTextField';
+import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 
+import { yupResolver } from '@hookform/resolvers/yup';
+
+import { Box } from 'components/UI/Box/Box';
+import { Button } from 'components/UI/Button/Button';
+import { Typography } from 'components/UI/Typography/Typography';
+
+import { RestorePasswordDto } from 'types/dto/auth/restore-password.dto';
+
+import { HFTextField } from '../../HookForm/HFTextField';
 import schema from './validation';
-import { Typography } from '../../UI/Typography/Typography';
-import { RestorePasswordDto } from '../../../@types/dto/auth/restore-password.dto';
 
 const boxSx = {
   display: 'flex',
@@ -49,20 +52,9 @@ export function AuthRestorePasswordForm({ onSubmit, isLoading }: Props) {
       <form onSubmit={values.handleSubmit(onSubmit)}>
         <Box sx={boxSx}>
           <Typography sx={sxTitle}>Смена пароля </Typography>
-          <HFTextField sx={sxInput} name="password" label="Пароль" type="password" />
-          <HFTextField
-            sx={sxInput}
-            name="verificationPassword"
-            label="Подтвердите пароль"
-            type="password"
-          />
-          <Button
-            isLoading={isLoading}
-            disabled={isDisabledBtn}
-            sx={sxBtn}
-            type="submit"
-            fullWidth
-          >
+          <HFTextField sx={sxInput} name='password' label='Пароль' type='password' />
+          <HFTextField sx={sxInput} name='verificationPassword' label='Подтвердите пароль' type='password' />
+          <Button isLoading={isLoading} disabled={isDisabledBtn} sx={sxBtn} type='submit' fullWidth>
             Изменить
           </Button>
         </Box>

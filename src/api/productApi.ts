@@ -1,26 +1,21 @@
 import { FetchBaseQueryMeta } from '@reduxjs/toolkit/dist/query';
-import { commonApi } from './commonApi';
+
+import { ProductGradeCreateDto } from 'types/dto/product/create-grade.dto';
+import { ProductCreateDto } from 'types/dto/product/create.dto';
+import { ProductGetListDto } from 'types/dto/product/get-list.dto';
+import { ProductGetOneDto } from 'types/dto/product/get-one.dto';
+import { ProductUpdateDto } from 'types/dto/product/update.dto';
+import { CategoryWithParents, LowLevelCategory, MidLevelCategory, TopLevelCategory } from 'types/entities/Category';
+import { Product } from 'types/entities/Product';
+
 import { Path } from '../constants/routes';
-import { Product } from '../@types/entities/Product';
-import { ProductCreateDto } from '../@types/dto/product/create.dto';
-import { ProductUpdateDto } from '../@types/dto/product/update.dto';
-import { ProductGradeCreateDto } from '../@types/dto/product/create-grade.dto';
-import { ProductGetOneDto } from '../@types/dto/product/get-one.dto';
-import { ProductGetListDto } from '../@types/dto/product/get-list.dto';
-import {
-  CategoryWithParents,
-  LowLevelCategory,
-  MidLevelCategory,
-  TopLevelCategory,
-} from '../@types/entities/Category';
+import { commonApi } from './commonApi';
 
 // FIXME: вынести в глобальный тип
 type ProductDto = Omit<Product, 'categories'> & { categories: CategoryWithParents[] };
 
 // FIXME: в хелперы
-const takeCategoryFromSubCategory = (
-  categoryDto: CategoryWithParents
-): MidLevelCategory => {
+const takeCategoryFromSubCategory = (categoryDto: CategoryWithParents): MidLevelCategory => {
   const { parentCategories, ...subCategory } = categoryDto;
   const midLevelCategory = (parentCategories as MidLevelCategory[])[0];
   return {
@@ -61,10 +56,7 @@ export const productApi = commonApi.injectEndpoints({
       providesTags: (r, e, { id }) => [{ type: 'Product', id }],
       transformResponse: transformProductCategories,
     }),
-    getAllProducts: builder.query<
-      { products: Product[]; totalCount: number },
-      ProductGetListDto
-    >({
+    getAllProducts: builder.query<{ products: Product[]; totalCount: number }, ProductGetListDto>({
       query: params => ({
         url: Path.PRODUCTS,
         method: 'GET',
@@ -79,10 +71,7 @@ export const productApi = commonApi.injectEndpoints({
       },
       providesTags: result =>
         result
-          ? [
-              ...result.products.map(({ id }) => ({ type: 'Product', id } as const)),
-              { type: 'Product', id: 'LIST' },
-            ]
+          ? [...result.products.map(({ id }) => ({ type: 'Product', id } as const)), { type: 'Product', id: 'LIST' }]
           : [{ type: 'Product', id: 'LIST' }],
     }),
     createProduct: builder.mutation<void, ProductCreateDto>({

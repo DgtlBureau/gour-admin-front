@@ -1,6 +1,7 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
-import { Box } from '../components/UI/Box/Box';
+
+import { Box } from 'components/UI/Box/Box';
 
 const sx = {
   transform: 'translateY(-50%) translateX(-50%)',

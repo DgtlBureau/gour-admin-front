@@ -1,16 +1,17 @@
 /* eslint-disable */
 import React, { ChangeEvent, ReactNode } from 'react';
+
+import { LabelDisplayedRowsArgs, TablePagination } from '@mui/material';
+import Paper from '@mui/material/Paper';
 import MUITable from '@mui/material/Table';
 import MUITableBody from '@mui/material/TableBody';
 import MUITableCell from '@mui/material/TableCell';
 import MUITableContainer from '@mui/material/TableContainer';
 import MUITableHead from '@mui/material/TableHead';
 import MUITableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
-import { TablePagination, LabelDisplayedRowsArgs } from '@mui/material';
 
-import { Typography } from '../Typography/Typography';
 import { Tabs, TabsProps } from '../Tabs/Tabs';
+import { Typography } from '../Typography/Typography';
 
 const sx = {
   head: {
@@ -59,29 +60,20 @@ export function Table<T = string | number>({
   onPageChange,
   onRowsPerPageChange,
 }: Props<T>) {
-  const shownRows =
-    rowsPerPage > 0
-      ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-      : rows;
+  const shownRows = rowsPerPage > 0 ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) : rows;
 
   const getDisplayedRowsLabel = ({ from, to, count }: LabelDisplayedRowsArgs) =>
     `${from}–${to} из ${count !== -1 ? count : `больше, чем ${to}`}`;
 
   return (
     <Paper>
-      {tabs && (
-        <Tabs value={tabs.value} options={tabs.options} onChange={tabs.onChange} />
-      )}
+      {tabs && <Tabs value={tabs.value} options={tabs.options} onChange={tabs.onChange} />}
       <MUITableContainer>
-        <MUITable sx={{ minWidth: 650 }} aria-label="simple table">
+        <MUITable sx={{ minWidth: 650 }} aria-label='simple table'>
           <MUITableHead sx={sx.head}>
             <MUITableRow>
               {rowTitleList.map(rowTitle => (
-                <MUITableCell
-                  key={rowTitle}
-                  align="left"
-                  sx={{ ...sx.cell, ...sx.headCell }}
-                >
+                <MUITableCell key={rowTitle} align='left' sx={{ ...sx.cell, ...sx.headCell }}>
                   {rowTitle}
                 </MUITableCell>
               ))}
@@ -92,11 +84,7 @@ export function Table<T = string | number>({
               shownRows.map(row => (
                 <MUITableRow key={row.id}>
                   {row.cells.map((cell, i) => (
-                    <MUITableCell
-                      key={`${row.id}_${i}`}
-                      align="left"
-                      sx={{ ...sx.cell, ...sx.bodyCell }}
-                    >
+                    <MUITableCell key={`${row.id}_${i}`} align='left' sx={{ ...sx.cell, ...sx.bodyCell }}>
                       {cell}
                     </MUITableCell>
                   ))}
@@ -104,8 +92,8 @@ export function Table<T = string | number>({
               ))
             ) : (
               <MUITableRow>
-                <MUITableCell align="left" sx={{ ...sx.cell, ...sx.bodyCell }}>
-                  <Typography variant="body1">Нет записей</Typography>
+                <MUITableCell align='left' sx={{ ...sx.cell, ...sx.bodyCell }}>
+                  <Typography variant='body1'>Нет записей</Typography>
                 </MUITableCell>
               </MUITableRow>
             )}
@@ -114,10 +102,10 @@ export function Table<T = string | number>({
 
         {rows.length > 5 && (
           <TablePagination
-            labelRowsPerPage="Записей на странице:"
+            labelRowsPerPage='Записей на странице:'
             labelDisplayedRows={getDisplayedRowsLabel}
             rowsPerPageOptions={rowsPerPageOptions}
-            component="div"
+            component='div'
             count={rowsCount || rows.length}
             rowsPerPage={rowsPerPage}
             page={page}

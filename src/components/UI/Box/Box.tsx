@@ -1,6 +1,7 @@
 import React, { ReactNode } from 'react';
-import MUIBox from '@mui/material/Box';
+
 import { SxProps } from '@mui/material';
+import MUIBox from '@mui/material/Box';
 
 type Props = {
   children: ReactNode;

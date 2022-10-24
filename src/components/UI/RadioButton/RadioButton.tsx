@@ -1,19 +1,12 @@
 import React, { ChangeEvent, ReactNode } from 'react';
-import MUIRadio from '@mui/material/Radio';
+
 import { SxProps } from '@mui/material';
+import MUIRadio from '@mui/material/Radio';
 
 type Props = {
   checked?: boolean;
   size?: 'small' | 'medium' | undefined;
-  color?:
-    | 'default'
-    | 'primary'
-    | 'secondary'
-    | 'error'
-    | 'info'
-    | 'success'
-    | 'warning'
-    | undefined;
+  color?: 'default' | 'primary' | 'secondary' | 'error' | 'info' | 'success' | 'warning' | undefined;
   defaultChecked?: boolean;
   onChange?: (event: ChangeEvent<HTMLInputElement>, checked: boolean) => void;
   sx?: SxProps;

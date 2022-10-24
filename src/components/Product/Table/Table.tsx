@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
 
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
+import { Box } from 'components/UI/Box/Box';
+import { IconButton } from 'components/UI/IconButton/IconButton';
+import { Table } from 'components/UI/Table/Table';
 
-import { Box } from '../../UI/Box/Box';
-import { IconButton } from '../../UI/IconButton/IconButton';
-import { Table } from '../../UI/Table/Table';
-import { ProductTableDto } from '../../../@types/dto/table/products.dto';
-import { TabsKeys } from '../SelectForm/types';
-import { Link } from '../../UI/Link/Link';
+import { ProductTableDto } from 'types/dto/table/products.dto';
+
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+
 import { Path } from '../../../constants/routes';
+import { Link } from '../../UI/Link/Link';
+import { TabsKeys } from '../SelectForm/types';
 
 const titleList = ['Фото', 'Название', 'Цена', 'Действие'];
 
@@ -53,14 +55,12 @@ export function ProductsTable({
   const changeTab = (id: TabsKeys) => setSelectedId(id);
 
   const rows = products
-    .filter(
-      product => product.categoriesIds.includes(+selectedId) || selectedId === 'all'
-    )
+    .filter(product => product.categoriesIds.includes(+selectedId) || selectedId === 'all')
     .map((product, i) => ({
       id: i,
       cells: [
         <Box sx={{ maxWidth: '144px', height: '60px', overflow: 'hidden' }}>
-          <img style={{ height: '100%' }} src={product.image} alt="product" />
+          <img style={{ height: '100%' }} src={product.image} alt='product' />
         </Box>,
         product.title,
         `${product.price}₡`,
@@ -68,7 +68,7 @@ export function ProductsTable({
           <IconButton href={`/${Path.PRODUCTS}/${product.id}`} component={Link}>
             <EditIcon />
           </IconButton>
-          <IconButton onClick={() => onRemove(product)} component="symbol">
+          <IconButton onClick={() => onRemove(product)} component='symbol'>
             <DeleteIcon />
           </IconButton>
         </Box>,

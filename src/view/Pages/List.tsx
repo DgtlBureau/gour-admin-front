@@ -1,21 +1,21 @@
-import React, { useState, useEffect } from 'react';
-import { SingleValue } from 'react-select';
+import React, { useEffect, useState } from 'react';
 
-import {
-  useGetAllPagesQuery,
-  useCreatePageMutation,
-  useUpdatePageMutation,
-} from '../../api/pageApi';
-import { Box } from '../../components/UI/Box/Box';
-import { Button } from '../../components/UI/Button/Button';
-import { Select, SelectOption } from '../../components/UI/Select/Select';
-import { Tabs } from '../../components/UI/Tabs/Tabs';
-import { PagesAboutUsForm } from '../../components/AboutUs/PagesForm/PagesForm';
-import { Options } from '../../constants/tabs';
+import { Options } from 'constants/tabs';
+
+import { useCreatePageMutation, useGetAllPagesQuery, useUpdatePageMutation } from 'api/pageApi';
+
+import { PagesAboutUsForm } from 'components/AboutUs/PagesForm/PagesForm';
+import { Box } from 'components/UI/Box/Box';
+import { Button } from 'components/UI/Button/Button';
+import { Tabs } from 'components/UI/Tabs/Tabs';
+
+import { PagesAboutFormDto } from 'types/dto/form/pages-about.dto';
+import { NotificationType } from 'types/entities/Notification';
+
+import { EventTypes, eventBus } from 'packages/EventBus';
+import { getErrorMessage } from 'utils/errorUtil';
+
 import { convertPageForCreate, convertPageForUpdate } from './pagesHelper';
-import { PagesAboutFormDto } from '../../@types/dto/form/pages-about.dto';
-import { eventBus, EventTypes } from '../../packages/EventBus';
-import { NotificationType } from '../../@types/entities/Notification';
 
 const sx = {
   header: {
@@ -58,17 +58,6 @@ const tabs = [
 
 type Language = 'ru' | 'en';
 
-const selectOptions = [
-  {
-    value: 'ru',
-    label: 'Русский',
-  },
-  {
-    value: 'en',
-    label: 'English',
-  },
-] as { value: Language; label: string }[];
-
 function ListPagesView() {
   const { data: pages } = useGetAllPagesQuery();
 
@@ -76,16 +65,12 @@ function ListPagesView() {
   const [updatePage] = useUpdatePageMutation();
 
   const [tabValue, setTabValue] = useState<string>(Options.MAIN);
-  const [language, setLanguage] = useState<Language>('ru');
-  const [defaultValues, setDefaultValues] = useState<PagesAboutFormDto>(
-    {} as PagesAboutFormDto
-  );
+  const [language] = useState<Language>('ru');
+  const [defaultValues, setDefaultValues] = useState<PagesAboutFormDto>({} as PagesAboutFormDto);
 
   const currentPage = pages && pages.find(page => page.key === tabValue);
 
   const changeTab = (value: string) => setTabValue(value);
-
-  const selectLanguage = (value: string) => setLanguage(value as Language);
 
   const changeDefaultValues = () => {
     const values = {
@@ -109,8 +94,10 @@ function ListPagesView() {
         type: NotificationType.SUCCESS,
       });
     } catch (error) {
+      const message = getErrorMessage(error);
+
       eventBus.emit(EventTypes.notification, {
-        message: 'Произошла ошибка',
+        message,
         type: NotificationType.DANGER,
       });
     }
@@ -127,14 +114,18 @@ function ListPagesView() {
         type: NotificationType.SUCCESS,
       });
     } catch (error) {
+      const message = getErrorMessage(error);
+
       eventBus.emit(EventTypes.notification, {
-        message: 'Произошла ошибка',
+        message,
         type: NotificationType.DANGER,
       });
     }
   };
 
-  useEffect(() => changeDefaultValues(), [language, currentPage]);
+  useEffect(() => {
+    changeDefaultValues();
+  }, [language, currentPage]);
 
   return (
     <div>
@@ -142,14 +133,7 @@ function ListPagesView() {
         <Tabs options={tabs} value={tabValue} onChange={changeTab} />
 
         <Box sx={sx.actions}>
-          {/* <Select
-            sx={sx.select}
-            value={language}
-            options={selectOptions}
-            onChange={selectLanguage}
-            isMulti={false}
-          /> */}
-          <Button type="submit" form="pagesForm" variant="contained" sx={sx.saveBtn}>
+          <Button type='submit' form='pagesForm' variant='contained' sx={sx.saveBtn}>
             сохранить
           </Button>
         </Box>

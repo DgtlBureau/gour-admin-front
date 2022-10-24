@@ -1,4 +1,4 @@
-import { TopLevelCategory } from '../../../@types/entities/Category';
+import { TopLevelCategory } from 'types/entities/Category';
 
 export type Product = {
   id: number;
@@ -8,7 +8,7 @@ export type Product = {
 };
 
 export type ProductSelectFormProps = {
-  selected: number[];
+  selected?: number[];
   categories: TopLevelCategory[];
   products: Product[];
   isLoading?: boolean;

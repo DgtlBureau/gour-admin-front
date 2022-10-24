@@ -1,16 +1,19 @@
 import React from 'react';
-import { useForm, SubmitHandler, FormProvider } from 'react-hook-form';
+import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
+
+import { Path } from 'constants/routes';
+
 import { yupResolver } from '@hookform/resolvers/yup';
 
-import { Button } from '../../UI/Button/Button';
-import { Link } from '../../UI/Link/Link';
-import { Box } from '../../UI/Box/Box';
+import { Box } from 'components/UI/Box/Box';
+import { Button } from 'components/UI/Button/Button';
+import { Link as CustomLink } from 'components/UI/Link/Link';
+import { Typography } from 'components/UI/Typography/Typography';
+
+import { ForgotPasswordDto } from 'types/dto/auth/forgot-password.dto';
+
 import { HFTextField } from '../../HookForm/HFTextField';
-
 import schema from './validation';
-
-import { Typography } from '../../UI/Typography/Typography';
-import { ForgotPasswordDto } from '../../../@types/dto/auth/forgot-password.dto';
 
 const boxSx = {
   display: 'flex',
@@ -51,18 +54,12 @@ export function AuthForgotPasswordForm({ onSubmit, isLoading }: Props) {
       <form onSubmit={values.handleSubmit(onSubmit)}>
         <Box sx={boxSx}>
           <Typography sx={sxTitle}>Забыли пароль</Typography>
-          <HFTextField sx={sxInput} name="login" label="Логин" />
-          <Button
-            isLoading={isLoading}
-            disabled={isDisabledBtn}
-            sx={sxBtn}
-            type="submit"
-            fullWidth
-          >
+          <HFTextField sx={sxInput} name='login' label='Логин' />
+          <Button isLoading={isLoading} disabled={isDisabledBtn} sx={sxBtn} type='submit' fullWidth>
             Отправить
           </Button>
           <p>
-            <Link href="/auth/signin">Я не забыл пароль =]</Link>
+            <CustomLink href={`${Path.AUTH}/${Path.SIGNIN}`}>Я не забыл пароль =]</CustomLink>
           </p>
         </Box>
       </form>

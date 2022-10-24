@@ -1,31 +1,31 @@
-import React, { lazy, Suspense } from 'react';
+import React, { Suspense, lazy } from 'react';
 import { Navigate, useRoutes } from 'react-router-dom';
-import AuthSignInView from '../view/Auth/SignIn';
-import AuthForgotPasswordView from '../view/Auth/ForgotPassword';
-import PageNotFoundView from '../view/PageNotFound/PageNotFound';
-import EditProductView from '../view/Products/Edit';
-import CreateProductView from '../view/Products/Create';
-import ListProductsView from '../view/Products/List';
 
+import { Path } from 'constants/routes';
+
+import AuthForgotPasswordView from '../view/Auth/ForgotPassword';
+import AuthRestorePasswordView from '../view/Auth/RestorePassword';
+import AuthSignInView from '../view/Auth/SignIn';
+import ListCategoriesView from '../view/Categories/List';
+import ListCitiesView from '../view/Cities/List';
+import PageNotFoundView from '../view/PageNotFound/PageNotFound';
+import ListPagesView from '../view/Pages/List';
+import CreateProductView from '../view/Products/Create';
+import EditProductView from '../view/Products/Edit';
+import ListProductsView from '../view/Products/List';
+import ListReferralCodesView from '../view/Referrals/List';
+import ListReviewsView from '../view/Reviews/List';
+import CreateStockView from '../view/Stocks/Create';
+import EditStockView from '../view/Stocks/Edit';
+import ListStocksView from '../view/Stocks/List';
+import CreateUserView from '../view/Users/Create';
+import ListUsersView from '../view/Users/List';
 import { RequireAuth } from './RequireAuth';
 import { RequirePublic } from './RequirePublic';
 
-import ListStocksView from '../view/Stocks/List';
-import CreateStockView from '../view/Stocks/Create';
-import EditStockView from '../view/Stocks/Edit';
-import ListPagesView from '../view/Pages/List';
-import ListUsersView from '../view/Users/List';
-import CreateUserView from '../view/Users/Create';
-import ListReviewsView from '../view/Reviews/List';
-import ListCitiesView from '../view/Cities/List';
-import ListReferralCodesView from '../view/Referrals/List';
-import AuthRestorePasswordView from '../view/Auth/RestorePassword';
-import { Path } from '../constants/routes';
-import ListCategoriesView from '../view/Categories/List';
-
-const AuthLayout = lazy(() => import('../layouts/Auth'));
-const MainLayout = lazy(() => import('../layouts/Main'));
-const PrivateLayout = lazy(() => import('../layouts/Private'));
+const AuthLayout = lazy(() => import('layouts/Auth'));
+const MainLayout = lazy(() => import('layouts/Main'));
+const PrivateLayout = lazy(() => import('layouts/Private'));
 
 export function Routing() {
   const mainRoutes = {
@@ -46,8 +46,8 @@ export function Routing() {
       </RequirePublic>
     ),
     children: [
-      { path: '*', element: <Navigate to="signin" /> },
-      { path: '', element: <Navigate to="signin" /> },
+      { path: '*', element: <Navigate to='signin' /> },
+      { path: '', element: <Navigate to='signin' /> },
       { path: 'signin', element: <AuthSignInView /> },
       { path: 'forgot-password', element: <AuthForgotPasswordView /> },
       { path: 'restore-password', element: <AuthRestorePasswordView /> },
@@ -158,5 +158,5 @@ export function Routing() {
     referralsRoutes,
   ]);
 
-  return <Suspense fallback="loading..🔧">{routing}</Suspense>;
+  return <Suspense fallback='loading..🔧'>{routing}</Suspense>;
 }

@@ -1,11 +1,14 @@
-import React, { Dispatch, SetStateAction } from 'react';
-import { ProductBasicSettingsFormDto } from '../../../@types/dto/form/product-basic-settings.dto';
-import { ProductPriceFormDto } from '../../../@types/dto/form/product-price.dto';
-import { TopLevelCategory } from '../../../@types/entities/Category';
-import { Product } from '../../../@types/entities/Product';
-import { Box } from '../../UI/Box/Box';
-import { TabPanel } from '../../UI/Tabs/TabPanel';
-import { Tabs } from '../../UI/Tabs/Tabs';
+import React, { Dispatch, SetStateAction, useCallback } from 'react';
+
+import { Box } from 'components/UI/Box/Box';
+import { TabPanel } from 'components/UI/Tabs/TabPanel';
+import { Tabs } from 'components/UI/Tabs/Tabs';
+
+import { ProductBasicSettingsFormDto } from 'types/dto/form/product-basic-settings.dto';
+import { ProductPriceFormDto } from 'types/dto/form/product-price.dto';
+import { TopLevelCategory } from 'types/entities/Category';
+import { Product } from 'types/entities/Product';
+
 import { ProductBasicSettingsForm } from '../BasicSettingsForm/BasicSettingsForm';
 import { ProductFilterForm } from '../FilterForm/FilterForm';
 import { PriceProductForm } from '../PriceForm/PriceForm';
@@ -27,13 +30,11 @@ type ProductFullFormProps = {
   isProductsLoading?: boolean;
   categories: TopLevelCategory[];
   products: Product[];
-  mode: 'create' | 'edit';
   fullFormState: FullFormType;
   setFullFormState: Dispatch<SetStateAction<FullFormType>>;
 };
 
 export function ProductFullForm({
-  mode,
   activeTabId,
   categories,
   products,
@@ -64,15 +65,12 @@ export function ProductFullForm({
     setFullFormState(prevState => ({ ...prevState, productSelect: recommendedIds }));
   };
 
-  const onFilterFormChange = React.useCallback(
-    (selectedCategories: Record<string, number>) => {
-      setFullFormState(prevState => ({
-        ...prevState,
-        categoriesIds: selectedCategories,
-      }));
-    },
-    []
-  );
+  const onFilterFormChange = useCallback((selectedCategories: Record<string, number>) => {
+    setFullFormState(prevState => ({
+      ...prevState,
+      categoriesIds: selectedCategories,
+    }));
+  }, []);
 
   const recommendedProducts: SelectProduct[] =
     products?.map(product => ({
@@ -89,29 +87,21 @@ export function ProductFullForm({
 
   return (
     <Box>
-      <Tabs
-        options={createProductTabOptions}
-        value={activeTabId}
-        onChange={onChangeTab}
-      />
+      <Tabs options={createProductTabOptions} value={activeTabId} onChange={onChangeTab} />
 
-      <TabPanel value={activeTabId} index="settings">
+      <TabPanel value={activeTabId} index='settings'>
         <ProductBasicSettingsForm
           productTypes={productTypeOptions}
-          mode={mode}
           defaultValues={fullFormState.basicSettings}
           onChange={handleChangeBasicSettingsForm}
         />
       </TabPanel>
 
-      <TabPanel value={activeTabId} index="prices">
-        <PriceProductForm
-          defaultValues={fullFormState.priceSettings}
-          onChange={onChangePrice}
-        />
+      <TabPanel value={activeTabId} index='prices'>
+        <PriceProductForm defaultValues={fullFormState.priceSettings} onChange={onChangePrice} />
       </TabPanel>
 
-      <TabPanel value={activeTabId} index="filters">
+      <TabPanel value={activeTabId} index='filters'>
         <ProductFilterForm
           defaultValues={fullFormState.categoriesIds}
           productTypeId={fullFormState.basicSettings.productType}
@@ -120,7 +110,7 @@ export function ProductFullForm({
         />
       </TabPanel>
 
-      <TabPanel value={activeTabId} index="recommended_products">
+      <TabPanel value={activeTabId} index='recommended_products'>
         <ProductSelectForm
           isLoading={isProductsLoading}
           selected={fullFormState.productSelect || []}

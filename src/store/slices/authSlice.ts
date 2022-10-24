@@ -1,7 +1,8 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+
+import { User } from 'types/entities/User';
 
 import { authApi } from '../../api/authApi';
-import { User } from '../../@types/entities/User';
 
 export interface AuthState {
   currentUser: User | null;

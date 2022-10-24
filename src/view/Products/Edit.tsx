@@ -1,26 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { ProductCreateDto } from '../../@types/dto/product/create.dto';
-import { NotificationType } from '../../@types/entities/Notification';
-import { useGetAllCategoriesQuery } from '../../api/categoryApi';
-import {
-  useGetAllProductsQuery,
-  useGetProductByIdQuery,
-  useUpdateProductMutation,
-} from '../../api/productApi';
-import { useUploadImageMutation } from '../../api/imageApi';
-import { Header } from '../../components/Header/Header';
-import {
-  FullFormType,
-  ProductFullForm,
-} from '../../components/Product/FullForm/FullForm';
-import { Button } from '../../components/UI/Button/Button';
-import { ProgressLinear } from '../../components/UI/ProgressLinear/ProgressLinear';
-import { Typography } from '../../components/UI/Typography/Typography';
-import { Path } from '../../constants/routes';
+import { useGetAllCategoriesQuery } from 'api/categoryApi';
+import { useUploadImageMutation } from 'api/imageApi';
+import { useGetAllProductsQuery, useGetProductByIdQuery, useUpdateProductMutation } from 'api/productApi';
+
+import { Header } from 'components/Header/Header';
+import { FullFormType, ProductFullForm } from 'components/Product/FullForm/FullForm';
+import { Button } from 'components/UI/Button/Button';
+import { ProgressLinear } from 'components/UI/ProgressLinear/ProgressLinear';
+import { Typography } from 'components/UI/Typography/Typography';
+
+import { ProductCreateDto } from 'types/dto/product/create.dto';
+import { NotificationType } from 'types/entities/Notification';
+
+import { EventTypes, eventBus } from 'packages/EventBus';
+import { getErrorMessage } from 'utils/errorUtil';
+
 import { useTo } from '../../hooks/useTo';
-import { eventBus, EventTypes } from '../../packages/EventBus';
 
 type Props = {
   onSaveClick: () => void;
@@ -33,7 +30,7 @@ function RightContent({ onSaveClick, onCancelHandler }: Props) {
       <Button onClick={onSaveClick} sx={{ marginRight: '10px' }}>
         Сохранить
       </Button>
-      <Button variant="outlined" onClick={onCancelHandler}>
+      <Button variant='outlined' onClick={onCancelHandler}>
         Отмена
       </Button>
     </>
@@ -42,7 +39,7 @@ function RightContent({ onSaveClick, onCancelHandler }: Props) {
 
 function EditProductView() {
   const lang = 'ru';
-  const to = useTo();
+  const { toProductList } = useTo();
 
   const { id } = useParams();
 
@@ -85,7 +82,7 @@ function EditProductView() {
       withRoleDiscount: true,
       withCategories: true,
     },
-    { skip: !productId }
+    { skip: !productId },
   );
   const { data: productsList } = useGetAllProductsQuery(
     {
@@ -94,32 +91,33 @@ function EditProductView() {
       withRoleDiscount: false,
       withCategories: true,
     },
-    { skip: activeTabId !== 'recommended_products' }
+    { skip: activeTabId !== 'recommended_products' },
   );
 
-  const uploadPicture = async (file?: File, label?: string) => {
-    if (!file) return undefined;
+  const uploadPicture = async (file: File) => {
+    try {
+      const formData = new FormData();
 
-    const formData = new FormData();
+      formData.append('image', file);
 
-    formData.append('image', file);
+      const image = await uploadImage(formData).unwrap();
 
-    const image = await uploadImage(formData).unwrap();
+      return image;
+    } catch (error) {
+      const message = getErrorMessage(error);
 
-    if (!image) {
       eventBus.emit(EventTypes.notification, {
-        message: `Произошла ошибка при загрузке фото ${label})`,
+        message,
         type: NotificationType.DANGER,
       });
-    }
 
-    return image;
+      return undefined;
+    }
   };
 
   useEffect(() => {
     if (!product) return;
-    const productSelect =
-      product.similarProducts?.map(similarProduct => similarProduct.id) || [];
+    const productSelect = product.similarProducts?.map(similarProduct => similarProduct.id) || [];
 
     // TODO: обработка старых продуктов, можно удалить в будущем
     const productType = product.categories[0].id || null;
@@ -129,7 +127,7 @@ function EditProductView() {
           ...acc,
           [midCategory.id]: midCategory.subCategories[0].id,
         }),
-        {}
+        {},
       ) || [];
 
     setFullFormState({
@@ -161,10 +159,7 @@ function EditProductView() {
     const { basicSettings, priceSettings, productSelect } = fullFormState;
 
     const productTypeId = Number(fullFormState.basicSettings.productType);
-    const categoryIds = [
-      ...Object.values(fullFormState.categoriesIds),
-      productTypeId,
-    ].filter(i => i);
+    const categoryIds = [...Object.values(fullFormState.categoriesIds), productTypeId].filter(i => i);
 
     const roleDiscounts = [
       {
@@ -180,15 +175,15 @@ function EditProductView() {
     const firstImage =
       typeof basicSettings.firstImage === 'string'
         ? product?.images[0]
-        : await uploadPicture(basicSettings.firstImage, '1');
+        : basicSettings.firstImage && (await uploadPicture(basicSettings.firstImage));
     const secondImage =
       typeof basicSettings.secondImage === 'string'
         ? product?.images[1]
-        : await uploadPicture(basicSettings.secondImage, '2');
+        : basicSettings.secondImage && (await uploadPicture(basicSettings.secondImage));
     const thirdImage =
       typeof basicSettings.thirdImage === 'string'
         ? product?.images[2]
-        : await uploadPicture(basicSettings.thirdImage, '3');
+        : basicSettings.thirdImage && (await uploadPicture(basicSettings.thirdImage));
 
     const images: number[] = [];
 
@@ -220,32 +215,33 @@ function EditProductView() {
         message: 'Товар изменен',
         type: NotificationType.SUCCESS,
       });
-      to(Path.PRODUCTS);
+
+      toProductList();
     } catch (error) {
+      const message = getErrorMessage(error);
+
       eventBus.emit(EventTypes.notification, {
-        message: 'Произошла ошибка',
+        message,
         type: NotificationType.DANGER,
       });
     }
   };
 
-  const onCancel = () => to(Path.PRODUCTS);
-
-  if (isLoading) return <ProgressLinear variant="query" />;
+  if (isLoading) return <ProgressLinear variant='query' />;
 
   if (!isLoading && isError) {
-    return <Typography variant="h5">Произошла ошибка</Typography>;
+    return <Typography variant='h5'>Произошла ошибка</Typography>;
   }
 
   if (!isLoading && !isError && !product) {
-    return <Typography variant="h5">Продукт не найден</Typography>;
+    return <Typography variant='h5'>Продукт не найден</Typography>;
   }
 
   return (
     <div>
       <Header
-        leftTitle="Редактирование товара"
-        rightContent={<RightContent onSaveClick={onSave} onCancelHandler={onCancel} />}
+        leftTitle='Редактирование товара'
+        rightContent={<RightContent onSaveClick={onSave} onCancelHandler={toProductList} />}
       />
       <ProductFullForm
         activeTabId={activeTabId}
@@ -254,7 +250,6 @@ function EditProductView() {
         products={productsList?.products.filter(it => it.id !== productId) || []}
         fullFormState={fullFormState}
         setFullFormState={setFullFormState}
-        mode="edit"
       />
     </div>
   );

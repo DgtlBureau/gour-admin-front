@@ -1,9 +1,12 @@
-'use strict';
+import React from 'react';
+
+import { ThemeProvider as EmotionThemeProvider } from 'emotion-theming';
+
+import { ThemeProvider } from '@mui/material';
 
 import { defaultTheme } from '../src/themes';
-import React from 'react';
-import { ThemeProvider } from '@mui/material';
-import { ThemeProvider as EmotionThemeProvider } from 'emotion-theming';
+
+('use strict');
 
 const MUITheme = (Story, context) => {
   return (

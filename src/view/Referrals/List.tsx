@@ -1,30 +1,32 @@
 import React, { useState } from 'react';
-import { LinearProgress, Stack } from '@mui/material';
 
 import { format } from 'date-fns';
+
+import { LinearProgress, Stack } from '@mui/material';
+
 import {
   useCreateReferralCodeMutation,
   useDeleteReferralCodeMutation,
-  useGetReferralCodesListQuery,
   useExportReferralsMutation,
-} from '../../api/referralCodeApi';
-import {
-  useGetReferralDiscountQuery,
-  useUpdateReferralDiscountMutation,
-} from '../../api/referralDiscountApi';
-import { Header } from '../../components/Header/Header';
-import { ReferralCodeCreateModal } from '../../components/ReferralCodes/CreateModal/CreateModal';
-import { ReferralCodeDeleteModal } from '../../components/ReferralCodes/DeleteModal/DeleteModal';
-import { ReferralCodeDiscountBlock } from '../../components/ReferralCodes/DiscountBlock/DiscountBlock';
-import { ReferralCodeExportModal } from '../../components/ReferralCodes/ExportModal/ExportModal';
-import { ReferralCodeTable } from '../../components/ReferralCodes/Table/Table';
-import { Button } from '../../components/UI/Button/Button';
-import { Typography } from '../../components/UI/Typography/Typography';
-import { eventBus, EventTypes } from '../../packages/EventBus';
-import { NotificationType } from '../../@types/entities/Notification';
-import { getErrorMessage } from '../../utils/errorUtil';
-import { ReferralCode } from '../../@types/entities/ReferralCode';
-import { downloadFile } from '../../utils/fileUtil';
+  useGetReferralCodesListQuery,
+} from 'api/referralCodeApi';
+import { useGetReferralDiscountQuery, useUpdateReferralDiscountMutation } from 'api/referralDiscountApi';
+
+import { Header } from 'components/Header/Header';
+import { ReferralCodeCreateModal } from 'components/ReferralCodes/CreateModal/CreateModal';
+import { ReferralCodeDeleteModal } from 'components/ReferralCodes/DeleteModal/DeleteModal';
+import { ReferralCodeDiscountBlock } from 'components/ReferralCodes/DiscountBlock/DiscountBlock';
+import { ReferralCodeExportModal } from 'components/ReferralCodes/ExportModal/ExportModal';
+import { ReferralCodeTable } from 'components/ReferralCodes/Table/Table';
+import { Button } from 'components/UI/Button/Button';
+import { Typography } from 'components/UI/Typography/Typography';
+
+import { NotificationType } from 'types/entities/Notification';
+import { ReferralCode } from 'types/entities/ReferralCode';
+
+import { EventTypes, eventBus } from 'packages/EventBus';
+import { getErrorMessage } from 'utils/errorUtil';
+import { downloadFile } from 'utils/fileUtil';
 
 type Props = {
   onCreateClick: () => void;
@@ -54,8 +56,7 @@ function ListReferralCodesView() {
   const [isExportModalOpen, setIsExportModalOpen] = useState(false);
 
   const { data: referralCodes = [], isLoading, isError } = useGetReferralCodesListQuery();
-  const { data: referralDiscount, isLoading: referralDiscountLoading } =
-    useGetReferralDiscountQuery();
+  const { data: referralDiscount, isLoading: referralDiscountLoading } = useGetReferralDiscountQuery();
 
   const [fetchDeleteReferralCode] = useDeleteReferralCodeMutation();
   const [fetchCreateReferralCode] = useCreateReferralCodeMutation();
@@ -161,22 +162,17 @@ function ListReferralCodesView() {
   return (
     <div>
       <Header
-        leftTitle="Рефералы"
-        rightContent={
-          <RightContent
-            onUploadClick={openExportModal}
-            onCreateClick={openCreateCodeModal}
-          />
-        }
+        leftTitle='Рефералы'
+        rightContent={<RightContent onUploadClick={openExportModal} onCreateClick={openCreateCodeModal} />}
       />
 
       <Stack spacing={2}>
         {isLoading && <LinearProgress />}
 
-        {!isLoading && isError && <Typography variant="h2">Произошла ошибка</Typography>}
+        {!isLoading && isError && <Typography variant='h2'>Произошла ошибка</Typography>}
 
         {!isLoading && !isError && referralCodes.length === 0 && (
-          <Typography variant="h2">Нет реферальных кодов</Typography>
+          <Typography variant='h2'>Нет реферальных кодов</Typography>
         )}
 
         {!isLoading && !isError && referralCodes.length !== 0 && (
@@ -203,11 +199,7 @@ function ListReferralCodesView() {
         onClose={closeDeleteCodeModal}
       />
 
-      <ReferralCodeExportModal
-        isOpen={isExportModalOpen}
-        onClose={closeExportModal}
-        onExport={exportReferralCodes}
-      />
+      <ReferralCodeExportModal isOpen={isExportModalOpen} onClose={closeExportModal} onExport={exportReferralCodes} />
     </div>
   );
 }

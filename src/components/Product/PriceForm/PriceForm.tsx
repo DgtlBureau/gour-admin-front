@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { FormControlLabel, RadioGroup } from '@mui/material';
-import { useForm, FormProvider } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
+import { FormProvider, useForm } from 'react-hook-form';
 
-import schema from './validation';
-import { Box } from '../../UI/Box/Box';
-import { Typography } from '../../UI/Typography/Typography';
-import { RadioButton } from '../../UI/RadioButton/RadioButton';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { FormControlLabel, RadioGroup } from '@mui/material';
+
+import { Box } from 'components/UI/Box/Box';
+import { RadioButton } from 'components/UI/RadioButton/RadioButton';
+import { Typography } from 'components/UI/Typography/Typography';
+
+import { ProductPriceFormDto } from 'types/dto/form/product-price.dto';
+
 import { HFTextField } from '../../HookForm/HFTextField';
-import { ProductPriceFormDto } from '../../../@types/dto/form/product-price.dto';
+import schema from './validation';
 
 const sx = {
   discount: {
@@ -70,28 +73,22 @@ export function PriceProductForm({ defaultValues, onChange }: PriceProductFormPr
 
   return (
     <FormProvider {...values}>
-      <form
-        id="productPriceForm"
-        onSubmit={values.handleSubmit(submitHandler)}
-        onChange={changeHandler}
-      >
+      <form id='productPriceForm' onSubmit={values.handleSubmit(submitHandler)} onChange={changeHandler}>
         <Box sx={sx.discount}>
           <RadioGroup sx={sx.radioGroup}>
-            <Typography variant="body1" color="primary">
+            <Typography variant='body1' color='primary'>
               Скидка на товар
             </Typography>
             <Box sx={sx.radios}>
               <FormControlLabel
-                label="Да"
-                value="true"
+                label='Да'
+                value='true'
                 control={<RadioButton checked={withDiscount} onChange={enableDiscount} />}
               />
               <FormControlLabel
-                label="Нет"
-                value="false"
-                control={
-                  <RadioButton checked={!withDiscount} onChange={disableDiscount} />
-                }
+                label='Нет'
+                value='false'
+                control={<RadioButton checked={!withDiscount} onChange={disableDiscount} />}
               />
             </Box>
           </RadioGroup>
@@ -99,43 +96,35 @@ export function PriceProductForm({ defaultValues, onChange }: PriceProductFormPr
             <HFTextField
               sx={sx.input}
               defaultValue={`${defaultValues.discount || 0}`}
-              label="Размер скидки %"
-              name="discount"
+              label='Размер скидки %'
+              name='discount'
             />
           )}
         </Box>
 
         <Box sx={sx.prices}>
           <Box sx={sx.fields}>
-            <Typography variant="body1" sx={sx.title}>
+            <Typography variant='body1' sx={sx.title}>
               Физическое лицо
             </Typography>
 
-            <HFTextField sx={sx.priceInput} label="Цена CheeseCoin" name="cheeseCoin" />
+            <HFTextField sx={sx.priceInput} label='Цена CheeseCoin' name='cheeseCoin' />
           </Box>
 
           <Box sx={sx.fields}>
-            <Typography variant="body1" sx={sx.title}>
+            <Typography variant='body1' sx={sx.title}>
               Организатор коллективной закупки
             </Typography>
 
-            <HFTextField
-              sx={sx.priceInput}
-              label="Скидка CheeseCoin"
-              name="companyDiscount"
-            />
+            <HFTextField sx={sx.priceInput} label='Скидка CheeseCoin' name='companyDiscount' />
           </Box>
 
           <Box sx={sx.fields}>
-            <Typography variant="body1" sx={sx.title}>
+            <Typography variant='body1' sx={sx.title}>
               Юридическое лицо
             </Typography>
 
-            <HFTextField
-              sx={sx.priceInput}
-              label="Скидка CheeseCoin"
-              name="collectiveDiscount"
-            />
+            <HFTextField sx={sx.priceInput} label='Скидка CheeseCoin' name='collectiveDiscount' />
           </Box>
         </Box>
       </form>

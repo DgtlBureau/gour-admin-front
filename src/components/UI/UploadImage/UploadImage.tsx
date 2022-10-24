@@ -1,10 +1,12 @@
-import React, { ChangeEvent, CSSProperties, useEffect, useState } from 'react';
+import React, { CSSProperties, ChangeEvent, useEffect, useState } from 'react';
+
 import { PhotoCamera } from '@mui/icons-material';
+
 import { Stack, SxProps } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
-import { Typography } from '../Typography/Typography';
 import { Button } from '../Button/Button';
+import { Typography } from '../Typography/Typography';
 
 const Input = styled('input')({
   display: 'none',
@@ -68,17 +70,17 @@ export function UploadImage({
   }, [value]);
 
   return (
-    <Stack sx={{ width: '100%', ...sx }} alignItems="center" spacing={2}>
+    <Stack sx={{ width: '100%', ...sx }} alignItems='center' spacing={2}>
       <Stack
         sx={{ width: '100%', height: '35px' }}
-        direction="row"
-        alignItems="center"
-        justifyContent="space-between"
+        direction='row'
+        alignItems='center'
+        justifyContent='space-between'
         spacing={2}
       >
-        <Typography variant="body1">{label}</Typography>
+        <Typography variant='body1'>{label}</Typography>
         {value && (
-          <Button variant="text" onClick={onDelete} size="small">
+          <Button variant='text' onClick={onDelete} size='small'>
             Удалить
           </Button>
         )}
@@ -92,17 +94,11 @@ export function UploadImage({
           border: isError ? '1px solid red' : 'none',
         }}
       >
-        <Input
-          accept={allowedFileTypes.join(',')}
-          onChange={onChange}
-          id={id}
-          type="file"
-          name={name}
-        />
+        <Input accept={allowedFileTypes.join(',')} onChange={onChange} id={id} type='file' name={name} />
         {!value && <PhotoCamera />}
       </label>
       {helperText && (
-        <Typography variant="body1" color="error">
+        <Typography variant='body1' color='error'>
           {helperText}
         </Typography>
       )}

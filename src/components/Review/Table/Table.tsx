@@ -1,10 +1,11 @@
-import React, { ChangeEvent, CSSProperties, useState } from 'react';
+import React, { CSSProperties, ChangeEvent, useState } from 'react';
+
+import { Options } from 'constants/tabs';
 
 import { Stack } from '@mui/material';
-import { Table } from '../../UI/Table/Table';
-import { Typography } from '../../UI/Typography/Typography';
 
-import { Options } from '../../../constants/tabs';
+import { Table } from 'components/UI/Table/Table';
+import { Typography } from 'components/UI/Typography/Typography';
 
 export type Comment = {
   id: number;
@@ -61,9 +62,7 @@ export function ReviewTable({ comments, onClickFullReview }: Props) {
     setPage(newPage);
   };
 
-  const handleChangeRowsPerPage = (
-    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
+  const handleChangeRowsPerPage = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
@@ -91,7 +90,7 @@ export function ReviewTable({ comments, onClickFullReview }: Props) {
             onClickFullReview(comment.id);
           }}
         >
-          <Typography sx={commentTextSx} variant="body1">
+          <Typography sx={commentTextSx} variant='body1'>
             {comment.text}
           </Typography>
         </Stack>,

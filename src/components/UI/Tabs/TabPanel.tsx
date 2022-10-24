@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { Box } from '../Box/Box';
 
 interface Props {
@@ -10,7 +11,7 @@ interface Props {
 export function TabPanel({ children, value, index, ...other }: Props) {
   return (
     <div
-      role="tabpanel"
+      role='tabpanel'
       hidden={value !== index}
       id={`simple-tabpanel-${index}`}
       aria-labelledby={`simple-tab-${index}`}

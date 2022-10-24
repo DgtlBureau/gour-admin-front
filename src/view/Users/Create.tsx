@@ -1,14 +1,18 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
-import { Header } from '../../components/Header/Header';
-import { Button } from '../../components/UI/Button/Button';
-import { CreateUserForm } from '../../components/Users/CreateForm/CreateForm';
-import { Path } from '../../constants/routes';
+import { useSignupWithoutPasswordMutation } from 'api/authApi';
+
+import { Header } from 'components/Header/Header';
+import { Button } from 'components/UI/Button/Button';
+import { CreateUserForm } from 'components/Users/CreateForm/CreateForm';
+
+import { SignupUserDto } from 'types/dto/auth/signup-user.dto';
+import { NotificationType } from 'types/entities/Notification';
+
+import { EventTypes, eventBus } from 'packages/EventBus';
+import { getErrorMessage } from 'utils/errorUtil';
+
 import { useTo } from '../../hooks/useTo';
-import { eventBus, EventTypes } from '../../packages/EventBus';
-import { useSignupWithoutPasswordMutation } from '../../api/authApi';
-import { NotificationType } from '../../@types/entities/Notification';
-import { SignupUserDto } from '../../@types/dto/auth/signup-user.dto';
 
 type Props = {
   onCancel: () => void;
@@ -17,10 +21,10 @@ type Props = {
 function RightContent({ onCancel }: Props) {
   return (
     <>
-      <Button form="createUserForm" type="submit" sx={{ marginRight: '10px' }}>
+      <Button form='createUserForm' type='submit' sx={{ marginRight: '10px' }}>
         Сохранить
       </Button>
-      <Button variant="outlined" onClick={onCancel}>
+      <Button variant='outlined' onClick={onCancel}>
         Отмена
       </Button>
     </>
@@ -28,37 +32,31 @@ function RightContent({ onCancel }: Props) {
 }
 
 function CreateUserView() {
-  const [signupWithoutPasswordMutation, signupUserData] = useSignupWithoutPasswordMutation();
+  const [signupWithoutPassword] = useSignupWithoutPasswordMutation();
 
-  const to = useTo();
+  const { toUserList } = useTo();
 
-  const cancel = () => to(Path.USERS);
+  const submit = async (data: SignupUserDto) => {
+    try {
+      await signupWithoutPassword(data).unwrap();
 
-  const submit = (data: SignupUserDto) => signupWithoutPasswordMutation(data);
-
-  useEffect(() => {
-    if (signupUserData.isSuccess) {
       eventBus.emit(EventTypes.notification, {
         message: 'Вы создали пользователя',
         type: NotificationType.SUCCESS,
       });
-    }
-    if (signupUserData.isError) {
+    } catch (error) {
+      const message = getErrorMessage(error);
+
       eventBus.emit(EventTypes.notification, {
-        message: 'Ошибка при создании пользователя',
+        message,
         type: NotificationType.DANGER,
       });
     }
-  }, [signupUserData]);
+  };
 
   return (
     <div>
-      <Header
-        leftTitle="Добавление пользователя"
-        rightContent={
-          <RightContent onCancel={cancel} />
-        }
-      />
+      <Header leftTitle='Добавление пользователя' rightContent={<RightContent onCancel={toUserList} />} />
       <CreateUserForm onSubmit={submit} />
     </div>
   );

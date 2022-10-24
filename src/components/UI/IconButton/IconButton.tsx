@@ -1,4 +1,5 @@
 import React, { ElementType, ReactNode } from 'react';
+
 import MUIIconButton from '@mui/material/IconButton';
 
 type Props = {
@@ -7,31 +8,13 @@ type Props = {
   type?: 'button' | 'submit' | 'reset';
   onClick?: () => void;
   disabled?: boolean;
-  color?:
-    | 'inherit'
-    | 'default'
-    | 'primary'
-    | 'secondary'
-    | 'error'
-    | 'info'
-    | 'success'
-    | 'warning'
-    | undefined;
+  color?: 'inherit' | 'default' | 'primary' | 'secondary' | 'error' | 'info' | 'success' | 'warning' | undefined;
 
   component: ElementType;
   href?: string;
 };
 
-export function IconButton({
-  size,
-  children,
-  color,
-  onClick,
-  type,
-  disabled,
-  component,
-  href,
-}: Props) {
+export function IconButton({ size, children, color, onClick, type, disabled, component, href }: Props) {
   return (
     <MUIIconButton
       size={size}

@@ -1,17 +1,18 @@
 import React, { ChangeEvent, useState } from 'react';
 
+import { Options } from 'constants/tabs';
+
+import { Box } from 'components/UI/Box/Box';
+import { IconButton } from 'components/UI/IconButton/IconButton';
+import { Table } from 'components/UI/Table/Table';
+import { Typography } from 'components/UI/Typography/Typography';
+
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 
-import { Box } from '../../UI/Box/Box';
-import { Typography } from '../../UI/Typography/Typography';
-import { IconButton } from '../../UI/IconButton/IconButton';
-import { Table } from '../../UI/Table/Table';
-import { Options } from '../../../constants/tabs';
-
-import sx from './Table.styles';
-import { Link } from '../../UI/Link/Link';
 import { Path } from '../../../constants/routes';
+import { Link } from '../../UI/Link/Link';
+import sx from './Table.styles';
 
 const tabsOptions = [
   {
@@ -53,7 +54,7 @@ function RowActions({ stockId, onDelete }: RowActionsProps) {
       <IconButton href={`/${Path.STOCKS}/${stockId}`} component={Link}>
         <EditIcon />
       </IconButton>
-      <IconButton onClick={onDelete} component="symbol">
+      <IconButton onClick={onDelete} component='symbol'>
         <DeleteIcon />
       </IconButton>
     </Box>
@@ -65,14 +66,7 @@ export function StockTable({ stocksList, onDelete }: StockTableProps) {
   const [tabValue, setTabValue] = useState<string>(Options.ALL);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
-  const titleList = [
-    'Изображение',
-    'Заголовок',
-    'Дата начала',
-    'Дата завершения',
-    'Статус',
-    'Действие',
-  ];
+  const titleList = ['Изображение', 'Заголовок', 'Дата начала', 'Дата завершения', 'Статус', 'Действие'];
 
   const changeTab = (val: string) => setTabValue(val);
 
@@ -91,15 +85,12 @@ export function StockTable({ stocksList, onDelete }: StockTableProps) {
       id: stock.id,
       cells: [
         <Box sx={sx.stockImg}>
-          <img src={stock.image} alt="promotion" />
+          <img src={stock.image} alt='promotion' />
         </Box>,
         stock.title,
         stock.start,
         stock.end,
-        <Typography
-          variant="body1"
-          sx={{ ...sx.status, ...(stock.isActual ? sx.actual : sx.past) }}
-        >
+        <Typography variant='body1' sx={{ ...sx.status, ...(stock.isActual ? sx.actual : sx.past) }}>
           {stock.isActual ? 'Актуальное' : 'Прошедшее'}
         </Typography>,
         <RowActions
@@ -113,9 +104,7 @@ export function StockTable({ stocksList, onDelete }: StockTableProps) {
 
   const сhangePage = (_: unknown, newPage: number) => setPage(newPage);
 
-  const сhangeRowsPerPage = (
-    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
+  const сhangeRowsPerPage = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };

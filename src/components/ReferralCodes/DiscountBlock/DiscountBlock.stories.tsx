@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+
 import { ComponentStory, Meta } from '@storybook/react';
 
 import { ReferralCodeDiscountBlock } from './DiscountBlock';
@@ -8,7 +9,7 @@ export default {
   title: 'ReferralCodeDiscountBlock',
 } as Meta;
 
-const Template: ComponentStory<typeof ReferralCodeDiscountBlock> = function () {
+const Template: ComponentStory<typeof ReferralCodeDiscountBlock> = () => {
   const [discount, setDiscount] = useState(0);
 
   return (

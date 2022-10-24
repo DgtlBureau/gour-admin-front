@@ -1,6 +1,6 @@
+import { Meta } from '../../entities/Meta';
 import { TranslatableStringDto } from '../translatable-string.dto';
 import { TranslatableTextDto } from '../translatable-text.dto';
-import { Meta } from '../../entities/Meta';
 
 export type PromotionCreateDto = Readonly<{
   title: TranslatableStringDto;

@@ -1,10 +1,14 @@
-import { yupResolver } from '@hookform/resolvers/yup';
 import React from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
-import { AddCheesecoinsDto } from '../../../@types/dto/add-cheesecoins.dto';
+
+import { yupResolver } from '@hookform/resolvers/yup';
+
+import { Button } from 'components/UI/Button/Button';
+import { Modal } from 'components/UI/Modal/Modal';
+
+import { AddCheesecoinsDto } from 'types/dto/add-cheesecoins.dto';
+
 import { HFTextField } from '../../HookForm/HFTextField';
-import { Button } from '../../UI/Button/Button';
-import { Modal } from '../../UI/Modal/Modal';
 import { schema } from './validation';
 
 type Props = {
@@ -29,8 +33,8 @@ export function UserAddCheesecoinsModal({ isOpened, onClose, title, onSubmit }: 
     <Modal isOpen={isOpened} title={title} onClose={onClose}>
       <FormProvider {...values}>
         <form onSubmit={values.handleSubmit(onSubmit)}>
-          <HFTextField name="count" type="number" />
-          <Button type="submit" sx={sx.button}>
+          <HFTextField name='count' type='number' />
+          <Button type='submit' sx={sx.button}>
             Добавить
           </Button>
         </form>

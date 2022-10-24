@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { ComponentStory, Meta } from '@storybook/react';
 
 import { CitiesTable, CitiesTableProps } from './Table';
@@ -8,9 +9,7 @@ export default {
   title: 'Tables/Cities',
 } as Meta;
 
-const Template: ComponentStory<typeof CitiesTable> = function (args: CitiesTableProps) {
-  return <CitiesTable {...args} />;
-};
+const Template: ComponentStory<typeof CitiesTable> = (args: CitiesTableProps) => <CitiesTable {...args} />;
 export const DefaultCitiesTable = Template.bind({});
 
 const props: Partial<CitiesTableProps> = {

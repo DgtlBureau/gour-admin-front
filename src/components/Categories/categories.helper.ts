@@ -1,9 +1,8 @@
-import type { LowLevelCategory } from '../../@types/entities/Category';
+import type { LowLevelCategory } from 'types/entities/Category';
+
 import type { EditableCategory, SubCategoriesState } from './CreateOrEditForm/types';
 
-export const getSubCategoriesObject = (
-  categories: LowLevelCategory[]
-): SubCategoriesState =>
+export const getSubCategoriesObject = (categories: LowLevelCategory[]): SubCategoriesState =>
   categories.reduce<SubCategoriesState>((acc, category) => {
     const editableCategory = {
       title: category.title.ru,
@@ -13,10 +12,7 @@ export const getSubCategoriesObject = (
     return acc;
   }, {});
 
-export function getEditedCategories(
-  newCategories: EditableCategory[],
-  oldCategories: LowLevelCategory[]
-) {
+export function getEditedCategories(newCategories: EditableCategory[], oldCategories: LowLevelCategory[]) {
   return newCategories.filter(category => {
     if (!category.id) return false;
     const oldCategory = oldCategories.find(it => it.id === category.id);

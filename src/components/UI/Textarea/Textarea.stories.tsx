@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
 
 import { Textarea } from './Textarea';
 
@@ -9,9 +9,7 @@ export default {
   component: Textarea,
 } as ComponentMeta<typeof Textarea>;
 
-const Template: ComponentStory<typeof Textarea> = function (args) {
-  return <Textarea {...args} />;
-};
+const Template: ComponentStory<typeof Textarea> = args => <Textarea {...args} />;
 
 export const DefaultState = Template.bind({});
 DefaultState.args = {

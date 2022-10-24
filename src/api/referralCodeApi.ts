@@ -1,7 +1,8 @@
-import { commonApi } from './commonApi';
+import { ReferralExportDto } from 'types/dto/referral/export.dto';
+import { ReferralCode } from 'types/entities/ReferralCode';
+
 import { Path } from '../constants/routes';
-import { ReferralCode } from '../@types/entities/ReferralCode';
-import { ReferralExportDto } from '../@types/dto/referral/export.dto';
+import { commonApi } from './commonApi';
 
 export const referralCodeApi = commonApi.injectEndpoints({
   endpoints(builder) {
@@ -15,10 +16,7 @@ export const referralCodeApi = commonApi.injectEndpoints({
         },
         providesTags: result =>
           result
-            ? [
-                ...result.map(({ id }) => ({ type: 'ReferralCode', id } as const)),
-                { type: 'ReferralCode', id: 'LIST' },
-              ]
+            ? [...result.map(({ id }) => ({ type: 'ReferralCode', id } as const)), { type: 'ReferralCode', id: 'LIST' }]
             : [{ type: 'ReferralCode', id: 'LIST' }],
       }),
       getReferralCode: builder.query<ReferralCode, number>({

@@ -1,8 +1,9 @@
 import React from 'react';
-import { SxProps } from '@mui/material';
 import { Controller, useFormContext } from 'react-hook-form';
 
-import { UploadImage } from '../UI/UploadImage/UploadImage';
+import { SxProps } from '@mui/material';
+
+import { UploadImage } from 'components/UI/UploadImage/UploadImage';
 
 type Props = {
   name: string;
@@ -32,7 +33,7 @@ export function HFUploadPhoto({
       name={name}
       control={control}
       defaultValue={defaultValue || ''}
-      render={({ field: { ref, onChange, ...rest } }) => (
+      render={({ field: { ref: _ref, onChange, ...rest } }) => (
         <UploadImage
           {...rest}
           isError={!!errors[name]}

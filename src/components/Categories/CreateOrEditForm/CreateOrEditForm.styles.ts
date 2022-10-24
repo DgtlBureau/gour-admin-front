@@ -1,4 +1,4 @@
-import type { SxType } from '../../../@types';
+import type { SxType } from 'types';
 
 export const sx: SxType = {
   form: {

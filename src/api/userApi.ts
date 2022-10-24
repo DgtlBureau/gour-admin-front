@@ -1,8 +1,9 @@
-import { commonApi } from './commonApi';
-import { UserCreateDto } from '../@types/dto/user/create.dto';
-import { UserGetListDto } from '../@types/dto/user/get-list.dto';
-import { User } from '../@types/entities/User';
+import { UserCreateDto } from 'types/dto/user/create.dto';
+import { UserGetListDto } from 'types/dto/user/get-list.dto';
+import { User } from 'types/entities/User';
+
 import { Path } from '../constants/routes';
+import { commonApi } from './commonApi';
 
 const ROLES = ['ADMIN', 'CLIENT', 'MODERATOR'];
 
@@ -45,9 +46,4 @@ export const userApi = commonApi.injectEndpoints({
   }),
 });
 
-export const {
-  useDeleteUserMutation,
-  useCreateUserMutation,
-  useGetAllUsersQuery,
-  useGetByIdQuery,
-} = userApi;
+export const { useDeleteUserMutation, useCreateUserMutation, useGetAllUsersQuery, useGetByIdQuery } = userApi;

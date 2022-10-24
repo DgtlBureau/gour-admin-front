@@ -1,12 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
+
+import { Path } from 'constants/routes';
+
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
-import { Typography } from '../UI/Typography/Typography';
-import { Path } from '../../constants/routes';
+
 import { Link } from '../UI/Link/Link';
+import { Typography } from '../UI/Typography/Typography';
 
 const boxSx = {
   width: 210,
@@ -62,13 +65,7 @@ type Props = {
   onActionItemClick: (item: SidebarActionItem) => void;
 };
 
-export default function Sidebar({
-  linkedItems,
-  actionItems,
-  profileInfo,
-  onActionItemClick,
-  selected,
-}: Props) {
+export default function Sidebar({ linkedItems, actionItems, profileInfo, onActionItemClick, selected }: Props) {
   const handleBottomItemClick = (item: SidebarActionItem) => () => {
     onActionItemClick(item);
   };
@@ -77,10 +74,10 @@ export default function Sidebar({
 
   return (
     <div>
-      <Drawer anchor="left" variant="permanent">
-        <Box sx={boxSx} role="presentation">
+      <Drawer anchor='left' variant='permanent'>
+        <Box sx={boxSx} role='presentation'>
           <List>
-            <Typography sx={typographySx} variant="h5">
+            <Typography sx={typographySx} variant='h5'>
               {profileInfo.name}
               &nbsp;
               {profileInfo.lastName}
@@ -88,10 +85,7 @@ export default function Sidebar({
           </List>
           <List sx={{ marginTop: '15px' }}>
             {linkedItems.map(item => (
-              <Link
-                href={`/${item.path}`}
-                sx={{ textDecoration: 'none', userSelect: 'none' }}
-              >
+              <Link href={`/${item.path}`} sx={{ textDecoration: 'none', userSelect: 'none' }}>
                 <ListItem
                   sx={isSelectedItem(item) ? listItemSelected : {}}
                   selected={isSelectedItem(item)}
