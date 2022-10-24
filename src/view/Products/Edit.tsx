@@ -57,12 +57,6 @@ function EditProductView() {
       metaKeywords: '',
       moyskladId: '',
     },
-    priceSettings: {
-      discount: 0,
-      cheeseCoin: 0,
-      companyDiscount: 0,
-      collectiveDiscount: 0,
-    },
     productSelect: [],
     categoriesIds: {},
   });
@@ -144,33 +138,16 @@ function EditProductView() {
         thirdImage: product.images[2]?.full,
         moyskladId: product.moyskladId?.toString() || '',
       },
-      priceSettings: {
-        discount: 0,
-        cheeseCoin: product.price.cheeseCoin,
-        companyDiscount: 0,
-        collectiveDiscount: 0,
-      },
       categoriesIds,
       productSelect,
     });
   }, [product]);
 
   const onSave = async () => {
-    const { basicSettings, priceSettings, productSelect } = fullFormState;
+    const { basicSettings, productSelect } = fullFormState;
 
     const productTypeId = Number(fullFormState.basicSettings.productType);
     const categoryIds = [...Object.values(fullFormState.categoriesIds), productTypeId].filter(i => i);
-
-    const roleDiscounts = [
-      {
-        role: 3,
-        cheeseCoin: priceSettings.companyDiscount,
-      },
-      {
-        role: 4,
-        cheeseCoin: priceSettings.collectiveDiscount,
-      },
-    ];
 
     const firstImage =
       typeof basicSettings.firstImage === 'string'
@@ -199,12 +176,8 @@ function EditProductView() {
         ru: basicSettings.description,
       },
       images,
-      price: {
-        cheeseCoin: +priceSettings.cheeseCoin,
-      },
       categoryIds,
       similarProducts: productSelect || [],
-      roleDiscounts,
       moyskladId: basicSettings.moyskladId || null,
       // TODO: добавить валидацию перед отправкой
     };
