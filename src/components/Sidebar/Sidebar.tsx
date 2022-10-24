@@ -6,6 +6,7 @@ import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import { Typography } from '../UI/Typography/Typography';
 import { Path } from '../../constants/routes';
+import { Link } from '../UI/Link/Link';
 
 const boxSx = {
   width: 210,
@@ -57,8 +58,7 @@ type Props = {
   profileInfo: { name: string; lastName: string };
   linkedItems: SidebarLinkedItem[];
   actionItems: SidebarActionItem[];
-  defaultSelected: string;
-  onLinkedItemClick: (item: SidebarLinkedItem) => void;
+  selected: string;
   onActionItemClick: (item: SidebarActionItem) => void;
 };
 
@@ -66,21 +66,9 @@ export default function Sidebar({
   linkedItems,
   actionItems,
   profileInfo,
-  onLinkedItemClick,
   onActionItemClick,
-  defaultSelected,
+  selected,
 }: Props) {
-  const [selected, setSelected] = useState<string>(defaultSelected);
-
-  useEffect(() => {
-    setSelected(defaultSelected);
-  }, [defaultSelected]);
-
-  const handleItemClick = (item: SidebarLinkedItem) => () => {
-    setSelected(item.path);
-    onLinkedItemClick(item);
-  };
-
   const handleBottomItemClick = (item: SidebarActionItem) => () => {
     onActionItemClick(item);
   };
@@ -100,15 +88,18 @@ export default function Sidebar({
           </List>
           <List sx={{ marginTop: '15px' }}>
             {linkedItems.map(item => (
-              <ListItem
-                sx={isSelectedItem(item) ? listItemSelected : {}}
-                selected={isSelectedItem(item)}
-                button
-                key={item.path}
-                onClick={handleItemClick(item)}
+              <Link
+                href={`/${item.path}`}
+                sx={{ textDecoration: 'none', userSelect: 'none' }}
               >
-                <ListItemText primary={item.label} sx={listItemTextSx} />
-              </ListItem>
+                <ListItem
+                  sx={isSelectedItem(item) ? listItemSelected : {}}
+                  selected={isSelectedItem(item)}
+                  key={item.path}
+                >
+                  <ListItemText primary={item.label} sx={listItemTextSx} />
+                </ListItem>
+              </Link>
             ))}
           </List>
           <List sx={{ marginTop: 'auto' }}>

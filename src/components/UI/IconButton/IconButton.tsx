@@ -19,6 +19,7 @@ type Props = {
     | undefined;
 
   component: ElementType;
+  href?: string;
 };
 
 export function IconButton({
@@ -29,6 +30,7 @@ export function IconButton({
   type,
   disabled,
   component,
+  href,
 }: Props) {
   return (
     <MUIIconButton
@@ -38,6 +40,7 @@ export function IconButton({
       onClick={onClick}
       type={type}
       component={component}
+      href={href}
     >
       {children}
     </MUIIconButton>

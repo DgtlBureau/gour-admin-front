@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 
 import { Button } from '../../components/UI/Button/Button';
 import { Path } from '../../constants/routes';
-import { useTo } from '../../hooks/useTo';
 import { Header } from '../../components/Header/Header';
 import { ProductsTable } from '../../components/Product/Table/Table';
 import { useDeleteProductMutation, useGetAllProductsQuery } from '../../api/productApi';
@@ -14,19 +13,21 @@ import { NotificationType } from '../../@types/entities/Notification';
 import { useGetAllCategoriesQuery } from '../../api/categoryApi';
 import { getErrorMessage } from '../../utils/errorUtil';
 import { ProductTableDto } from '../../@types/dto/table/products.dto';
+import { Link } from '../../components/UI/Link/Link';
 
 type Props = {
   onUploadClick: () => void;
-  onCreateClick: () => void;
 };
 
-function RightContent({ onUploadClick, onCreateClick }: Props) {
+function RightContent({ onUploadClick }: Props) {
   return (
     <>
       <Button variant="outlined" onClick={onUploadClick} sx={{ marginRight: '10px' }}>
         Выгрузить базу для 1с
       </Button>
-      <Button onClick={onCreateClick}>Добавить товар</Button>
+      <Button href={`/${Path.PRODUCTS}/create`} component={Link}>
+        Добавить товар
+      </Button>
     </>
   );
 }
@@ -58,12 +59,6 @@ function ListProductsView() {
       price: product.price.cheeseCoin || 0,
     }));
   }, [productsData]);
-
-  const to = useTo();
-
-  const goToProductCreate = () => to(Path.PRODUCTS, 'create');
-
-  const goToProductEdit = (id: number) => to(Path.PRODUCTS, `${id}`);
 
   const uploadProductList = () => {
     console.log('uploading');
@@ -119,12 +114,7 @@ function ListProductsView() {
     <div>
       <Header
         leftTitle="Товары"
-        rightContent={
-          <RightContent
-            onCreateClick={goToProductCreate}
-            onUploadClick={uploadProductList}
-          />
-        }
+        rightContent={<RightContent onUploadClick={uploadProductList} />}
       />
 
       {isLoading && <ProgressLinear variant="indeterminate" />}
@@ -142,7 +132,6 @@ function ListProductsView() {
           rowsPerPage={rowsPerPage}
           onChangePage={changePage}
           onChangeRowsPerPage={changeRowsPerPage}
-          onEdit={goToProductEdit}
           onRemove={openDeleteModal}
         />
       )}
