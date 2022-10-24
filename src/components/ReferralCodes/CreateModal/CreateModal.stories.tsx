@@ -9,9 +9,9 @@ export default {
   title: 'Modals/CreateRefferalCode',
 } as Meta;
 
-const Template: ComponentStory<typeof ReferralCodeCreateModal> = function (args: ReferralCodeCreateModalProps) {
-  return <ReferralCodeCreateModal {...args} />;
-};
+const Template: ComponentStory<typeof ReferralCodeCreateModal> = (args: ReferralCodeCreateModalProps) => (
+  <ReferralCodeCreateModal {...args} />
+);
 export const DefaultCreateModal = Template.bind({});
 
 const props: Partial<ReferralCodeCreateModalProps> = {

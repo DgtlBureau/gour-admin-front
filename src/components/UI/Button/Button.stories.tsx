@@ -9,9 +9,7 @@ export default {
   component: Button,
 } as ComponentMeta<typeof Button>;
 
-const Template: ComponentStory<typeof Button> = function (args) {
-  return <Button {...args} />;
-};
+const Template: ComponentStory<typeof Button> = args => <Button {...args} />;
 
 export const DefaultState = Template.bind({});
 // TODO: добавить все варианты отображения

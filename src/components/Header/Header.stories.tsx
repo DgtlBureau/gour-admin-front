@@ -11,9 +11,7 @@ export default {
   component: Header,
 } as ComponentMeta<typeof Header>;
 
-const Template: ComponentStory<typeof Header> = function (args) {
-  return <Header {...args} />;
-};
+const Template: ComponentStory<typeof Header> = args => <Header {...args} />;
 
 export const DefaultState = Template.bind({});
 // TODO: добавить все варианты отображения

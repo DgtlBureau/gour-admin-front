@@ -9,9 +9,7 @@ export default {
   component: DeleteCityModal,
 } as ComponentMeta<typeof DeleteCityModal>;
 
-const Template: ComponentStory<typeof DeleteCityModal> = function (args) {
-  return <DeleteCityModal {...args} />;
-};
+const Template: ComponentStory<typeof DeleteCityModal> = args => <DeleteCityModal {...args} />;
 
 export const DefaultState = Template.bind({});
 DefaultState.args = {

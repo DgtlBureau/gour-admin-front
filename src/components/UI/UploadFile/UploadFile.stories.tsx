@@ -9,9 +9,7 @@ export default {
   component: UploadFile,
 } as ComponentMeta<typeof UploadFile>;
 
-const Template: ComponentStory<typeof UploadFile> = function (args) {
-  return <UploadFile {...args} />;
-};
+const Template: ComponentStory<typeof UploadFile> = args => <UploadFile {...args} />;
 
 export const DefaultState = Template.bind({});
 

@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { Path } from 'constants/routes';
-
 import { useGetAllCategoriesQuery } from 'api/categoryApi';
 import { useUploadImageMutation } from 'api/imageApi';
 import { useGetAllProductsQuery, useGetProductByIdQuery, useUpdateProductMutation } from 'api/productApi';
@@ -17,6 +15,7 @@ import { ProductCreateDto } from 'types/dto/product/create.dto';
 import { NotificationType } from 'types/entities/Notification';
 
 import { EventTypes, eventBus } from 'packages/EventBus';
+import { getErrorMessage } from 'utils/errorUtil';
 
 import { useTo } from '../../hooks/useTo';
 
@@ -40,7 +39,7 @@ function RightContent({ onSaveClick, onCancelHandler }: Props) {
 
 function EditProductView() {
   const lang = 'ru';
-  const to = useTo();
+  const { toProductList } = useTo();
 
   const { id } = useParams();
 
@@ -95,23 +94,25 @@ function EditProductView() {
     { skip: activeTabId !== 'recommended_products' },
   );
 
-  const uploadPicture = async (file?: File, label?: string) => {
-    if (!file) return undefined;
+  const uploadPicture = async (file: File) => {
+    try {
+      const formData = new FormData();
 
-    const formData = new FormData();
+      formData.append('image', file);
 
-    formData.append('image', file);
+      const image = await uploadImage(formData).unwrap();
 
-    const image = await uploadImage(formData).unwrap();
+      return image;
+    } catch (error) {
+      const message = getErrorMessage(error);
 
-    if (!image) {
       eventBus.emit(EventTypes.notification, {
-        message: `Произошла ошибка при загрузке фото ${label})`,
+        message,
         type: NotificationType.DANGER,
       });
-    }
 
-    return image;
+      return undefined;
+    }
   };
 
   useEffect(() => {
@@ -174,15 +175,15 @@ function EditProductView() {
     const firstImage =
       typeof basicSettings.firstImage === 'string'
         ? product?.images[0]
-        : await uploadPicture(basicSettings.firstImage, '1');
+        : basicSettings.firstImage && (await uploadPicture(basicSettings.firstImage));
     const secondImage =
       typeof basicSettings.secondImage === 'string'
         ? product?.images[1]
-        : await uploadPicture(basicSettings.secondImage, '2');
+        : basicSettings.secondImage && (await uploadPicture(basicSettings.secondImage));
     const thirdImage =
       typeof basicSettings.thirdImage === 'string'
         ? product?.images[2]
-        : await uploadPicture(basicSettings.thirdImage, '3');
+        : basicSettings.thirdImage && (await uploadPicture(basicSettings.thirdImage));
 
     const images: number[] = [];
 
@@ -214,16 +215,17 @@ function EditProductView() {
         message: 'Товар изменен',
         type: NotificationType.SUCCESS,
       });
-      to(Path.PRODUCTS);
+
+      toProductList();
     } catch (error) {
+      const message = getErrorMessage(error);
+
       eventBus.emit(EventTypes.notification, {
-        message: 'Произошла ошибка',
+        message,
         type: NotificationType.DANGER,
       });
     }
   };
-
-  const onCancel = () => to(Path.PRODUCTS);
 
   if (isLoading) return <ProgressLinear variant='query' />;
 
@@ -239,7 +241,7 @@ function EditProductView() {
     <div>
       <Header
         leftTitle='Редактирование товара'
-        rightContent={<RightContent onSaveClick={onSave} onCancelHandler={onCancel} />}
+        rightContent={<RightContent onSaveClick={onSave} onCancelHandler={toProductList} />}
       />
       <ProductFullForm
         activeTabId={activeTabId}
@@ -248,7 +250,6 @@ function EditProductView() {
         products={productsList?.products.filter(it => it.id !== productId) || []}
         fullFormState={fullFormState}
         setFullFormState={setFullFormState}
-        mode='edit'
       />
     </div>
   );

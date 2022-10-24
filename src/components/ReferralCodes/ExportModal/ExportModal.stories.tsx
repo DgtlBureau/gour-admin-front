@@ -9,9 +9,9 @@ export default {
   title: 'Modals/ReferralCodeExport',
 } as Meta;
 
-const Template: ComponentStory<typeof ReferralCodeExportModal> = function (args: ExportModalProps) {
-  return <ReferralCodeExportModal {...args} />;
-};
+const Template: ComponentStory<typeof ReferralCodeExportModal> = (args: ExportModalProps) => (
+  <ReferralCodeExportModal {...args} />
+);
 export const DefaultReferralCodeExportModal = Template.bind({});
 
 const props: Partial<ExportModalProps> = {

@@ -9,9 +9,7 @@ export default {
   title: 'Tables/Users',
 } as Meta;
 
-const Template: ComponentStory<typeof UsersTable> = function (args: UsersTableProps) {
-  return <UsersTable {...args} />;
-};
+const Template: ComponentStory<typeof UsersTable> = (args: UsersTableProps) => <UsersTable {...args} />;
 export const DefaultUsersTable = Template.bind({});
 const props: Partial<UsersTableProps> = {};
 

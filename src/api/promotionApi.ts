@@ -38,7 +38,7 @@ export const promotionApi = commonApi.injectEndpoints({
         method: 'PUT',
         body,
       }),
-      invalidatesTags: [{ type: 'Promotion', id: 'LIST' }],
+      invalidatesTags: (r, e, { id }) => [{ type: 'Promotion', id }],
     }),
     deletePromotion: builder.mutation<void, number>({
       query: id => ({

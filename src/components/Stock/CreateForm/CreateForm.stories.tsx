@@ -43,9 +43,7 @@ const cheeseCategory = {
   subCategories: [],
 };
 
-const Template: ComponentStory<typeof CreateStockForm> = function (args) {
-  return <CreateStockForm {...args} />;
-};
+const Template: ComponentStory<typeof CreateStockForm> = args => <CreateStockForm {...args} />;
 
 export const DefaultState = Template.bind({});
 DefaultState.args = {

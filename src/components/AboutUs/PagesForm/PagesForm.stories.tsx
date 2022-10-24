@@ -9,9 +9,7 @@ export default {
   component: PagesAboutUsForm,
 } as ComponentMeta<typeof PagesAboutUsForm>;
 
-const Template: ComponentStory<typeof PagesAboutUsForm> = function (args) {
-  return <PagesAboutUsForm {...args} />;
-};
+const Template: ComponentStory<typeof PagesAboutUsForm> = args => <PagesAboutUsForm {...args} />;
 
 export const DefaultState = Template.bind({});
 DefaultState.args = {

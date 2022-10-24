@@ -33,7 +33,7 @@ export function HFUploadPhoto({
       name={name}
       control={control}
       defaultValue={defaultValue || ''}
-      render={({ field: { ref, onChange, ...rest } }) => (
+      render={({ field: { ref: _ref, onChange, ...rest } }) => (
         <UploadImage
           {...rest}
           isError={!!errors[name]}

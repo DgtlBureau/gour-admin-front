@@ -9,9 +9,7 @@ export default {
   component: Select,
 } as ComponentMeta<typeof Select>;
 
-const Template: ComponentStory<typeof Select> = function (args) {
-  return <Select {...args} />;
-};
+const Template: ComponentStory<typeof Select> = args => <Select {...args} />;
 
 export const DefaultState = Template.bind({});
 

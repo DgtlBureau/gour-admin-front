@@ -20,9 +20,7 @@ export default {
   component: StockTable,
 } as ComponentMeta<typeof StockTable>;
 
-const Template: ComponentStory<typeof StockTable> = function (args) {
-  return <StockTable {...args} />;
-};
+const Template: ComponentStory<typeof StockTable> = args => <StockTable {...args} />;
 
 export const DefaultState = Template.bind({});
 

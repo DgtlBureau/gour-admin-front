@@ -9,9 +9,9 @@ export default {
   component: CreateOrEditModalCategoryModal,
 } as ComponentMeta<typeof CreateOrEditModalCategoryModal>;
 
-const Template: ComponentStory<typeof CreateOrEditModalCategoryModal> = function (args) {
-  return <CreateOrEditModalCategoryModal {...args} />;
-};
+const Template: ComponentStory<typeof CreateOrEditModalCategoryModal> = args => (
+  <CreateOrEditModalCategoryModal {...args} />
+);
 
 export const DefaultState = Template.bind({});
 DefaultState.args = {

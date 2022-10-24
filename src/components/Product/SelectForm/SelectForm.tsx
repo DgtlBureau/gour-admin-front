@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 
 import { Grid, Stack } from '@mui/material';
 
@@ -23,12 +23,18 @@ const sx = {
   },
 };
 
-export function ProductSelectForm({ selected, products, categories, isLoading, onChange }: ProductSelectFormProps) {
+export function ProductSelectForm({
+  selected = [],
+  products,
+  categories,
+  isLoading,
+  onChange,
+}: ProductSelectFormProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedTabKey, setSelectedTabKey] = useState<TabsKeys>('all');
   const [selectValues, setSelectValues] = useState<Record<string, string | number>>({});
 
-  const filteredProducts = React.useMemo<Product[]>(() => {
+  const filteredProducts = useMemo<Product[]>(() => {
     const query = searchQuery.trim().toLowerCase();
     return filterByAllParams(products, query, selectValues, selectedTabKey, selected);
   }, [products, searchQuery, selectedTabKey, selectValues]);
@@ -66,6 +72,7 @@ export function ProductSelectForm({ selected, products, categories, isLoading, o
         <Grid item xs={12} md={8} lg={6}>
           <TextField label='Поиск' value={searchQuery} onChange={e => setSearchQuery(e.target.value)} />
         </Grid>
+
         <Grid item sx={sx.productsCount} xs={12} md={4} lg={6}>
           <Typography variant='body1'>Количество добавленных товаров: {selected.length}</Typography>
         </Grid>

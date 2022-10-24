@@ -1,6 +1,4 @@
-import React, { useState } from 'react';
-
-import { Path } from 'constants/routes';
+import React, { useMemo, useState } from 'react';
 
 import { useGetAllCategoriesQuery } from 'api/categoryApi';
 import { useDeleteProductMutation, useGetAllProductsQuery } from 'api/productApi';
@@ -17,6 +15,8 @@ import { NotificationType } from 'types/entities/Notification';
 
 import { EventTypes, eventBus } from 'packages/EventBus';
 import { getErrorMessage } from 'utils/errorUtil';
+
+import defaultImage from 'assets/images/default.svg';
 
 import { useTo } from '../../hooks/useTo';
 
@@ -49,22 +49,18 @@ function ListProductsView() {
 
   const [fetchDeleteProduct] = useDeleteProductMutation();
 
-  const productsTableList = React.useMemo(() => {
+  const productsTableList = useMemo(() => {
     if (!productsData) return [];
     return productsData.products.map(product => ({
       id: product.id,
-      image: product.images[0]?.small || '',
+      image: product.images[0]?.small || defaultImage,
       title: product.title[lang] || '',
       categoriesIds: product.categories?.map(c => c.id) || [],
       price: product.price.cheeseCoin || 0,
     }));
   }, [productsData]);
 
-  const to = useTo();
-
-  const goToProductCreate = () => to(Path.PRODUCTS, 'create');
-
-  const goToProductEdit = (id: number) => to(Path.PRODUCTS, `${id}`);
+  const { toProductCreate, toProductEdit } = useTo();
 
   const uploadProductList = () => {
     console.log('uploading');
@@ -120,7 +116,7 @@ function ListProductsView() {
     <div>
       <Header
         leftTitle='Товары'
-        rightContent={<RightContent onCreateClick={goToProductCreate} onUploadClick={uploadProductList} />}
+        rightContent={<RightContent onCreateClick={toProductCreate} onUploadClick={uploadProductList} />}
       />
 
       {isLoading && <ProgressLinear variant='indeterminate' />}
@@ -136,7 +132,7 @@ function ListProductsView() {
           rowsPerPage={rowsPerPage}
           onChangePage={changePage}
           onChangeRowsPerPage={changeRowsPerPage}
-          onEdit={goToProductEdit}
+          onEdit={toProductEdit}
           onRemove={openDeleteModal}
         />
       )}

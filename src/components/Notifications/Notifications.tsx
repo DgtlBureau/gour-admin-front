@@ -26,7 +26,7 @@ export const baseNotification: iNotification = {
 export function Notifications() {
   const query = useQuery();
   const location = useLocation();
-  const to = useTo();
+  const { to } = useTo();
 
   useEffect(() => {
     const message = query.get('message');

@@ -50,7 +50,7 @@ const actionItems = [
 ];
 
 function PrivateLayout() {
-  const to = useTo();
+  const { to, toSignIn } = useTo();
 
   const { pathname } = useLocation();
 
@@ -90,7 +90,7 @@ function PrivateLayout() {
   if (isLoading) return <ProgressLinear variant='query' />;
 
   if (isError || !isAuth) {
-    to(Path.AUTH, 'signin');
+    toSignIn();
 
     return null;
   }

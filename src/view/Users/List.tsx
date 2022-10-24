@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 
-import { Path } from 'constants/routes';
 import { Options } from 'constants/tabs';
 import { Roles } from 'constants/users/roles';
 
@@ -48,34 +47,36 @@ function RightContent({ onCreateClick }: RightContentProps) {
 function ListUsersView() {
   const { data: users } = useGetAllUsersQuery({});
   const { data: clients } = useGetClientsListQuery();
+
   const [deleteUserById] = useDeleteUserMutation();
 
-  const data: UserTableItem[] = [
-    ...(users || []).map(it => ({
-      login: it.login,
-      name: `${it.firstName || 'Имя'} ${it.lastName || 'Фамилия'}`,
-      role: (it.role?.key as Roles) || '',
-      uuid: it.apiUserUuid,
-      createdAt: it.createdAt,
-    })),
-    ...(clients || [])
-      .map(it => ({
-        login: it.phone,
+  const data: UserTableItem[] = useMemo(
+    () => [
+      ...(users || []).map(it => ({
+        login: it.login,
         name: `${it.firstName || 'Имя'} ${it.lastName || 'Фамилия'}`,
         role: (it.role?.key as Roles) || '',
-        uuid: `${it.id}`,
+        uuid: it.apiUserUuid,
         createdAt: it.createdAt,
-      }))
-      .sort((a, b) => (a.createdAt < b.createdAt ? -1 : 1)),
-  ];
+      })),
+      ...(clients || [])
+        .map(it => ({
+          login: it.phone,
+          name: `${it.firstName || 'Имя'} ${it.lastName || 'Фамилия'}`,
+          role: (it.role?.key as Roles) || '',
+          uuid: `${it.id}`,
+          createdAt: it.createdAt,
+        }))
+        .sort((a, b) => (a.createdAt < b.createdAt ? -1 : 1)),
+    ],
+    [users, clients],
+  );
 
   const [isDeleting, setIsDeleting] = useState(false);
   const [openedUserUuid, setOpenedUserUuid] = useState<string | null>(null);
   const [userDeleteId, setUserDeleteId] = useState('');
 
-  const to = useTo();
-
-  const goToUserCreate = () => to(Path.USERS, 'create');
+  const { toUserCreate } = useTo();
 
   const onAddCheesecoins = (cheeseCoinData: AddCheesecoinsDto) => console.log(openedUserUuid, cheeseCoinData);
 
@@ -92,7 +93,7 @@ function ListUsersView() {
 
   return (
     <div>
-      <Header leftTitle='Пользователи' rightContent={<RightContent onCreateClick={goToUserCreate} />} />
+      <Header leftTitle='Пользователи' rightContent={<RightContent onCreateClick={toUserCreate} />} />
       {data ? (
         <UsersTable
           users={data}

@@ -41,10 +41,10 @@ const tabOptions = [
 ];
 
 export function CreateStockForm({ products, categories, defaultValues, submitBtnRef, onChange }: Props) {
-  const [selectedTabKey, setSelectedTabKey] = useState<string>('basicSettings');
-  const [selectedProducts, setSelectedProducts] = useState<number[]>(defaultValues?.productIdList || []);
+  const [selectedTabKey, setSelectedTabKey] = useState(tabOptions[0].value);
+  const [selectedProducts, setSelectedProducts] = useState(defaultValues?.productIdList);
 
-  const [error, setError] = useState<string>('');
+  const [error, setError] = useState<string | null>(null);
 
   const values = useForm<CreateStockFormDto>({
     resolver: yupResolver(schema),
@@ -54,38 +54,34 @@ export function CreateStockForm({ products, categories, defaultValues, submitBtn
 
   const isSettings = selectedTabKey === 'basicSettings';
 
-  const selectProducts = (productIds: number[]) => {
-    if (productIds.length === 0) return;
-    setError('');
+  const selectProducts = (productIds?: number[]) => {
+    if (error) setError(null);
+
     setSelectedProducts(productIds);
   };
 
   const submit = (data: CreateStockFormDto) => {
-    if (selectedProducts.length === 0) {
-      setError('Пожалуйста, выберите товары, участвующие в акции');
-    } else {
-      onChange({ ...data, productIdList: selectedProducts });
-    }
+    if (!selectedProducts?.length) setError('Пожалуйста, выберите товары, участвующие в акции');
+    else onChange({ ...data, productIdList: selectedProducts });
   };
 
   useEffect(() => {
     values.reset(defaultValues);
-    selectProducts(defaultValues?.productIdList || []);
+    selectProducts(defaultValues?.productIdList);
   }, [defaultValues]);
 
-  const resetField = (field: keyof CreateStockFormDto) => {
-    values.setValue(field, undefined);
-    // change(values.getValues());
-  };
+  const resetField = (field: keyof CreateStockFormDto) => values.setValue(field, undefined);
 
   return (
     <Box>
       <Tabs value={selectedTabKey} options={tabOptions} onChange={setSelectedTabKey} sx={{ marginBottom: '20px' }} />
-      {error && (
-        <Typography variant='body1' sx={{ color: 'red', margin: '20px 0' }}>
+
+      {!!error && (
+        <Typography variant='body1' sx={{ color: 'red', marginBottom: '20px' }}>
           {error}
         </Typography>
       )}
+
       <Box sx={{ display: isSettings ? 'flex' : 'none' }}>
         <FormProvider {...values}>
           <form

@@ -1,6 +1,5 @@
 import React, { useRef } from 'react';
 
-import { Path } from 'constants/routes';
 import { formatISO } from 'date-fns';
 
 import { useGetAllCategoriesQuery } from 'api/categoryApi';
@@ -17,8 +16,9 @@ import { PromotionCreateDto } from 'types/dto/promotion/create.dto';
 import { NotificationType } from 'types/entities/Notification';
 
 import { EventTypes, eventBus } from 'packages/EventBus';
+import { getErrorMessage } from 'utils/errorUtil';
 
-import noImage from 'assets/images/no-image.svg';
+import defaultImage from 'assets/images/default.svg';
 
 import { useTo } from '../../hooks/useTo';
 
@@ -41,10 +41,23 @@ function RightContent({ onSave, onCancel }: RightContentProps) {
 }
 
 function CreateStockView() {
-  const to = useTo();
+  const { toStockList } = useTo();
 
-  const { data: productsData } = useGetAllProductsQuery({ withCategories: true });
-  const { data: categoriesData } = useGetAllCategoriesQuery();
+  const { products } = useGetAllProductsQuery(
+    { withCategories: true },
+    {
+      selectFromResult: ({ data }) => ({
+        products:
+          data?.products?.map(it => ({
+            id: it.id,
+            title: it.title.ru,
+            image: it.images[0]?.small || defaultImage,
+            categories: it.categories,
+          })) || [],
+      }),
+    },
+  );
+  const { data: categories = [] } = useGetAllCategoriesQuery();
 
   const [createPromotion] = useCreatePromotionMutation();
   const [uploadImage] = useUploadImageMutation();
@@ -52,38 +65,32 @@ function CreateStockView() {
   const submitBtnRef = useRef<HTMLButtonElement>(null);
   const submitStockForm = () => submitBtnRef?.current?.click();
 
-  const products =
-    productsData?.products?.map(it => ({
-      id: it.id,
-      title: it.title.ru,
-      image: it.images[0]?.small || noImage,
-      categories: it.categories,
-    })) || [];
+  const uploadPicture = async (file?: File | string) => {
+    try {
+      if (!file || typeof file === 'string') return undefined;
 
-  const goToStocks = () => to(Path.STOCKS);
+      const formData = new FormData();
 
-  const uploadPicture = async (file?: File | string, label?: string) => {
-    if (!file || typeof file === 'string') return undefined;
+      formData.append('image', file);
 
-    const formData = new FormData();
+      const image = await uploadImage(formData).unwrap();
 
-    formData.append('image', file);
+      return image;
+    } catch (error) {
+      const message = getErrorMessage(error);
 
-    const image = await uploadImage(formData).unwrap();
-
-    if (!image) {
       eventBus.emit(EventTypes.notification, {
-        message: `Произошла ошибка при загрузке фото ${label})`,
+        message,
         type: NotificationType.DANGER,
       });
-    }
 
-    return image;
+      return undefined;
+    }
   };
 
   const save = async (data: CreateStockFormDto) => {
-    const cardImage = await uploadPicture(data.smallPhoto, '1:1');
-    const pageImage = await uploadPicture(data.fullPhoto, '1:2');
+    const cardImage = await uploadPicture(data.smallPhoto);
+    const pageImage = await uploadPicture(data.fullPhoto);
 
     const promotion: PromotionCreateDto = {
       title: {
@@ -125,10 +132,12 @@ function CreateStockView() {
         type: NotificationType.SUCCESS,
       });
 
-      goToStocks();
+      toStockList();
     } catch (error) {
+      const message = getErrorMessage(error);
+
       eventBus.emit(EventTypes.notification, {
-        message: 'Не удалось создать акцию',
+        message,
         type: NotificationType.DANGER,
       });
     }
@@ -138,14 +147,9 @@ function CreateStockView() {
     <div>
       <Header
         leftTitle='Создание акции'
-        rightContent={<RightContent onCancel={goToStocks} onSave={submitStockForm} />}
+        rightContent={<RightContent onCancel={toStockList} onSave={submitStockForm} />}
       />
-      <CreateStockForm
-        products={products}
-        categories={categoriesData || []}
-        submitBtnRef={submitBtnRef}
-        onChange={save}
-      />
+      <CreateStockForm products={products} categories={categories} submitBtnRef={submitBtnRef} onChange={save} />
     </div>
   );
 }

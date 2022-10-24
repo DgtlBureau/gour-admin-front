@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import { useDeleteClientMutation, useGetClientsListQuery, useUpdateClientMutation } from 'api/clientApi';
 
@@ -8,6 +8,7 @@ import { Client, RegistrationsTable } from 'components/Registrations/Table/Table
 import { NotificationType } from 'types/entities/Notification';
 
 import { EventTypes, eventBus } from 'packages/EventBus';
+import { getErrorMessage } from 'utils/errorUtil';
 
 function ListRegistrationsView() {
   const { data: clients = [] } = useGetClientsListQuery();
@@ -23,8 +24,10 @@ function ListRegistrationsView() {
         type: NotificationType.SUCCESS,
       });
     } catch (error) {
+      const message = getErrorMessage(error);
+
       eventBus.emit(EventTypes.notification, {
-        message: 'Возникла ошибка',
+        message,
         type: NotificationType.DANGER,
       });
     }
@@ -38,8 +41,10 @@ function ListRegistrationsView() {
         type: NotificationType.SUCCESS,
       });
     } catch (error) {
+      const message = getErrorMessage(error);
+
       eventBus.emit(EventTypes.notification, {
-        message: 'Возникла ошибка',
+        message,
         type: NotificationType.DANGER,
       });
     }

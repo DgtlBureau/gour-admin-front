@@ -6,8 +6,8 @@ import { LinearProgress } from '@mui/material';
 
 import { useGetProductGradeListQuery, useUpdateProductGradeMutation } from 'api/productGradeApi';
 
-import { ConfirmReviewModal } from 'components/ConfirmReviewModal/ConfirmReviewModal';
 import { Header } from 'components/Header/Header';
+import { ReviewConfirmModal } from 'components/Review/ConfirmModal/ConfirmModal';
 import { Comment, ReviewTable } from 'components/Review/Table/Table';
 import { Typography } from 'components/UI/Typography/Typography';
 
@@ -120,8 +120,8 @@ function ListReviewsView() {
     <div>
       <Header leftTitle='Отзывы' />
       <ReviewTable comments={formattedComments} onClickFullReview={openReview} />
-      <ConfirmReviewModal
-        isOpened={!!openedReview}
+      <ReviewConfirmModal
+        isOpen={!!openedReview}
         // FIXME:
         comment={
           openedReview || {

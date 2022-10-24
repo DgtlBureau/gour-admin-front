@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import React, { Dispatch, SetStateAction, useCallback } from 'react';
 
 import { Box } from 'components/UI/Box/Box';
 import { TabPanel } from 'components/UI/Tabs/TabPanel';
@@ -30,13 +30,11 @@ type ProductFullFormProps = {
   isProductsLoading?: boolean;
   categories: TopLevelCategory[];
   products: Product[];
-  mode: 'create' | 'edit';
   fullFormState: FullFormType;
   setFullFormState: Dispatch<SetStateAction<FullFormType>>;
 };
 
 export function ProductFullForm({
-  mode,
   activeTabId,
   categories,
   products,
@@ -67,7 +65,7 @@ export function ProductFullForm({
     setFullFormState(prevState => ({ ...prevState, productSelect: recommendedIds }));
   };
 
-  const onFilterFormChange = React.useCallback((selectedCategories: Record<string, number>) => {
+  const onFilterFormChange = useCallback((selectedCategories: Record<string, number>) => {
     setFullFormState(prevState => ({
       ...prevState,
       categoriesIds: selectedCategories,
@@ -94,7 +92,6 @@ export function ProductFullForm({
       <TabPanel value={activeTabId} index='settings'>
         <ProductBasicSettingsForm
           productTypes={productTypeOptions}
-          mode={mode}
           defaultValues={fullFormState.basicSettings}
           onChange={handleChangeBasicSettingsForm}
         />

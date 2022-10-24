@@ -1,42 +1,64 @@
 import React from 'react';
 
-import { Modal } from 'components/UI/Modal/Modal';
+import { Dialog } from '@mui/material';
+
+import { Box } from 'components/UI/Box/Box';
+import { Button } from 'components/UI/Button/Button';
+import { IconButton } from 'components/UI/IconButton/IconButton';
 import { Typography } from 'components/UI/Typography/Typography';
 
-type Comment = {
-  authorName: string;
-  text: string;
-  productName: string;
-  date: string;
-};
+import CloseIcon from '@mui/icons-material/Close';
 
-type ConfirmReviewModalProps = {
+import { Comment } from '../Table/Table';
+import { getReviewStatus } from '../review.helper';
+import { sx } from './ConfirmModal.styles';
+
+type Props = {
   comment: Comment;
   isOpen: boolean;
   onConfirm: () => void;
+  onReject: () => void;
   onCancel: () => void;
 };
 
-type ModalBodyProps = {
-  text: string;
-  productName: string;
-  date: string;
-};
-
-function ModalBody({ text, productName, date }: ModalBodyProps) {
+export function ReviewConfirmModal({ comment, isOpen, onConfirm, onReject, onCancel }: Props) {
+  const commentStatus = getReviewStatus(comment.isConfirmed);
   return (
-    <>
-      <Typography>{text}</Typography>
-      <Typography sx={{ margin: '10px 0' }}>{productName}</Typography>
-      <Typography>{date}</Typography>
-    </>
-  );
-}
+    <Dialog open={isOpen} onClose={onCancel}>
+      <Box sx={sx.modal}>
+        <Box sx={sx.header}>
+          <Typography variant='h5'>Принять отзыв?</Typography>
 
-export function ConfirmReviewModal({ comment, isOpen, onConfirm, onCancel }: ConfirmReviewModalProps) {
-  return (
-    <Modal isOpen={isOpen} title={comment.authorName} onAccept={onConfirm} onClose={onCancel}>
-      <ModalBody {...comment} />
-    </Modal>
+          <IconButton onClick={onCancel} component='symbol'>
+            <CloseIcon />
+          </IconButton>
+        </Box>
+
+        <Typography sx={{ margin: '0 0 10px 0' }} variant='body1'>
+          {comment.authorName}
+        </Typography>
+
+        <Typography variant='body1'>{comment.text}</Typography>
+
+        <Typography sx={{ margin: '10px 0 10px 0' }} variant='body1'>
+          {comment.productName}
+        </Typography>
+
+        <Typography variant='body1'>{comment.date}</Typography>
+
+        <Box sx={sx.buttons}>
+          {commentStatus !== 'accept' && (
+            <Button type='button' variant='contained' onClick={onConfirm}>
+              принять
+            </Button>
+          )}
+          {commentStatus !== 'reject' && (
+            <Button type='button' variant='outlined' onClick={onReject}>
+              отклонить
+            </Button>
+          )}
+        </Box>
+      </Box>
+    </Dialog>
   );
 }

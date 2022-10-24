@@ -23,7 +23,7 @@ export function HFTextarea({ name, defaultValue, ...props }: Props) {
       name={name}
       control={control}
       defaultValue={defaultValue || ''}
-      render={({ field: { ref, ...rest } }) => (
+      render={({ field: { ref: _ref, ...rest } }) => (
         <Textarea {...rest} isError={!!errors[name]} error={errors[name]?.message ?? ''} {...props} />
       )}
     />

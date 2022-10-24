@@ -11,9 +11,7 @@ export default {
   component: CategoriesTable,
 } as ComponentMeta<typeof CategoriesTable>;
 
-const Template: ComponentStory<typeof CategoriesTable> = function (args) {
-  return <CategoriesTable {...args} />;
-};
+const Template: ComponentStory<typeof CategoriesTable> = args => <CategoriesTable {...args} />;
 
 type SubCategories = Array<MidLevelCategory | LowLevelCategory> | null;
 function generateCategories<P extends unknown[] | null = null, S extends SubCategories = null>(

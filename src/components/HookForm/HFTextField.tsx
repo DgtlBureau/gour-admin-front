@@ -26,7 +26,7 @@ export function HFTextField({ name, defaultValue, ...props }: Props) {
       name={name}
       control={control}
       defaultValue={defaultValue || ''}
-      render={({ field: { ref, ...rest } }) => (
+      render={({ field: { ref: _ref, ...rest } }) => (
         <TextField {...rest} isError={!!errors[name]} helperText={errors[name]?.message ?? ''} {...props} />
       )}
     />

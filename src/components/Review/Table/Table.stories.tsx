@@ -9,9 +9,7 @@ export default {
   component: ReviewTable,
 } as ComponentMeta<typeof ReviewTable>;
 
-const Template: ComponentStory<typeof ReviewTable> = function (args) {
-  return <ReviewTable {...args} />;
-};
+const Template: ComponentStory<typeof ReviewTable> = args => <ReviewTable {...args} />;
 
 function generateComment(
   id: number,

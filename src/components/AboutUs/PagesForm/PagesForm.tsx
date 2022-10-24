@@ -4,14 +4,11 @@ import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FormControlLabel, FormLabel, Grid, Radio } from '@mui/material';
 
-import { TextEditor } from 'components/UI/TextEditor/TextEditor';
-
 import { PagesAboutFormDto } from 'types/dto/form/pages-about.dto';
 
 import { HFRadioGroup } from '../../HookForm/HFRadioGroup';
 import { HFTextEditor } from '../../HookForm/HFTextEditor';
 import { HFTextField } from '../../HookForm/HFTextField';
-import { HFTextarea } from '../../HookForm/HFTextarea';
 import schema from './validation';
 
 type Props = {

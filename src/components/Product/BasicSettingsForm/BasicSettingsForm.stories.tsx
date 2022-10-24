@@ -33,7 +33,7 @@ const categories = [
   },
 ];
 
-const Template: ComponentStory<typeof ProductBasicSettingsForm> = function (args) {
-  return <ProductBasicSettingsForm {...args} productTypes={categories} defaultValues={defaultValues} mode='create' />;
-};
+const Template: ComponentStory<typeof ProductBasicSettingsForm> = args => (
+  <ProductBasicSettingsForm {...args} productTypes={categories} defaultValues={defaultValues} />
+);
 export const DefaultBasicSettingsForm = Template.bind({});

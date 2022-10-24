@@ -41,11 +41,10 @@ type Props = {
     value: number;
     label: string;
   }[];
-  mode: 'create' | 'edit';
   onChange: (data: ProductBasicSettingsFormDto) => void;
 };
 
-export function ProductBasicSettingsForm({ onChange, defaultValues, productTypes, mode }: Props) {
+export function ProductBasicSettingsForm({ onChange, defaultValues, productTypes }: Props) {
   const values = useForm<ProductBasicSettingsFormDto>({
     resolver: yupResolver(schema),
     mode: 'onChange',

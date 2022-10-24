@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { Path } from 'constants/routes';
 import { formatISO } from 'date-fns';
 
 import { useGetAllCategoriesQuery } from 'api/categoryApi';
@@ -20,8 +19,9 @@ import { PromotionUpdateDto } from 'types/dto/promotion/update.dto';
 import { NotificationType } from 'types/entities/Notification';
 
 import { EventTypes, eventBus } from 'packages/EventBus';
+import { getErrorMessage } from 'utils/errorUtil';
 
-import noImage from 'assets/images/no-image.svg';
+import defaultImage from 'assets/images/default.svg';
 
 import { useTo } from '../../hooks/useTo';
 
@@ -46,10 +46,23 @@ function RightContent({ onSave, onCancel }: RightContentProps) {
 function EditStockView() {
   const { id } = useParams();
 
-  const to = useTo();
+  const { toStockList } = useTo();
 
-  const { data: productsData } = useGetAllProductsQuery({ withCategories: true });
-  const { data: categoriesData } = useGetAllCategoriesQuery();
+  const { products } = useGetAllProductsQuery(
+    { withCategories: true },
+    {
+      selectFromResult: ({ data }) => ({
+        products:
+          data?.products.map(it => ({
+            id: it.id,
+            title: it.title.ru,
+            image: it.images[0]?.small || defaultImage,
+            categories: it.categories,
+          })) || [],
+      }),
+    },
+  );
+  const { data: categories = [] } = useGetAllCategoriesQuery();
   const { data: promotion, isLoading, isError } = useGetPromotionByIdQuery(Number(id));
 
   const [updatePromotion] = useUpdatePromotionMutation();
@@ -81,40 +94,36 @@ function EditStockView() {
   const submitBtnRef = useRef<HTMLButtonElement>(null);
   const submitStockForm = () => submitBtnRef?.current?.click();
 
-  const products =
-    productsData?.products.map(it => ({
-      id: it.id,
-      title: it.title.ru,
-      image: it.images[0]?.small || noImage,
-      categories: it.categories,
-    })) || [];
+  const uploadPicture = async (file: File) => {
+    try {
+      const formData = new FormData();
 
-  const goToStocks = () => to(Path.STOCKS);
+      formData.append('image', file);
 
-  const uploadPicture = async (file?: File, label?: string) => {
-    if (!file) return undefined;
+      const image = await uploadImage(formData).unwrap();
 
-    const formData = new FormData();
+      return image;
+    } catch (error) {
+      const message = getErrorMessage(error);
 
-    formData.append('image', file);
-
-    const image = await uploadImage(formData).unwrap();
-
-    if (!image) {
       eventBus.emit(EventTypes.notification, {
-        message: `Произошла ошибка при загрузке фото ${label})`,
+        message,
         type: NotificationType.DANGER,
       });
-    }
 
-    return image;
+      return undefined;
+    }
   };
 
   const save = async (data: CreateStockFormDto) => {
     const cardImage =
-      typeof data.smallPhoto === 'string' ? promotion?.cardImage : await uploadPicture(data.smallPhoto, '1:1');
+      typeof data.smallPhoto === 'string'
+        ? promotion?.cardImage
+        : data.smallPhoto && (await uploadPicture(data.smallPhoto));
     const pageImage =
-      typeof data.fullPhoto === 'string' ? promotion?.pageImage : await uploadPicture(data.fullPhoto, '1:2');
+      typeof data.fullPhoto === 'string'
+        ? promotion?.pageImage
+        : data.fullPhoto && (await uploadPicture(data.fullPhoto));
 
     const updatedPromotion: PromotionUpdateDto = {
       id: Number(id),
@@ -123,7 +132,7 @@ function EditStockView() {
         en: '',
       },
       description: {
-        ru: data.description,
+        ru: data.description || '',
         en: '',
       },
       cardImageId: cardImage?.id,
@@ -157,10 +166,12 @@ function EditStockView() {
         type: NotificationType.SUCCESS,
       });
 
-      goToStocks();
+      toStockList();
     } catch (error) {
+      const message = getErrorMessage(error);
+
       eventBus.emit(EventTypes.notification, {
-        message: 'Не удалось создать акцию',
+        message,
         type: NotificationType.DANGER,
       });
     }
@@ -180,13 +191,13 @@ function EditStockView() {
     <div>
       <Header
         leftTitle='Редактирование акции'
-        rightContent={<RightContent onCancel={goToStocks} onSave={submitStockForm} />}
+        rightContent={<RightContent onCancel={toStockList} onSave={submitStockForm} />}
       />
 
       <CreateStockForm
         key={`stock-create/${id}`}
         products={products}
-        categories={categoriesData || []}
+        categories={categories}
         defaultValues={defaultValues}
         submitBtnRef={submitBtnRef}
         onChange={save}

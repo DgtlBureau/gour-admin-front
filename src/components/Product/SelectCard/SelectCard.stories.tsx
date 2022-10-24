@@ -9,7 +9,7 @@ export default {
   title: 'Cards/ProductSelect',
 } as ComponentMeta<typeof SelectCard>;
 
-const Template: ComponentStory<typeof SelectCard> = function (args) {
+const Template: ComponentStory<typeof SelectCard> = args => {
   const [isSelected, setIsSelected] = useState(false);
   return (
     <SelectCard

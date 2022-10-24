@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 
-import { Path } from 'constants/routes';
-
 import { useGetAllCategoriesQuery } from 'api/categoryApi';
 import { useGetClientRolesListQuery } from 'api/clientRoleApi';
 import { useUploadImageMutation } from 'api/imageApi';
@@ -38,7 +36,7 @@ function RightContent({ onSaveHandler, onCancelHandler }: Props) {
 }
 
 function CreateProductView() {
-  const to = useTo();
+  const { toProductList } = useTo();
 
   const { data: clientRolesList = [] } = useGetClientRolesListQuery();
 
@@ -76,27 +74,30 @@ function CreateProductView() {
     { skip: activeTabId !== 'recommended_products' },
   );
 
-  const uploadPicture = async (file?: File | string, label?: string) => {
-    if (!file || typeof file === 'string') return undefined;
+  const uploadPicture = async (file: File | string) => {
+    try {
+      if (typeof file === 'string') return undefined;
 
-    const formData = new FormData();
+      const formData = new FormData();
 
-    formData.append('image', file);
+      formData.append('image', file);
 
-    const image = await uploadImage(formData).unwrap();
+      const image = await uploadImage(formData).unwrap();
 
-    if (!image) {
+      return image;
+    } catch (error) {
+      const message = getErrorMessage(error);
+
       eventBus.emit(EventTypes.notification, {
-        message: `Произошла ошибка при загрузке фото ${label})`,
+        message,
         type: NotificationType.DANGER,
       });
-    }
 
-    return image;
+      return undefined;
+    }
   };
 
   const onSave = async () => {
-    console.log('fullFormState :>> ', fullFormState);
     const { basicSettings, priceSettings, productSelect } = fullFormState;
 
     const productTypeId = Number(fullFormState.basicSettings.productType);
@@ -107,9 +108,9 @@ function CreateProductView() {
       cheeseCoin: role.key === 'COMPANY' ? priceSettings.companyDiscount : priceSettings.collectiveDiscount,
     }));
 
-    const fistImage = await uploadPicture(basicSettings.firstImage, '1');
-    const secondImage = await uploadPicture(basicSettings.secondImage, '2');
-    const thirdImage = await uploadPicture(basicSettings.thirdImage, '3');
+    const fistImage = basicSettings.firstImage && (await uploadPicture(basicSettings.firstImage));
+    const secondImage = basicSettings.secondImage && (await uploadPicture(basicSettings.secondImage));
+    const thirdImage = basicSettings.thirdImage && (await uploadPicture(basicSettings.thirdImage));
 
     const images: number[] = [];
 
@@ -142,7 +143,7 @@ function CreateProductView() {
         type: NotificationType.SUCCESS,
       });
 
-      to(Path.PRODUCTS);
+      toProductList();
     } catch (error) {
       const message = getErrorMessage(error);
 
@@ -153,13 +154,11 @@ function CreateProductView() {
     }
   };
 
-  const onCancel = () => to(Path.PRODUCTS);
-
   return (
     <div>
       <Header
         leftTitle='Создание товара'
-        rightContent={<RightContent onSaveHandler={onSave} onCancelHandler={onCancel} />}
+        rightContent={<RightContent onSaveHandler={onSave} onCancelHandler={toProductList} />}
       />
       <ProductFullForm
         activeTabId={activeTabId}
@@ -169,7 +168,6 @@ function CreateProductView() {
         products={productsData?.products || []}
         fullFormState={fullFormState}
         setFullFormState={setFullFormState}
-        mode='create'
       />
     </div>
   );

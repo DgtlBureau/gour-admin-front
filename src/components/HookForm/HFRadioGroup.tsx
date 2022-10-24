@@ -18,7 +18,7 @@ export function HFRadioGroup({ name, defaultValue, children, sx }: Props) {
       name={name}
       control={control}
       defaultValue={defaultValue || false}
-      render={({ field: { ref, ...rest } }) => (
+      render={({ field: { ref: _ref, ...rest } }) => (
         <RadioGroup {...rest} row name={name} sx={sx}>
           {children}
         </RadioGroup>

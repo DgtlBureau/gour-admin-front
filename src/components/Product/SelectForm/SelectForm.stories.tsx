@@ -12,9 +12,9 @@ export default {
   title: 'Forms/ProductSelect',
 } as Meta;
 
-const Template: ComponentStory<typeof ProductSelectForm> = function (args: ProductSelectFormProps) {
-  return <ProductSelectForm {...args} />;
-};
+const Template: ComponentStory<typeof ProductSelectForm> = (args: ProductSelectFormProps) => (
+  <ProductSelectForm {...args} />
+);
 
 export const DefaultProductSelectForm = Template.bind({});
 const props: Partial<ProductSelectFormProps> = {

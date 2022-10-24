@@ -8,7 +8,7 @@ export type Product = {
 };
 
 export type ProductSelectFormProps = {
-  selected: number[];
+  selected?: number[];
   categories: TopLevelCategory[];
   products: Product[];
   isLoading?: boolean;

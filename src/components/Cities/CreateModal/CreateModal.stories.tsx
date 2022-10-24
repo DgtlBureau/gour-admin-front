@@ -9,9 +9,7 @@ export default {
   component: CreateCityModal,
 } as ComponentMeta<typeof CreateCityModal>;
 
-const Template: ComponentStory<typeof CreateCityModal> = function (args) {
-  return <CreateCityModal {...args} />;
-};
+const Template: ComponentStory<typeof CreateCityModal> = args => <CreateCityModal {...args} />;
 
 export const DefaultState = Template.bind({});
 DefaultState.args = {

@@ -9,9 +9,9 @@ export default {
   title: 'Modals/DeleteReferralCode',
 } as Meta;
 
-const Template: ComponentStory<typeof ReferralCodeDeleteModal> = function (args: ReferralCodeDeleteModalProps) {
-  return <ReferralCodeDeleteModal {...args} />;
-};
+const Template: ComponentStory<typeof ReferralCodeDeleteModal> = (args: ReferralCodeDeleteModalProps) => (
+  <ReferralCodeDeleteModal {...args} />
+);
 export const DefaultDeleteModal = Template.bind({});
 
 const props: Partial<ReferralCodeDeleteModalProps> = {

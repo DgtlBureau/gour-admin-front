@@ -29,7 +29,7 @@ export function HFMultiselect({ name, defaultValue, sx, ...props }: Props) {
         name={name}
         control={control}
         defaultValue={defaultValue || ''}
-        render={({ field: { ref, onChange, ...rest } }) => (
+        render={({ field: { ref: _ref, onChange, ...rest } }) => (
           <Multiselect
             {...rest}
             onChange={value => {

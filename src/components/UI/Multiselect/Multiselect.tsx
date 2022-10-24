@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import { SxProps } from '@mui/material';
 import FormControl from '@mui/material/FormControl';

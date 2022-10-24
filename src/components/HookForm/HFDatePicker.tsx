@@ -24,7 +24,7 @@ export function HFDatePicker({ name, defaultValue, ...props }: Props) {
       name={name}
       control={control}
       defaultValue={defaultValue || ''}
-      render={({ field: { ref, ...rest } }) => (
+      render={({ field: { ref: _ref, ...rest } }) => (
         <DatePicker {...rest} isError={!!errors[name]} helperText={errors[name]?.message ?? ''} {...props} />
       )}
     />

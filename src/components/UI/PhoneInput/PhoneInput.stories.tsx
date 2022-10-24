@@ -9,7 +9,7 @@ export default {
   component: PhoneInput,
 } as ComponentMeta<typeof PhoneInput>;
 
-const Template: ComponentStory<typeof PhoneInput> = function () {
+const Template: ComponentStory<typeof PhoneInput> = () => {
   const [value, setValue] = useState('');
   return <PhoneInput value={value} onChange={e => setValue(e.target.value)} />;
 };

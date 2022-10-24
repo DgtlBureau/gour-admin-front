@@ -11,9 +11,7 @@ export default {
   title: 'Tables/Products',
 } as Meta;
 
-const Template: ComponentStory<typeof ProductsTable> = function (args: ProductsTableProps) {
-  return <ProductsTable {...args} />;
-};
+const Template: ComponentStory<typeof ProductsTable> = (args: ProductsTableProps) => <ProductsTable {...args} />;
 export const DefaultProductsTable = Template.bind({});
 const props: Partial<ProductsTableProps> = {
   products: [
