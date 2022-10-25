@@ -75,8 +75,6 @@ function PrivateLayout() {
     }
   };
 
-  const goToChapter = (item: SidebarLinkedItem) => to(item.path);
-
   const performAction = async (item: SidebarActionItem) => {
     switch (item.action) {
       case 'signout':
@@ -101,8 +99,7 @@ function PrivateLayout() {
         linkedItems={linkedItems}
         actionItems={actionItems}
         profileInfo={{
-          name: currentUser?.firstName || 'Иван',
-          lastName: currentUser?.lastName || 'Иванов',
+          name: currentUser?.name || 'Иван',
         }}
         selected={currentPage}
         onActionItemClick={performAction}

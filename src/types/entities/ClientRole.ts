@@ -1,5 +1,6 @@
+import { Base } from './Base';
+
 export type ClientRole = {
-  id: number;
   title: string;
   key: string;
-};
+} & Base;

@@ -1,4 +1,6 @@
+import { Base } from './Base';
+
 export type UserRole = {
-  title: string;
+  description: string;
   key: string;
-};
+} & Base;

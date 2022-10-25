@@ -1,14 +1,9 @@
-import { Product } from './Product';
+import { Base } from './Base';
 import { UserRole } from './UserRole';
 
 export type User = {
-  apiUserUuid: string;
-  firstName: string;
-  lastName: string;
+  name: string;
   login: string;
-  role: UserRole;
+  roles: UserRole[];
   isApproved: boolean;
-  additionalInfo: Record<string, string | number>;
-  favorites: Product[];
-  createdAt: string;
-};
+} & Base;

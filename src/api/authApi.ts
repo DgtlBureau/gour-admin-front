@@ -1,7 +1,7 @@
 import { ForgotPasswordDto } from 'types/dto/auth/forgot-password.dto';
 import { RestorePasswordDto } from 'types/dto/auth/restore-password.dto';
 import { SignInDto } from 'types/dto/auth/signin.dto';
-import { SignupUserDto } from 'types/dto/auth/signup-user.dto';
+import { SignupWithoutPasswordDto } from 'types/dto/auth/signup-without-password.dto';
 import { Tokens } from 'types/dto/auth/tokens.dto';
 import { User } from 'types/entities/User';
 
@@ -40,13 +40,15 @@ export const authApi = commonApi.injectEndpoints({
         body,
       }),
     }),
-    signupWithoutPassword: builder.mutation<Tokens, SignupUserDto>({
-      query: body => ({
+    signupWithoutPassword: builder.mutation<Tokens, SignupWithoutPasswordDto>({
+      query: ({ name, lastName, email, role: roleKey }) => ({
         url: `${Path.AUTH}/${Path.SIGNUP_WITHOUT_PASSWORD}`,
         method: 'POST',
         body: {
-          email: body.email,
-          role: ROLE_HASH[body.role],
+          name,
+          lastName,
+          email,
+          role: ROLE_HASH[roleKey],
         },
       }),
     }),
