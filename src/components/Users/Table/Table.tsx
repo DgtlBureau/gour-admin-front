@@ -19,7 +19,7 @@ import loginIcon from './assets/login.svg';
 export type UserTableItem = {
   login: string;
   name: string;
-  role?: ClientRole;
+  role: ClientRole;
   id: number;
 };
 
@@ -47,19 +47,17 @@ export function UsersTable({ users, categories, onDelete, onAddCheesecoins }: Us
     setPage(0);
   };
 
-  const filteredUsers = tabsValue === Options.ALL ? users : users.filter(user => user.role?.key === tabsValue);
+  const filteredUsers = tabsValue === Options.ALL ? users : users.filter(user => user.role.key === tabsValue);
 
   const rows = filteredUsers.map((user, i) => ({
     id: i,
     cells: [
       user.name,
       user.login,
-      user.role ? (
-        <Typography variant='body1' sx={sx.role}>
-          {user.role.title}
-        </Typography>
-      ) : null,
 
+      <Typography variant='body1' sx={sx.role}>
+        {user.role.title}
+      </Typography>,
       <>
         <IconButton component='button' onClick={() => onDelete(user.id)}>
           <DeleteIcon />

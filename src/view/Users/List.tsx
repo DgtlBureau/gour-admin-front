@@ -122,7 +122,7 @@ function ListUsersView() {
     if (!deletingUser) return;
 
     try {
-      if (deletingUser?.role?.key === Roles.CLIENT || deletingUser?.role === null) deleteClientById(deletingUser.id);
+      if (deletingUser?.role?.key === Roles.CLIENT) deleteClientById(deletingUser.id);
       else deleteUserById(deletingUser.id);
 
       eventBus.emit(EventTypes.notification, {

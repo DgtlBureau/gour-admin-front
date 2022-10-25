@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import { useGetAllCategoriesQuery } from 'api/categoryApi';
-import { useGetClientRolesListQuery } from 'api/clientRoleApi';
+import { useGetClientRoleListQuery } from 'api/clientRoleApi';
 import { useUploadImageMutation } from 'api/imageApi';
 import { useCreateProductMutation, useGetAllProductsQuery } from 'api/productApi';
 
@@ -38,7 +38,7 @@ function RightContent({ onSaveHandler, onCancelHandler }: Props) {
 function CreateProductView() {
   const { toProductList } = useTo();
 
-  const { data: clientRolesList = [] } = useGetClientRolesListQuery();
+  const { data: clientRolesList = [] } = useGetClientRoleListQuery();
 
   const roles = clientRolesList.filter(role => role.key === 'COMPANY' || role.key === 'COLLECTIVE_PURCHASE');
 
