@@ -145,7 +145,7 @@ function ListUsersView() {
     <div>
       <Header leftTitle='Пользователи' rightContent={<RightContent onCreateClick={toUserCreate} />} />
 
-      {allUsers ? (
+      {allUsers.length ? (
         <UsersTable
           users={allUsers}
           categories={categories}

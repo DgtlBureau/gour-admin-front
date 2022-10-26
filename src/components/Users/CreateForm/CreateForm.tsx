@@ -30,11 +30,9 @@ export function CreateUserForm({ roles, onSubmit }: CreateUserFormProps) {
     resolver: yupResolver(schema),
   });
 
-  const submitHandler = (data: UserCreateDto) => onSubmit(data);
-
   return (
     <FormProvider {...values}>
-      <form id='createUserForm' onSubmit={values.handleSubmit(submitHandler)}>
+      <form id='createUserForm' onSubmit={values.handleSubmit(onSubmit)}>
         <Stack spacing={2} sx={sx.form}>
           <HFTextField name='name' label='Имя' />
 

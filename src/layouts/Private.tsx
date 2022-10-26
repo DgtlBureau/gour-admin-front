@@ -99,7 +99,7 @@ function PrivateLayout() {
         linkedItems={linkedItems}
         actionItems={actionItems}
         profileInfo={{
-          name: currentUser?.name || 'Иван',
+          name: currentUser?.name || 'Без имени',
         }}
         selected={currentPage}
         onActionItemClick={performAction}

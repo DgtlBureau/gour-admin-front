@@ -1,6 +1,6 @@
-import type { SxType } from 'types';
+import type { CssList } from 'types';
 
-export const sx: SxType = {
+export const sx: CssList = {
   form: {
     display: 'flex',
     flexDirection: 'column',

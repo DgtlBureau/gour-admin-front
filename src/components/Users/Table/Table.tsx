@@ -49,6 +49,8 @@ export function UsersTable({ users, categories, onDelete, onAddCheesecoins }: Us
 
   const filteredUsers = tabsValue === Options.ALL ? users : users.filter(user => user.role.key === tabsValue);
 
+  const checkClientRole = (role: Roles) => [Roles.CLIENT, Roles.COMPANY, Roles.COLLECTIVE_PURCHASE].includes(role);
+
   const rows = filteredUsers.map((user, i) => ({
     id: i,
     cells: [
@@ -62,7 +64,7 @@ export function UsersTable({ users, categories, onDelete, onAddCheesecoins }: Us
         <IconButton component='button' onClick={() => onDelete(user.id)}>
           <DeleteIcon />
         </IconButton>
-        {[Roles.CLIENT, Roles.COMPANY, Roles.COLLECTIVE_PURCHASE].includes(user.role?.key as Roles) ? (
+        {checkClientRole(user.role?.key as Roles) ? (
           <>
             <IconButton component='button' onClick={() => onAddCheesecoins(user.id)}>
               <AddBoxIcon />

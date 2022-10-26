@@ -12,7 +12,7 @@ export const userApi = commonApi.injectEndpoints({
         url: `${Path.USERS}/${id}`,
         method: 'GET',
       }),
-      providesTags: (r, e, id) => [{ type: 'User', id }],
+      providesTags: (_r, _e, id) => [{ type: 'User', id }],
     }),
     getAllUsers: builder.query<User[], UserGetListDto>({
       query: () => ({
