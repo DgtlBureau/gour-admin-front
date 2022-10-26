@@ -32,7 +32,7 @@ function AuthSignInView() {
 
   const fetchSignIn = async (data: SignInDto) => {
     try {
-      await fetchSignInData(data);
+      await fetchSignInData(data).unwrap();
 
       dispatch(setIsAuth(true));
 

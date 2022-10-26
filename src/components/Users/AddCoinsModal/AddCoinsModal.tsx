@@ -6,7 +6,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { Button } from 'components/UI/Button/Button';
 import { Modal } from 'components/UI/Modal/Modal';
 
-import { AddCheesecoinsDto } from 'types/dto/add-cheesecoins.dto';
+import { AddCoinsDto } from 'types/dto/add-coins.dto';
 
 import { HFTextField } from '../../HookForm/HFTextField';
 import { schema } from './validation';
@@ -15,7 +15,7 @@ type Props = {
   isOpened: boolean;
   onClose: () => void;
   title: string;
-  onSubmit: (data: AddCheesecoinsDto) => void;
+  onSubmit: (data: AddCoinsDto) => void;
 };
 
 const sx = {
@@ -24,8 +24,8 @@ const sx = {
   },
 };
 
-export function UserAddCheesecoinsModal({ isOpened, onClose, title, onSubmit }: Props) {
-  const values = useForm<AddCheesecoinsDto>({
+export function UserAddCoinsModal({ isOpened, onClose, title, onSubmit }: Props) {
+  const values = useForm<AddCoinsDto>({
     resolver: yupResolver(schema),
   });
 

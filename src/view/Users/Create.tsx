@@ -1,12 +1,13 @@
 import React from 'react';
 
-import { useSignupWithoutPasswordMutation } from 'api/authApi';
+import { useCreateUserMutation } from 'api/userApi';
+import { useGetUserRoleListQuery } from 'api/userRoleApi';
 
 import { Header } from 'components/Header/Header';
 import { Button } from 'components/UI/Button/Button';
 import { CreateUserForm } from 'components/Users/CreateForm/CreateForm';
 
-import { SignupUserDto } from 'types/dto/auth/signup-user.dto';
+import { UserCreateDto } from 'types/dto/user/create.dto';
 import { NotificationType } from 'types/entities/Notification';
 
 import { EventTypes, eventBus } from 'packages/EventBus';
@@ -32,18 +33,30 @@ function RightContent({ onCancel }: Props) {
 }
 
 function CreateUserView() {
-  const [signupWithoutPassword] = useSignupWithoutPasswordMutation();
+  const [createUser] = useCreateUserMutation();
 
   const { toUserList } = useTo();
 
-  const submit = async (data: SignupUserDto) => {
+  const { userRoles } = useGetUserRoleListQuery(undefined, {
+    selectFromResult: ({ data }) => ({
+      userRoles:
+        data?.map(it => ({
+          value: it.key,
+          label: it.description,
+        })) || [],
+    }),
+  });
+
+  const submit = async (data: UserCreateDto) => {
     try {
-      await signupWithoutPassword(data).unwrap();
+      await createUser(data).unwrap();
 
       eventBus.emit(EventTypes.notification, {
         message: 'Вы создали пользователя',
         type: NotificationType.SUCCESS,
       });
+
+      toUserList();
     } catch (error) {
       const message = getErrorMessage(error);
 
@@ -57,7 +70,7 @@ function CreateUserView() {
   return (
     <div>
       <Header leftTitle='Добавление пользователя' rightContent={<RightContent onCancel={toUserList} />} />
-      <CreateUserForm onSubmit={submit} />
+      <CreateUserForm roles={userRoles} onSubmit={submit} />
     </div>
   );
 }

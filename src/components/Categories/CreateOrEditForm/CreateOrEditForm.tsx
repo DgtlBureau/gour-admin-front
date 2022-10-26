@@ -4,6 +4,7 @@ import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FormControlLabel, Radio } from '@mui/material';
 
+import { Box } from 'components/UI/Box/Box';
 import { Button } from 'components/UI/Button/Button';
 import { IconButton } from 'components/UI/IconButton/IconButton';
 import { TextField } from 'components/UI/TextField/TextField';
@@ -76,43 +77,51 @@ export function CreateOrEditCategoryForm({ defaultValues, onSave, onDeleteSubCat
 
   return (
     <FormProvider {...values}>
-      <form style={sx.form} id='createCategoryForm' onSubmit={values.handleSubmit(handleSave)}>
-        <HFTextField label='Название' name='title' />
-        <Typography variant='body2'>Участие в скидочной программе</Typography>
-        <HFRadioGroup name='hasDiscount'>
-          <FormControlLabel value={CategoryHasDiscount.YES} control={<Radio />} label='Да' />
-          <FormControlLabel value={CategoryHasDiscount.NO} control={<Radio />} label='Нет' />
-        </HFRadioGroup>
-        {categoriesKeysArray.length !== 0 && (
-          <Typography variant='body2' color='primary'>
-            Подкатегории
-          </Typography>
-        )}
-        {categoriesKeysArray.map(categoryId => {
-          const id = +categoryId;
-          const subCategory = subCategories[id];
-          const value = subCategory.title;
-          return (
-            <TextField
-              key={id}
-              value={value}
-              // isError={}
-              endAdornment={
-                <IconButton onClick={() => handleDeleteSubCategory(id)} component='symbol'>
-                  <DeleteForeverIcon />
-                </IconButton>
-              }
-              onChange={e => handleChangeSubCategory(e, id)}
-            />
-          );
-        })}
-        <Button
-          // TODO: доделать валидацию
-          // disabled={!!values.formState.errors.subCategories}
-          onClick={handleAddSubCategory}
-        >
-          Добавить подкатегорию
-        </Button>
+      <form id='createCategoryForm' onSubmit={values.handleSubmit(handleSave)}>
+        <Box sx={sx.form}>
+          <HFTextField label='Название' name='title' />
+
+          <Typography variant='body2'>Участие в скидочной программе</Typography>
+
+          <HFRadioGroup name='hasDiscount'>
+            <FormControlLabel value={CategoryHasDiscount.YES} control={<Radio />} label='Да' />
+            <FormControlLabel value={CategoryHasDiscount.NO} control={<Radio />} label='Нет' />
+          </HFRadioGroup>
+
+          {categoriesKeysArray.length !== 0 && (
+            <Typography variant='body2' color='primary'>
+              Подкатегории
+            </Typography>
+          )}
+
+          {categoriesKeysArray.map(categoryId => {
+            const id = +categoryId;
+            const subCategory = subCategories[id];
+            const value = subCategory.title;
+
+            return (
+              <TextField
+                key={id}
+                value={value}
+                // isError={}
+                endAdornment={
+                  <IconButton onClick={() => handleDeleteSubCategory(id)} component='symbol'>
+                    <DeleteForeverIcon />
+                  </IconButton>
+                }
+                onChange={e => handleChangeSubCategory(e, id)}
+              />
+            );
+          })}
+
+          <Button
+            // TODO: доделать валидацию
+            // disabled={!!values.formState.errors.subCategories}
+            onClick={handleAddSubCategory}
+          >
+            Добавить подкатегорию
+          </Button>
+        </Box>
       </form>
     </FormProvider>
   );

@@ -1,9 +1,9 @@
-import type { SxType } from 'types';
+import { createSx } from 'themes';
 
-export const sx: SxType = {
+export const sx = createSx({
   form: {
     display: 'flex',
     flexDirection: 'column',
     rowGap: '10px',
   },
-};
+});

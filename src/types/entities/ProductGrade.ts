@@ -1,10 +1,10 @@
+import { Client } from './Client';
 import { Product } from './Product';
-import { User } from './User';
 
 export type ProductGrade = {
   id: number;
   product: Product;
-  client?: User;
+  client?: Client;
   value: number;
   comment: string;
   createdAt: string;
