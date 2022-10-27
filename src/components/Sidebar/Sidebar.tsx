@@ -58,7 +58,7 @@ export type SidebarActionItem = {
 };
 
 type Props = {
-  profileInfo: { name: string; lastName: string };
+  profileInfo: { name: string };
   linkedItems: SidebarLinkedItem[];
   actionItems: SidebarActionItem[];
   selected: string;
@@ -79,8 +79,6 @@ export default function Sidebar({ linkedItems, actionItems, profileInfo, onActio
           <List>
             <Typography sx={typographySx} variant='h5'>
               {profileInfo.name}
-              &nbsp;
-              {profileInfo.lastName}
             </Typography>
           </List>
           <List sx={{ marginTop: '15px' }}>

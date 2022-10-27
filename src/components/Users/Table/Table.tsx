@@ -8,31 +8,19 @@ import { IconButton } from 'components/UI/IconButton/IconButton';
 import { Table } from 'components/UI/Table/Table';
 import { Typography } from 'components/UI/Typography/Typography';
 
+import { ClientRole } from 'types/entities/ClientRole';
+
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import DeleteIcon from '@mui/icons-material/Delete';
 
+import sx from './Table.styles';
 import loginIcon from './assets/login.svg';
-
-const sx = {
-  role: {
-    width: 'fit-content',
-    padding: '6px',
-    background: '#F4E7CE',
-    borderRadius: '6px',
-  },
-};
-
-const roles = {
-  [Roles.ADMIN]: 'Админ',
-  [Roles.MODERATOR]: 'Модератор',
-  [Roles.CLIENT]: 'Клиент',
-};
 
 export type UserTableItem = {
   login: string;
   name: string;
-  role: Roles;
-  uuid: string;
+  role: ClientRole;
+  id: number;
 };
 
 export type UsersTableProps = {
@@ -41,8 +29,8 @@ export type UsersTableProps = {
     value: string;
     label: string;
   }[];
-  onDelete: (uuid: string) => void;
-  onAddCheesecoins: (uuid: string) => void;
+  onDelete: (id: number) => void;
+  onAddCheesecoins: (id: number) => void;
 };
 
 export function UsersTable({ users, categories, onDelete, onAddCheesecoins }: UsersTableProps) {
@@ -59,32 +47,29 @@ export function UsersTable({ users, categories, onDelete, onAddCheesecoins }: Us
     setPage(0);
   };
 
-  const filteredUsers = tabsValue === Options.ALL ? users : users.filter(user => user.role === tabsValue);
+  const filteredUsers = tabsValue === Options.ALL ? users : users.filter(user => user.role.key === tabsValue);
+
+  const checkClientRole = (role: Roles) => [Roles.CLIENT, Roles.COMPANY, Roles.COLLECTIVE_PURCHASE].includes(role);
 
   const rows = filteredUsers.map((user, i) => ({
     id: i,
     cells: [
       user.name,
       user.login,
-      roles[user.role] ? (
-        <Typography variant='body1' sx={sx.role}>
-          {roles[user.role]}
-        </Typography>
-      ) : null,
+
+      <Typography variant='body1' sx={sx.role}>
+        {user.role.title}
+      </Typography>,
       <>
-        <IconButton component='button' onClick={() => onDelete(user.uuid)}>
+        <IconButton component='button' onClick={() => onDelete(user.id)}>
           <DeleteIcon />
         </IconButton>
-        {['CLIENT', 'COMPANY', 'COLLECTIVE_PURCHASE'].includes(user.role) ? (
+        {checkClientRole(user.role?.key as Roles) ? (
           <>
-            <IconButton component='button' onClick={() => onAddCheesecoins(user.uuid)}>
+            <IconButton component='button' onClick={() => onAddCheesecoins(user.id)}>
               <AddBoxIcon />
             </IconButton>
-            <a
-              href={`${process.env.REACT_APP_BACKEND_URL}/clients/${user.uuid}/login`}
-              target='_blank'
-              rel='noreferrer'
-            >
+            <a href={`${process.env.REACT_APP_BACKEND_URL}/clients/${user.id}/login`} target='_blank' rel='noreferrer'>
               <IconButton component='div'>
                 <img src={loginIcon} alt='' />
               </IconButton>

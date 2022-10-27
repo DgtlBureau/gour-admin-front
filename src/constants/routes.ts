@@ -13,6 +13,7 @@ export enum Path {
   AUTH = 'auth',
   REFERRALS = 'referrals',
   CLIENT_ROLES = 'client-roles',
+  ROLES = 'roles',
   CURRENT_USER = 'current-user',
   FORGOT_PASSWORD = 'forgot-password',
   RESTORE_PASSWORD = 'restore-password',

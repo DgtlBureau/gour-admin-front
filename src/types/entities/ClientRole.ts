@@ -1,5 +1,6 @@
-export type ClientRole = {
-  id: number;
+import { Base } from './Base';
+
+export type ClientRole = Base & {
   title: string;
   key: string;
 };

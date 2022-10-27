@@ -6,7 +6,7 @@ import { commonApi } from './commonApi';
 export const clientRoleApi = commonApi.injectEndpoints({
   endpoints(builder) {
     return {
-      getClientRolesList: builder.query<ClientRole[], void>({
+      getClientRoleList: builder.query<ClientRole[], void>({
         query() {
           return {
             method: 'GET',
@@ -18,4 +18,4 @@ export const clientRoleApi = commonApi.injectEndpoints({
   },
 });
 
-export const { useGetClientRolesListQuery } = clientRoleApi;
+export const { useGetClientRoleListQuery } = clientRoleApi;

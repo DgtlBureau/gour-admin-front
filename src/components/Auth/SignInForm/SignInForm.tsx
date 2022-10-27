@@ -60,13 +60,13 @@ export function AuthSignInForm({ onSubmit, isLoading }: Props) {
       <form onSubmit={values.handleSubmit(submitHandler)}>
         <Box sx={boxSx}>
           <Typography sx={sxTitle}>Вход</Typography>
-          <HFTextField sx={sxInput} name='login' label='Логин' />
+          <HFTextField sx={sxInput} name='email' label='Логин' />
           <HFTextField sx={sxInput} label='Пароль' name='password' type='password' />
           <Button isLoading={isLoading} disabled={isDisabledBtn} sx={sxBtn} type='submit' fullWidth>
             Войти
           </Button>
           <p>
-            <CustomLink href={`${Path.AUTH}/${Path.FORGOT_PASSWORD}`}>Забыли пароль?</CustomLink>
+            <CustomLink href={`/${Path.AUTH}/${Path.FORGOT_PASSWORD}`}>Забыли пароль?</CustomLink>
           </p>
         </Box>
       </form>

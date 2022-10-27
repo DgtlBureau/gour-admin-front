@@ -16,6 +16,7 @@ export const commonApi = createApi({
     'Page',
     'ReferralCode',
     'ReferralDiscount',
+    'User',
   ],
   endpoints: () => ({}),
 });

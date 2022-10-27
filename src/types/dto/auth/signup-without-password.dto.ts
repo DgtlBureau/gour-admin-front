@@ -1,6 +1,6 @@
-export interface SignupUserDto {
+export interface SignupWithoutPasswordDto {
   name: string;
-  surname: string;
+  lastName: string;
   email: string;
   role: 'admin' | 'moderator';
 }
