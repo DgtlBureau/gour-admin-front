@@ -60,7 +60,9 @@ export function ProductsTable({
       id: i,
       cells: [
         <Box sx={{ maxWidth: '144px', height: '60px', overflow: 'hidden' }}>
-          <img style={{ height: '100%' }} src={product.image} alt='product' />
+          <Link href={`/${Path.PRODUCTS}/${product.id}`}>
+            <img style={{ height: '100%' }} src={product.image} alt='product' />
+          </Link>
         </Box>,
         product.title,
         `${product.price}₡`,
