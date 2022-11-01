@@ -157,14 +157,13 @@ export function CreateStockForm({ products, categories, defaultValues, submitBtn
         </FormProvider>
       </Box>
 
-      <Box sx={{ display: !isSettings ? 'flex' : 'none' }}>
-        <ProductSelectForm
-          selected={selectedProducts}
-          categories={categories}
-          products={products}
-          onChange={selectProducts}
-        />
-      </Box>
+      <ProductSelectForm
+        selected={selectedProducts}
+        categories={categories}
+        products={products}
+        onChange={selectProducts}
+        sx={{ display: !isSettings ? 'flex' : 'none' }}
+      />
     </Box>
   );
 }
