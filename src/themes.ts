@@ -1,5 +1,6 @@
-import { createTheme, SxProps } from '@mui/material/styles';
 import { CSSProperties } from 'react';
+
+import { SxProps, createTheme } from '@mui/material/styles';
 
 declare module '@mui/material/styles' {
   interface Palette {

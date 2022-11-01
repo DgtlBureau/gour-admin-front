@@ -12,6 +12,7 @@ export const convertPageForCreate = (
   tabValue: string,
   page: PagesAboutFormDto,
   language: 'ru' | 'en',
+  bannerImg?: number,
 ): PageCreateDto => ({
   key: tabValue,
   info: {
@@ -24,6 +25,7 @@ export const convertPageForCreate = (
       [language]: page.description,
     },
   },
+  bannerImg,
   meta: {
     metaTitle: {
       ...emptyLanguages,
@@ -46,6 +48,7 @@ export const convertPageForUpdate = (
   currentPage: Page,
   page: PagesAboutFormDto,
   language: 'ru' | 'en',
+  bannerImg?: number,
 ): PageUpdateDto => ({
   id: currentPage.id,
   key: tabValue,
@@ -61,6 +64,7 @@ export const convertPageForUpdate = (
       [language]: page.description,
     },
   },
+  bannerImg,
   meta: {
     metaTitle: {
       ru: currentPage.meta.metaTitle.ru,

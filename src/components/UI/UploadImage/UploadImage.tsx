@@ -1,4 +1,4 @@
-import React, { CSSProperties, ChangeEvent, useEffect, useState } from 'react';
+import React, { CSSProperties, ChangeEvent, useEffect, useRef, useState } from 'react';
 
 import { PhotoCamera } from '@mui/icons-material';
 
@@ -21,6 +21,7 @@ const labelStyles: CSSProperties = {
   alignItems: 'center',
   justifyContent: 'center',
   backgroundPosition: 'center',
+  cursor: 'pointer',
 };
 
 type Props = {
@@ -48,10 +49,21 @@ export function UploadImage({
   onChange,
   onDelete,
 }: Props) {
+  const inputEl = useRef<HTMLInputElement>(null);
   const [image, setImage] = useState<string | null>('');
+
+  const resetInput = () => {
+    if (inputEl && inputEl.current) inputEl.current.value = '';
+  };
+
+  const removeImage = () => {
+    resetInput();
+    onDelete();
+  };
 
   useEffect(() => {
     if (!value) {
+      resetInput();
       setImage(null);
       return;
     }
@@ -79,8 +91,9 @@ export function UploadImage({
         spacing={2}
       >
         <Typography variant='body1'>{label}</Typography>
+
         {value && (
-          <Button variant='text' onClick={onDelete} size='small'>
+          <Button variant='text' onClick={removeImage} size='small'>
             Удалить
           </Button>
         )}
@@ -94,9 +107,10 @@ export function UploadImage({
           border: isError ? '1px solid red' : 'none',
         }}
       >
-        <Input accept={allowedFileTypes.join(',')} onChange={onChange} id={id} type='file' name={name} />
+        <Input ref={inputEl} accept={allowedFileTypes.join(',')} onChange={onChange} id={id} type='file' name={name} />
         {!value && <PhotoCamera />}
       </label>
+
       {helperText && (
         <Typography variant='body1' color='error'>
           {helperText}

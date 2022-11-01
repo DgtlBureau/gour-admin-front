@@ -7,5 +7,6 @@ export type PageCreateDto = Readonly<{
     title?: TranslatableStringDto;
     description?: TranslatableStringDto;
   };
+  bannerImg?: number;
   meta: PageMetaDto;
 }>;
