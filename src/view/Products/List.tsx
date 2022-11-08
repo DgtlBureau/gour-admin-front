@@ -58,7 +58,7 @@ function ListProductsView() {
       image: product.images[0]?.small || defaultImage,
       title: product.title[lang] || '',
       categoriesIds: product.categories?.map(c => c.id) || [],
-      price: product.price.cheeseCoin || 0,
+      price: product.price?.cheeseCoin || 0,
     }));
   }, [productsData]);
 

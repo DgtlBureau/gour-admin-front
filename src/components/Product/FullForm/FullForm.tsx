@@ -1,24 +1,21 @@
-import React, { Dispatch, SetStateAction, useCallback } from 'react';
+import React, { Dispatch, SetStateAction, useCallback, useMemo } from 'react';
 
 import { Box } from 'components/UI/Box/Box';
 import { TabPanel } from 'components/UI/Tabs/TabPanel';
 import { Tabs } from 'components/UI/Tabs/Tabs';
 
 import { ProductBasicSettingsFormDto } from 'types/dto/form/product-basic-settings.dto';
-import { ProductPriceFormDto } from 'types/dto/form/product-price.dto';
 import { TopLevelCategory } from 'types/entities/Category';
 import { Product } from 'types/entities/Product';
 
 import { ProductBasicSettingsForm } from '../BasicSettingsForm/BasicSettingsForm';
 import { ProductFilterForm } from '../FilterForm/FilterForm';
-import { PriceProductForm } from '../PriceForm/PriceForm';
 import { ProductSelectForm } from '../SelectForm/SelectForm';
 import type { Product as SelectProduct } from '../SelectForm/types';
 import { createProductTabOptions } from './fullFormConstants';
 
 export type FullFormType = {
   basicSettings: ProductBasicSettingsFormDto;
-  priceSettings: ProductPriceFormDto;
   categoriesIds: Record<string, number>;
   productType?: number;
   productSelect?: number[];
@@ -57,10 +54,6 @@ export function ProductFullForm({
     });
   };
 
-  const onChangePrice = (data: ProductPriceFormDto) => {
-    setFullFormState(prevState => ({ ...prevState, priceSettings: data }));
-  };
-
   const onChangeRecommended = (recommendedIds: number[]) => {
     setFullFormState(prevState => ({ ...prevState, productSelect: recommendedIds }));
   };
@@ -72,18 +65,24 @@ export function ProductFullForm({
     }));
   }, []);
 
-  const recommendedProducts: SelectProduct[] =
-    products?.map(product => ({
-      id: product.id,
-      title: product.title.ru,
-      image: product.images[0]?.small || '',
-      categories: product.categories,
-    })) || [];
-
-  const productTypeOptions = categories.map(category => ({
-    value: category.id,
-    label: category.title.ru,
-  }));
+  const recommendedProducts: SelectProduct[] = useMemo(
+    () =>
+      products?.map(product => ({
+        id: product.id,
+        title: product.title.ru,
+        image: product.images[0]?.small || '',
+        categories: product.categories,
+      })) || [],
+    [products],
+  );
+  const productTypeOptions = useMemo(
+    () =>
+      categories.map(category => ({
+        value: category.id,
+        label: category.title.ru,
+      })),
+    [categories],
+  );
 
   return (
     <Box>
@@ -95,10 +94,6 @@ export function ProductFullForm({
           defaultValues={fullFormState.basicSettings}
           onChange={handleChangeBasicSettingsForm}
         />
-      </TabPanel>
-
-      <TabPanel value={activeTabId} index='prices'>
-        <PriceProductForm defaultValues={fullFormState.priceSettings} onChange={onChangePrice} />
       </TabPanel>
 
       <TabPanel value={activeTabId} index='filters'>
