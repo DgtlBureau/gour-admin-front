@@ -12,7 +12,7 @@ import { SelectsList } from './SelectsList';
 import { defaultTabs, filterByAllParams, isProductSelected } from './selectHelper';
 import { Product, ProductSelectFormProps, TabsKeys } from './types';
 
-const sx = {
+const selectSx = {
   productsCount: {
     display: 'flex',
     alignItems: 'center',
@@ -28,6 +28,7 @@ export function ProductSelectForm({
   products,
   categories,
   isLoading,
+  sx,
   onChange,
 }: ProductSelectFormProps) {
   const [searchQuery, setSearchQuery] = useState('');
@@ -65,7 +66,7 @@ export function ProductSelectForm({
   };
 
   return (
-    <Stack>
+    <Stack sx={sx}>
       {isLoading && <ProgressLinear variant='query' />}
 
       <Grid container spacing={2}>
@@ -73,12 +74,12 @@ export function ProductSelectForm({
           <TextField label='Поиск' value={searchQuery} onChange={e => setSearchQuery(e.target.value)} />
         </Grid>
 
-        <Grid item sx={sx.productsCount} xs={12} md={4} lg={6}>
+        <Grid item sx={selectSx.productsCount} xs={12} md={4} lg={6}>
           <Typography variant='body1'>Количество добавленных товаров: {selected.length}</Typography>
         </Grid>
       </Grid>
 
-      <Tabs sx={sx.tabs} value={selectedTabKey} options={tabOptions} onChange={changeTab} />
+      <Tabs sx={selectSx.tabs} value={selectedTabKey} options={tabOptions} onChange={changeTab} />
 
       <SelectsList categories={categoriesForFilters} selectValues={selectValues} setSelectValues={setSelectValues} />
 

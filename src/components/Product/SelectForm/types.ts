@@ -1,3 +1,5 @@
+import { SxProps } from '@mui/material';
+
 import { TopLevelCategory } from 'types/entities/Category';
 
 export type Product = {
@@ -12,6 +14,7 @@ export type ProductSelectFormProps = {
   categories: TopLevelCategory[];
   products: Product[];
   isLoading?: boolean;
+  sx?: SxProps;
   onChange(selected: number[]): void;
 };
 
