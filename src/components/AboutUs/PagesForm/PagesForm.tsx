@@ -28,10 +28,6 @@ export function PagesAboutUsForm({ defaultValues, withBanner, onSubmit }: Props)
 
   const submit = (data: PagesAboutFormDto) => onSubmit(data);
 
-  const resetField = (field: keyof PagesAboutFormDto) => {
-    values.setValue(field, undefined);
-  };
-
   useEffect(() => values.reset(defaultValues), [defaultValues]);
 
   return (
@@ -44,7 +40,12 @@ export function PagesAboutUsForm({ defaultValues, withBanner, onSubmit }: Props)
 
           {withBanner && (
             <Grid item xs={8}>
-              <HFUploadPhoto id='bannerImg' label='Баннер' name='bannerImg' onDelete={() => resetField('bannerImg')} />
+              <HFUploadPhoto
+                id='bannerImg'
+                label='Баннер'
+                name='bannerImg'
+                onDelete={() => values.resetField('bannerImg')}
+              />
             </Grid>
           )}
 
