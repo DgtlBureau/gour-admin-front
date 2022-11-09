@@ -4,10 +4,6 @@ export const createProductTabOptions = [
     label: 'Основные настройки',
   },
   {
-    value: 'prices',
-    label: 'Цены',
-  },
-  {
     value: 'filters',
     label: 'Фильтры',
   },

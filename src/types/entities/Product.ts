@@ -19,7 +19,7 @@ export type Product = {
   grade: number;
   similarProducts: Product[];
   pieces: ProductModification[];
-  price: Price;
+  price: Price | null;
   roleDiscounts: RoleDiscount[];
   categories: TopLevelCategory[];
   meta: Meta;

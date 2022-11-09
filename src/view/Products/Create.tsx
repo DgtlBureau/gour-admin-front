@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 
 import { useGetAllCategoriesQuery } from 'api/categoryApi';
-import { useGetClientRoleListQuery } from 'api/clientRoleApi';
 import { useUploadImageMutation } from 'api/imageApi';
 import { useCreateProductMutation, useGetAllProductsQuery } from 'api/productApi';
 
@@ -38,10 +37,6 @@ function RightContent({ onSaveHandler, onCancelHandler }: Props) {
 function CreateProductView() {
   const { toProductList } = useTo();
 
-  const { data: clientRolesList = [] } = useGetClientRoleListQuery();
-
-  const roles = clientRolesList.filter(role => role.key === 'COMPANY' || role.key === 'COLLECTIVE_PURCHASE');
-
   const [activeTabId, setActiveTabId] = useState('settings');
   const [fullFormState, setFullFormState] = useState<FullFormType>({
     basicSettings: {
@@ -54,12 +49,6 @@ function CreateProductView() {
       metaKeywords: '',
       moyskladId: '',
     },
-    priceSettings: {
-      discount: 0,
-      cheeseCoin: 0,
-      companyDiscount: 0,
-      collectiveDiscount: 0,
-    },
     categoriesIds: {},
     productSelect: [],
   });
@@ -69,10 +58,12 @@ function CreateProductView() {
 
   const { data: categories = [] } = useGetAllCategoriesQuery();
 
-  const { data: productsData, isLoading: isProductsLoading = false } = useGetAllProductsQuery(
+  const { data: productsData, isLoading: isProductsLoading } = useGetAllProductsQuery(
     { withCategories: true },
     { skip: activeTabId !== 'recommended_products' },
   );
+
+  const products = productsData?.products || [];
 
   const uploadPicture = async (file: File | string) => {
     try {
@@ -98,15 +89,10 @@ function CreateProductView() {
   };
 
   const onSave = async () => {
-    const { basicSettings, priceSettings, productSelect } = fullFormState;
+    const { basicSettings, productSelect } = fullFormState;
 
     const productTypeId = Number(fullFormState.basicSettings.productType);
     const categoryIds = [...Object.values(fullFormState.categoriesIds), productTypeId].filter(i => i);
-
-    const roleDiscounts = roles.map(role => ({
-      role: role.id,
-      cheeseCoin: role.key === 'COMPANY' ? priceSettings.companyDiscount : priceSettings.collectiveDiscount,
-    }));
 
     const fistImage = basicSettings.firstImage && (await uploadPicture(basicSettings.firstImage));
     const secondImage = basicSettings.secondImage && (await uploadPicture(basicSettings.secondImage));
@@ -126,12 +112,8 @@ function CreateProductView() {
         ru: basicSettings.description,
       },
       images,
-      price: {
-        cheeseCoin: +priceSettings.cheeseCoin,
-      },
       categoryIds,
       similarProducts: productSelect || [],
-      roleDiscounts,
       moyskladId: basicSettings.moyskladId || null,
     };
 
@@ -165,7 +147,7 @@ function CreateProductView() {
         isProductsLoading={isProductsLoading}
         onChangeTab={setActiveTabId}
         categories={categories}
-        products={productsData?.products || []}
+        products={products}
         fullFormState={fullFormState}
         setFullFormState={setFullFormState}
       />
