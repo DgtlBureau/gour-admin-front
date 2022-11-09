@@ -83,9 +83,9 @@ function EditStockView() {
       discount: promotion?.discount || 0,
       productIdList: promotion?.products.map(it => it.id) || [],
       isIndexed: !!promotion?.pageMeta.isIndexed,
-      metaTitle: promotion?.pageMeta.metaTitle.ru || '',
-      metaDescription: promotion?.pageMeta.metaDescription.ru || '',
-      metaKeywords: promotion?.pageMeta.metaKeywords.ru || '',
+      metaTitle: promotion?.pageMeta.metaTitle?.ru || '',
+      metaDescription: promotion?.pageMeta.metaDescription?.ru || '',
+      metaKeywords: promotion?.pageMeta.metaKeywords?.ru || '',
     };
 
     setDefaultValues(values);
