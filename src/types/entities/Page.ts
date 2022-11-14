@@ -1,3 +1,4 @@
+import { Image } from './Image';
 import { Meta } from './Meta';
 import { TranslatableString } from './TranslatableString';
 
@@ -8,5 +9,6 @@ export type Page = {
     title: TranslatableString;
     description: TranslatableString;
   };
+  bannerImg?: Image;
   meta: Meta;
 };

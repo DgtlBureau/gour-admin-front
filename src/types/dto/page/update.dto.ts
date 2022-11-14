@@ -8,5 +8,6 @@ export type PageUpdateDto = Readonly<{
     title?: TranslatableStringDto;
     description?: TranslatableStringDto;
   };
+  bannerImg?: number;
   meta: PageMetaDto;
 }>;
