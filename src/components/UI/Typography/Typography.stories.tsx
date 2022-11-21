@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
 
 import { Typography } from './Typography';
 
@@ -9,9 +9,7 @@ export default {
   component: Typography,
 } as ComponentMeta<typeof Typography>;
 
-const Template: ComponentStory<typeof Typography> = function (args) {
-  return <Typography {...args} />;
-};
+const Template: ComponentStory<typeof Typography> = args => <Typography {...args} />;
 
 export const DefaultState = Template.bind({});
 

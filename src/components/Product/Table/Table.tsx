@@ -1,13 +1,17 @@
 import React, { useState } from 'react';
 
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
+import { Box } from 'components/UI/Box/Box';
+import { IconButton } from 'components/UI/IconButton/IconButton';
+import { Table } from 'components/UI/Table/Table';
 
-import { Box } from '../../UI/Box/Box';
-import { IconButton } from '../../UI/IconButton/IconButton';
-import { Table } from '../../UI/Table/Table';
-import { ProductTableDto } from '../../../@types/dto/table/products.dto';
-import { Options } from '../../../constants/tabs';
+import { ProductTableDto } from 'types/dto/table/products.dto';
+
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+
+import { Path } from '../../../constants/routes';
+import { Link } from '../../UI/Link/Link';
+import { TabsKeys } from '../SelectForm/types';
 
 const titleList = ['Фото', 'Название', 'Цена', 'Действие'];
 
@@ -22,7 +26,6 @@ export type ProductsTableProps = {
   onChangePage: (_: unknown, newPage: number) => void;
   rowsPerPage: number;
   onChangeRowsPerPage: (rowPerPage: number) => void;
-  onEdit(id: number): void;
   onRemove(product: ProductTableDto): void;
 };
 
@@ -34,41 +37,40 @@ export function ProductsTable({
   rowsPerPage,
   onChangePage,
   onChangeRowsPerPage,
-  onEdit,
   onRemove,
 }: ProductsTableProps) {
-  const [selectedId, setSelectedId] = useState<string>(Options.ALL);
+  const [selectedId, setSelectedId] = useState<TabsKeys>('all');
 
   const tabsOptions = [
     {
-      value: Options.ALL,
+      value: 'all',
       label: 'Всё',
-    },
+    } as const,
     ...categories.map(category => ({
       value: category.id,
       label: category.label,
     })),
   ];
 
-  const changeTab = (id: string) => setSelectedId(id);
+  const changeTab = (id: TabsKeys) => setSelectedId(id);
 
   const rows = products
-    .filter(
-      product => product.categoriesIds.includes(+selectedId) || selectedId === Options.ALL
-    )
+    .filter(product => product.categoriesIds.includes(+selectedId) || selectedId === 'all')
     .map((product, i) => ({
       id: i,
       cells: [
         <Box sx={{ maxWidth: '144px', height: '60px', overflow: 'hidden' }}>
-          <img style={{ height: '100%' }} src={product.image} alt="product" />
+          <Link href={`/${Path.PRODUCTS}/${product.id}`}>
+            <img style={{ height: '100%' }} src={product.image} alt='product' />
+          </Link>
         </Box>,
         product.title,
         `${product.price}₡`,
         <Box>
-          <IconButton onClick={() => onEdit(product.id)} component="symbol">
+          <IconButton href={`/${Path.PRODUCTS}/${product.id}`} component={Link}>
             <EditIcon />
           </IconButton>
-          <IconButton onClick={() => onRemove(product)} component="symbol">
+          <IconButton onClick={() => onRemove(product)} component='symbol'>
             <DeleteIcon />
           </IconButton>
         </Box>,
@@ -83,7 +85,7 @@ export function ProductsTable({
 
   return (
     <Box>
-      <Table
+      <Table<TabsKeys>
         tabs={tabs}
         rowTitleList={titleList}
         rows={rows}

@@ -1,6 +1,7 @@
-import { commonApi } from './commonApi';
-import { City } from '../@types/entities/City';
+import { City } from 'types/entities/City';
+
 import { Path } from '../constants/routes';
+import { commonApi } from './commonApi';
 
 export const cityApi = commonApi.injectEndpoints({
   endpoints(builder) {
@@ -14,10 +15,7 @@ export const cityApi = commonApi.injectEndpoints({
         },
         providesTags: result =>
           result
-            ? [
-                ...result.map(({ id }) => ({ type: 'City', id } as const)),
-                { type: 'City', id: 'LIST' },
-              ]
+            ? [...result.map(({ id }) => ({ type: 'City', id } as const)), { type: 'City', id: 'LIST' }]
             : [{ type: 'City', id: 'LIST' }],
       }),
       getCity: builder.query<City, number>({

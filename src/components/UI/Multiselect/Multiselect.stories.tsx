@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
 
 import { Multiselect } from './Multiselect';
 
@@ -9,7 +9,7 @@ export default {
   component: Multiselect,
 } as ComponentMeta<typeof Multiselect>;
 
-const Template: ComponentStory<typeof Multiselect> = function (args) {
+const Template: ComponentStory<typeof Multiselect> = args => {
   const [values, setValues] = useState<string[]>([]);
   return <Multiselect {...args} value={values} onChange={setValues} />;
 };

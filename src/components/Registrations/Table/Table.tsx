@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 
+import { Options } from 'constants/tabs';
+
+import { Box } from 'components/UI/Box/Box';
+import { IconButton } from 'components/UI/IconButton/IconButton';
+import { Table } from 'components/UI/Table/Table';
+import { Typography } from 'components/UI/Typography/Typography';
+
 import DeleteIcon from '@mui/icons-material/Delete';
-
-import { Box } from '../../UI/Box/Box';
-import { Table } from '../../UI/Table/Table';
-import { Typography } from '../../UI/Typography/Typography';
-import { IconButton } from '../../UI/IconButton/IconButton';
-import { Options } from '../../../constants/tabs';
-
-import checkIcon from '../../../assets/icons/table/check.svg';
+import checkIcon from 'assets/icons/table/check.svg';
 
 const sx = {
   role: {
@@ -46,11 +46,7 @@ export type RegistrationsTableProps = {
   onDelete: (id: number) => void;
 };
 
-export function RegistrationsTable({
-  clients,
-  onAccept,
-  onDelete,
-}: RegistrationsTableProps) {
+export function RegistrationsTable({ clients, onAccept, onDelete }: RegistrationsTableProps) {
   const [tabValue, setTabValue] = useState<string>(Options.NOT_APPROVED);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -76,12 +72,12 @@ export function RegistrationsTable({
         client.phone,
         <Typography sx={sx.role}>{client.role}</Typography>,
         <>
-          <IconButton component="button" onClick={() => onDelete(client.id)}>
+          <IconButton component='button' onClick={() => onDelete(client.id)}>
             <DeleteIcon />
           </IconButton>
           {!isApproved && (
-            <IconButton component="button" onClick={() => onAccept(client.id)}>
-              <img src={checkIcon} alt="" />
+            <IconButton component='button' onClick={() => onAccept(client.id)}>
+              <img src={checkIcon} alt='' />
             </IconButton>
           )}
         </>,

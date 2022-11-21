@@ -1,24 +1,23 @@
 import React, { useState } from 'react';
+
 import { LinearProgress } from '@mui/material';
 
-import {
-  useCreateCityMutation,
-  useDeleteCityMutation,
-  useGetCityListQuery,
-  useUpdateCityMutation,
-} from '../../api/cityApi';
-import { Header } from '../../components/Header/Header';
-import { Button } from '../../components/UI/Button/Button';
-import { CitiesTable } from '../../components/Cities/Table/Table';
-import { CreateCityModal } from '../../components/Cities/CreateModal/CreateModal';
-import { DeleteCityModal } from '../../components/Cities/DeleteModal/DeleteModal';
-import { Typography } from '../../components/UI/Typography/Typography';
-import { eventBus, EventTypes } from '../../packages/EventBus';
-import { NotificationType } from '../../@types/entities/Notification';
-import { CreateCityDto } from '../../@types/dto/city/create.dto';
-import { UpdateCityDto } from '../../@types/dto/city/update.dto';
-import { getErrorMessage } from '../../utils/errorUtil';
-import { City } from '../../@types/entities/City';
+import { useCreateCityMutation, useDeleteCityMutation, useGetCityListQuery, useUpdateCityMutation } from 'api/cityApi';
+
+import { CreateCityModal } from 'components/Cities/CreateModal/CreateModal';
+import { DeleteCityModal } from 'components/Cities/DeleteModal/DeleteModal';
+import { CitiesTable } from 'components/Cities/Table/Table';
+import { Header } from 'components/Header/Header';
+import { Button } from 'components/UI/Button/Button';
+import { Typography } from 'components/UI/Typography/Typography';
+
+import { CreateCityDto } from 'types/dto/city/create.dto';
+import { UpdateCityDto } from 'types/dto/city/update.dto';
+import { City } from 'types/entities/City';
+import { NotificationType } from 'types/entities/Notification';
+
+import { EventTypes, eventBus } from 'packages/EventBus';
+import { getErrorMessage } from 'utils/errorUtil';
 
 type Props = {
   onCreateClick: () => void;
@@ -29,8 +28,7 @@ function RightContent({ onCreateClick }: Props) {
 }
 
 function ListCitiesView() {
-  const [createModalMode, setCreateModalMode] =
-    useState<'create' | 'edit' | 'closed'>('closed');
+  const [createModalMode, setCreateModalMode] = useState<'create' | 'edit' | 'closed'>('closed');
   const [cityForDelete, setCityForDelete] = useState<City>({
     id: -1,
     name: {
@@ -157,16 +155,13 @@ function ListCitiesView() {
   }
 
   if (!isLoading && isError) {
-    return <Typography variant="h5">Возникла ошибка</Typography>;
+    return <Typography variant='h5'>Возникла ошибка</Typography>;
   }
 
   if (!isLoading && !isError && cities.length === 0) {
     return (
       <div>
-        <Header
-          leftTitle="Города"
-          rightContent={<RightContent onCreateClick={openCreateModal} />}
-        />
+        <Header leftTitle='Города' rightContent={<RightContent onCreateClick={openCreateModal} />} />
 
         <Typography>Нет добавленных городов</Typography>
 
@@ -183,10 +178,7 @@ function ListCitiesView() {
 
   return (
     <div>
-      <Header
-        leftTitle="Города"
-        rightContent={<RightContent onCreateClick={openCreateModal} />}
-      />
+      <Header leftTitle='Города' rightContent={<RightContent onCreateClick={openCreateModal} />} />
 
       <CitiesTable cities={cities} onDelete={openDeleteModal} onEdit={openEditModal} />
 

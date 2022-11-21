@@ -1,11 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
+
+import { Path } from 'constants/routes';
+
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
+
+import { Link } from '../UI/Link/Link';
 import { Typography } from '../UI/Typography/Typography';
-import { Path } from '../../constants/routes';
 
 const boxSx = {
   width: 210,
@@ -54,33 +58,14 @@ export type SidebarActionItem = {
 };
 
 type Props = {
-  profileInfo: { name: string; lastName: string };
+  profileInfo: { name: string };
   linkedItems: SidebarLinkedItem[];
   actionItems: SidebarActionItem[];
-  defaultSelected: string;
-  onLinkedItemClick: (item: SidebarLinkedItem) => void;
+  selected: string;
   onActionItemClick: (item: SidebarActionItem) => void;
 };
 
-export default function Sidebar({
-  linkedItems,
-  actionItems,
-  profileInfo,
-  onLinkedItemClick,
-  onActionItemClick,
-  defaultSelected,
-}: Props) {
-  const [selected, setSelected] = useState<string>(defaultSelected);
-
-  useEffect(() => {
-    setSelected(defaultSelected);
-  }, [defaultSelected]);
-
-  const handleItemClick = (item: SidebarLinkedItem) => () => {
-    setSelected(item.path);
-    onLinkedItemClick(item);
-  };
-
+export default function Sidebar({ linkedItems, actionItems, profileInfo, onActionItemClick, selected }: Props) {
   const handleBottomItemClick = (item: SidebarActionItem) => () => {
     onActionItemClick(item);
   };
@@ -89,26 +74,24 @@ export default function Sidebar({
 
   return (
     <div>
-      <Drawer anchor="left" variant="permanent">
-        <Box sx={boxSx} role="presentation">
+      <Drawer anchor='left' variant='permanent'>
+        <Box sx={boxSx} role='presentation'>
           <List>
-            <Typography sx={typographySx} variant="h5">
+            <Typography sx={typographySx} variant='h5'>
               {profileInfo.name}
-              &nbsp;
-              {profileInfo.lastName}
             </Typography>
           </List>
           <List sx={{ marginTop: '15px' }}>
             {linkedItems.map(item => (
-              <ListItem
-                sx={isSelectedItem(item) ? listItemSelected : {}}
-                selected={isSelectedItem(item)}
-                button
-                key={item.path}
-                onClick={handleItemClick(item)}
-              >
-                <ListItemText primary={item.label} sx={listItemTextSx} />
-              </ListItem>
+              <Link href={`/${item.path}`} sx={{ textDecoration: 'none', userSelect: 'none' }}>
+                <ListItem
+                  sx={isSelectedItem(item) ? listItemSelected : {}}
+                  selected={isSelectedItem(item)}
+                  key={item.path}
+                >
+                  <ListItemText primary={item.label} sx={listItemTextSx} />
+                </ListItem>
+              </Link>
             ))}
           </List>
           <List sx={{ marginTop: 'auto' }}>

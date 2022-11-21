@@ -1,8 +1,9 @@
-import { commonApi } from './commonApi';
+import { PromotionCreateDto } from 'types/dto/promotion/create.dto';
+import { PromotionUpdateDto } from 'types/dto/promotion/update.dto';
+import { Promotion } from 'types/entities/Promotion';
+
 import { Path } from '../constants/routes';
-import { PromotionCreateDto } from '../@types/dto/promotion/create.dto';
-import { PromotionUpdateDto } from '../@types/dto/promotion/update.dto';
-import { Promotion } from '../@types/entities/Promotion';
+import { commonApi } from './commonApi';
 
 export const promotionApi = commonApi.injectEndpoints({
   endpoints: builder => ({
@@ -20,10 +21,7 @@ export const promotionApi = commonApi.injectEndpoints({
       }),
       providesTags: result =>
         result
-          ? [
-              ...result.map(({ id }) => ({ type: 'Promotion' as const, id })),
-              { type: 'Promotion', id: 'LIST' },
-            ]
+          ? [...result.map(({ id }) => ({ type: 'Promotion' as const, id })), { type: 'Promotion', id: 'LIST' }]
           : [{ type: 'Promotion', id: 'LIST' }],
     }),
     createPromotion: builder.mutation<void, PromotionCreateDto>({
@@ -40,7 +38,7 @@ export const promotionApi = commonApi.injectEndpoints({
         method: 'PUT',
         body,
       }),
-      invalidatesTags: [{ type: 'Promotion', id: 'LIST' }],
+      invalidatesTags: (r, e, { id }) => [{ type: 'Promotion', id }],
     }),
     deletePromotion: builder.mutation<void, number>({
       query: id => ({

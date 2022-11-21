@@ -1,5 +1,5 @@
-import { TranslatableString } from './TranslatableString';
-import { TranslatableText } from './TranslatableText';
+import { TranslatableString } from 'types/entities/TranslatableString';
+import { TranslatableText } from 'types/entities/TranslatableText';
 
 export type Category = {
   id: number;

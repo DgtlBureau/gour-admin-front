@@ -1,4 +1,4 @@
-import { TranslatableString } from '../../entities/TranslatableString';
+import { TranslatableString } from 'types/entities/TranslatableString';
 
 export type CategoryCreateDto = Readonly<{
   title: TranslatableString;

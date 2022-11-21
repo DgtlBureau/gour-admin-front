@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
 
 import { CategoryProductType } from './ProductType';
 
@@ -9,9 +9,7 @@ export default {
   component: CategoryProductType,
 } as ComponentMeta<typeof CategoryProductType>;
 
-const Template: ComponentStory<typeof CategoryProductType> = function (args) {
-  return <CategoryProductType {...args} />;
-};
+const Template: ComponentStory<typeof CategoryProductType> = args => <CategoryProductType {...args} />;
 
 export const DefaultState = Template.bind({});
 DefaultState.args = {

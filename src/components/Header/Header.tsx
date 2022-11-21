@@ -1,5 +1,6 @@
 import React, { ReactNode } from 'react';
-import { Toolbar, Typography, AppBar as MUIAppBar } from '@mui/material';
+
+import { AppBar as MUIAppBar, Toolbar, Typography } from '@mui/material';
 
 const sx = {
   bar: {
@@ -20,9 +21,9 @@ type Props = {
 
 export function Header({ leftTitle, rightContent }: Props) {
   return (
-    <MUIAppBar sx={sx.bar} position="static">
+    <MUIAppBar sx={sx.bar} position='static'>
       <Toolbar sx={sx.wrapper}>
-        <Typography variant="h5" color="primary" component="div" sx={{ flexGrow: 1 }}>
+        <Typography variant='h5' color='primary' component='div' sx={{ flexGrow: 1 }}>
           {leftTitle}
         </Typography>
         {rightContent}

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
 
 import { ProgressLinear } from './ProgressLinear';
 
@@ -9,9 +9,7 @@ export default {
   component: ProgressLinear,
 } as ComponentMeta<typeof ProgressLinear>;
 
-const Template: ComponentStory<typeof ProgressLinear> = function (args) {
-  return <ProgressLinear {...args} />;
-};
+const Template: ComponentStory<typeof ProgressLinear> = args => <ProgressLinear {...args} />;
 
 export const DefaultState = Template.bind({});
 DefaultState.args = {

@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 
+import { IconButton } from 'components/UI/IconButton/IconButton';
+import { Table } from 'components/UI/Table/Table';
+
+import { City } from 'types/entities/City';
+
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-
-import { City } from '../../../@types/entities/City';
-import { IconButton } from '../../UI/IconButton/IconButton';
-import { Table } from '../../UI/Table/Table';
 
 export type CitiesTableProps = {
   cities: City[];
@@ -30,10 +31,10 @@ export function CitiesTable({ cities, onDelete, onEdit }: CitiesTableProps) {
       city.name.ru,
       // city.name.en,
       <>
-        <IconButton component="button" onClick={() => onDelete(city)}>
+        <IconButton component='button' onClick={() => onDelete(city)}>
           <DeleteIcon />
         </IconButton>
-        <IconButton component="button" onClick={() => onEdit(city.id)}>
+        <IconButton component='button' onClick={() => onEdit(city.id)}>
           <EditIcon />
         </IconButton>
       </>,

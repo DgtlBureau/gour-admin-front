@@ -1,13 +1,14 @@
-import React, { useEffect } from 'react';
-import { NotificationType } from '../../@types/entities/Notification';
-import {
-  useDeleteClientMutation,
-  useGetClientsListQuery,
-  useUpdateClientMutation,
-} from '../../api/clientApi';
-import { Header } from '../../components/Header/Header';
-import { RegistrationsTable, Client } from '../../components/Registrations/Table/Table';
-import { eventBus, EventTypes } from '../../packages/EventBus';
+import React from 'react';
+
+import { useDeleteClientMutation, useGetClientsListQuery, useUpdateClientMutation } from 'api/clientApi';
+
+import { Header } from 'components/Header/Header';
+import { Client, RegistrationsTable } from 'components/Registrations/Table/Table';
+
+import { NotificationType } from 'types/entities/Notification';
+
+import { EventTypes, eventBus } from 'packages/EventBus';
+import { getErrorMessage } from 'utils/errorUtil';
 
 function ListRegistrationsView() {
   const { data: clients = [] } = useGetClientsListQuery();
@@ -23,8 +24,10 @@ function ListRegistrationsView() {
         type: NotificationType.SUCCESS,
       });
     } catch (error) {
+      const message = getErrorMessage(error);
+
       eventBus.emit(EventTypes.notification, {
-        message: 'Возникла ошибка',
+        message,
         type: NotificationType.DANGER,
       });
     }
@@ -38,8 +41,10 @@ function ListRegistrationsView() {
         type: NotificationType.SUCCESS,
       });
     } catch (error) {
+      const message = getErrorMessage(error);
+
       eventBus.emit(EventTypes.notification, {
-        message: 'Возникла ошибка',
+        message,
         type: NotificationType.DANGER,
       });
     }
@@ -55,12 +60,8 @@ function ListRegistrationsView() {
 
   return (
     <div>
-      <Header leftTitle="Подтверждение регистрации" />
-      <RegistrationsTable
-        clients={formattedClients}
-        onAccept={handleApproveClient}
-        onDelete={handleDeleteClient}
-      />
+      <Header leftTitle='Подтверждение регистрации' />
+      <RegistrationsTable clients={formattedClients} onAccept={handleApproveClient} onDelete={handleDeleteClient} />
     </div>
   );
 }

@@ -1,10 +1,10 @@
 import React from 'react';
 
+import { SxProps } from '@mui/material';
+import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
 import MUISelect, { SelectChangeEvent } from '@mui/material/Select';
-import { SxProps } from '@mui/material';
 
 import { Box } from '../Box/Box';
 import { Typography } from '../Typography/Typography';
@@ -25,16 +25,7 @@ type Props = {
   sx?: SxProps;
 };
 
-export function Select({
-  value,
-  options,
-  error,
-  isError,
-  label,
-  sx,
-  isDisabled,
-  onChange,
-}: Props) {
+export function Select({ value, options, error, isError, label, sx, isDisabled, onChange }: Props) {
   const isNumberValue = typeof value === 'number';
 
   const change = (event: SelectChangeEvent) => {
@@ -45,10 +36,10 @@ export function Select({
   return (
     <Box sx={{ minWidth: 120, ...sx }}>
       <FormControl fullWidth>
-        <InputLabel id="select-label">{label}</InputLabel>
+        <InputLabel id='select-label'>{label}</InputLabel>
         <MUISelect
-          labelId="select-label"
-          id="select"
+          labelId='select-label'
+          id='select'
           value={isNumberValue ? value.toString() : value}
           label={label}
           error={isError}
@@ -64,7 +55,7 @@ export function Select({
       </FormControl>
 
       {error && (
-        <Typography variant="body2" color="error">
+        <Typography variant='body2' color='error'>
           {error}
         </Typography>
       )}

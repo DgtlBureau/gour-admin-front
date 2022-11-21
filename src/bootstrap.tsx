@@ -1,20 +1,22 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { ReactNotifications } from 'react-notifications-component';
+import 'react-notifications-component/dist/theme.css';
+import 'react-quill/dist/quill.snow.css';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
-import { ThemeProvider, CssBaseline } from '@mui/material';
-import { ReactNotifications } from 'react-notifications-component';
+
+import 'animate.css/animate.min.css';
+
+import { CssBaseline, ThemeProvider } from '@mui/material';
 import * as Sentry from '@sentry/react';
 import { BrowserTracing } from '@sentry/tracing';
 
-import { store } from './store/store';
 import App from './App';
-import reportWebVitals from './reportWebVitals';
 import Notifications from './components/Notifications/Notifications';
+import reportWebVitals from './reportWebVitals';
+import { store } from './store/store';
 import { defaultTheme } from './themes';
-
-import 'animate.css/animate.min.css';
-import 'react-notifications-component/dist/theme.css';
 
 if (['development', 'production'].includes(process.env.NODE_ENV)) {
   Sentry.init({
@@ -37,7 +39,7 @@ ReactDOM.render(
       </ThemeProvider>
     </Provider>
   </React.StrictMode>,
-  document.getElementById('root')
+  document.getElementById('root'),
 );
 
 reportWebVitals();

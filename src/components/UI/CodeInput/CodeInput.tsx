@@ -1,7 +1,7 @@
 import React, { CSSProperties, ReactNode } from 'react';
 import ReactCodeInput, { InputModeTypes } from 'react-code-input';
 
-import { defaultTheme } from '../../../themes';
+import { defaultTheme } from 'themes';
 
 const inputSx: CSSProperties = {
   border: '1px solid lightgrey',
@@ -26,15 +26,7 @@ type Props = {
   onChange: (value: string) => void;
 };
 
-export function CodeInput({
-  name,
-  sx,
-  value,
-  onChange,
-  fieldsCount = 4,
-  type = 'text',
-  inputMode = 'numeric',
-}: Props) {
+export function CodeInput({ name, sx, value, onChange, fieldsCount = 4, type = 'text', inputMode = 'numeric' }: Props) {
   return (
     <ReactCodeInput
       style={sx}

@@ -1,4 +1,4 @@
-import { Language } from '../@types/entities/Language';
+import { Language } from 'types/entities/Language';
 
 export const languages = [
   {
@@ -9,4 +9,4 @@ export const languages = [
     value: 'en',
     label: 'English',
   },
-] as { value: Language, label: string }[];
+] as { value: Language; label: string }[];

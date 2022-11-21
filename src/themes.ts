@@ -1,4 +1,6 @@
-import { createTheme } from '@mui/material/styles';
+import { CSSProperties } from 'react';
+
+import { SxProps, createTheme } from '@mui/material/styles';
 
 declare module '@mui/material/styles' {
   interface Palette {
@@ -51,3 +53,11 @@ export const defaultTheme = createTheme({
     fontFamily: ['Nunito', 'Roboto', '-apple-system', 'sans-serif'].join(','),
   },
 });
+
+export function createSx<T extends { [name: string]: CSSProperties & SxProps }>(cfg: T) {
+  return cfg;
+}
+
+export function createOnlyCss<T extends { [name: string]: CSSProperties }>(cfg: T) {
+  return cfg;
+}
