@@ -37,15 +37,17 @@ function ListCategoriesView() {
 
   const { data: categories = [] } = useGetAllCategoriesQuery();
 
-  const [openedCategory, setOpenedCategory] = useState<{
-    category?: MidLevelCategory;
-    parentCategory: TopLevelCategory;
-  } | null>(null);
+  const [openedCategory, setOpenedCategory] =
+    useState<{
+      category?: MidLevelCategory;
+      parentCategory: TopLevelCategory;
+    } | null>(null);
 
-  const [productTypeModal, setProductTypeModal] = useState<{
-    mode: 'create' | 'edit';
-    productType?: TopLevelCategory;
-  } | null>(null);
+  const [productTypeModal, setProductTypeModal] =
+    useState<{
+      mode: 'create' | 'edit';
+      productType?: TopLevelCategory;
+    } | null>(null);
 
   const [isCategoryCreating, setIsCategoryCreating] = useState<number | null>(null);
   const [deletedId, setDeletedId] = useState<number | null>(null);

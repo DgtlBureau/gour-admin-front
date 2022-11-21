@@ -34,6 +34,7 @@ export const categoryApi = commonApi.injectEndpoints({
       invalidatesTags: [{ type: 'Category', id: 'LIST' }],
     }),
     deleteCategory: builder.mutation<void, number>({
+      // FIXME: чекнуть реализацию
       query: id => ({
         url: `${Path.CATEGORIES}/${id}`,
         method: 'DELETE',

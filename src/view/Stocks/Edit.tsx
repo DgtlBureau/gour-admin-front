@@ -197,7 +197,7 @@ function EditStockView() {
       <CreateStockForm
         key={`stock-create/${id}`}
         products={products}
-        categories={categories}
+        categories={categories || []}
         defaultValues={defaultValues}
         submitBtnRef={submitBtnRef}
         onChange={save}

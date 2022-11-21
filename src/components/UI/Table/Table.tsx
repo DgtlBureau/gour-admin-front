@@ -10,8 +10,8 @@ import MUITableContainer from '@mui/material/TableContainer';
 import MUITableHead from '@mui/material/TableHead';
 import MUITableRow from '@mui/material/TableRow';
 
-import { Tabs, TabsProps } from '../Tabs/Tabs';
 import { Typography } from '../Typography/Typography';
+import { Tabs, TabsProps } from '../Tabs/Tabs';
 
 const sx = {
   head: {
