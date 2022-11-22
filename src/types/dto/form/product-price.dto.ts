@@ -1,6 +1,7 @@
-export type ProductPriceFormDto = Readonly<{
-  discount?: number;
-  cheeseCoin: number;
-  companyDiscount: number;
-  collectiveDiscount: number;
-}>;
+type ProductPriceFormDiscountsDto = Record<string, number | undefined>;
+
+export type ProductPriceFormDto = Readonly<
+  ProductPriceFormDiscountsDto & {
+    cheeseCoin: number;
+  }
+>;
