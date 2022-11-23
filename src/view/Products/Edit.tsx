@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { useGetAllCategoriesQuery } from 'api/categoryApi';
+import { useGetClientRoleListQuery } from 'api/clientRoleApi';
 import { useUploadImageMutation } from 'api/imageApi';
 import { useGetAllProductsQuery, useGetProductByIdQuery, useUpdateProductMutation } from 'api/productApi';
 
@@ -12,7 +13,7 @@ import { Button } from 'components/UI/Button/Button';
 import { ProgressLinear } from 'components/UI/ProgressLinear/ProgressLinear';
 import { Typography } from 'components/UI/Typography/Typography';
 
-import { ProductCreateDto } from 'types/dto/product/create.dto';
+import { ProductCreateDto, RoleDiscountDto } from 'types/dto/product/create.dto';
 import { NotificationType } from 'types/entities/Notification';
 
 import { EventTypes, dispatchNotification, eventBus } from 'packages/EventBus';
@@ -40,6 +41,7 @@ function RightContent({ onSaveClick, onCancelHandler }: Props) {
 
 function EditProductView() {
   const lang = 'ru';
+
   const { toProductList } = useTo();
 
   const { id } = useParams();
@@ -57,6 +59,12 @@ function EditProductView() {
       isIndexed: true,
       metaKeywords: '',
       moyskladId: '',
+    },
+    price: {
+      cheeseCoin: 0,
+      individual: 0,
+      company: 0,
+      collective: 0,
     },
     productSelect: [],
     categoriesIds: {},
@@ -88,6 +96,7 @@ function EditProductView() {
     },
     { skip: activeTabId !== 'recommended_products' },
   );
+  const { data: clientRoles = [] } = useGetClientRoleListQuery();
 
   const uploadPicture = async (file: File) => {
     try {
@@ -116,6 +125,7 @@ function EditProductView() {
 
     // TODO: обработка старых продуктов, можно удалить в будущем
     const productType = product.categories[0].id || null;
+
     const categoriesIds =
       product.categories[0].subCategories?.reduce(
         (acc, midCategory) => ({
@@ -124,6 +134,12 @@ function EditProductView() {
         }),
         {},
       ) || [];
+
+    const roleDiscounts = product.roleDiscounts.reduce((acc, it) => {
+      acc[it.role.key] = it.value || 0;
+
+      return acc;
+    }, {} as Record<string, number | undefined>);
 
     setFullFormState({
       basicSettings: {
@@ -139,13 +155,17 @@ function EditProductView() {
         thirdImage: product.images[2]?.full,
         moyskladId: product.moyskladId?.toString() || '',
       },
+      price: {
+        cheeseCoin: product.price?.cheeseCoin || 0,
+        ...roleDiscounts,
+      },
       categoriesIds,
       productSelect,
     });
   }, [product]);
 
   const onSave = async () => {
-    const { basicSettings, productSelect } = fullFormState;
+    const { basicSettings, price, productSelect } = fullFormState;
 
     const [isValid, err] = await validateBasicSettings(basicSettings);
     if (!isValid) {
@@ -173,6 +193,24 @@ function EditProductView() {
 
     [firstImage, secondImage, thirdImage].forEach(it => it && images.push(it.id));
 
+    const { cheeseCoin, ...discounts } = price;
+
+    const roleDiscounts = Object.keys(discounts).reduce((acc, key) => {
+      const role = clientRoles.find(clientRole => clientRole.key === key);
+      const value = discounts[key];
+
+      if (!role || !value) return acc;
+
+      const roleDiscount = {
+        role: role.id,
+        value: +value,
+      };
+
+      acc.push(roleDiscount);
+
+      return acc;
+    }, [] as RoleDiscountDto[]);
+
     const productParams: ProductCreateDto = {
       title: {
         en: '',
@@ -182,6 +220,10 @@ function EditProductView() {
         en: '',
         ru: basicSettings.description,
       },
+      price: {
+        cheeseCoin: +cheeseCoin,
+      },
+      roleDiscounts,
       images,
       categoryIds,
       similarProducts: productSelect || [],
@@ -224,10 +266,11 @@ function EditProductView() {
       />
       <ProductFullForm
         activeTabId={activeTabId}
-        onChangeTab={setActiveTabId}
         categories={categories}
         products={productsList?.products.filter(it => it.id !== productId) || []}
         fullFormState={fullFormState}
+        roles={clientRoles}
+        onChangeTab={setActiveTabId}
         setFullFormState={setFullFormState}
       />
     </div>
