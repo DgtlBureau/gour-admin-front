@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { useGetAllCategoriesQuery } from 'api/categoryApi';
@@ -6,6 +6,7 @@ import { useUploadImageMutation } from 'api/imageApi';
 import { useGetAllProductsQuery, useGetProductByIdQuery, useUpdateProductMutation } from 'api/productApi';
 
 import { Header } from 'components/Header/Header';
+import { validateBasicSettings } from 'components/Product/BasicSettingsForm/validation';
 import { FullFormType, ProductFullForm } from 'components/Product/FullForm/FullForm';
 import { Button } from 'components/UI/Button/Button';
 import { ProgressLinear } from 'components/UI/ProgressLinear/ProgressLinear';
@@ -14,7 +15,7 @@ import { Typography } from 'components/UI/Typography/Typography';
 import { ProductCreateDto } from 'types/dto/product/create.dto';
 import { NotificationType } from 'types/entities/Notification';
 
-import { EventTypes, eventBus } from 'packages/EventBus';
+import { EventTypes, dispatchNotification, eventBus } from 'packages/EventBus';
 import { getErrorMessage } from 'utils/errorUtil';
 
 import { useTo } from '../../hooks/useTo';
@@ -146,6 +147,12 @@ function EditProductView() {
   const onSave = async () => {
     const { basicSettings, productSelect } = fullFormState;
 
+    const [isValid, err] = await validateBasicSettings(basicSettings);
+    if (!isValid) {
+      dispatchNotification(err?.message, { type: NotificationType.DANGER });
+      return;
+    }
+
     const productTypeId = Number(fullFormState.basicSettings.productType);
     const categoryIds = [...Object.values(fullFormState.categoriesIds), productTypeId].filter(i => i);
 
@@ -179,7 +186,6 @@ function EditProductView() {
       categoryIds,
       similarProducts: productSelect || [],
       moyskladId: basicSettings.moyskladId || null,
-      // TODO: добавить валидацию перед отправкой
     };
 
     try {
