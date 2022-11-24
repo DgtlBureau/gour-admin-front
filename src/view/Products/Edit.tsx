@@ -93,7 +93,7 @@ function EditProductView() {
       withRoleDiscount: false,
       withCategories: true,
     },
-    { skip: activeTabId !== 'recommended_products' },
+    { skip: activeTabId !== 'recommended' },
   );
   const { data: clientRoles = [] } = useGetClientRoleListQuery();
 
@@ -203,6 +203,8 @@ function EditProductView() {
 
       return acc;
     }, [] as RoleDiscountDto[]);
+
+    console.log(roleDiscounts);
 
     const productParams: ProductCreateDto = {
       title: {
