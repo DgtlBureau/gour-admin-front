@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import { useGetAllCategoriesQuery } from 'api/categoryApi';
 import { useGetClientRoleListQuery } from 'api/clientRoleApi';
@@ -6,13 +6,14 @@ import { useUploadImageMutation } from 'api/imageApi';
 import { useCreateProductMutation, useGetAllProductsQuery } from 'api/productApi';
 
 import { Header } from 'components/Header/Header';
+import { validateBasicSettings } from 'components/Product/BasicSettingsForm/validation';
 import { FullFormType, ProductFullForm } from 'components/Product/FullForm/FullForm';
 import { Button } from 'components/UI/Button/Button';
 
 import { ProductCreateDto, RoleDiscountDto } from 'types/dto/product/create.dto';
 import { NotificationType } from 'types/entities/Notification';
 
-import { EventTypes, eventBus } from 'packages/EventBus';
+import { EventTypes, dispatchNotification, eventBus } from 'packages/EventBus';
 import { getErrorMessage } from 'utils/errorUtil';
 
 import { useTo } from '../../hooks/useTo';
@@ -99,6 +100,12 @@ function CreateProductView() {
 
   const onSave = async () => {
     const { basicSettings, price, productSelect } = fullFormState;
+
+    const [isValid, err] = await validateBasicSettings(basicSettings);
+    if (!isValid) {
+      dispatchNotification(err?.message, { type: NotificationType.DANGER });
+      return;
+    }
 
     const productTypeId = Number(fullFormState.basicSettings.productType);
     const categoryIds = [...Object.values(fullFormState.categoriesIds), productTypeId].filter(i => i);
