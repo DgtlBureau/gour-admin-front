@@ -65,7 +65,7 @@ export function ProductsTable({
           </Link>
         </Box>,
         product.title,
-        `${product.price}₡`,
+        `${product.price} ₽`,
         <Box>
           <IconButton href={`/${Path.PRODUCTS}/${product.id}`} component={Link}>
             <EditIcon />

@@ -69,7 +69,7 @@ export function Table<T = string | number>({
     <Paper>
       {tabs && <Tabs value={tabs.value} options={tabs.options} onChange={tabs.onChange} />}
       <MUITableContainer>
-        <MUITable sx={{ minWidth: 650 }} aria-label='simple table'>
+        <MUITable sx={{ minWidth: 650 }}>
           <MUITableHead sx={sx.head}>
             <MUITableRow>
               {rowTitleList.map(rowTitle => (

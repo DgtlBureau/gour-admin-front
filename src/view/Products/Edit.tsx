@@ -94,7 +94,7 @@ function EditProductView() {
       withRoleDiscount: false,
       withCategories: true,
     },
-    { skip: activeTabId !== 'recommended_products' },
+    { skip: activeTabId !== 'recommended' },
   );
   const { data: clientRoles = [] } = useGetClientRoleListQuery();
 
