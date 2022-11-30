@@ -38,6 +38,17 @@ function RightContent({ onUploadClick }: Props) {
   );
 }
 
+// const getLinearProductCategories = (categories: TopLevelCategory[]) => {
+//   const getCategories = (category: AnyLevelCategory): number[] => {
+
+//     const flattenCategories = category.subCategories?.map(getCategories) || [];
+
+//     return [category.id, 1];
+//   };
+
+//   return [...categories.map(getCategories)];
+// };
+
 function ListProductsView() {
   const lang = 'ru'; // TODO: смена языка
 

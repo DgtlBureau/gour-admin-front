@@ -97,7 +97,7 @@ function ListUsersView() {
   const [deleteUserById] = useDeleteUserMutation();
   const [deleteClientById] = useDeleteClientMutation();
 
-  const allUsers: UserTableItem[] = [...users, ...clients];
+  const allUsers = [...users, ...clients] as UserTableItem[];
 
   const [isDeleting, setIsDeleting] = useState(false);
   const [openedUserId, setOpenedUserId] = useState<number | null>(null);

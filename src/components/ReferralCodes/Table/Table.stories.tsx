@@ -14,6 +14,7 @@ export default {
 const Template: ComponentStory<typeof ReferralCodeTable> = (args: ReferralCodeTableProps) => (
   <ReferralCodeTable {...args} />
 );
+
 export const DefaultReferralCodeTable = Template.bind({});
 
 const props: Partial<ReferralCodeTableProps> = {
