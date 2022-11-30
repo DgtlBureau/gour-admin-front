@@ -1,8 +1,7 @@
-import { Product } from './Product';
-import { UserRole } from './UserRole';
+import { Base } from './Base';
+import { ClientRole } from './ClientRole';
 
-export type RoleDiscount = {
-  product: Product;
-  role: UserRole;
+export type RoleDiscount = Base & {
+  role: ClientRole;
   value: number;
 };

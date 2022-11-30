@@ -41,7 +41,7 @@ function ListStocksView() {
               title: it.title.ru,
               start: format(new Date(it.start), 'dd.MM.yyyy'),
               end: format(new Date(it.end), 'dd.MM.yyyy'),
-              isActual: NOW < new Date(it.end),
+              isActual: NOW > new Date(it.start) && NOW < new Date(it.end),
             } as Stock),
         ) || [],
     }),

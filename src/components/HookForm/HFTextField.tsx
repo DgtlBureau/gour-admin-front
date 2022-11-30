@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 
 import { SxProps } from '@mui/material';
@@ -13,6 +13,7 @@ type Props = {
   type?: string;
   rows?: number;
   sx?: SxProps;
+  endAdornment?: ReactNode;
 };
 
 export function HFTextField({ name, defaultValue, ...props }: Props) {

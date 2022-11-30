@@ -1,17 +1,19 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import { useGetAllCategoriesQuery } from 'api/categoryApi';
+import { useGetClientRoleListQuery } from 'api/clientRoleApi';
 import { useUploadImageMutation } from 'api/imageApi';
 import { useCreateProductMutation, useGetAllProductsQuery } from 'api/productApi';
 
 import { Header } from 'components/Header/Header';
+import { validateBasicSettings } from 'components/Product/BasicSettingsForm/validation';
 import { FullFormType, ProductFullForm } from 'components/Product/FullForm/FullForm';
 import { Button } from 'components/UI/Button/Button';
 
-import { ProductCreateDto } from 'types/dto/product/create.dto';
+import { ProductCreateDto, RoleDiscountDto } from 'types/dto/product/create.dto';
 import { NotificationType } from 'types/entities/Notification';
 
-import { EventTypes, eventBus } from 'packages/EventBus';
+import { EventTypes, dispatchNotification, eventBus } from 'packages/EventBus';
 import { getErrorMessage } from 'utils/errorUtil';
 
 import { useTo } from '../../hooks/useTo';
@@ -49,6 +51,12 @@ function CreateProductView() {
       metaKeywords: '',
       moyskladId: '',
     },
+    price: {
+      cheeseCoin: 0,
+      individual: 0,
+      company: 0,
+      collective: 0,
+    },
     categoriesIds: {},
     productSelect: [],
   });
@@ -60,8 +68,10 @@ function CreateProductView() {
 
   const { data: productsData, isLoading: isProductsLoading } = useGetAllProductsQuery(
     { withCategories: true },
-    { skip: activeTabId !== 'recommended_products' },
+    { skip: activeTabId !== 'recommended' },
   );
+
+  const { data: clientRoles = [] } = useGetClientRoleListQuery();
 
   const products = productsData?.products || [];
 
@@ -89,7 +99,13 @@ function CreateProductView() {
   };
 
   const onSave = async () => {
-    const { basicSettings, productSelect } = fullFormState;
+    const { basicSettings, price, productSelect } = fullFormState;
+
+    const [isValid, err] = await validateBasicSettings(basicSettings);
+    if (!isValid) {
+      dispatchNotification(err?.message, { type: NotificationType.DANGER });
+      return;
+    }
 
     const productTypeId = Number(fullFormState.basicSettings.productType);
     const categoryIds = [...Object.values(fullFormState.categoriesIds), productTypeId].filter(i => i);
@@ -102,6 +118,24 @@ function CreateProductView() {
 
     [fistImage, secondImage, thirdImage].forEach(it => it && images.push(it.id));
 
+    const { cheeseCoin, ...discounts } = price;
+
+    const roleDiscounts = Object.keys(discounts).reduce((acc, key) => {
+      const role = clientRoles.find(clientRole => clientRole.key === key);
+      const value = discounts[key];
+
+      if (!role || !value) return acc;
+
+      const roleDiscount = {
+        role: role.id,
+        value: +value,
+      };
+
+      acc.push(roleDiscount);
+
+      return acc;
+    }, [] as RoleDiscountDto[]);
+
     const newProduct: ProductCreateDto = {
       title: {
         en: '',
@@ -111,6 +145,10 @@ function CreateProductView() {
         en: '',
         ru: basicSettings.description,
       },
+      price: {
+        cheeseCoin: +cheeseCoin,
+      },
+      roleDiscounts,
       images,
       categoryIds,
       similarProducts: productSelect || [],
@@ -145,10 +183,11 @@ function CreateProductView() {
       <ProductFullForm
         activeTabId={activeTabId}
         isProductsLoading={isProductsLoading}
-        onChangeTab={setActiveTabId}
         categories={categories}
         products={products}
+        roles={clientRoles}
         fullFormState={fullFormState}
+        onChangeTab={setActiveTabId}
         setFullFormState={setFullFormState}
       />
     </div>

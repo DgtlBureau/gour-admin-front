@@ -18,7 +18,14 @@ export type TabsProps<T> = {
 
 export function Tabs<T = string | number>({ value, options, sx, onChange }: TabsProps<T>) {
   return (
-    <MUITabs color='accent.main' value={value} onChange={(_, newValue: T) => onChange(newValue)} sx={sx}>
+    <MUITabs
+      color='accent.main'
+      variant='scrollable'
+      scrollButtons='auto'
+      value={value}
+      onChange={(_, newValue: T) => onChange(newValue)}
+      sx={sx}
+    >
       {options.map(option => (
         <Tab sx={tabSx} label={option.label} value={option.value} key={String(option.value)} color='secondary' />
       ))}
