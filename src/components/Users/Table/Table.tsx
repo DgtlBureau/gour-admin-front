@@ -9,6 +9,7 @@ import { Table } from 'components/UI/Table/Table';
 import { Typography } from 'components/UI/Typography/Typography';
 
 import { ClientRole } from 'types/entities/ClientRole';
+import { User } from 'types/entities/User';
 
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -24,6 +25,7 @@ export type UserTableItem = {
 };
 
 export type UsersTableProps = {
+  currentUser: User;
   users: UserTableItem[];
   categories: {
     value: string;
@@ -33,7 +35,7 @@ export type UsersTableProps = {
   onAddCheesecoins: (id: number) => void;
 };
 
-export function UsersTable({ users, categories, onDelete, onAddCheesecoins }: UsersTableProps) {
+export function UsersTable({ currentUser, users, categories, onDelete, onAddCheesecoins }: UsersTableProps) {
   const [tabsValue, setTabsValue] = useState<string>(Options.ALL);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -50,6 +52,8 @@ export function UsersTable({ users, categories, onDelete, onAddCheesecoins }: Us
   const filteredUsers = tabsValue === Options.ALL ? users : users.filter(user => user.role.key === tabsValue);
 
   const checkClientRole = (role: Roles) => [Roles.CLIENT, Roles.COMPANY, Roles.COLLECTIVE_PURCHASE].includes(role);
+
+  const canSignInAsUser = !!currentUser.roles.find(role => role.key === Roles.ADMIN);
 
   const rows = filteredUsers.map((user, i) => ({
     id: i,
@@ -69,11 +73,17 @@ export function UsersTable({ users, categories, onDelete, onAddCheesecoins }: Us
             <IconButton component='button' onClick={() => onAddCheesecoins(user.id)}>
               <AddBoxIcon />
             </IconButton>
-            <a href={`${process.env.REACT_APP_BACKEND_URL}/clients/${user.id}/login`} target='_blank' rel='noreferrer'>
-              <IconButton component='div'>
-                <img src={loginIcon} alt='' />
-              </IconButton>
-            </a>
+            {canSignInAsUser && (
+              <a
+                href={`${process.env.REACT_APP_BACKEND_URL}/clients/${user.id}/login`}
+                target='_blank'
+                rel='noreferrer'
+              >
+                <IconButton component='div'>
+                  <img src={loginIcon} alt='' />
+                </IconButton>
+              </a>
+            )}
           </>
         ) : null}
       </>,

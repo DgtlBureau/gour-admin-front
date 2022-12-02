@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Options } from 'constants/tabs';
 import { Roles } from 'constants/users/roles';
 
+import { useGetCurrentUserQuery } from 'api/authApi';
 import { useDeleteClientMutation, useGetClientsListQuery } from 'api/clientApi';
 import { useGetClientRoleListQuery } from 'api/clientRoleApi';
 import { useDeleteUserMutation, useGetAllUsersQuery } from 'api/userApi';
@@ -36,6 +37,8 @@ function RightContent({ onCreateClick }: RightContentProps) {
 const convertToClientRole = ({ description, ...role }: UserRole): ClientRole => ({ title: description || '', ...role });
 
 function ListUsersView() {
+  const { data: currentUser } = useGetCurrentUserQuery();
+
   const { users } = useGetAllUsersQuery(
     {},
     {
@@ -147,6 +150,7 @@ function ListUsersView() {
 
       {allUsers.length ? (
         <UsersTable
+          currentUser={currentUser!}
           users={allUsers}
           categories={categories}
           onDelete={openDeleteModal}
