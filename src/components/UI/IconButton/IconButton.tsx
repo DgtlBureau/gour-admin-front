@@ -9,12 +9,11 @@ type Props = {
   onClick?: () => void;
   disabled?: boolean;
   color?: 'inherit' | 'default' | 'primary' | 'secondary' | 'error' | 'info' | 'success' | 'warning' | undefined;
-
-  component: ElementType;
+  component?: ElementType;
   href?: string;
 };
 
-export function IconButton({ size, children, color, onClick, type, disabled, component, href }: Props) {
+export function IconButton({ size, children, color, onClick, type, disabled, component = 'button', href }: Props) {
   return (
     <MUIIconButton
       size={size}
