@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 
 import { Options } from 'constants/tabs';
-import { Roles } from 'constants/users/roles';
 
 import { useDeleteClientMutation, useGetClientsListQuery } from 'api/clientApi';
 import { useGetClientRoleListQuery } from 'api/clientRoleApi';
@@ -122,7 +121,9 @@ function ListUsersView() {
     if (!deletingUser) return;
 
     try {
-      if (deletingUser?.role?.key === Roles.CLIENT) deleteClientById(deletingUser.id);
+      const isClient = !!clientRoles.find(clientRole => clientRole.value === deletingUser?.role?.key);
+
+      if (isClient) deleteClientById(deletingUser.id);
       else deleteUserById(deletingUser.id);
 
       eventBus.emit(EventTypes.notification, {
