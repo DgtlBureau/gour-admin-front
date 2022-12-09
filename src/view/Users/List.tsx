@@ -19,7 +19,7 @@ import { ClientRole } from 'types/entities/ClientRole';
 import { NotificationType } from 'types/entities/Notification';
 import { UserRole } from 'types/entities/UserRole';
 
-import { EventTypes, eventBus } from 'packages/EventBus';
+import { EventTypes, dispatchNotification, eventBus } from 'packages/EventBus';
 import { getErrorMessage } from 'utils/errorUtil';
 
 import { useTo } from '../../hooks/useTo';
@@ -115,7 +115,7 @@ function ListUsersView() {
     setUserDeleteId(null);
   };
 
-  const deleteUser = () => {
+  const deleteUser = async () => {
     const deletingUser = allUsers.find(user => user.id === userDeleteId);
 
     if (!deletingUser) return;
@@ -123,20 +123,16 @@ function ListUsersView() {
     try {
       const isClient = !!clientRoles.find(clientRole => clientRole.value === deletingUser?.role?.key);
 
-      if (isClient) deleteClientById(deletingUser.id);
-      else deleteUserById(deletingUser.id);
+      if (isClient) await deleteClientById(deletingUser.id);
+      else await deleteUserById(deletingUser.id);
 
-      eventBus.emit(EventTypes.notification, {
-        message: 'Вы удалили пользователя',
-        type: NotificationType.SUCCESS,
-      });
+      dispatchNotification('Вы удалили пользователя');
 
       closeDeleteModal();
     } catch (error) {
       const message = getErrorMessage(error);
 
-      eventBus.emit(EventTypes.notification, {
-        message,
+      dispatchNotification(message, {
         type: NotificationType.DANGER,
       });
     }
