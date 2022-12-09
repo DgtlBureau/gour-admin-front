@@ -1,26 +1,25 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { ProductCreateDto } from '../../@types/dto/product/create.dto';
-import { NotificationType } from '../../@types/entities/Notification';
-import { useGetAllCategoriesQuery } from '../../api/categoryApi';
-import {
-  useGetAllProductsQuery,
-  useGetProductByIdQuery,
-  useUpdateProductMutation,
-} from '../../api/productApi';
-import { useUploadImageMutation } from '../../api/imageApi';
-import { Header } from '../../components/Header/Header';
-import {
-  FullFormType,
-  ProductFullForm,
-} from '../../components/Product/FullForm/FullForm';
-import { Button } from '../../components/UI/Button/Button';
-import { ProgressLinear } from '../../components/UI/ProgressLinear/ProgressLinear';
-import { Typography } from '../../components/UI/Typography/Typography';
-import { Path } from '../../constants/routes';
+import { useGetAllCategoriesQuery } from 'api/categoryApi';
+import { useGetClientRoleListQuery } from 'api/clientRoleApi';
+import { useUploadImageMutation } from 'api/imageApi';
+import { useGetAllProductsQuery, useGetProductByIdQuery, useUpdateProductMutation } from 'api/productApi';
+
+import { Header } from 'components/Header/Header';
+import { validateBasicSettings } from 'components/Product/BasicSettingsForm/validation';
+import { FullFormType, ProductFullForm } from 'components/Product/FullForm/FullForm';
+import { Button } from 'components/UI/Button/Button';
+import { ProgressLinear } from 'components/UI/ProgressLinear/ProgressLinear';
+import { Typography } from 'components/UI/Typography/Typography';
+
+import { ProductCreateDto, RoleDiscountDto } from 'types/dto/product/create.dto';
+import { NotificationType } from 'types/entities/Notification';
+
+import { EventTypes, dispatchNotification, eventBus } from 'packages/EventBus';
+import { getErrorMessage } from 'utils/errorUtil';
+
 import { useTo } from '../../hooks/useTo';
-import { eventBus, EventTypes } from '../../packages/EventBus';
 
 type Props = {
   onSaveClick: () => void;
@@ -33,7 +32,7 @@ function RightContent({ onSaveClick, onCancelHandler }: Props) {
       <Button onClick={onSaveClick} sx={{ marginRight: '10px' }}>
         Сохранить
       </Button>
-      <Button variant="outlined" onClick={onCancelHandler}>
+      <Button variant='outlined' onClick={onCancelHandler}>
         Отмена
       </Button>
     </>
@@ -42,7 +41,8 @@ function RightContent({ onSaveClick, onCancelHandler }: Props) {
 
 function EditProductView() {
   const lang = 'ru';
-  const to = useTo();
+
+  const { toProductList } = useTo();
 
   const { id } = useParams();
 
@@ -58,12 +58,13 @@ function EditProductView() {
       metaDescription: '',
       isIndexed: true,
       metaKeywords: '',
+      moyskladId: '',
     },
-    priceSettings: {
-      discount: 0,
+    price: {
       cheeseCoin: 0,
-      companyDiscount: 0,
-      collectiveDiscount: 0,
+      individual: 0,
+      company: 0,
+      collective: 0,
     },
     productSelect: [],
     categoriesIds: {},
@@ -84,7 +85,7 @@ function EditProductView() {
       withRoleDiscount: true,
       withCategories: true,
     },
-    { skip: !productId }
+    { skip: !productId },
   );
   const { data: productsList } = useGetAllProductsQuery(
     {
@@ -93,43 +94,52 @@ function EditProductView() {
       withRoleDiscount: false,
       withCategories: true,
     },
-    { skip: activeTabId !== 'recommended_products' }
+    { skip: activeTabId !== 'recommended' },
   );
+  const { data: clientRoles = [] } = useGetClientRoleListQuery();
 
-  const uploadPicture = async (file?: File, label?: string) => {
-    if (!file) return undefined;
+  const uploadPicture = async (file: File) => {
+    try {
+      const formData = new FormData();
 
-    const formData = new FormData();
+      formData.append('image', file);
 
-    formData.append('image', file);
+      const image = await uploadImage(formData).unwrap();
 
-    const image = await uploadImage(formData).unwrap();
+      return image;
+    } catch (error) {
+      const message = getErrorMessage(error);
 
-    if (!image) {
       eventBus.emit(EventTypes.notification, {
-        message: `Произошла ошибка при загрузке фото ${label})`,
+        message,
         type: NotificationType.DANGER,
       });
-    }
 
-    return image;
+      return undefined;
+    }
   };
 
   useEffect(() => {
     if (!product) return;
-    const productSelect =
-      product.similarProducts?.map(similarProduct => similarProduct.id) || [];
+    const productSelect = product.similarProducts?.map(similarProduct => similarProduct.id) || [];
 
     // TODO: обработка старых продуктов, можно удалить в будущем
     const productType = product.categories[0].id || null;
+
     const categoriesIds =
       product.categories[0].subCategories?.reduce(
         (acc, midCategory) => ({
           ...acc,
           [midCategory.id]: midCategory.subCategories[0].id,
         }),
-        {}
+        {},
       ) || [];
+
+    const roleDiscounts = product.roleDiscounts.reduce((acc, it) => {
+      acc[it.role.key] = it.value || 0;
+
+      return acc;
+    }, {} as Record<string, number | undefined>);
 
     setFullFormState({
       basicSettings: {
@@ -143,12 +153,11 @@ function EditProductView() {
         firstImage: product.images[0]?.full,
         secondImage: product.images[1]?.full,
         thirdImage: product.images[2]?.full,
+        moyskladId: product.moyskladId?.toString() || '',
       },
-      priceSettings: {
-        discount: 0,
-        cheeseCoin: product.price.cheeseCoin,
-        companyDiscount: 0,
-        collectiveDiscount: 0,
+      price: {
+        cheeseCoin: product.price?.cheeseCoin || 0,
+        ...roleDiscounts,
       },
       categoriesIds,
       productSelect,
@@ -156,41 +165,51 @@ function EditProductView() {
   }, [product]);
 
   const onSave = async () => {
-    const { basicSettings, priceSettings, productSelect } = fullFormState;
+    const { basicSettings, price, productSelect } = fullFormState;
+
+    const [isValid, err] = await validateBasicSettings(basicSettings);
+    if (!isValid) {
+      dispatchNotification(err?.message, { type: NotificationType.DANGER });
+      return;
+    }
 
     const productTypeId = Number(fullFormState.basicSettings.productType);
-    const categoryIds = [
-      ...Object.values(fullFormState.categoriesIds),
-      productTypeId,
-    ].filter(i => i);
-
-    const roleDiscounts = [
-      {
-        role: 3,
-        cheeseCoin: priceSettings.companyDiscount,
-      },
-      {
-        role: 4,
-        cheeseCoin: priceSettings.collectiveDiscount,
-      },
-    ];
+    const categoryIds = [...Object.values(fullFormState.categoriesIds), productTypeId].filter(i => i);
 
     const firstImage =
       typeof basicSettings.firstImage === 'string'
         ? product?.images[0]
-        : await uploadPicture(basicSettings.firstImage, '1');
+        : basicSettings.firstImage && (await uploadPicture(basicSettings.firstImage));
     const secondImage =
       typeof basicSettings.secondImage === 'string'
         ? product?.images[1]
-        : await uploadPicture(basicSettings.secondImage, '2');
+        : basicSettings.secondImage && (await uploadPicture(basicSettings.secondImage));
     const thirdImage =
       typeof basicSettings.thirdImage === 'string'
         ? product?.images[2]
-        : await uploadPicture(basicSettings.thirdImage, '3');
+        : basicSettings.thirdImage && (await uploadPicture(basicSettings.thirdImage));
 
     const images: number[] = [];
 
     [firstImage, secondImage, thirdImage].forEach(it => it && images.push(it.id));
+
+    const { cheeseCoin, ...discounts } = price;
+
+    const roleDiscounts = Object.keys(discounts).reduce((acc, key) => {
+      const role = clientRoles.find(clientRole => clientRole.key === key);
+      const value = discounts[key];
+
+      if (!role || !value) return acc;
+
+      const roleDiscount = {
+        role: role.id,
+        value: +value,
+      };
+
+      acc.push(roleDiscount);
+
+      return acc;
+    }, [] as RoleDiscountDto[]);
 
     const productParams: ProductCreateDto = {
       title: {
@@ -201,13 +220,14 @@ function EditProductView() {
         en: '',
         ru: basicSettings.description,
       },
-      images,
       price: {
-        cheeseCoin: +priceSettings.cheeseCoin,
+        cheeseCoin: +cheeseCoin,
       },
+      roleDiscounts,
+      images,
       categoryIds,
       similarProducts: productSelect || [],
-      roleDiscounts,
+      moyskladId: basicSettings.moyskladId || null,
     };
 
     try {
@@ -216,41 +236,42 @@ function EditProductView() {
         message: 'Товар изменен',
         type: NotificationType.SUCCESS,
       });
-      to(Path.PRODUCTS);
+
+      toProductList();
     } catch (error) {
+      const message = getErrorMessage(error);
+
       eventBus.emit(EventTypes.notification, {
-        message: 'Произошла ошибка',
+        message,
         type: NotificationType.DANGER,
       });
     }
   };
 
-  const onCancel = () => to(Path.PRODUCTS);
-
-  if (isLoading) return <ProgressLinear variant="query" />;
+  if (isLoading) return <ProgressLinear variant='query' />;
 
   if (!isLoading && isError) {
-    return <Typography variant="h5">Произошла ошибка</Typography>;
+    return <Typography variant='h5'>Произошла ошибка</Typography>;
   }
 
   if (!isLoading && !isError && !product) {
-    return <Typography variant="h5">Продукт не найден</Typography>;
+    return <Typography variant='h5'>Продукт не найден</Typography>;
   }
 
   return (
     <div>
       <Header
-        leftTitle="Редактирование товара"
-        rightContent={<RightContent onSaveClick={onSave} onCancelHandler={onCancel} />}
+        leftTitle='Редактирование товара'
+        rightContent={<RightContent onSaveClick={onSave} onCancelHandler={toProductList} />}
       />
       <ProductFullForm
         activeTabId={activeTabId}
-        onChangeTab={setActiveTabId}
         categories={categories}
         products={productsList?.products.filter(it => it.id !== productId) || []}
         fullFormState={fullFormState}
+        roles={clientRoles}
+        onChangeTab={setActiveTabId}
         setFullFormState={setFullFormState}
-        mode="edit"
       />
     </div>
   );

@@ -1,9 +1,12 @@
 import React from 'react';
+
 import { ComponentStory, Meta } from '@storybook/react';
 
+import { ProductBasicSettingsFormDto } from 'types/dto/form/product-basic-settings.dto';
+
+import { generateMockId } from 'utils/wordHelper';
+
 import { ProductBasicSettingsForm } from './BasicSettingsForm';
-import { ProductBasicSettingsFormDto } from '../../../@types/dto/form/product-basic-settings.dto';
-import { generateMockId } from '../../../utils/wordHelper';
 
 export default {
   component: ProductBasicSettingsForm,
@@ -30,14 +33,7 @@ const categories = [
   },
 ];
 
-const Template: ComponentStory<typeof ProductBasicSettingsForm> = function (args) {
-  return (
-    <ProductBasicSettingsForm
-      {...args}
-      productTypes={categories}
-      defaultValues={defaultValues}
-      mode="create"
-    />
-  );
-};
+const Template: ComponentStory<typeof ProductBasicSettingsForm> = args => (
+  <ProductBasicSettingsForm {...args} productTypes={categories} defaultValues={defaultValues} />
+);
 export const DefaultBasicSettingsForm = Template.bind({});

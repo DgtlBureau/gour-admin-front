@@ -1,14 +1,17 @@
 import React, { CSSProperties, useEffect } from 'react';
-
-import { Box, Dialog } from '@mui/material';
 import { FormProvider, useForm } from 'react-hook-form';
+
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Typography } from '../../UI/Typography/Typography';
-import { CreateCityDto } from '../../../@types/dto/city/create.dto';
-import schema from './validation';
-import { Button } from '../../UI/Button/Button';
-import { UpdateCityDto } from '../../../@types/dto/city/update.dto';
+import { Box, Dialog } from '@mui/material';
+
+import { Button } from 'components/UI/Button/Button';
+import { Typography } from 'components/UI/Typography/Typography';
+
+import { CreateCityDto } from 'types/dto/city/create.dto';
+import { UpdateCityDto } from 'types/dto/city/update.dto';
+
 import { HFTextField } from '../../HookForm/HFTextField';
+import schema from './validation';
 
 type Props = {
   defaultValues: CreateCityDto;
@@ -23,13 +26,7 @@ const containerSx: CSSProperties = {
   padding: '25px',
 };
 
-export function CreateCityModal({
-  defaultValues,
-  onSave,
-  onCancel,
-  isOpened,
-  mode,
-}: Props) {
+export function CreateCityModal({ defaultValues, onSave, onCancel, isOpened, mode }: Props) {
   const values = useForm<CreateCityDto | UpdateCityDto>({
     resolver: yupResolver(schema),
     defaultValues,
@@ -48,20 +45,18 @@ export function CreateCityModal({
       <Dialog onClose={onCancel} open={isOpened}>
         <form onSubmit={values.handleSubmit(submitHandler)}>
           <Box sx={containerSx}>
-            <Typography variant="h6">
-              {mode === 'create' ? 'Добавление города' : 'Редактирование города'}
-            </Typography>
+            <Typography variant='h6'>{mode === 'create' ? 'Добавление города' : 'Редактирование города'}</Typography>
 
-            <HFTextField sx={{ margin: '10px 0' }} label="Название" name="rusName" />
+            <HFTextField sx={{ margin: '10px 0' }} label='Название' name='rusName' />
 
             {/* <HFTextField label="Название (Eng)" name="engName" /> */}
 
             <Box>
-              <Button type="submit" sx={{ margin: '0 10px 0 0' }}>
+              <Button type='submit' sx={{ margin: '0 10px 0 0' }}>
                 Сохранить
               </Button>
 
-              <Button variant="outlined" onClick={onCancel}>
+              <Button variant='outlined' onClick={onCancel}>
                 Отменить
               </Button>
             </Box>

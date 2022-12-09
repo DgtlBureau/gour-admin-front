@@ -1,8 +1,10 @@
 import React, { ReactElement } from 'react';
 
 import { Card, CardContent, CardMedia } from '@mui/material';
-import { Box } from '../../UI/Box/Box';
-import { Typography } from '../../UI/Typography/Typography';
+
+import { Box } from 'components/UI/Box/Box';
+import { Typography } from 'components/UI/Typography/Typography';
+
 import { getFoundStringPosition } from './SelectCardHelper';
 
 type Props = {
@@ -41,22 +43,19 @@ export function SelectCard({ image, title, isSelected, searchQuery, onSelect }: 
 
   return (
     <Card sx={{ width: '100%', cursor: 'pointer' }} onClick={onSelect}>
-      <CardMedia component="img" alt="green iguana" height="140" image={image} />
+      <CardMedia component='img' alt='green iguana' height='140' image={image} />
       <Box
         sx={{
           ...sx.box,
           backgroundColor: isSelected ? '#25262D' : '#D6D6D6',
         }}
       >
-        <Typography
-          sx={{ ...sx.cardText, color: isSelected ? '#fff' : '#25262d' }}
-          variant="body1"
-        >
+        <Typography sx={{ ...sx.cardText, color: isSelected ? '#fff' : '#25262d' }} variant='body1'>
           {isSelected ? 'Товар выбран' : 'Выбрать товар'}
         </Typography>
       </Box>
       <CardContent>
-        <Typography sx={sx.cardText} variant="body1">
+        <Typography sx={sx.cardText} variant='body1'>
           {getMarkStringByValue(title)}
         </Typography>
       </CardContent>

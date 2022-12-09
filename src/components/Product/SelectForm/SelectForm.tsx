@@ -1,16 +1,18 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
+
 import { Grid, Stack } from '@mui/material';
 
-import { Typography } from '../../UI/Typography/Typography';
-import { TextField } from '../../UI/TextField/TextField';
+import { ProgressLinear } from 'components/UI/ProgressLinear/ProgressLinear';
+import { Tabs } from 'components/UI/Tabs/Tabs';
+import { TextField } from 'components/UI/TextField/TextField';
+import { Typography } from 'components/UI/Typography/Typography';
+
 import { ProductSelectList } from './CardsList';
 import { SelectsList } from './SelectsList';
-import { Tabs } from '../../UI/Tabs/Tabs';
-import { isProductSelected, filterByAllParams, defaultTabs } from './selectHelper';
-import { ProgressLinear } from '../../UI/ProgressLinear/ProgressLinear';
-import { TabsKeys, ProductSelectFormProps, Product } from './types';
+import { defaultTabs, filterByAllParams, isProductSelected } from './selectHelper';
+import { Product, ProductSelectFormProps, TabsKeys } from './types';
 
-const sx = {
+const selectSx = {
   productsCount: {
     display: 'flex',
     alignItems: 'center',
@@ -22,17 +24,18 @@ const sx = {
 };
 
 export function ProductSelectForm({
-  selected,
+  selected = [],
   products,
   categories,
   isLoading,
+  sx,
   onChange,
 }: ProductSelectFormProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedTabKey, setSelectedTabKey] = useState<TabsKeys>('all');
   const [selectValues, setSelectValues] = useState<Record<string, string | number>>({});
 
-  const filteredProducts = React.useMemo<Product[]>(() => {
+  const filteredProducts = useMemo<Product[]>(() => {
     const query = searchQuery.trim().toLowerCase();
     return filterByAllParams(products, query, selectValues, selectedTabKey, selected);
   }, [products, searchQuery, selectedTabKey, selectValues]);
@@ -45,9 +48,7 @@ export function ProductSelectForm({
     })),
   ];
 
-  const categoriesForFilters =
-    categories.find(topCategory => topCategory.id === selectedTabKey)?.subCategories ||
-    [];
+  const categoriesForFilters = categories.find(topCategory => topCategory.id === selectedTabKey)?.subCategories || [];
 
   const selectProduct = (productId: number) => {
     if (isProductSelected(productId, selected)) {
@@ -65,36 +66,22 @@ export function ProductSelectForm({
   };
 
   return (
-    <Stack>
-      {isLoading && <ProgressLinear variant="query" />}
+    <Stack sx={sx}>
+      {isLoading && <ProgressLinear variant='query' />}
 
       <Grid container spacing={2}>
         <Grid item xs={12} md={8} lg={6}>
-          <TextField
-            label="Поиск"
-            value={searchQuery}
-            onChange={e => setSearchQuery(e.target.value)}
-          />
+          <TextField label='Поиск' value={searchQuery} onChange={e => setSearchQuery(e.target.value)} />
         </Grid>
-        <Grid item sx={sx.productsCount} xs={12} md={4} lg={6}>
-          <Typography variant="body1">
-            Количество добавленных товаров: {selected.length}
-          </Typography>
+
+        <Grid item sx={selectSx.productsCount} xs={12} md={4} lg={6}>
+          <Typography variant='body1'>Количество добавленных товаров: {selected.length}</Typography>
         </Grid>
       </Grid>
 
-      <Tabs
-        sx={sx.tabs}
-        value={selectedTabKey}
-        options={tabOptions}
-        onChange={changeTab}
-      />
+      <Tabs sx={selectSx.tabs} value={selectedTabKey} options={tabOptions} onChange={changeTab} />
 
-      <SelectsList
-        categories={categoriesForFilters}
-        selectValues={selectValues}
-        setSelectValues={setSelectValues}
-      />
+      <SelectsList categories={categoriesForFilters} selectValues={selectValues} setSelectValues={setSelectValues} />
 
       <ProductSelectList
         products={filteredProducts}

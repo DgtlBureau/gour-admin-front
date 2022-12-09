@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Modal } from '../../UI/Modal/Modal';
+import { Modal } from 'components/UI/Modal/Modal';
 
 type Props = {
   isOpen: boolean;
@@ -13,10 +13,10 @@ export function ProductDeleteModal({ isOpen, productName, onDelete, onCancel }: 
   return (
     <Modal
       isOpen={isOpen}
-      title="Вы действительно хотите удалить товар?"
+      title='Вы действительно хотите удалить товар?'
       description={`Товар: ${productName}`}
-      acceptText="Да"
-      closeText="Нет"
+      acceptText='Да'
+      closeText='Нет'
       onAccept={onDelete}
       onClose={onCancel}
     />

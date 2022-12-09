@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { Modal } from '../../UI/Modal/Modal';
-import { Typography } from '../../UI/Typography/Typography';
+import { Modal } from 'components/UI/Modal/Modal';
+import { Typography } from 'components/UI/Typography/Typography';
 
 export type DeleteModalProps = {
   isOpen: boolean;
@@ -15,7 +15,7 @@ export function DeleteCategoryModal({ isOpen, onRemove, onClose }: DeleteModalPr
 
   return (
     <Modal isOpen={isOpen} title={title} onAccept={onRemove} onClose={onClose}>
-      <Typography variant="body1">{description}</Typography>
+      <Typography variant='body1'>{description}</Typography>
     </Modal>
   );
 }

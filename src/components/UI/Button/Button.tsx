@@ -1,6 +1,8 @@
 import React, { ElementType, MouseEvent, ReactNode } from 'react';
-import MUIButton from '@mui/material/Button';
+
 import { SxProps } from '@mui/material';
+import MUIButton from '@mui/material/Button';
+
 import { ProgressCircular } from '../ProgressCircular/ProgressCircular';
 
 type Props = {
@@ -15,6 +17,7 @@ type Props = {
   fullWidth?: boolean;
   sx?: SxProps;
   form?: string | number;
+  href?: string;
 };
 
 export function Button({
@@ -27,6 +30,7 @@ export function Button({
   fullWidth,
   isLoading = false,
   size,
+  href,
   sx,
   form,
 }: Props) {
@@ -41,6 +45,7 @@ export function Button({
       variant={variant}
       size={size}
       component={component || 'button'}
+      href={href}
     >
       {isLoading && (
         <>

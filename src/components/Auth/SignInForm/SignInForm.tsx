@@ -1,15 +1,19 @@
 import React from 'react';
-import { useForm, SubmitHandler, FormProvider } from 'react-hook-form';
+import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
+
+import { Path } from 'constants/routes';
+
 import { yupResolver } from '@hookform/resolvers/yup';
 
-import { Button } from '../../UI/Button/Button';
-import { Link as CustomLink } from '../../UI/Link/Link';
-import { Box } from '../../UI/Box/Box';
-import { HFTextField } from '../../HookForm/HFTextField';
+import { Box } from 'components/UI/Box/Box';
+import { Button } from 'components/UI/Button/Button';
+import { Link as CustomLink } from 'components/UI/Link/Link';
+import { Typography } from 'components/UI/Typography/Typography';
 
+import { SignInDto } from 'types/dto/auth/signin.dto';
+
+import { HFTextField } from '../../HookForm/HFTextField';
 import schema from './validation';
-import { SignInDto } from '../../../@types/dto/auth/signin.dto';
-import { Typography } from '../../UI/Typography/Typography';
 
 const boxSx = {
   display: 'flex',
@@ -56,19 +60,13 @@ export function AuthSignInForm({ onSubmit, isLoading }: Props) {
       <form onSubmit={values.handleSubmit(submitHandler)}>
         <Box sx={boxSx}>
           <Typography sx={sxTitle}>Вход</Typography>
-          <HFTextField sx={sxInput} name="login" label="Логин" />
-          <HFTextField sx={sxInput} label="Пароль" name="password" type="password" />
-          <Button
-            isLoading={isLoading}
-            disabled={isDisabledBtn}
-            sx={sxBtn}
-            type="submit"
-            fullWidth
-          >
+          <HFTextField sx={sxInput} name='email' label='Логин' />
+          <HFTextField sx={sxInput} label='Пароль' name='password' type='password' />
+          <Button isLoading={isLoading} disabled={isDisabledBtn} sx={sxBtn} type='submit' fullWidth>
             Войти
           </Button>
           <p>
-            <CustomLink path="/auth/forgot-password">Забыли пароль?</CustomLink>
+            <CustomLink href={`/${Path.AUTH}/${Path.FORGOT_PASSWORD}`}>Забыли пароль?</CustomLink>
           </p>
         </Box>
       </form>

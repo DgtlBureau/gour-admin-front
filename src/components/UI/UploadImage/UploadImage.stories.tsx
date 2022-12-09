@@ -1,8 +1,7 @@
 import React, { ChangeEvent, useState } from 'react';
 
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
 
-import fr from 'date-fns/esm/locale/fr/index.js';
 import { UploadImage } from './UploadImage';
 
 export default {
@@ -10,7 +9,7 @@ export default {
   component: UploadImage,
 } as ComponentMeta<typeof UploadImage>;
 
-const Template: ComponentStory<typeof UploadImage> = function (args) {
+const Template: ComponentStory<typeof UploadImage> = args => {
   const [value, setValue] = useState<File | null>(null);
 
   const onChange = (event: ChangeEvent<HTMLInputElement>) => {

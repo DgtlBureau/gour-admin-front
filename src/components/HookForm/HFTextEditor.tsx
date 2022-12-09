@@ -1,8 +1,9 @@
 import React from 'react';
-import { SxProps } from '@mui/material';
 import { Controller, useFormContext } from 'react-hook-form';
-import { TextField } from '../UI/TextField/TextField';
-import { TextEditor } from '../UI/TextEditor/TextEditor';
+
+import { SxProps } from '@mui/material';
+
+import { TextEditor } from 'components/UI/TextEditor/TextEditor';
 
 type Props = {
   name: string;
@@ -22,7 +23,7 @@ export function HFTextEditor({ name, defaultValue, ...props }: Props) {
       name={name}
       control={control}
       defaultValue={defaultValue || ''}
-      render={({ field: { ref, onChange, value } }) => (
+      render={({ field: { ref: _ref, onChange, value } }) => (
         <TextEditor
           value={value}
           onChange={onChange}

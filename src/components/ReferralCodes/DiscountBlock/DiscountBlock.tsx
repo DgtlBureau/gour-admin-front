@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
+
 import { yupResolver } from '@hookform/resolvers/yup';
 import { LinearProgress } from '@mui/material';
 
-import { Box } from '../../UI/Box/Box';
-import { Button } from '../../UI/Button/Button';
-import { Typography } from '../../UI/Typography/Typography';
+import { Box } from 'components/UI/Box/Box';
+import { Button } from 'components/UI/Button/Button';
+import { Typography } from 'components/UI/Typography/Typography';
+
 import { HFTextField } from '../../HookForm/HFTextField';
 import schema from './validation';
 
@@ -38,11 +40,7 @@ export type DiscountBlockProps = {
   onChange(discount: number): void;
 };
 
-export function ReferralCodeDiscountBlock({
-  discount,
-  isLoading,
-  onChange,
-}: DiscountBlockProps) {
+export function ReferralCodeDiscountBlock({ discount, isLoading, onChange }: DiscountBlockProps) {
   const [isEditing, setIsEditing] = useState(false);
 
   const values = useForm<ReferralDiscountEdit>({
@@ -67,36 +65,24 @@ export function ReferralCodeDiscountBlock({
       {isEditing ? (
         <>
           <FormProvider {...values}>
-            <form id="referralDiscountForm" onSubmit={values.handleSubmit(submit)}>
-              <HFTextField
-                type="number"
-                label="Размер скидки"
-                name="discount"
-                sx={sx.field}
-              />
+            <form id='referralDiscountForm' onSubmit={values.handleSubmit(submit)}>
+              <HFTextField type='number' label='Размер скидки' name='discount' sx={sx.field} />
             </form>
           </FormProvider>
 
           <Box>
-            <Button
-              type="submit"
-              form="referralDiscountForm"
-              size="small"
-              sx={sx.saveBtn}
-            >
+            <Button type='submit' form='referralDiscountForm' size='small' sx={sx.saveBtn}>
               Сохранить
             </Button>
-            <Button size="small" variant="outlined" onClick={() => setIsEditing(false)}>
+            <Button size='small' variant='outlined' onClick={() => setIsEditing(false)}>
               Отменить
             </Button>
           </Box>
         </>
       ) : (
         <>
-          <Typography variant="body1">
-            {`Скидка всех реферальных кодов составляет ${discount}%`}
-          </Typography>
-          <Button size="small" onClick={() => setIsEditing(true)}>
+          <Typography variant='body1'>{`Скидка всех реферальных кодов составляет ${discount}%`}</Typography>
+          <Button size='small' onClick={() => setIsEditing(true)}>
             Изменить размер скидки
           </Button>
         </>

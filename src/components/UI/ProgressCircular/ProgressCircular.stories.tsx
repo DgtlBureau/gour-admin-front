@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
 
 import { ProgressCircular } from './ProgressCircular';
 
@@ -9,9 +9,7 @@ export default {
   component: ProgressCircular,
 } as ComponentMeta<typeof ProgressCircular>;
 
-const Template: ComponentStory<typeof ProgressCircular> = function (args) {
-  return <ProgressCircular {...args} />;
-};
+const Template: ComponentStory<typeof ProgressCircular> = args => <ProgressCircular {...args} />;
 
 export const DefaultState = Template.bind({});
 DefaultState.args = {

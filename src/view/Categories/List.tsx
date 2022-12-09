@@ -1,24 +1,26 @@
 import React, { useState } from 'react';
 
-import { Header } from '../../components/Header/Header';
-import { Button } from '../../components/UI/Button/Button';
-import { Typography } from '../../components/UI/Typography/Typography';
-import { CreateOrEditModalCategoryModal } from '../../components/Categories/CreateOrEditModal/CreateOrEditModal';
-import { DeleteCategoryModal } from '../../components/Categories/DeleteModal/DeleteModal';
 import {
-  useGetAllCategoriesQuery,
   useCreateCategoryMutation,
-  useUpdateCategoryMutation,
   useDeleteCategoryMutation,
-} from '../../api/categoryApi';
-import { dispatchNotification, eventBus, EventTypes } from '../../packages/EventBus';
-import { NotificationType } from '../../@types/entities/Notification';
-import { CategoryProductType } from '../../components/Categories/ProductType/ProductType';
-import type { CreateFormType } from '../../components/Categories/CreateOrEditForm/types';
-import { CategoryHasDiscount } from '../../components/Categories/CreateOrEditForm/types';
-import { MidLevelCategory, TopLevelCategory } from '../../@types/entities/Category';
-import { ProductTypeModal } from '../../components/Categories/ProductTypeModal/ProductTypeModal';
-import { getEditedCategories } from '../../components/Categories/categories.helper';
+  useGetAllCategoriesQuery,
+  useUpdateCategoryMutation,
+} from 'api/categoryApi';
+
+import { CategoryHasDiscount, CreateFormType } from 'components/Categories/CreateOrEditForm/types';
+import { CreateOrEditModalCategoryModal } from 'components/Categories/CreateOrEditModal/CreateOrEditModal';
+import { DeleteCategoryModal } from 'components/Categories/DeleteModal/DeleteModal';
+import { CategoryProductType } from 'components/Categories/ProductType/ProductType';
+import { ProductTypeModal } from 'components/Categories/ProductTypeModal/ProductTypeModal';
+import { getEditedCategories } from 'components/Categories/categories.helper';
+import { Header } from 'components/Header/Header';
+import { Button } from 'components/UI/Button/Button';
+import { Typography } from 'components/UI/Typography/Typography';
+
+import { MidLevelCategory, TopLevelCategory } from 'types/entities/Category';
+import { NotificationType } from 'types/entities/Notification';
+
+import { dispatchNotification } from 'packages/EventBus';
 
 type RightContentProps = {
   onClick: () => void;
@@ -35,16 +37,15 @@ function ListCategoriesView() {
 
   const { data: categories = [] } = useGetAllCategoriesQuery();
 
-  const [openedCategory, setOpenedCategory] =
-    useState<{ category?: MidLevelCategory; parentCategory: TopLevelCategory } | null>(
-      null
-    );
+  const [openedCategory, setOpenedCategory] = useState<{
+    category?: MidLevelCategory;
+    parentCategory: TopLevelCategory;
+  } | null>(null);
 
-  const [productTypeModal, setProductTypeModal] =
-    useState<{
-      mode: 'create' | 'edit';
-      productType?: TopLevelCategory;
-    } | null>(null);
+  const [productTypeModal, setProductTypeModal] = useState<{
+    mode: 'create' | 'edit';
+    productType?: TopLevelCategory;
+  } | null>(null);
 
   const [isCategoryCreating, setIsCategoryCreating] = useState<number | null>(null);
   const [deletedId, setDeletedId] = useState<number | null>(null);
@@ -67,10 +68,7 @@ function ListCategoriesView() {
     setOpenedCategory({ category: undefined, parentCategory });
   };
 
-  const openEditingCategory = (
-    category: MidLevelCategory | undefined,
-    parentCategory: TopLevelCategory
-  ) => {
+  const openEditingCategory = (category: MidLevelCategory | undefined, parentCategory: TopLevelCategory) => {
     setOpenedCategory({ category, parentCategory });
   };
 
@@ -127,10 +125,7 @@ function ListCategoriesView() {
     const newSubCategories = subCategoriesArray.filter(subCategory => !subCategory.id);
     const createdCategories = subCategoriesArray.filter(subCategory => !!subCategory.id);
 
-    const editedSubCategories = getEditedCategories(
-      createdCategories,
-      openedCategory.category.subCategories
-    );
+    const editedSubCategories = getEditedCategories(createdCategories, openedCategory.category.subCategories);
 
     try {
       const category = editCategory({
@@ -160,11 +155,7 @@ function ListCategoriesView() {
           },
         }).unwrap();
       });
-      await Promise.all([
-        category,
-        ...newSubCategoriesPromises,
-        ...updatedCategoriesPromises,
-      ]);
+      await Promise.all([category, ...newSubCategoriesPromises, ...updatedCategoriesPromises]);
       dispatchNotification('Категория обновлена');
       setOpenedCategory(null);
     } catch (error) {
@@ -221,10 +212,7 @@ function ListCategoriesView() {
 
   return (
     <div>
-      <Header
-        leftTitle="Категории"
-        rightContent={<RightContent onClick={createProductType} />}
-      />
+      <Header leftTitle='Категории' rightContent={<RightContent onClick={createProductType} />} />
       {categories ? (
         categories.map(productType => (
           <CategoryProductType
@@ -238,7 +226,7 @@ function ListCategoriesView() {
           />
         ))
       ) : (
-        <Typography variant="body1">Список категорий пуст</Typography>
+        <Typography variant='body1'>Список категорий пуст</Typography>
       )}
 
       <ProductTypeModal
@@ -259,11 +247,7 @@ function ListCategoriesView() {
         }}
       />
 
-      <DeleteCategoryModal
-        isOpen={!!deletedId}
-        onRemove={handleDelete}
-        onClose={() => setDeletedId(null)}
-      />
+      <DeleteCategoryModal isOpen={!!deletedId} onRemove={handleDelete} onClose={() => setDeletedId(null)} />
     </div>
   );
 }

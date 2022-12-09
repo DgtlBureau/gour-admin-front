@@ -1,8 +1,10 @@
-import { Grid } from '@mui/material';
 import React, { Dispatch, SetStateAction } from 'react';
-import { MidLevelCategory } from '../../../@types/entities/Category';
 
-import { Select } from '../../UI/Select/Select';
+import { Grid } from '@mui/material';
+
+import { Select } from 'components/UI/Select/Select';
+
+import { MidLevelCategory } from 'types/entities/Category';
 
 type Props = {
   categories: MidLevelCategory[];

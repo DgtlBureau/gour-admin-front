@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
 
 import { CreateCityModal } from './CreateModal';
 
@@ -9,9 +9,7 @@ export default {
   component: CreateCityModal,
 } as ComponentMeta<typeof CreateCityModal>;
 
-const Template: ComponentStory<typeof CreateCityModal> = function (args) {
-  return <CreateCityModal {...args} />;
-};
+const Template: ComponentStory<typeof CreateCityModal> = args => <CreateCityModal {...args} />;
 
 export const DefaultState = Template.bind({});
 DefaultState.args = {

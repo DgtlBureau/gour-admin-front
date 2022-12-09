@@ -1,4 +1,4 @@
-import { Notification, NotificationType } from '../@types/entities/Notification';
+import { Notification, NotificationType } from 'types/entities/Notification';
 
 export enum EventTypes {
   routerPush = 'router.push',
@@ -34,9 +34,7 @@ class EventBus {
   }
 
   off<K extends EventTypes>(key: K, callback: EventListenerCallback<K>) {
-    const index = this.listeners[key].indexOf(
-      callback as EventListenerCallback<EventTypes>
-    );
+    const index = this.listeners[key].indexOf(callback as EventListenerCallback<EventTypes>);
 
     if (index === -1) {
       return;
@@ -48,10 +46,7 @@ class EventBus {
 
 export const eventBus = new EventBus();
 
-export const dispatchNotification = (
-  message: Notification['message'],
-  options: DispatchNotificationOptions = {}
-) => {
+export const dispatchNotification = (message: Notification['message'], options: DispatchNotificationOptions = {}) => {
   eventBus.emit(EventTypes.notification, {
     message,
     type: options.type ?? NotificationType.SUCCESS,

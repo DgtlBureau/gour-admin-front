@@ -1,17 +1,16 @@
 import React from 'react';
+
 import { Accordion, AccordionDetails, AccordionSummary } from '@mui/material';
+
+import { Box } from 'components/UI/Box/Box';
+import { Button } from 'components/UI/Button/Button';
+import { Typography } from 'components/UI/Typography/Typography';
+
+import type { MidLevelCategory, TopLevelCategory } from 'types/entities/Category';
+
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
-import type {
-  MidLevelCategory,
-  TopLevelCategory,
-} from '../../../@types/entities/Category';
-
-import { Box } from '../../UI/Box/Box';
-import { Button } from '../../UI/Button/Button';
 import { CategoriesTable } from '../Table/Table';
-import { Typography } from '../../UI/Typography/Typography';
-
 import { sx } from './ProductType.styles';
 
 type Props = {
@@ -35,10 +34,10 @@ export function CategoryProductType({
     <Accordion>
       <AccordionSummary expandIcon={<ExpandMoreIcon />}>
         <Box sx={sx.header}>
-          <Typography variant="h6">{productType.title.ru}</Typography>
+          <Typography variant='h6'>{productType.title.ru}</Typography>
           <Box sx={sx.buttons}>
             <Button
-              variant="outlined"
+              variant='outlined'
               onClick={e => {
                 e.stopPropagation();
                 onEdit(productType.id);
@@ -47,7 +46,7 @@ export function CategoryProductType({
               Редактировать
             </Button>
             <Button
-              variant="outlined"
+              variant='outlined'
               onClick={e => {
                 e.stopPropagation();
                 onDelete(productType.id);

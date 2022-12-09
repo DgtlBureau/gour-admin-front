@@ -1,39 +1,29 @@
 import React, { useState } from 'react';
 
-import { Header } from '../../components/Header/Header';
-import { Button } from '../../components/UI/Button/Button';
-import { Typography } from '../../components/UI/Typography/Typography';
-import { UsersTable, UserTableItem } from '../../components/Users/Table/Table';
-import { Modal } from '../../components/UI/Modal/Modal';
-import { Path } from '../../constants/routes';
-import { useTo } from '../../hooks/useTo';
-import { useGetAllUsersQuery, useDeleteUserMutation } from '../../api/userApi';
-import { Roles } from '../../constants/users/roles';
-import { Options } from '../../constants/tabs';
-import { useGetClientsListQuery } from '../../api/clientApi';
-import { UserAddCheesecoinsModal } from '../../components/Users/AddCheesecoinsModal/AddCheesecoinsModal';
-import { AddCheesecoinsDto } from '../../@types/dto/add-cheesecoins.dto';
-import { Client } from '../../@types/entities/Client';
-import { formatClientsList, formatUsersList } from './users.helper';
+import { Options } from 'constants/tabs';
+import { Roles } from 'constants/users/roles';
 
-const categories = [
-  {
-    value: Options.ALL,
-    label: 'Все',
-  },
-  {
-    value: Roles.ADMIN,
-    label: 'Админ',
-  },
-  {
-    value: Roles.MODERATOR,
-    label: 'Модератор',
-  },
-  {
-    value: Roles.CLIENT,
-    label: 'Клиент',
-  },
-];
+import { useDeleteClientMutation, useGetClientsListQuery } from 'api/clientApi';
+import { useGetClientRoleListQuery } from 'api/clientRoleApi';
+import { useDeleteUserMutation, useGetAllUsersQuery } from 'api/userApi';
+import { useGetUserRoleListQuery } from 'api/userRoleApi';
+
+import { Header } from 'components/Header/Header';
+import { Button } from 'components/UI/Button/Button';
+import { Modal } from 'components/UI/Modal/Modal';
+import { Typography } from 'components/UI/Typography/Typography';
+import { UserAddCheesecoinsModal } from 'components/Users/AddCoinsModal/AddCoinsModal';
+import { UserTableItem, UsersTable } from 'components/Users/Table/Table';
+
+import { AddCoinsDto } from 'types/dto/add-coins.dto';
+import { ClientRole } from 'types/entities/ClientRole';
+import { NotificationType } from 'types/entities/Notification';
+import { UserRole } from 'types/entities/UserRole';
+
+import { EventTypes, eventBus } from 'packages/EventBus';
+import { getErrorMessage } from 'utils/errorUtil';
+
+import { useTo } from '../../hooks/useTo';
 
 type RightContentProps = {
   onCreateClick: () => void;
@@ -43,65 +33,141 @@ function RightContent({ onCreateClick }: RightContentProps) {
   return <Button onClick={onCreateClick}>Добавить пользователя</Button>;
 }
 
-function ListUsersView() {
-  const { data: users } = useGetAllUsersQuery({});
-  const { data: clients } = useGetClientsListQuery();
-  const [deleteUserById] = useDeleteUserMutation();
+const convertToClientRole = ({ description, ...role }: UserRole): ClientRole => ({ title: description || '', ...role });
 
-  const data: UserTableItem[] = [
-    ...formatUsersList(users || []),
-    ...formatClientsList(clients || []),
+function ListUsersView() {
+  const { users } = useGetAllUsersQuery(
+    {},
+    {
+      selectFromResult: ({ data }) => ({
+        users:
+          data?.map(it => ({
+            login: it.login,
+            name: it.name,
+            role: convertToClientRole(it.roles[0]),
+            id: it.id,
+            createdAt: it.createdAt,
+          })) || [],
+      }),
+    },
+  );
+
+  const { clients } = useGetClientsListQuery(undefined, {
+    selectFromResult: ({ data }) => ({
+      clients:
+        data?.map(it => ({
+          login: it.email,
+          name: `${it.firstName || 'Имя'} ${it.lastName || 'Фамилия'}`,
+          role: it.role,
+          id: it.id,
+          createdAt: it.createdAt,
+        })) || [],
+    }),
+  });
+
+  const { clientRoles } = useGetClientRoleListQuery(undefined, {
+    selectFromResult: ({ data }) => ({
+      clientRoles:
+        data?.map(it => ({
+          value: it.key,
+          label: it.title,
+        })) || [],
+    }),
+  });
+
+  const { userRoles } = useGetUserRoleListQuery(undefined, {
+    selectFromResult: ({ data }) => ({
+      userRoles:
+        data?.map(it => ({
+          value: it.key,
+          label: it.description,
+        })) || [],
+    }),
+  });
+
+  const categories = [
+    {
+      value: Options.ALL,
+      label: 'Все',
+    },
+    ...clientRoles,
+    ...userRoles,
   ];
 
+  const [deleteUserById] = useDeleteUserMutation();
+  const [deleteClientById] = useDeleteClientMutation();
+
+  const allUsers: UserTableItem[] = [...users, ...clients];
+
   const [isDeleting, setIsDeleting] = useState(false);
-  const [openedBalance, setOpenedBalance] =
-    useState<{
-      balance: number;
-      uuid: string;
-    } | null>(null);
+  const [openedBalance, setOpenedBalance] = useState<{
+    balance: number;
+    id: number;
+  } | null>(null);
 
-  const [userDeleteId, setUserDeleteId] = useState('');
+  const [userDeleteId, setUserDeleteId] = useState<number | null>(null);
 
-  const to = useTo();
+  const { toUserCreate } = useTo();
 
-  const goToUserCreate = () => to(Path.USERS, 'create');
-
-  const onAddCheesecoins = (cheeseCoinData: AddCheesecoinsDto) => {
+  const onAddCheesecoins = (cheeseCoinData: AddCoinsDto) => {
     if (!openedBalance) return;
-    console.log(openedBalance?.uuid, cheeseCoinData);
+    console.log(openedBalance?.id, cheeseCoinData);
   };
 
-  const deleteUser = () => deleteUserById(userDeleteId);
-
-  const openDeleteModal = (uuid: string) => {
+  const openDeleteModal = (id: any) => {
+    // FIXME:
     setIsDeleting(true);
-    setUserDeleteId(uuid);
+    setUserDeleteId(id);
   };
   const closeDeleteModal = () => {
     setIsDeleting(false);
-    setUserDeleteId('');
+    setUserDeleteId(null);
+  };
+
+  const deleteUser = () => {
+    const deletingUser = allUsers.find(user => user.id === userDeleteId);
+
+    if (!deletingUser) return;
+
+    try {
+      if (deletingUser?.role?.key === Roles.CLIENT) deleteClientById(deletingUser.id);
+      else deleteUserById(deletingUser.id);
+
+      eventBus.emit(EventTypes.notification, {
+        message: 'Вы удалили пользователя',
+        type: NotificationType.SUCCESS,
+      });
+
+      closeDeleteModal();
+    } catch (error) {
+      const message = getErrorMessage(error);
+
+      eventBus.emit(EventTypes.notification, {
+        message,
+        type: NotificationType.DANGER,
+      });
+    }
   };
 
   return (
     <div>
-      <Header
-        leftTitle="Пользователи"
-        rightContent={<RightContent onCreateClick={goToUserCreate} />}
-      />
-      {data ? (
+      <Header leftTitle='Пользователи' rightContent={<RightContent onCreateClick={toUserCreate} />} />
+
+      {allUsers.length ? (
         <UsersTable
-          users={data}
+          users={allUsers}
           categories={categories}
           onDelete={openDeleteModal}
           onAddCheesecoins={setOpenedBalance}
         />
       ) : (
-        <Typography variant="body1">Список пользователей пуст</Typography>
+        <Typography variant='body1'>Список пользователей пуст</Typography>
       )}
+
       <Modal
-        title="Удаление пользователя"
-        description="Вы действительно хотите удалить пользователя?"
-        acceptText="Удалить"
+        title='Удаление пользователя'
+        description='Вы действительно хотите удалить пользователя?'
+        acceptText='Удалить'
         isOpen={isDeleting}
         onAccept={deleteUser}
         onClose={closeDeleteModal}
@@ -110,7 +176,7 @@ function ListUsersView() {
         isOpened={!!openedBalance}
         onClose={() => setOpenedBalance(null)}
         defaultValues={{ count: openedBalance?.balance || 0 }}
-        title="Баланс чизкоинов"
+        title='Баланс чизкоинов'
         onSubmit={onAddCheesecoins}
       />
     </div>

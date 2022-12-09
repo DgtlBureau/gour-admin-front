@@ -1,32 +1,39 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 
-import { Button } from '../../components/UI/Button/Button';
+import { useGetAllCategoriesQuery } from 'api/categoryApi';
+import { useDeleteProductMutation, useGetAllProductsQuery } from 'api/productApi';
+
+import { Header } from 'components/Header/Header';
+import { ProductDeleteModal } from 'components/Product/DeleteModal/DeleteModal';
+import { ProductsTable } from 'components/Product/Table/Table';
+import { Button } from 'components/UI/Button/Button';
+import { ProgressLinear } from 'components/UI/ProgressLinear/ProgressLinear';
+import { Typography } from 'components/UI/Typography/Typography';
+
+import { ProductTableDto } from 'types/dto/table/products.dto';
+import { NotificationType } from 'types/entities/Notification';
+
+import { EventTypes, eventBus } from 'packages/EventBus';
+import { getErrorMessage } from 'utils/errorUtil';
+
+import defaultImage from 'assets/images/default.svg';
+
+import { Link } from '../../components/UI/Link/Link';
 import { Path } from '../../constants/routes';
-import { useTo } from '../../hooks/useTo';
-import { Header } from '../../components/Header/Header';
-import { ProductsTable } from '../../components/Product/Table/Table';
-import { useDeleteProductMutation, useGetAllProductsQuery } from '../../api/productApi';
-import { ProgressLinear } from '../../components/UI/ProgressLinear/ProgressLinear';
-import { Typography } from '../../components/UI/Typography/Typography';
-import { ProductDeleteModal } from '../../components/Product/DeleteModal/DeleteModal';
-import { eventBus, EventTypes } from '../../packages/EventBus';
-import { NotificationType } from '../../@types/entities/Notification';
-import { useGetAllCategoriesQuery } from '../../api/categoryApi';
-import { getErrorMessage } from '../../utils/errorUtil';
-import { ProductTableDto } from '../../@types/dto/table/products.dto';
 
 type Props = {
   onUploadClick: () => void;
-  onCreateClick: () => void;
 };
 
-function RightContent({ onUploadClick, onCreateClick }: Props) {
+function RightContent({ onUploadClick }: Props) {
   return (
     <>
-      <Button variant="outlined" onClick={onUploadClick} sx={{ marginRight: '10px' }}>
+      <Button variant='outlined' onClick={onUploadClick} sx={{ marginRight: '10px' }}>
         Выгрузить базу для 1с
       </Button>
-      <Button onClick={onCreateClick}>Добавить товар</Button>
+      <Button href={`/${Path.PRODUCTS}/create`} component={Link}>
+        Добавить товар
+      </Button>
     </>
   );
 }
@@ -40,30 +47,20 @@ function ListProductsView() {
   const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
 
   const { data: categories = [] } = useGetAllCategoriesQuery();
-  const {
-    data: productsData,
-    isLoading,
-    isError,
-  } = useGetAllProductsQuery({ withCategories: true });
+  const { data: productsData, isLoading, isError } = useGetAllProductsQuery({ withCategories: true });
 
   const [fetchDeleteProduct] = useDeleteProductMutation();
 
-  const productsTableList = React.useMemo(() => {
+  const productsTableList = useMemo(() => {
     if (!productsData) return [];
     return productsData.products.map(product => ({
       id: product.id,
-      image: product.images[0]?.small || '',
+      image: product.images[0]?.small || defaultImage,
       title: product.title[lang] || '',
       categoriesIds: product.categories?.map(c => c.id) || [],
-      price: product.price.cheeseCoin || 0,
+      price: product.price?.cheeseCoin || 0,
     }));
   }, [productsData]);
-
-  const to = useTo();
-
-  const goToProductCreate = () => to(Path.PRODUCTS, 'create');
-
-  const goToProductEdit = (id: number) => to(Path.PRODUCTS, `${id}`);
 
   const uploadProductList = () => {
     console.log('uploading');
@@ -117,21 +114,11 @@ function ListProductsView() {
 
   return (
     <div>
-      <Header
-        leftTitle="Товары"
-        rightContent={
-          <RightContent
-            onCreateClick={goToProductCreate}
-            onUploadClick={uploadProductList}
-          />
-        }
-      />
+      <Header leftTitle='Товары' rightContent={<RightContent onUploadClick={uploadProductList} />} />
 
-      {isLoading && <ProgressLinear variant="indeterminate" />}
+      {isLoading && <ProgressLinear variant='indeterminate' />}
 
-      {!isLoading && isError && (
-        <Typography variant="h5">Произошла ошибка, повторите попытку позже</Typography>
-      )}
+      {!isLoading && isError && <Typography variant='h5'>Произошла ошибка, повторите попытку позже</Typography>}
 
       {!isLoading && !isError && (
         <ProductsTable
@@ -142,7 +129,6 @@ function ListProductsView() {
           rowsPerPage={rowsPerPage}
           onChangePage={changePage}
           onChangeRowsPerPage={changeRowsPerPage}
-          onEdit={goToProductEdit}
           onRemove={openDeleteModal}
         />
       )}

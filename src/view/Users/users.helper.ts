@@ -1,10 +1,12 @@
-import { Client } from '../../@types/entities/Client';
-import { User } from '../../@types/entities/User';
-import { Roles } from '../../constants/users/roles';
+import { Roles } from 'constants/users/roles';
+
+import { Client } from 'types/entities/Client';
+import { User } from 'types/entities/User';
 
 export function formatUsersList(usersList: User[]) {
   return usersList
-    .map(user => {
+    .map((user: any) => {
+      // FIXME:
       const { login, role, apiUserUuid: uuid, createdAt, firstName, lastName } = user;
       const name = `${firstName || ''} ${lastName || ''}`;
       return {

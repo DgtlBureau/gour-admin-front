@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { ComponentStory, Meta } from '@storybook/react';
 
 import { RegistrationsTable, RegistrationsTableProps } from './Table';
@@ -8,11 +9,9 @@ export default {
   title: 'Tables/Registrations',
 } as Meta;
 
-const Template: ComponentStory<typeof RegistrationsTable> = function (
-  args: RegistrationsTableProps
-) {
-  return <RegistrationsTable {...args} />;
-};
+const Template: ComponentStory<typeof RegistrationsTable> = (args: RegistrationsTableProps) => (
+  <RegistrationsTable {...args} />
+);
 export const DefaultRegistrationsTable = Template.bind({});
 
 const props: Partial<RegistrationsTableProps> = {

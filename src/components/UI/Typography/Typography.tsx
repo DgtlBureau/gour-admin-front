@@ -1,6 +1,7 @@
 import React, { ReactNode } from 'react';
-import MUITypography from '@mui/material/Typography';
+
 import { SxProps } from '@mui/material';
+import MUITypography from '@mui/material/Typography';
 
 type Props = {
   variant?:

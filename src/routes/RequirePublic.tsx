@@ -1,9 +1,12 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom';
-import { Path } from '../constants/routes';
+
+import { Path } from 'constants/routes';
+
+import { selectIsAuth } from 'store/selectors/auth';
+
 import { useLocation } from '../hooks/useLocation';
-import { selectIsAuth } from '../store/selectors/auth';
 
 type State = {
   from: { pathname: string };

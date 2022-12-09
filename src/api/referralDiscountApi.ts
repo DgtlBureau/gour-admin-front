@@ -27,5 +27,4 @@ export const referralDiscountApi = commonApi.injectEndpoints({
   },
 });
 
-export const { useGetReferralDiscountQuery, useUpdateReferralDiscountMutation } =
-  referralDiscountApi;
+export const { useGetReferralDiscountQuery, useUpdateReferralDiscountMutation } = referralDiscountApi;

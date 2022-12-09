@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
 
 import { Tabs } from './Tabs';
 
@@ -31,9 +31,7 @@ const OPTIONS = [
 const Template: ComponentStory<typeof Tabs> = function () {
   const [value, setValue] = useState<string>('tab0');
 
-  return (
-    <Tabs value={value} options={OPTIONS} onChange={id => setValue(id)} />
-  );
+  return <Tabs value={value} options={OPTIONS} onChange={id => setValue(id)} />;
 };
 
 export const DefaultState = Template.bind({});

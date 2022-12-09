@@ -1,19 +1,12 @@
 import React, { ChangeEvent, InputHTMLAttributes, ReactNode } from 'react';
-import MUISwitch from '@mui/material/Switch';
+
 import { SxProps } from '@mui/material';
+import MUISwitch from '@mui/material/Switch';
 
 type Props = {
   checked?: boolean;
   size?: 'small' | 'medium' | undefined;
-  color?:
-    | 'default'
-    | 'primary'
-    | 'secondary'
-    | 'error'
-    | 'info'
-    | 'success'
-    | 'warning'
-    | undefined;
+  color?: 'default' | 'primary' | 'secondary' | 'error' | 'info' | 'success' | 'warning' | undefined;
   defaultChecked?: boolean;
   onChange: (event: ChangeEvent<HTMLInputElement>, checked: boolean) => void;
   disabled?: boolean;

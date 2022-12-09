@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 
-import TrashIcon from '@mui/icons-material/DeleteForever';
+import { IconButton } from 'components/UI/IconButton/IconButton';
+import { Table } from 'components/UI/Table/Table';
 
-import { Table } from '../../UI/Table/Table';
-import { IconButton } from '../../UI/IconButton/IconButton';
-import { ReferralCode } from '../../../@types/entities/ReferralCode';
+import { ReferralCode } from 'types/entities/ReferralCode';
+
+import TrashIcon from '@mui/icons-material/DeleteForever';
 
 export type ReferralCodeTableProps = {
   codes: ReferralCode[];
@@ -26,7 +27,7 @@ export function ReferralCodeTable({ codes, onRemove }: ReferralCodeTableProps) {
     id: i,
     cells: [
       code.code,
-      <IconButton component="button" onClick={() => onRemove(code)}>
+      <IconButton component='button' onClick={() => onRemove(code)}>
         <TrashIcon />
       </IconButton>,
     ],

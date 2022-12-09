@@ -1,7 +1,9 @@
-import React from 'react';
-import { SxProps } from '@mui/material';
+import React, { ReactNode } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
-import { TextField } from '../UI/TextField/TextField';
+
+import { SxProps } from '@mui/material';
+
+import { TextField } from 'components/UI/TextField/TextField';
 
 type Props = {
   name: string;
@@ -11,6 +13,7 @@ type Props = {
   type?: string;
   rows?: number;
   sx?: SxProps;
+  endAdornment?: ReactNode;
 };
 
 export function HFTextField({ name, defaultValue, ...props }: Props) {
@@ -24,13 +27,8 @@ export function HFTextField({ name, defaultValue, ...props }: Props) {
       name={name}
       control={control}
       defaultValue={defaultValue || ''}
-      render={({ field: { ref, ...rest } }) => (
-        <TextField
-          {...rest}
-          isError={!!errors[name]}
-          helperText={errors[name]?.message ?? ''}
-          {...props}
-        />
+      render={({ field: { ref: _ref, ...rest } }) => (
+        <TextField {...rest} isError={!!errors[name]} helperText={errors[name]?.message ?? ''} {...props} />
       )}
     />
   );
