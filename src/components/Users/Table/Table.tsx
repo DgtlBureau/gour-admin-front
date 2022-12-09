@@ -19,7 +19,7 @@ import loginIcon from './assets/login.svg';
 export type UserTableItem = {
   login: string;
   name: string;
-  role: Roles | any; // FIXME:
+  role: ClientRole;
   id: number;
   balance?: number;
 };
@@ -30,8 +30,8 @@ export type UsersTableProps = {
     value: string;
     label: string;
   }[];
-  onDelete: (uuid: string) => void;
-  onAddCheesecoins: (data: { balance: number; id: number }) => void;
+  onDelete: (id: number) => void;
+  onAddCheesecoins: (data: { balance: number; userInitials: string; id: number }) => void;
 };
 
 export function UsersTable({ users, categories, onDelete, onAddCheesecoins }: UsersTableProps) {
@@ -62,14 +62,14 @@ export function UsersTable({ users, categories, onDelete, onAddCheesecoins }: Us
         {user.role.title}
       </Typography>,
       <>
-        <IconButton component='button' onClick={() => onDelete((user as any).id as any)}>
+        <IconButton component='button' onClick={() => onDelete(user.id)}>
           <DeleteIcon />
         </IconButton>
-        {checkClientRole(user.role?.key as Roles) ? (
+        {checkClientRole(user.role?.key) && (
           <>
             <IconButton
               component='button'
-              onClick={() => onAddCheesecoins({ id: user.id, balance: user.balance || 0 })}
+              onClick={() => onAddCheesecoins({ id: user.id, balance: user.balance || 0, userInitials: user.name })}
             >
               <AddBoxIcon />
             </IconButton>
@@ -79,7 +79,7 @@ export function UsersTable({ users, categories, onDelete, onAddCheesecoins }: Us
               </IconButton>
             </a>
           </>
-        ) : null}
+        )}
       </>,
     ],
   }));

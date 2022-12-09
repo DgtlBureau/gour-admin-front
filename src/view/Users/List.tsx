@@ -33,7 +33,7 @@ function RightContent({ onCreateClick }: RightContentProps) {
   return <Button onClick={onCreateClick}>Добавить пользователя</Button>;
 }
 
-const convertToClientRole = ({ description, ...role }: UserRole): ClientRole => ({ title: description || '', ...role });
+const convertToClientRole = ({ description, ...role }: UserRole): ClientRole => ({ ...role, title: description || '' });
 
 function ListUsersView() {
   const { users } = useGetAllUsersQuery(
@@ -102,6 +102,7 @@ function ListUsersView() {
   const [isDeleting, setIsDeleting] = useState(false);
   const [openedBalance, setOpenedBalance] = useState<{
     balance: number;
+    userInitials: string;
     id: number;
   } | null>(null);
 
@@ -111,11 +112,10 @@ function ListUsersView() {
 
   const onAddCheesecoins = (cheeseCoinData: AddCoinsDto) => {
     if (!openedBalance) return;
-    console.log(openedBalance?.id, cheeseCoinData);
+    console.log(openedBalance.id, cheeseCoinData);
   };
 
-  const openDeleteModal = (id: any) => {
-    // FIXME:
+  const openDeleteModal = (id: number) => {
     setIsDeleting(true);
     setUserDeleteId(id);
   };
@@ -175,8 +175,8 @@ function ListUsersView() {
       <UserAddCheesecoinsModal
         isOpened={!!openedBalance}
         onClose={() => setOpenedBalance(null)}
-        defaultValues={{ count: openedBalance?.balance || 0 }}
-        title='Баланс чизкоинов'
+        userInitials={openedBalance?.userInitials}
+        initBalance={openedBalance?.balance || 0}
         onSubmit={onAddCheesecoins}
       />
     </div>
