@@ -67,12 +67,12 @@ export function UsersTable({ users, categories, onDelete, onAddCheesecoins }: Us
         </IconButton>
         {checkClientRole(user.role?.key) && (
           <>
-            <IconButton
+            {/* <IconButton
               component='button'
               onClick={() => onAddCheesecoins({ id: user.id, balance: user.balance || 0, userInitials: user.name })}
             >
               <AddBoxIcon />
-            </IconButton>
+            </IconButton> */}
             <a href={`${process.env.REACT_APP_BACKEND_URL}/clients/${user.id}/login`} target='_blank' rel='noreferrer'>
               <IconButton component='div'>
                 <img src={loginIcon} alt='' />
