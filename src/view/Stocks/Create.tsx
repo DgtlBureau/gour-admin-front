@@ -149,6 +149,7 @@ function CreateStockView() {
         leftTitle='Создание акции'
         rightContent={<RightContent onCancel={toStockList} onSave={submitStockForm} />}
       />
+
       <CreateStockForm products={products} categories={categories} submitBtnRef={submitBtnRef} onChange={save} />
     </div>
   );

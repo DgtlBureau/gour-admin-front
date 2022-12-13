@@ -41,6 +41,10 @@ export const useTo = () => {
   const toProductCreate = () => to(Path.PRODUCTS, 'create');
   const toProductEdit = (id: number) => to(Path.PRODUCTS, id.toString());
 
+  const toPromoCodeList = () => to(Path.PROMO_CODES);
+  const toPromoCodeCreate = () => to(Path.PROMO_CODES, 'create');
+  const toPromoCodeEdit = (id: number) => to(Path.PROMO_CODES, id.toString());
+
   return {
     to,
     toSignIn,
@@ -54,5 +58,8 @@ export const useTo = () => {
     toProductList,
     toProductCreate,
     toProductEdit,
+    toPromoCodeList,
+    toPromoCodeCreate,
+    toPromoCodeEdit,
   };
 };

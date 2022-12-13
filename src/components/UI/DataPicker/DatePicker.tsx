@@ -18,7 +18,16 @@ type Props = {
   onChange: () => void;
 };
 
-export function DatePicker({ value, label, onChange, locale = ruLocale, isError, helperText, ...inputProps }: Props) {
+export function DatePicker({
+  value,
+  label,
+  onChange,
+  locale = ruLocale,
+  isError,
+  helperText,
+  sx,
+  ...inputProps
+}: Props) {
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={locale}>
       <MUIDatePicker
@@ -27,7 +36,13 @@ export function DatePicker({ value, label, onChange, locale = ruLocale, isError,
         value={value}
         onChange={onChange}
         renderInput={(params: TextFieldProps) => (
-          <TextField {...params} {...inputProps} error={isError} helperText={helperText} />
+          <TextField
+            {...params}
+            {...inputProps}
+            error={isError}
+            helperText={helperText}
+            sx={{ width: '100%', ...sx }}
+          />
         )}
       />
     </LocalizationProvider>
