@@ -11,7 +11,7 @@ import { Button } from 'components/UI/Button/Button';
 
 import { NotificationType } from 'types/entities/Notification';
 
-import { EventTypes, eventBus } from 'packages/EventBus';
+import { dispatchNotification } from 'packages/EventBus';
 import { getErrorMessage } from 'utils/errorUtil';
 
 import { useTo } from '../../hooks/useTo';
@@ -48,19 +48,13 @@ function CreatePromoCodeView() {
     try {
       await createPromoCode({ ...dto, end: formatISO(dto.end) }).unwrap();
 
-      eventBus.emit(EventTypes.notification, {
-        message: 'Промокод создан',
-        type: NotificationType.SUCCESS,
-      });
+      dispatchNotification('Промокод создан');
 
       toPromoCodeList();
     } catch (error) {
       const message = getErrorMessage(error);
 
-      eventBus.emit(EventTypes.notification, {
-        message,
-        type: NotificationType.DANGER,
-      });
+      dispatchNotification(message, { type: NotificationType.DANGER });
     }
   };
 

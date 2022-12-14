@@ -11,9 +11,3 @@ export function downloadFileFromUrl(url: string, name: string) {
 
   link.parentNode?.removeChild(link);
 }
-
-export function downloadFile(file: File, name: string) {
-  const url = window.URL.createObjectURL(new Blob([file]));
-
-  downloadFileFromUrl(url, name);
-}

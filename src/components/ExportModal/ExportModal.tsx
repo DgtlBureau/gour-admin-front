@@ -4,50 +4,40 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FormControlLabel, RadioGroup } from '@mui/material';
 
+import { HFDatePicker } from 'components/HookForm/HFDatePicker';
 import { Box } from 'components/UI/Box/Box';
 import { Modal } from 'components/UI/Modal/Modal';
 import { RadioButton } from 'components/UI/RadioButton/RadioButton';
 
-import { ReferralExportDto } from 'types/dto/referral/export.dto';
+import { ExportDto } from 'types/dto/export.dto';
 
-import { HFDatePicker } from '../../HookForm/HFDatePicker';
+import sx from './ExportModal.styles';
 import schema from './validation';
-
-const sx = {
-  body: {
-    width: '640px',
-  },
-  radioGroup: {
-    marginBottom: '20px',
-  },
-  startPicker: {
-    marginRight: '10px',
-  },
-};
 
 export type ExportModalProps = {
   isOpen: boolean;
+  title: string;
+  formId?: string;
   onClose(): void;
-  // В случае выбора "За всё время" аргумент period передавать не нужно
   onExport(period?: { start: Date; end: Date }): void;
 };
 
-export function ReferralCodeExportModal({ isOpen, onClose, onExport }: ExportModalProps) {
+export function ExportModal({ isOpen, title, formId = 'exportForm', onClose, onExport }: ExportModalProps) {
   const [isAllTime, setIsAllTime] = useState(true);
 
-  const values = useForm<ReferralExportDto>({
+  const values = useForm<ExportDto>({
     resolver: yupResolver(schema),
     mode: 'onBlur',
   });
 
-  const submit = (period?: ReferralExportDto) => onExport(period);
+  const submit = (period?: ExportDto) => onExport(period);
 
   return (
     <Modal
       isOpen={isOpen}
-      title='Выгрузка рефералов'
+      title={title}
       acceptText='Выгрузить'
-      formId='referralExportForm'
+      formId={formId}
       onAccept={isAllTime ? onExport : undefined}
       onClose={onClose}
     >
@@ -57,11 +47,15 @@ export function ReferralCodeExportModal({ isOpen, onClose, onExport }: ExportMod
 
           <FormControlLabel value={false} control={<RadioButton />} label='Указать период' />
         </RadioGroup>
+
         {!isAllTime && (
           <FormProvider {...values}>
-            <form id='referralExportForm' onSubmit={values.handleSubmit(submit)}>
-              <HFDatePicker label='Начало' name='start' sx={sx.startPicker} />
-              <HFDatePicker label='Конец' name='end' />
+            <form id={formId} onSubmit={values.handleSubmit(submit)}>
+              <Box sx={sx.dateBox}>
+                <HFDatePicker label='Начало' name='start' sx={sx.startPicker} />
+
+                <HFDatePicker label='Конец' name='end' />
+              </Box>
             </form>
           </FormProvider>
         )}

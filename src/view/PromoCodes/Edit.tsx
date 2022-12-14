@@ -14,7 +14,7 @@ import { Typography } from 'components/UI/Typography/Typography';
 
 import { NotificationType } from 'types/entities/Notification';
 
-import { EventTypes, eventBus } from 'packages/EventBus';
+import { dispatchNotification } from 'packages/EventBus';
 import { getErrorMessage } from 'utils/errorUtil';
 
 import { useTo } from '../../hooks/useTo';
@@ -43,7 +43,7 @@ function EditPromoCodeView() {
   const { toPromoCodeList } = useTo();
 
   const { data: categories = [] } = useGetAllCategoriesQuery();
-  const { data: promoCode, isLoading, isError } = useGetPromoCodeQuery(Number(id));
+  const { data: promoCode, isSuccess, isLoading, isError } = useGetPromoCodeQuery(Number(id));
 
   const [defaultValues, setDefaultValues] = useState<PromoCodeCreateFormDto | undefined>(undefined);
 
@@ -76,29 +76,23 @@ function EditPromoCodeView() {
     try {
       await updatePromoCode({ id: promoCode?.id, ...dto, end: formatISO(dto.end) }).unwrap();
 
-      eventBus.emit(EventTypes.notification, {
-        message: 'Промокод изменён',
-        type: NotificationType.SUCCESS,
-      });
+      dispatchNotification('Промокод изменён');
 
       toPromoCodeList();
     } catch (error) {
       const message = getErrorMessage(error);
 
-      eventBus.emit(EventTypes.notification, {
-        message,
-        type: NotificationType.DANGER,
-      });
+      dispatchNotification(message, { type: NotificationType.DANGER });
     }
   };
 
   if (isLoading) return <ProgressLinear variant='query' />;
 
-  if (!isLoading && isError) {
+  if (isError) {
     return <Typography variant='h5'>Произошла ошибка</Typography>;
   }
 
-  if (!isLoading && !isError && !promoCode) {
+  if (isSuccess && !promoCode) {
     return <Typography variant='h5'>Промокод не найден</Typography>;
   }
 
