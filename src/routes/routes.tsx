@@ -4,6 +4,7 @@ import { Navigate, useRoutes } from 'react-router-dom';
 import { Path } from 'constants/routes';
 import CreatePromoCodeView from 'view/PromoCodes/Create';
 import EditPromoCodeView from 'view/PromoCodes/Edit';
+import ListUsersOrdersView from 'view/UsersOrders/List';
 
 import AuthForgotPasswordView from '../view/Auth/ForgotPassword';
 import AuthRestorePasswordView from '../view/Auth/RestorePassword';
@@ -115,6 +116,7 @@ export function Routing() {
     children: [
       { path: '', element: <ListUsersView /> },
       { path: 'create', element: <CreateUserView /> },
+      { path: ':id/orders', element: <ListUsersOrdersView /> },
     ],
   };
 
