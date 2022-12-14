@@ -83,8 +83,6 @@ function ListProductsView() {
     try {
       const url = await fetchExportProducts(period).unwrap();
 
-      console.log(period);
-
       const now = new Date().toLocaleDateString();
 
       const name = `products_report_${now}.xlsx`;
