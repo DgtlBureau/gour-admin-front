@@ -1,8 +1,9 @@
+import { ExportDto } from 'types/dto/export.dto';
 import { PromoCodeCreateDto } from 'types/dto/promoCode/create.dto';
 import { PromoCode } from 'types/entities/PromoCode';
 
 import { Path } from '../constants/routes';
-import { commonApi } from './commonApi';
+import { commonApi, getFileUrlFromRes, providesList } from './commonApi';
 
 export const promoCodeApi = commonApi.injectEndpoints({
   endpoints(builder) {
@@ -14,10 +15,7 @@ export const promoCodeApi = commonApi.injectEndpoints({
             url: Path.PROMO_CODES,
           };
         },
-        providesTags: result =>
-          result
-            ? [...result.map(({ id }) => ({ type: 'PromoCode', id } as const)), { type: 'PromoCode', id: 'LIST' }]
-            : [{ type: 'PromoCode', id: 'LIST' }],
+        providesTags: result => providesList(result, 'PromoCode'),
       }),
       getPromoCode: builder.query<PromoCode, number>({
         query(id) {
@@ -26,7 +24,7 @@ export const promoCodeApi = commonApi.injectEndpoints({
             url: `${Path.PROMO_CODES}/${id}`,
           };
         },
-        providesTags: (r, e, id) => [{ type: 'PromoCode', id }],
+        providesTags: (_r, _e, id) => [{ type: 'PromoCode', id }],
       }),
       createPromoCode: builder.mutation<PromoCode, PromoCodeCreateDto>({
         query(body) {
@@ -36,7 +34,7 @@ export const promoCodeApi = commonApi.injectEndpoints({
             body,
           };
         },
-        invalidatesTags: [{ type: 'PromoCode', id: 'LIST' }],
+        invalidatesTags: (r, _e, _arg) => [{ type: 'PromoCode', id: r?.id }],
       }),
       updatePromoCode: builder.mutation<PromoCode, Partial<PromoCode>>({
         query({ id, ...body }) {
@@ -46,7 +44,7 @@ export const promoCodeApi = commonApi.injectEndpoints({
             body,
           };
         },
-        invalidatesTags: [{ type: 'PromoCode', id: 'LIST' }],
+        invalidatesTags: (r, _e, _arg) => [{ type: 'PromoCode', id: r?.id }],
       }),
       deletePromoCode: builder.mutation<PromoCode, number>({
         query(id) {
@@ -55,7 +53,17 @@ export const promoCodeApi = commonApi.injectEndpoints({
             url: `${Path.PROMO_CODES}/${id}`,
           };
         },
-        invalidatesTags: [{ type: 'PromoCode', id: 'LIST' }],
+        invalidatesTags: (r, _e, _arg) => [{ type: 'PromoCode', id: r?.id }],
+      }),
+      exportPromoCodes: builder.mutation<string, ExportDto | undefined>({
+        query(body) {
+          return {
+            method: 'POST',
+            url: `${Path.PROMO_CODES}/${Path.EXPORT}`,
+            body,
+            responseHandler: getFileUrlFromRes,
+          };
+        },
       }),
     };
   },
@@ -68,4 +76,5 @@ export const {
   useGetPromoCodeQuery,
   useGetPromoCodesListQuery,
   useLazyGetPromoCodeQuery,
+  useExportPromoCodesMutation,
 } = promoCodeApi;

@@ -1,4 +1,6 @@
-export const sx = {
+import { createSx } from 'themes';
+
+export const sx = createSx({
   subCategoryGrid: {
     marginLeft: '15px',
   },
@@ -12,6 +14,6 @@ export const sx = {
   rotatedArrow: {
     transform: 'rotate(180deg)',
   },
-};
+});
 
 export default sx;

@@ -1,19 +1,15 @@
 import { RefObject, useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
-import { formatISO } from 'date-fns';
-
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Grid } from '@mui/material';
 
 import { HFDatePicker } from 'components/HookForm/HFDatePicker';
 import { HFTextField } from 'components/HookForm/HFTextField';
 import { Box } from 'components/UI/Box/Box';
-import { TabPanel } from 'components/UI/Tabs/TabPanel';
 import { Tabs } from 'components/UI/Tabs/Tabs';
 import { Typography } from 'components/UI/Typography/Typography';
 
-import { PromoCodeCreateDto } from 'types/dto/promoCode/create.dto';
 import { TopLevelCategory } from 'types/entities/Category';
 
 import { CategorySelectForm } from '../CategorySelectForm/CategorySelectForm';
