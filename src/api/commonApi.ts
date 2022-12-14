@@ -14,6 +14,7 @@ export const commonApi = createApi({
     'Client',
     'Category',
     'Page',
+    'PromoCode',
     'ReferralCode',
     'ReferralDiscount',
     'User',

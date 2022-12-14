@@ -100,11 +100,11 @@ export function CreateStockForm({ products, categories, defaultValues, submitBtn
 
               <Grid item xs={12} container spacing={2}>
                 <Grid item xs={4}>
-                  <HFDatePicker sx={{ width: '100%' }} name='start' label='Дата начала*' />
+                  <HFDatePicker name='start' label='Дата начала*' />
                 </Grid>
 
                 <Grid item xs={4}>
-                  <HFDatePicker sx={{ width: '100%' }} name='end' label='Дата завершения*' />
+                  <HFDatePicker name='end' label='Дата завершения*' />
                 </Grid>
 
                 <Grid item xs={4}>

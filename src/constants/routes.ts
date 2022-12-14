@@ -25,6 +25,7 @@ export enum Path {
   UPLOAD = 'upload',
   GRADES = 'grades',
   REFERRAL_CODES = 'referral-codes',
+  PROMO_CODES = 'promo-codes',
   EXPORT = 'export',
   DISCOUNT = 'discount',
   ERROR_PAGE = '404',

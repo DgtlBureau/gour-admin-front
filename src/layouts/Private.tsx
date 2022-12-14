@@ -40,6 +40,7 @@ const linkedItems: SidebarLinkedItem[] = [
   { label: 'Страницы', path: Path.PAGES },
   { label: 'Города', path: Path.CITIES },
   { label: 'Рефералы', path: Path.REFERRALS },
+  { label: 'Промокоды', path: Path.PROMO_CODES },
 ];
 
 const actionItems = [

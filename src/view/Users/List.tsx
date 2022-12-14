@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 
 import { Options } from 'constants/tabs';
-import { Roles } from 'constants/users/roles';
 
+import { useGetCurrentUserQuery } from 'api/authApi';
 import { useDeleteClientMutation, useGetClientsListQuery } from 'api/clientApi';
 import { useGetClientRoleListQuery } from 'api/clientRoleApi';
 import { useDeleteUserMutation, useGetAllUsersQuery } from 'api/userApi';
@@ -20,7 +20,7 @@ import { ClientRole } from 'types/entities/ClientRole';
 import { NotificationType } from 'types/entities/Notification';
 import { UserRole } from 'types/entities/UserRole';
 
-import { EventTypes, eventBus } from 'packages/EventBus';
+import { EventTypes, dispatchNotification, eventBus } from 'packages/EventBus';
 import { getErrorMessage } from 'utils/errorUtil';
 
 import { useTo } from '../../hooks/useTo';
@@ -36,6 +36,8 @@ function RightContent({ onCreateClick }: RightContentProps) {
 const convertToClientRole = ({ description, ...role }: UserRole): ClientRole => ({ ...role, title: description || '' });
 
 function ListUsersView() {
+  const { data: currentUser } = useGetCurrentUserQuery();
+
   const { users } = useGetAllUsersQuery(
     {},
     {
@@ -124,26 +126,24 @@ function ListUsersView() {
     setUserDeleteId(null);
   };
 
-  const deleteUser = () => {
+  const deleteUser = async () => {
     const deletingUser = allUsers.find(user => user.id === userDeleteId);
 
     if (!deletingUser) return;
 
     try {
-      if (deletingUser?.role?.key === Roles.CLIENT) deleteClientById(deletingUser.id);
-      else deleteUserById(deletingUser.id);
+      const isClient = !!clientRoles.find(clientRole => clientRole.value === deletingUser?.role?.key);
 
-      eventBus.emit(EventTypes.notification, {
-        message: 'Вы удалили пользователя',
-        type: NotificationType.SUCCESS,
-      });
+      if (isClient) await deleteClientById(deletingUser.id);
+      else await deleteUserById(deletingUser.id);
+
+      dispatchNotification('Вы удалили пользователя');
 
       closeDeleteModal();
     } catch (error) {
       const message = getErrorMessage(error);
 
-      eventBus.emit(EventTypes.notification, {
-        message,
+      dispatchNotification(message, {
         type: NotificationType.DANGER,
       });
     }
@@ -155,6 +155,7 @@ function ListUsersView() {
 
       {allUsers.length ? (
         <UsersTable
+          currentUser={currentUser!}
           users={allUsers}
           categories={categories}
           onDelete={openDeleteModal}
