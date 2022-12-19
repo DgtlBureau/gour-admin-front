@@ -23,11 +23,12 @@ type Props = {
 
 export function ReviewConfirmModal({ comment, isOpen, onConfirm, onReject, onCancel }: Props) {
   const commentStatus = getReviewStatus(comment.isConfirmed);
+
   return (
     <Dialog open={isOpen} onClose={onCancel}>
       <Box sx={sx.modal}>
         <Box sx={sx.header}>
-          <Typography variant='h5'>Принять отзыв?</Typography>
+          <Typography variant='h5'>{commentStatus === 'accept' ? 'Отклонить отзыв?' : 'Принять отзыв?'}</Typography>
 
           <IconButton onClick={onCancel} component='symbol'>
             <CloseIcon />
