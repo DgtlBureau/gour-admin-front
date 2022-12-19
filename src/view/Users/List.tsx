@@ -20,7 +20,7 @@ import { ClientRole } from 'types/entities/ClientRole';
 import { NotificationType } from 'types/entities/Notification';
 import { UserRole } from 'types/entities/UserRole';
 
-import { EventTypes, dispatchNotification, eventBus } from 'packages/EventBus';
+import { dispatchNotification } from 'packages/EventBus';
 import { getErrorMessage } from 'utils/errorUtil';
 
 import { useTo } from '../../hooks/useTo';
