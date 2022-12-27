@@ -22,6 +22,7 @@ export type UserTableItem = {
   name: string;
   role: ClientRole;
   id: number;
+  balance?: number;
 };
 
 export type UsersTableProps = {
@@ -32,7 +33,7 @@ export type UsersTableProps = {
     label: string;
   }[];
   onDelete: (id: number) => void;
-  onAddCheesecoins: (id: number) => void;
+  onAddCheesecoins: (data: { balance: number; userInitials: string; id: number }) => void;
 };
 
 export function UsersTable({ currentUser, users, categories, onDelete, onAddCheesecoins }: UsersTableProps) {
@@ -68,11 +69,14 @@ export function UsersTable({ currentUser, users, categories, onDelete, onAddChee
         <IconButton component='button' onClick={() => onDelete(user.id)}>
           <DeleteIcon />
         </IconButton>
-        {checkClientRole(user.role?.key as Roles) ? (
+        {checkClientRole(user.role?.key) && (
           <>
-            <IconButton component='button' onClick={() => onAddCheesecoins(user.id)}>
+            {/* <IconButton
+              component='button'
+              onClick={() => onAddCheesecoins({ id: user.id, balance: user.balance || 0, userInitials: user.name })}
+            >
               <AddBoxIcon />
-            </IconButton>
+            </IconButton> */}
             {canSignInAsUser && (
               <a
                 href={`${process.env.REACT_APP_BACKEND_URL}/clients/${user.id}/login`}
@@ -85,7 +89,7 @@ export function UsersTable({ currentUser, users, categories, onDelete, onAddChee
               </a>
             )}
           </>
-        ) : null}
+        )}
       </>,
     ],
   }));

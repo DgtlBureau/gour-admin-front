@@ -1,7 +1,7 @@
 export enum Roles {
   ADMIN = 'AUTH_API_ADMIN',
   MODERATOR = 'AUTH_API_MODERATOR',
-  CLIENT = 'CLIENT',
-  COMPANY = 'COMPANY',
-  COLLECTIVE_PURCHASE = 'COLLECTIVE_PURCHASE',
+  CLIENT = 'individual',
+  COMPANY = 'company',
+  COLLECTIVE_PURCHASE = 'collective',
 }
