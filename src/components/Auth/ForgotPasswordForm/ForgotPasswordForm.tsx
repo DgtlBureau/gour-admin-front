@@ -23,6 +23,7 @@ const boxSx = {
   boxShadow: 3,
   padding: '25px',
   borderRadius: '5px',
+  minWidth: '300px',
 };
 
 const sxInput = {

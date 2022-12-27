@@ -32,6 +32,11 @@ export const authApi = commonApi.injectEndpoints({
         url: `${Path.AUTH}/${Path.SIGNOUT}`,
         method: 'POST',
       }),
+      onQueryStarted(_arg, api) {
+        api.queryFulfilled.then(() => {
+          api.dispatch(authApi.util.resetApiState());
+        });
+      },
     }),
     signin: builder.mutation<Tokens, SignInDto>({
       query: body => ({
