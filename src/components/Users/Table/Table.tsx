@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 
+import { Path } from 'constants/routes';
 import { Options } from 'constants/tabs';
 import { Roles } from 'constants/users/roles';
 
 import { Box } from 'components/UI/Box/Box';
 import { IconButton } from 'components/UI/IconButton/IconButton';
+import { Link } from 'components/UI/Link/Link';
 import { Table } from 'components/UI/Table/Table';
 import { Typography } from 'components/UI/Typography/Typography';
 
@@ -13,6 +15,7 @@ import { User } from 'types/entities/User';
 
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import DeleteIcon from '@mui/icons-material/Delete';
+import ShoppingCartIcon from '@mui/icons-material/LocalMall';
 
 import sx from './Table.styles';
 import loginIcon from './assets/login.svg';
@@ -88,6 +91,11 @@ export function UsersTable({ currentUser, users, categories, onDelete, onAddChee
                 </IconButton>
               </a>
             )}
+            <Link href={`${Path.USERS}/${user.id}/orders`}>
+              <IconButton component='button'>
+                <ShoppingCartIcon />
+              </IconButton>
+            </Link>
           </>
         )}
       </>,
