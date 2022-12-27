@@ -4,8 +4,12 @@ import { Options } from 'constants/tabs';
 
 import { Stack } from '@mui/material';
 
+import { IconButton } from 'components/UI/IconButton/IconButton';
 import { Table } from 'components/UI/Table/Table';
 import { Typography } from 'components/UI/Typography/Typography';
+
+import CloseIcon from '@mui/icons-material/Close';
+import DoneIcon from '@mui/icons-material/Done';
 
 export type Comment = {
   id: number;
@@ -40,7 +44,7 @@ type Props = {
   onClickFullReview: (commentId: number) => void;
 };
 
-const tableHeader = ['Имя', 'Отзыв', 'Товар', 'Дата'];
+const tableHeader = ['Имя', 'Отзыв', 'Товар', 'Дата', 'Действие'];
 
 const commentTextSx: CSSProperties = {
   maxWidth: '250px',
@@ -85,17 +89,19 @@ export function ReviewTable({ comments, onClickFullReview }: Props) {
     .map(comment => {
       const cells = [
         comment.authorName,
-        <Stack
+
+        <Typography sx={commentTextSx} variant='body1'>
+          {comment.text}
+        </Typography>,
+        comment.productName,
+        comment.date,
+        <IconButton
           onClick={() => {
             onClickFullReview(comment.id);
           }}
         >
-          <Typography sx={commentTextSx} variant='body1'>
-            {comment.text}
-          </Typography>
-        </Stack>,
-        comment.productName,
-        comment.date,
+          {comment.isConfirmed ? <CloseIcon /> : <DoneIcon />}
+        </IconButton>,
       ];
       return {
         id: comment.id,
