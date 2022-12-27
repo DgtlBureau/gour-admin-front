@@ -12,11 +12,11 @@ import {
 } from 'api/referralCodeApi';
 import { useGetReferralDiscountQuery, useUpdateReferralDiscountMutation } from 'api/referralDiscountApi';
 
+import { ExportModal } from 'components/ExportModal/ExportModal';
 import { Header } from 'components/Header/Header';
 import { ReferralCodeCreateModal } from 'components/ReferralCodes/CreateModal/CreateModal';
 import { ReferralCodeDeleteModal } from 'components/ReferralCodes/DeleteModal/DeleteModal';
 import { ReferralCodeDiscountBlock } from 'components/ReferralCodes/DiscountBlock/DiscountBlock';
-import { ReferralCodeExportModal } from 'components/ReferralCodes/ExportModal/ExportModal';
 import { ReferralCodeTable } from 'components/ReferralCodes/Table/Table';
 import { Button } from 'components/UI/Button/Button';
 import { Typography } from 'components/UI/Typography/Typography';
@@ -24,9 +24,9 @@ import { Typography } from 'components/UI/Typography/Typography';
 import { NotificationType } from 'types/entities/Notification';
 import { ReferralCode } from 'types/entities/ReferralCode';
 
-import { EventTypes, eventBus } from 'packages/EventBus';
+import { dispatchNotification } from 'packages/EventBus';
 import { getErrorMessage } from 'utils/errorUtil';
-import { downloadFile } from 'utils/fileUtil';
+import { downloadFileFromUrl } from 'utils/fileUtil';
 
 type Props = {
   onCreateClick: () => void;
@@ -36,8 +36,8 @@ type Props = {
 function RightContent({ onCreateClick, onUploadClick }: Props) {
   return (
     <>
-      <Button sx={{ margin: '0 10px 0 0' }} onClick={onUploadClick}>
-        Выгрузить рефералов
+      <Button variant='outlined' sx={{ margin: '0 10px 0 0' }} onClick={onUploadClick}>
+        Загрузить отчёт
       </Button>
 
       <Button onClick={onCreateClick}>Добавить код</Button>
@@ -69,19 +69,13 @@ function ListReferralCodesView() {
         code,
       }).unwrap();
 
-      eventBus.emit(EventTypes.notification, {
-        message: 'Код успешно создан',
-        type: NotificationType.SUCCESS,
-      });
+      dispatchNotification('Код успешно создан');
 
       setIsCreateCodeModalOpen(false);
     } catch (error) {
       const message = getErrorMessage(error);
 
-      eventBus.emit(EventTypes.notification, {
-        message,
-        type: NotificationType.DANGER,
-      });
+      dispatchNotification(message, { type: NotificationType.DANGER });
     }
   };
 
@@ -99,27 +93,23 @@ function ListReferralCodesView() {
   };
   const closeDeleteCodeModal = () => setIsDeleteCodeModalOpen(false);
 
-  const exportReferralCodes = async (period?: { start: Date; end: Date }) => {
+  const exportReferrals = async (period?: { start: Date; end: Date }) => {
     try {
-      const referralsTable = await fetchExportReferrals(period).unwrap();
+      const url = await fetchExportReferrals(period).unwrap();
 
-      const now = format(new Date(), 'dd/MM/yyyy');
+      const now = new Date().toLocaleDateString();
 
-      downloadFile(referralsTable, `tastyoleg_referrals_${now}.xlsx`);
+      const name = `referrals_report_${now}.xlsx`;
 
-      eventBus.emit(EventTypes.notification, {
-        message: 'Рефералы загружены',
-        type: NotificationType.SUCCESS,
-      });
+      downloadFileFromUrl(url, name);
+
+      dispatchNotification('Отчёт загружен');
 
       closeExportModal();
     } catch (error) {
       const message = getErrorMessage(error);
 
-      eventBus.emit(EventTypes.notification, {
-        message,
-        type: NotificationType.DANGER,
-      });
+      dispatchNotification(message, { type: NotificationType.DANGER });
     }
   };
 
@@ -127,17 +117,11 @@ function ListReferralCodesView() {
     try {
       await fetchDeleteReferralCode(referralCodeForDelete.id).unwrap();
 
-      eventBus.emit(EventTypes.notification, {
-        message: 'Код успешно удалён',
-        type: NotificationType.SUCCESS,
-      });
+      dispatchNotification('Код успешно удалён');
     } catch (error) {
       const message = getErrorMessage(error);
 
-      eventBus.emit(EventTypes.notification, {
-        message,
-        type: NotificationType.DANGER,
-      });
+      dispatchNotification(message, { type: NotificationType.DANGER });
     }
   };
 
@@ -145,17 +129,11 @@ function ListReferralCodesView() {
     try {
       await fetchUpdateReferralCodeDiscount({ discount: newDiscount }).unwrap();
 
-      eventBus.emit(EventTypes.notification, {
-        message: 'Скидка обновлена',
-        type: NotificationType.SUCCESS,
-      });
+      dispatchNotification('Скидка обновлена');
     } catch (error) {
       const message = getErrorMessage(error);
 
-      eventBus.emit(EventTypes.notification, {
-        message,
-        type: NotificationType.DANGER,
-      });
+      dispatchNotification(message, { type: NotificationType.DANGER });
     }
   };
 
@@ -165,7 +143,6 @@ function ListReferralCodesView() {
         leftTitle='Рефералы'
         rightContent={<RightContent onUploadClick={openExportModal} onCreateClick={openCreateCodeModal} />}
       />
-
       <Stack spacing={2}>
         {isLoading && <LinearProgress />}
 
@@ -191,7 +168,6 @@ function ListReferralCodesView() {
         onSave={createReferralCode}
         onClose={closeCreateCodeModal}
       />
-
       <ReferralCodeDeleteModal
         isOpen={isDeleteCodeModalOpen}
         referralCode={referralCodeForDelete.code}
@@ -199,7 +175,13 @@ function ListReferralCodesView() {
         onClose={closeDeleteCodeModal}
       />
 
-      <ReferralCodeExportModal isOpen={isExportModalOpen} onClose={closeExportModal} onExport={exportReferralCodes} />
+      <ExportModal
+        isOpen={isExportModalOpen}
+        title='Выгрузка рефералов'
+        formId='referralExportForm'
+        onClose={closeExportModal}
+        onExport={exportReferrals}
+      />
     </div>
   );
 }

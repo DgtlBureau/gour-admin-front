@@ -35,8 +35,9 @@ export const authSlice = createSlice({
       .addMatcher(authApi.endpoints.signin.matchFulfilled, state => {
         state.isAuth = true;
       })
-      .addMatcher(authApi.endpoints.getCurrentUser.matchFulfilled, state => {
+      .addMatcher(authApi.endpoints.getCurrentUser.matchFulfilled, (state, action) => {
         state.isAuth = true;
+        state.currentUser = action.payload;
       })
       .addMatcher(authApi.endpoints.getCurrentUser.matchRejected, (state, action) => {
         if (action.error.name === 'ConditionError') return;

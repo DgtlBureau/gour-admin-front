@@ -1,5 +1,6 @@
 import { FetchBaseQueryMeta } from '@reduxjs/toolkit/dist/query';
 
+import { ExportDto } from 'types/dto/export.dto';
 import { ProductGradeCreateDto } from 'types/dto/product/create-grade.dto';
 import { ProductCreateDto } from 'types/dto/product/create.dto';
 import { ProductGetListDto } from 'types/dto/product/get-list.dto';
@@ -9,7 +10,7 @@ import { CategoryWithParents, LowLevelCategory, MidLevelCategory, TopLevelCatego
 import { Product } from 'types/entities/Product';
 
 import { Path } from '../constants/routes';
-import { commonApi } from './commonApi';
+import { commonApi, getFileUrlFromRes } from './commonApi';
 
 // FIXME: вынести в глобальный тип
 type ProductDto = Omit<Product, 'categories'> & { categories: CategoryWithParents[] };
@@ -104,6 +105,16 @@ export const productApi = commonApi.injectEndpoints({
       }),
       invalidatesTags: [{ type: 'Product', id: 'LIST' }],
     }),
+    exportProducts: builder.mutation<string, ExportDto | undefined>({
+      query(body) {
+        return {
+          method: 'POST',
+          url: `${Path.PRODUCTS}/${Path.EXPORT}`,
+          body,
+          responseHandler: getFileUrlFromRes,
+        };
+      },
+    }),
   }),
 });
 
@@ -114,4 +125,5 @@ export const {
   useGetProductByIdQuery,
   useGetAllProductsQuery,
   useUpdateProductMutation,
+  useExportProductsMutation,
 } = productApi;

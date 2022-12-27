@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 
 import { Options } from 'constants/tabs';
-import { Roles } from 'constants/users/roles';
 
+import { useGetCurrentUserQuery } from 'api/authApi';
 import { useDeleteClientMutation, useGetClientsListQuery } from 'api/clientApi';
 import { useGetClientRoleListQuery } from 'api/clientRoleApi';
 import { useDeleteUserMutation, useGetAllUsersQuery } from 'api/userApi';
@@ -12,7 +12,7 @@ import { Header } from 'components/Header/Header';
 import { Button } from 'components/UI/Button/Button';
 import { Modal } from 'components/UI/Modal/Modal';
 import { Typography } from 'components/UI/Typography/Typography';
-import { UserAddCoinsModal } from 'components/Users/AddCoinsModal/AddCoinsModal';
+import { UserAddCheesecoinsModal } from 'components/Users/AddCoinsModal/AddCoinsModal';
 import { UserTableItem, UsersTable } from 'components/Users/Table/Table';
 
 import { AddCoinsDto } from 'types/dto/add-coins.dto';
@@ -20,7 +20,7 @@ import { ClientRole } from 'types/entities/ClientRole';
 import { NotificationType } from 'types/entities/Notification';
 import { UserRole } from 'types/entities/UserRole';
 
-import { EventTypes, eventBus } from 'packages/EventBus';
+import { dispatchNotification } from 'packages/EventBus';
 import { getErrorMessage } from 'utils/errorUtil';
 
 import { useTo } from '../../hooks/useTo';
@@ -33,9 +33,11 @@ function RightContent({ onCreateClick }: RightContentProps) {
   return <Button onClick={onCreateClick}>Добавить пользователя</Button>;
 }
 
-const convertToClientRole = ({ description, ...role }: UserRole): ClientRole => ({ title: description || '', ...role });
+const convertToClientRole = ({ description, ...role }: UserRole): ClientRole => ({ ...role, title: description || '' });
 
 function ListUsersView() {
+  const { data: currentUser } = useGetCurrentUserQuery();
+
   const { users } = useGetAllUsersQuery(
     {},
     {
@@ -100,12 +102,20 @@ function ListUsersView() {
   const allUsers = [...users, ...clients] as UserTableItem[];
 
   const [isDeleting, setIsDeleting] = useState(false);
-  const [openedUserId, setOpenedUserId] = useState<number | null>(null);
+  const [openedBalance, setOpenedBalance] = useState<{
+    balance: number;
+    userInitials: string;
+    id: number;
+  } | null>(null);
+
   const [userDeleteId, setUserDeleteId] = useState<number | null>(null);
 
   const { toUserCreate } = useTo();
 
-  const addCoins = (dto: AddCoinsDto) => console.log(openedUserId, dto);
+  const onAddCheesecoins = (cheeseCoinData: AddCoinsDto) => {
+    if (!openedBalance) return;
+    console.log(openedBalance.id, cheeseCoinData);
+  };
 
   const openDeleteModal = (id: number) => {
     setIsDeleting(true);
@@ -116,26 +126,24 @@ function ListUsersView() {
     setUserDeleteId(null);
   };
 
-  const deleteUser = () => {
+  const deleteUser = async () => {
     const deletingUser = allUsers.find(user => user.id === userDeleteId);
 
     if (!deletingUser) return;
 
     try {
-      if (deletingUser?.role?.key === Roles.CLIENT) deleteClientById(deletingUser.id);
-      else deleteUserById(deletingUser.id);
+      const isClient = !!clientRoles.find(clientRole => clientRole.value === deletingUser?.role?.key);
 
-      eventBus.emit(EventTypes.notification, {
-        message: 'Вы удалили пользователя',
-        type: NotificationType.SUCCESS,
-      });
+      if (isClient) await deleteClientById(deletingUser.id);
+      else await deleteUserById(deletingUser.id);
+
+      dispatchNotification('Вы удалили пользователя');
 
       closeDeleteModal();
     } catch (error) {
       const message = getErrorMessage(error);
 
-      eventBus.emit(EventTypes.notification, {
-        message,
+      dispatchNotification(message, {
         type: NotificationType.DANGER,
       });
     }
@@ -147,10 +155,11 @@ function ListUsersView() {
 
       {allUsers.length ? (
         <UsersTable
+          currentUser={currentUser!}
           users={allUsers}
           categories={categories}
           onDelete={openDeleteModal}
-          onAddCheesecoins={uuid => setOpenedUserId(uuid)}
+          onAddCheesecoins={setOpenedBalance}
         />
       ) : (
         <Typography variant='body1'>Список пользователей пуст</Typography>
@@ -164,12 +173,12 @@ function ListUsersView() {
         onAccept={deleteUser}
         onClose={closeDeleteModal}
       />
-
-      <UserAddCoinsModal
-        isOpened={!!openedUserId}
-        onClose={() => setOpenedUserId(null)}
-        title='Добавить сырные шарики'
-        onSubmit={addCoins}
+      <UserAddCheesecoinsModal
+        isOpened={!!openedBalance}
+        onClose={() => setOpenedBalance(null)}
+        userInitials={openedBalance?.userInitials}
+        initBalance={openedBalance?.balance || 0}
+        onSubmit={onAddCheesecoins}
       />
     </div>
   );

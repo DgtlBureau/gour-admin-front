@@ -14,6 +14,7 @@ import { BrowserTracing } from '@sentry/tracing';
 
 import App from './App';
 import Notifications from './components/Notifications/Notifications';
+import './index.css';
 import reportWebVitals from './reportWebVitals';
 import { store } from './store/store';
 import { defaultTheme } from './themes';

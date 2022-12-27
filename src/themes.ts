@@ -54,7 +54,7 @@ export const defaultTheme = createTheme({
   },
 });
 
-export function createSx<T extends { [name: string]: CSSProperties & SxProps }>(cfg: T) {
+export function createSx<T extends { [name: string]: CSSProperties & SxProps<typeof defaultTheme> }>(cfg: T) {
   return cfg;
 }
 

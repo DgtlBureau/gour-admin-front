@@ -2,6 +2,9 @@ import React, { Suspense, lazy } from 'react';
 import { Navigate, useRoutes } from 'react-router-dom';
 
 import { Path } from 'constants/routes';
+import CreatePromoCodeView from 'view/PromoCodes/Create';
+import EditPromoCodeView from 'view/PromoCodes/Edit';
+import ListUsersOrdersView from 'view/UsersOrders/List';
 
 import AuthForgotPasswordView from '../view/Auth/ForgotPassword';
 import AuthRestorePasswordView from '../view/Auth/RestorePassword';
@@ -13,6 +16,7 @@ import ListPagesView from '../view/Pages/List';
 import CreateProductView from '../view/Products/Create';
 import EditProductView from '../view/Products/Edit';
 import ListProductsView from '../view/Products/List';
+import ListPromoCodesView from '../view/PromoCodes/List';
 import ListReferralCodesView from '../view/Referrals/List';
 import ListReviewsView from '../view/Reviews/List';
 import CreateStockView from '../view/Stocks/Create';
@@ -112,6 +116,7 @@ export function Routing() {
     children: [
       { path: '', element: <ListUsersView /> },
       { path: 'create', element: <CreateUserView /> },
+      { path: ':id/orders', element: <ListUsersOrdersView /> },
     ],
   };
 
@@ -145,6 +150,20 @@ export function Routing() {
     children: [{ path: '', element: <ListReferralCodesView /> }],
   };
 
+  const promoCodesRoutes = {
+    path: Path.PROMO_CODES,
+    element: (
+      <RequireAuth>
+        <PrivateLayout />
+      </RequireAuth>
+    ),
+    children: [
+      { path: '', element: <ListPromoCodesView /> },
+      { path: 'create', element: <CreatePromoCodeView /> },
+      { path: ':id', element: <EditPromoCodeView /> },
+    ],
+  };
+
   const routing = useRoutes([
     authRoutes,
     productsRoutes,
@@ -155,6 +174,7 @@ export function Routing() {
     usersRoutes,
     reviewsRoutes,
     pagesRoutes,
+    promoCodesRoutes,
     referralsRoutes,
   ]);
 

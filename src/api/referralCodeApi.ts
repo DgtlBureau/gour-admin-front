@@ -1,8 +1,8 @@
-import { ReferralExportDto } from 'types/dto/referral/export.dto';
+import { ExportDto } from 'types/dto/export.dto';
 import { ReferralCode } from 'types/entities/ReferralCode';
 
 import { Path } from '../constants/routes';
-import { commonApi } from './commonApi';
+import { commonApi, getFileUrlFromRes } from './commonApi';
 
 export const referralCodeApi = commonApi.injectEndpoints({
   endpoints(builder) {
@@ -47,13 +47,13 @@ export const referralCodeApi = commonApi.injectEndpoints({
         },
         invalidatesTags: [{ type: 'ReferralCode', id: 'LIST' }],
       }),
-      exportReferrals: builder.mutation<File, ReferralExportDto | undefined>({
+      exportReferrals: builder.mutation<string, ExportDto | undefined>({
         query(body) {
           return {
             method: 'POST',
             url: `${Path.REFERRAL_CODES}/${Path.EXPORT}`,
             body,
-            responseHandler: 'text',
+            responseHandler: getFileUrlFromRes,
           };
         },
       }),
