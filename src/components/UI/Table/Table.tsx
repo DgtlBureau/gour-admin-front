@@ -84,7 +84,7 @@ export function Table<T = string | number>({
               shownRows.map(row => (
                 <MUITableRow key={row.id}>
                   {row.cells.map((cell, i) => (
-                    <MUITableCell key={`${row.id}_${i}`} align='left' sx={{ ...sx.cell, ...sx.bodyCell }}>
+                    <MUITableCell key={`${row.id}/${i}`} align='left' sx={{ ...sx.cell, ...sx.bodyCell }}>
                       {cell}
                     </MUITableCell>
                   ))}

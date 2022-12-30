@@ -11,6 +11,7 @@ export interface Order {
   totalSum: number;
   invoiceUuid: string;
   crmInfo: OrderCrmInfo;
+  leadId: number;
   orderProfile: OrderProfile;
   promotions: OrderPromotion[];
   orderProducts: OrderProduct[];
