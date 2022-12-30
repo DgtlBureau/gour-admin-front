@@ -2,12 +2,9 @@ import React from 'react';
 
 import { Path } from 'constants/routes';
 
-import Box from '@mui/material/Box';
-import Drawer from '@mui/material/Drawer';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
+import { Drawer, List, ListItemButton, ListItemText } from '@mui/material';
 
+import { Box } from '../UI/Box/Box';
 import { Link } from '../UI/Link/Link';
 import { Typography } from '../UI/Typography/Typography';
 
@@ -75,30 +72,28 @@ export default function Sidebar({ linkedItems, actionItems, profileInfo, onActio
   return (
     <div>
       <Drawer anchor='left' variant='permanent'>
-        <Box sx={boxSx} role='presentation'>
+        <Box sx={boxSx}>
           <List>
             <Typography sx={typographySx} variant='h5'>
               {profileInfo.name}
             </Typography>
           </List>
+
           <List sx={{ marginTop: '15px' }}>
             {linkedItems.map(item => (
-              <Link href={`/${item.path}`} sx={{ textDecoration: 'none', userSelect: 'none' }}>
-                <ListItem
-                  sx={isSelectedItem(item) ? listItemSelected : {}}
-                  selected={isSelectedItem(item)}
-                  key={item.path}
-                >
+              <Link key={item.path} href={`/${item.path}`} sx={{ textDecoration: 'none', userSelect: 'none' }}>
+                <ListItemButton sx={isSelectedItem(item) ? listItemSelected : {}} selected={isSelectedItem(item)}>
                   <ListItemText primary={item.label} sx={listItemTextSx} />
-                </ListItem>
+                </ListItemButton>
               </Link>
             ))}
           </List>
+
           <List sx={{ marginTop: 'auto' }}>
             {actionItems.map(item => (
-              <ListItem button key={item.action} onClick={handleBottomItemClick(item)}>
+              <ListItemButton key={item.action} onClick={handleBottomItemClick(item)}>
                 <ListItemText sx={listItemTextSx} primary={item.label} />
-              </ListItem>
+              </ListItemButton>
             ))}
           </List>
         </Box>

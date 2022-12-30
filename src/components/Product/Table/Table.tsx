@@ -56,8 +56,8 @@ export function ProductsTable({
 
   const rows = products
     .filter(product => product.categoriesIds.includes(+selectedId) || selectedId === 'all')
-    .map((product, i) => ({
-      id: i,
+    .map(product => ({
+      id: product.id,
       cells: [
         <Box sx={{ maxWidth: '144px', height: '60px', overflow: 'hidden' }}>
           <Link href={`/${Path.PRODUCTS}/${product.id}`}>
@@ -70,7 +70,7 @@ export function ProductsTable({
           <IconButton href={`/${Path.PRODUCTS}/${product.id}`} component={Link}>
             <EditIcon />
           </IconButton>
-          <IconButton onClick={() => onRemove(product)} component='symbol'>
+          <IconButton onClick={() => onRemove(product)}>
             <DeleteIcon />
           </IconButton>
         </Box>,
@@ -84,18 +84,16 @@ export function ProductsTable({
   };
 
   return (
-    <Box>
-      <Table<TabsKeys>
-        tabs={tabs}
-        rowTitleList={titleList}
-        rows={rows}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        rowsCount={rowsCount}
-        rowsPerPageOptions={[5, 10, 25]}
-        onPageChange={onChangePage}
-        onRowsPerPageChange={event => onChangeRowsPerPage(+event.target.value)}
-      />
-    </Box>
+    <Table
+      tabs={tabs}
+      rowTitleList={titleList}
+      rows={rows}
+      rowsPerPage={rowsPerPage}
+      page={page}
+      rowsCount={rowsCount}
+      rowsPerPageOptions={[5, 10, 25]}
+      onPageChange={onChangePage}
+      onRowsPerPageChange={event => onChangeRowsPerPage(+event.target.value)}
+    />
   );
 }
