@@ -25,10 +25,10 @@ const tableHeader = ['Категория', 'Действие'];
 function RowActions({ onDelete, onEdit }: CategoryActions) {
   return (
     <Box>
-      <IconButton onClick={onEdit} component='symbol'>
+      <IconButton onClick={onEdit}>
         <EditIcon />
       </IconButton>
-      <IconButton onClick={onDelete} component='symbol'>
+      <IconButton onClick={onDelete}>
         <DeleteIcon />
       </IconButton>
     </Box>
@@ -48,8 +48,8 @@ export function CategoriesTable({ categories, onDelete, onEdit }: Props) {
     setPage(0);
   };
 
-  const rows: Row[] = categories.map((category, i) => ({
-    id: i,
+  const rows: Row[] = categories.map(category => ({
+    id: category.id,
     cells: [category.title.ru, <RowActions onDelete={() => onDelete(category.id)} onEdit={() => onEdit(category)} />],
   }));
 
