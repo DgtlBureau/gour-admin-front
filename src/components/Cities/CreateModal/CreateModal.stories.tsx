@@ -13,5 +13,5 @@ const Template: ComponentStory<typeof CreateCityModal> = args => <CreateCityModa
 
 export const DefaultState = Template.bind({});
 DefaultState.args = {
-  defaultValues: { engName: 'Moscow', rusName: 'Москва' },
+  defaultValues: { engName: 'Moscow', rusName: 'Москва', deliveryCost: 500 },
 };

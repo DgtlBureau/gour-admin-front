@@ -20,6 +20,7 @@ const props: Partial<CitiesTableProps> = {
         ru: 'Москва',
         en: 'Moscow',
       },
+      deliveryCost: 100,
     },
     {
       id: 2,
@@ -27,6 +28,7 @@ const props: Partial<CitiesTableProps> = {
         ru: 'Санкт-Петербург',
         en: 'St. Petersburg',
       },
+      deliveryCost: 200,
     },
     {
       id: 3,
@@ -34,6 +36,7 @@ const props: Partial<CitiesTableProps> = {
         ru: 'Омск',
         en: 'Omsk',
       },
+      deliveryCost: 300,
     },
   ],
 };

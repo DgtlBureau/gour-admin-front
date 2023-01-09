@@ -51,6 +51,8 @@ export function CreateCityModal({ defaultValues, onSave, onCancel, isOpened, mod
 
             {/* <HFTextField label="Название (Eng)" name="engName" /> */}
 
+            <HFTextField sx={{ margin: '10px 0' }} label='Стоимость доставки' name='deliveryCost' type='number' />
+
             <Box>
               <Button type='submit' sx={{ margin: '0 10px 0 0' }}>
                 Сохранить
