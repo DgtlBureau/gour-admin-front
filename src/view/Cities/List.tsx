@@ -19,6 +19,12 @@ import { NotificationType } from 'types/entities/Notification';
 import { EventTypes, eventBus } from 'packages/EventBus';
 import { getErrorMessage } from 'utils/errorUtil';
 
+const initialCity = {
+  rusName: '',
+  engName: '',
+  deliveryCost: 0,
+};
+
 type Props = {
   onCreateClick: () => void;
 };
@@ -35,13 +41,11 @@ function ListCitiesView() {
       ru: '',
       en: '',
     },
+    deliveryCost: 0,
   });
   const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
 
-  const [formState, setFormState] = useState<CreateCityDto | UpdateCityDto>({
-    rusName: '',
-    engName: '',
-  });
+  const [formState, setFormState] = useState<CreateCityDto | UpdateCityDto>(initialCity);
 
   const { data: cities = [], isLoading, isError } = useGetCityListQuery();
 
@@ -50,12 +54,7 @@ function ListCitiesView() {
   const [fetchDeleteCity] = useDeleteCityMutation();
 
   const openCreateModal = () => {
-    const initialState = {
-      rusName: '',
-      engName: '',
-    };
-
-    setFormState(initialState);
+    setFormState(initialCity);
 
     setCreateModalMode('create');
   };
@@ -67,6 +66,7 @@ function ListCitiesView() {
       id,
       rusName: editedCity?.name.ru || '',
       engName: editedCity?.name.en || '',
+      deliveryCost: editedCity?.deliveryCost || 0,
     });
 
     setCreateModalMode('edit');
@@ -111,6 +111,7 @@ function ListCitiesView() {
           ru: dto.rusName,
           en: dto.engName,
         },
+        deliveryCost: dto.deliveryCost,
       };
     } else {
       cityData = {
@@ -119,6 +120,7 @@ function ListCitiesView() {
           ru: dto.rusName,
           en: dto.engName,
         },
+        deliveryCost: dto.deliveryCost,
       };
     }
 
