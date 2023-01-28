@@ -1,11 +1,16 @@
 import React, { useState } from 'react';
 
+import { Path } from 'constants/routes';
+
+import { Box } from 'components/UI/Box/Box';
 import { IconButton } from 'components/UI/IconButton/IconButton';
+import { Link } from 'components/UI/Link/Link';
 import { Table } from 'components/UI/Table/Table';
 
 import { ReferralCode } from 'types/entities/ReferralCode';
 
 import TrashIcon from '@mui/icons-material/DeleteForever';
+import EditIcon from '@mui/icons-material/Edit';
 
 export type ReferralCodeTableProps = {
   codes: ReferralCode[];
@@ -27,9 +32,14 @@ export function ReferralCodeTable({ codes, onRemove }: ReferralCodeTableProps) {
     id: i,
     cells: [
       code.code,
-      <IconButton component='button' onClick={() => onRemove(code)}>
-        <TrashIcon />
-      </IconButton>,
+      <Box>
+        <IconButton href={`/${Path.REFERRAL_CODES}/${code.id}`} component={Link}>
+          <EditIcon />
+        </IconButton>
+        <IconButton component='button' onClick={() => onRemove(code)}>
+          <TrashIcon />
+        </IconButton>
+      </Box>,
     ],
   }));
 

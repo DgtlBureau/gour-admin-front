@@ -3,6 +3,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 
 import { yupResolver } from '@hookform/resolvers/yup';
 
+import { HFPhoneInput } from 'components/HookForm/HFPhoneInput';
 import { Button } from 'components/UI/Button/Button';
 import { Modal } from 'components/UI/Modal/Modal';
 
@@ -55,7 +56,9 @@ export function ReferralCodeCreateModal({ isOpen, onSave, onClose }: ReferralCod
     >
       <FormProvider {...values}>
         <form id='referralCreateForm' onSubmit={values.handleSubmit(submit)}>
-          <HFTextField label='Введите реферальный код' name='code' sx={{ width: '640px' }} />
+          <HFTextField label='Введите реферальный код' name='code' sx={{ width: '640px', marginBottom: '15px' }} />
+          <HFTextField label='Имя агента' name='agentName' sx={{ width: '640px', marginBottom: '15px' }} />
+          <HFPhoneInput label='Телефон' name='phone' sx={{ width: '640px' }} />
         </form>
       </FormProvider>
     </Modal>
