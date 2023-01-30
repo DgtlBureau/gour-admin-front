@@ -51,7 +51,7 @@ export const onPhoneInput = (e: FormEvent<HTMLInputElement>) => {
     }
   } else {
     formattedInputValue = `+${inputNumbersValue.substring(0, 16)}`;
-  }
+  } 
   input.value = formattedInputValue;
 };
 
