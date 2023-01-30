@@ -38,6 +38,7 @@ export function CreateCityModal({ defaultValues, onSave, onCancel, isOpened, mod
 
   const submitHandler = (data: CreateCityDto | UpdateCityDto) => {
     onSave(data);
+    values.reset();
   };
 
   return (
