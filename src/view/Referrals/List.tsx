@@ -27,6 +27,7 @@ import { ReferralCode } from 'types/entities/ReferralCode';
 import { dispatchNotification } from 'packages/EventBus';
 import { getErrorMessage } from 'utils/errorUtil';
 import { downloadFileFromUrl } from 'utils/fileUtil';
+import { ReferralCodeCreateDto } from 'types/dto/referral/create-code.dto';
 
 type Props = {
   onCreateClick: () => void;
@@ -63,11 +64,9 @@ function ListReferralCodesView() {
   const [fetchUpdateReferralCodeDiscount] = useUpdateReferralDiscountMutation();
   const [fetchExportReferrals] = useExportReferralsMutation();
 
-  const createReferralCode = async (code: string) => {
+  const createReferralCode = async (dto: ReferralCodeCreateDto) => {
     try {
-      await fetchCreateReferralCode({
-        code,
-      }).unwrap();
+      await fetchCreateReferralCode(dto).unwrap();
 
       dispatchNotification('Код успешно создан');
 

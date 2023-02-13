@@ -29,11 +29,11 @@ export const referralCodeApi = commonApi.injectEndpoints({
         providesTags: (r, e, id) => [{ type: 'ReferralCode', id }],
       }),
       createReferralCode: builder.mutation<ReferralCode, Partial<ReferralCode>>({
-        query(referralCode) {
+        query(body) {
           return {
             method: 'POST',
             url: Path.REFERRAL_CODES,
-            body: referralCode,
+            body,
           };
         },
         invalidatesTags: [{ type: 'ReferralCode', id: 'LIST' }],

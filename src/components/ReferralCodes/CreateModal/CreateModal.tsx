@@ -18,7 +18,7 @@ type ModalActionsProps = {
 
 export type ReferralCodeCreateModalProps = {
   isOpen: boolean;
-  onSave(referralCode: string): void;
+  onSave(dto: ReferralCodeCreateDto): void;
   onClose(): void;
 };
 
@@ -45,7 +45,11 @@ export function ReferralCodeCreateModal({ isOpen, onSave, onClose }: ReferralCod
     values.reset({ code: '' });
   }, [isOpen]);
 
-  const submit = (data: ReferralCodeCreateDto) => onSave(data.code);
+  const submit = (data: ReferralCodeCreateDto) => onSave({
+    code: data.code,
+    fullName: data.fullName,
+    phone: data.phone,
+  });
 
   return (
     <Modal
@@ -57,7 +61,7 @@ export function ReferralCodeCreateModal({ isOpen, onSave, onClose }: ReferralCod
       <FormProvider {...values}>
         <form id='referralCreateForm' onSubmit={values.handleSubmit(submit)}>
           <HFTextField label='Введите реферальный код' name='code' sx={{ width: '640px', marginBottom: '15px' }} />
-          <HFTextField label='Имя агента' name='agentName' sx={{ width: '640px', marginBottom: '15px' }} />
+          <HFTextField label='Имя агента' name='fullName' sx={{ width: '640px', marginBottom: '15px' }} />
           <HFPhoneInput label='Телефон' name='phone' sx={{ width: '640px' }} />
         </form>
       </FormProvider>
