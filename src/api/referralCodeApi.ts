@@ -57,6 +57,16 @@ export const referralCodeApi = commonApi.injectEndpoints({
           };
         },
       }),
+      updateReferralCode: builder.mutation<ReferralCode, Partial<ReferralCode> & Pick<ReferralCode, 'id'>>({
+        query(referralCode) {
+          return {
+            method: 'PUT',
+            url: `${Path.REFERRAL_CODES}/${referralCode.id}`,
+            body: referralCode,
+          };
+        },
+        invalidatesTags: [{ type: 'ReferralCode', id: 'LIST' }],
+      }),
     };
   },
 });
@@ -68,4 +78,5 @@ export const {
   useGetReferralCodeQuery,
   useGetReferralCodesListQuery,
   useLazyGetReferralCodeQuery,
+  useUpdateReferralCodeMutation,
 } = referralCodeApi;

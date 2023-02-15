@@ -17,9 +17,11 @@ type ModalActionsProps = {
 };
 
 export type ReferralCodeCreateModalProps = {
+  defaultValues: ReferralCodeCreateDto;
   isOpen: boolean;
-  onSave(referralCode: string): void;
+  onSave(referralCode: ReferralCodeCreateDto): void;
   onClose(): void;
+  mode: 'create' | 'edit' | 'closed';
 };
 
 function ModalActions({ onClose }: ModalActionsProps) {
@@ -35,7 +37,13 @@ function ModalActions({ onClose }: ModalActionsProps) {
   );
 }
 
-export function ReferralCodeCreateModal({ isOpen, onSave, onClose }: ReferralCodeCreateModalProps) {
+export function ReferralCodeCreateModal({
+  defaultValues,
+  isOpen,
+  onSave,
+  onClose,
+  mode,
+}: ReferralCodeCreateModalProps) {
   const values = useForm<ReferralCodeCreateDto>({
     resolver: yupResolver(schema),
     mode: 'onBlur',
@@ -43,21 +51,27 @@ export function ReferralCodeCreateModal({ isOpen, onSave, onClose }: ReferralCod
 
   useEffect(() => {
     values.reset({ code: '' });
+
+    if (mode === 'edit') {
+      values.setValue('code', defaultValues.code);
+      values.setValue('fullName', defaultValues.fullName);
+      values.setValue('phone', defaultValues.phone);
+    }
   }, [isOpen]);
 
-  const submit = (data: ReferralCodeCreateDto) => onSave(data.code);
+  const submit = (data: ReferralCodeCreateDto) => onSave(data);
 
   return (
     <Modal
       isOpen={isOpen}
-      title='Добавление реферального кода'
+      title={mode === 'create' ? 'Добавление реферального кода' : 'Редактирование реферального кода'}
       actions={<ModalActions onClose={onClose} />}
       onClose={onClose}
     >
       <FormProvider {...values}>
         <form id='referralCreateForm' onSubmit={values.handleSubmit(submit)}>
           <HFTextField label='Введите реферальный код' name='code' sx={{ width: '640px', marginBottom: '15px' }} />
-          <HFTextField label='Имя агента' name='agentName' sx={{ width: '640px', marginBottom: '15px' }} />
+          <HFTextField label='Имя агента' name='fullName' sx={{ width: '640px', marginBottom: '15px' }} />
           <HFPhoneInput label='Телефон' name='phone' sx={{ width: '640px' }} />
         </form>
       </FormProvider>

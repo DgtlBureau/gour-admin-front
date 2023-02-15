@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 
-import { format } from 'date-fns';
-
 import { LinearProgress, Stack } from '@mui/material';
 
 import {
@@ -9,6 +7,7 @@ import {
   useDeleteReferralCodeMutation,
   useExportReferralsMutation,
   useGetReferralCodesListQuery,
+  useUpdateReferralCodeMutation,
 } from 'api/referralCodeApi';
 import { useGetReferralDiscountQuery, useUpdateReferralDiscountMutation } from 'api/referralDiscountApi';
 
@@ -21,10 +20,12 @@ import { ReferralCodeTable } from 'components/ReferralCodes/Table/Table';
 import { Button } from 'components/UI/Button/Button';
 import { Typography } from 'components/UI/Typography/Typography';
 
+import { ReferralCodeCreateDto } from 'types/dto/referral/create-code.dto';
+import { ReferralCodeUpdateDto } from 'types/dto/referral/update-code.dto';
 import { NotificationType } from 'types/entities/Notification';
 import { ReferralCode } from 'types/entities/ReferralCode';
 
-import { dispatchNotification } from 'packages/EventBus';
+import { EventTypes, dispatchNotification, eventBus } from 'packages/EventBus';
 import { getErrorMessage } from 'utils/errorUtil';
 import { downloadFileFromUrl } from 'utils/fileUtil';
 
@@ -46,11 +47,14 @@ function RightContent({ onCreateClick, onUploadClick }: Props) {
 }
 
 function ListReferralCodesView() {
+  const [createModalMode, setCreateModalMode] = useState<'create' | 'edit' | 'closed'>('create');
   const [isCreateCodeModalOpen, setIsCreateCodeModalOpen] = useState(false);
   const [isDeleteCodeModalOpen, setIsDeleteCodeModalOpen] = useState(false);
   const [referralCodeForDelete, setReferralCodeForDelete] = useState<ReferralCode>({
     id: -1,
     code: '',
+    fullName: '',
+    phone: '',
     discount: 0,
   });
   const [isExportModalOpen, setIsExportModalOpen] = useState(false);
@@ -60,22 +64,73 @@ function ListReferralCodesView() {
 
   const [fetchDeleteReferralCode] = useDeleteReferralCodeMutation();
   const [fetchCreateReferralCode] = useCreateReferralCodeMutation();
+  const [fetchUpdateReferralCode] = useUpdateReferralCodeMutation();
   const [fetchUpdateReferralCodeDiscount] = useUpdateReferralDiscountMutation();
   const [fetchExportReferrals] = useExportReferralsMutation();
 
-  const createReferralCode = async (code: string) => {
-    try {
-      await fetchCreateReferralCode({
-        code,
-      }).unwrap();
+  const openEditCodeModal = () => {
+    setCreateModalMode('edit');
+    setIsCreateCodeModalOpen(true);
+  };
+  const openCreateCodeModal = () => {
+    setCreateModalMode('create');
+    setIsCreateCodeModalOpen(true);
+  };
 
-      dispatchNotification('Код успешно создан');
+  const initialCode = {
+    id: 0,
+    code: '',
+    fullName: '',
+    phone: '',
+  };
 
-      setIsCreateCodeModalOpen(false);
-    } catch (error) {
-      const message = getErrorMessage(error);
+  const [formState, setFormState] = useState<ReferralCodeCreateDto & { id: number }>(initialCode);
 
-      dispatchNotification(message, { type: NotificationType.DANGER });
+  const openEditModal = (id: number) => {
+    const editedCode = referralCodes.find(code => code.id === id);
+
+    setFormState({
+      id,
+      code: editedCode?.code || '',
+      fullName: editedCode?.fullName || '',
+      phone: editedCode?.phone || '',
+    });
+
+    openEditCodeModal();
+  };
+
+  const createReferralCode = async (data: ReferralCodeCreateDto | ReferralCodeUpdateDto) => {
+    if (createModalMode === 'create') {
+      try {
+        await fetchCreateReferralCode(data).unwrap();
+
+        dispatchNotification('Код успешно создан');
+
+        setIsCreateCodeModalOpen(false);
+      } catch (error) {
+        const message = getErrorMessage(error);
+
+        dispatchNotification(message, { type: NotificationType.DANGER });
+      }
+    }
+    if (createModalMode === 'edit') {
+      try {
+        await fetchUpdateReferralCode({ ...data, id: formState.id }).unwrap();
+
+        eventBus.emit(EventTypes.notification, {
+          message: 'Код успешно изменен',
+          type: NotificationType.SUCCESS,
+        });
+
+        setIsCreateCodeModalOpen(false);
+      } catch (error) {
+        const message = getErrorMessage(error);
+
+        eventBus.emit(EventTypes.notification, {
+          message,
+          type: NotificationType.DANGER,
+        });
+      }
     }
   };
 
@@ -83,8 +138,6 @@ function ListReferralCodesView() {
 
   const openExportModal = () => setIsExportModalOpen(true);
   const closeExportModal = () => setIsExportModalOpen(false);
-
-  const openCreateCodeModal = () => setIsCreateCodeModalOpen(true);
   const closeCreateCodeModal = () => setIsCreateCodeModalOpen(false);
 
   const openDeleteCodeModal = (code: ReferralCode) => {
@@ -153,7 +206,7 @@ function ListReferralCodesView() {
         )}
 
         {!isLoading && !isError && referralCodes.length !== 0 && (
-          <ReferralCodeTable codes={referralCodes} onRemove={openDeleteCodeModal} />
+          <ReferralCodeTable codes={referralCodes} onRemove={openDeleteCodeModal} onEdit={openEditModal} />
         )}
 
         <ReferralCodeDiscountBlock
@@ -164,9 +217,11 @@ function ListReferralCodesView() {
       </Stack>
 
       <ReferralCodeCreateModal
+        defaultValues={formState}
         isOpen={isCreateCodeModalOpen}
         onSave={createReferralCode}
         onClose={closeCreateCodeModal}
+        mode={createModalMode}
       />
       <ReferralCodeDeleteModal
         isOpen={isDeleteCodeModalOpen}

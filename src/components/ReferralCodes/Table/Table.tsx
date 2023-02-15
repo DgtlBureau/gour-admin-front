@@ -1,10 +1,7 @@
 import React, { useState } from 'react';
 
-import { Path } from 'constants/routes';
-
 import { Box } from 'components/UI/Box/Box';
 import { IconButton } from 'components/UI/IconButton/IconButton';
-import { Link } from 'components/UI/Link/Link';
 import { Table } from 'components/UI/Table/Table';
 
 import { ReferralCode } from 'types/entities/ReferralCode';
@@ -15,9 +12,10 @@ import EditIcon from '@mui/icons-material/Edit';
 export type ReferralCodeTableProps = {
   codes: ReferralCode[];
   onRemove(code: ReferralCode): void;
+  onEdit: (id: number) => void;
 };
 
-export function ReferralCodeTable({ codes, onRemove }: ReferralCodeTableProps) {
+export function ReferralCodeTable({ codes, onRemove, onEdit }: ReferralCodeTableProps) {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
@@ -33,7 +31,7 @@ export function ReferralCodeTable({ codes, onRemove }: ReferralCodeTableProps) {
     cells: [
       code.code,
       <Box>
-        <IconButton href={`/${Path.REFERRAL_CODES}/${code.id}`} component={Link}>
+        <IconButton component='button' onClick={() => onEdit(code.id)}>
           <EditIcon />
         </IconButton>
         <IconButton component='button' onClick={() => onRemove(code)}>
