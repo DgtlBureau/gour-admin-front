@@ -30,6 +30,8 @@ export function ReferralCodeTable({ codes, onRemove, onEdit }: ReferralCodeTable
     id: i,
     cells: [
       code.code,
+      code.fullName,
+      code.phone,
       <Box>
         <IconButton component='button' onClick={() => onEdit(code.id)}>
           <EditIcon />
@@ -43,7 +45,7 @@ export function ReferralCodeTable({ codes, onRemove, onEdit }: ReferralCodeTable
 
   return (
     <Table
-      rowTitleList={['Реферальный код', 'Действие']}
+      rowTitleList={['Реферальный код', 'Имя агента', 'Телефон', 'Действие']}
       rows={rows}
       page={page}
       rowsPerPage={rowsPerPage}
