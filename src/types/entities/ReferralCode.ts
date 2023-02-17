@@ -3,5 +3,5 @@ export type ReferralCode = {
   code: string;
   fullName?: string;
   phone?: string;
-  discount: number;
+  discount?: number;
 };
