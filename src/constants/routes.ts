@@ -28,6 +28,7 @@ export enum Path {
   REFERRAL_CODES = 'referral-codes',
   PROMO_CODES = 'promo-codes',
   EXPORT = 'export',
+  EXPORT_VOLUME = 'export-volume',
   DISCOUNT = 'discount',
   ERROR_PAGE = '404',
 }

@@ -19,7 +19,9 @@ type ModalActionsProps = {
 export type ReferralCodeCreateModalProps = {
   defaultValues: ReferralCodeCreateDto;
   isOpen: boolean;
-  onSave(referralCode: ReferralCodeCreateDto): void;
+
+  onSave(dto: ReferralCodeCreateDto): void;
+
   onClose(): void;
   mode: 'create' | 'edit' | 'closed';
 };
@@ -59,7 +61,12 @@ export function ReferralCodeCreateModal({
     }
   }, [isOpen]);
 
-  const submit = (data: ReferralCodeCreateDto) => onSave(data);
+  const submit = (data: ReferralCodeCreateDto) =>
+    onSave({
+      code: data.code,
+      fullName: data.fullName,
+      phone: data.phone,
+    });
 
   return (
     <Modal

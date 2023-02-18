@@ -5,6 +5,7 @@ import { LinearProgress, Stack } from '@mui/material';
 import {
   useCreateReferralCodeMutation,
   useDeleteReferralCodeMutation,
+  useExportOrderReferralsMutation,
   useExportReferralsMutation,
   useGetReferralCodesListQuery,
   useUpdateReferralCodeMutation,
@@ -32,13 +33,18 @@ import { downloadFileFromUrl } from 'utils/fileUtil';
 type Props = {
   onCreateClick: () => void;
   onUploadClick: () => void;
+  onUploadOrdersClick: () => void;
 };
 
-function RightContent({ onCreateClick, onUploadClick }: Props) {
+function RightContent({ onCreateClick, onUploadClick, onUploadOrdersClick }: Props) {
   return (
     <>
+      <Button variant='outlined' sx={{ margin: '0 10px 0 0' }} onClick={onUploadOrdersClick}>
+        Загрузить отчет о заказах
+      </Button>
+
       <Button variant='outlined' sx={{ margin: '0 10px 0 0' }} onClick={onUploadClick}>
-        Загрузить отчёт
+        Загрузить отчет о пользователях
       </Button>
 
       <Button onClick={onCreateClick}>Добавить код</Button>
@@ -67,6 +73,7 @@ function ListReferralCodesView() {
   const [fetchUpdateReferralCode] = useUpdateReferralCodeMutation();
   const [fetchUpdateReferralCodeDiscount] = useUpdateReferralDiscountMutation();
   const [fetchExportReferrals] = useExportReferralsMutation();
+  const [fetchExportOrderReferrals] = useExportOrderReferralsMutation();
 
   const openEditCodeModal = () => {
     setCreateModalMode('edit');
@@ -136,9 +143,18 @@ function ListReferralCodesView() {
 
   const discount = referralDiscount || 0;
 
-  const openExportModal = () => setIsExportModalOpen(true);
+  const [exportType, setExportType] = useState<'orders' | 'users'>('orders');
   const closeExportModal = () => setIsExportModalOpen(false);
   const closeCreateCodeModal = () => setIsCreateCodeModalOpen(false);
+
+  const onUploadOrdersClick = () => {
+    setExportType('orders');
+    setIsExportModalOpen(true);
+  };
+  const onUploadClick = () => {
+    setExportType('users');
+    setIsExportModalOpen(true);
+  };
 
   const openDeleteCodeModal = (code: ReferralCode) => {
     setReferralCodeForDelete(code);
@@ -148,7 +164,9 @@ function ListReferralCodesView() {
 
   const exportReferrals = async (period?: { start: Date; end: Date }) => {
     try {
-      const url = await fetchExportReferrals(period).unwrap();
+      let url;
+      if (exportType === 'users') url = await fetchExportReferrals(period).unwrap();
+      else url = await fetchExportOrderReferrals(period).unwrap();
 
       const now = new Date().toLocaleDateString();
 
@@ -194,7 +212,13 @@ function ListReferralCodesView() {
     <div>
       <Header
         leftTitle='Рефералы'
-        rightContent={<RightContent onUploadClick={openExportModal} onCreateClick={openCreateCodeModal} />}
+        rightContent={
+          <RightContent
+            onUploadOrdersClick={onUploadOrdersClick}
+            onUploadClick={onUploadClick}
+            onCreateClick={openCreateCodeModal}
+          />
+        }
       />
       <Stack spacing={2}>
         {isLoading && <LinearProgress />}
