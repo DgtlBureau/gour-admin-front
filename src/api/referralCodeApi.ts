@@ -57,6 +57,16 @@ export const referralCodeApi = commonApi.injectEndpoints({
           };
         },
       }),
+      exportOrderReferrals: builder.mutation<string, ExportDto | undefined>({
+        query(body) {
+          return {
+            method: 'POST',
+            url: `${Path.REFERRAL_CODES}/${Path.EXPORT_VOLUME}`,
+            body,
+            responseHandler: getFileUrlFromRes,
+          };
+        },
+      }),
       updateReferralCode: builder.mutation<ReferralCode, Partial<ReferralCode> & Pick<ReferralCode, 'id'>>({
         query(referralCode) {
           return {
@@ -79,4 +89,5 @@ export const {
   useGetReferralCodesListQuery,
   useLazyGetReferralCodeQuery,
   useUpdateReferralCodeMutation,
+  useExportOrderReferralsMutation,
 } = referralCodeApi;
