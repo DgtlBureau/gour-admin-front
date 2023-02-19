@@ -74,7 +74,7 @@ function ListProductsView() {
     return productsData.products.map(product => ({
       id: product.id,
       image: product.images[0]?.small || defaultImage,
-      title: product.title[lang] || '',
+      title: product.title?.[lang] || '',
       categoriesIds: product.categories?.map(c => c.id) || [],
       price: product.price?.cheeseCoin || 0,
     }));
