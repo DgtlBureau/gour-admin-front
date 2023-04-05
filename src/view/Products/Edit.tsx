@@ -64,6 +64,7 @@ function EditProductView() {
       cheeseCoin: 0,
       individual: 0,
       company: 0,
+      companyByCash: 0,
       collective: 0,
     },
     productSelect: [],
@@ -157,6 +158,9 @@ function EditProductView() {
       },
       price: {
         cheeseCoin: product.price?.cheeseCoin || 0,
+        individual: product.price?.individual || 0,
+        company: product.price?.company || 0,
+        companyByCash: product.price?.companyByCash || 0,
         ...roleDiscounts,
       },
       categoriesIds,
@@ -193,7 +197,7 @@ function EditProductView() {
 
     [firstImage, secondImage, thirdImage].forEach(it => it && images.push(it.id));
 
-    const { cheeseCoin, ...discounts } = price;
+    const { cheeseCoin, individual,company,companyByCash, ...discounts } = price;
 
     const roleDiscounts = Object.keys(discounts).reduce((acc, key) => {
       const role = clientRoles.find(clientRole => clientRole.key === key);
@@ -222,6 +226,9 @@ function EditProductView() {
       },
       price: {
         cheeseCoin: +cheeseCoin,
+        individual: +individual,
+        company: +company,
+        companyByCash: +companyByCash,
       },
       roleDiscounts,
       images,

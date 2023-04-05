@@ -5,7 +5,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { Grid } from '@mui/material';
 
 import { Box } from 'components/UI/Box/Box';
-import { Typography } from 'components/UI/Typography/Typography';
 
 import { ProductPriceFormDto } from 'types/dto/form/product-price.dto';
 import { ClientRole } from 'types/entities/ClientRole';
@@ -45,18 +44,19 @@ export function PriceProductForm({ roles, defaultValues, onChange }: PriceProduc
     <FormProvider {...values}>
       <form id='productPriceForm' onSubmit={values.handleSubmit(submitHandler)} onChange={changeHandler}>
         <Box sx={sx.priceFormBox}>
-          <HFTextField label='Цена' name='cheeseCoin' endAdornment={endAdornment} />
-
-          <Typography variant='h6' sx={sx.discountsListTitle}>
-            Скидки
-          </Typography>
-
           <Grid container spacing={2}>
-            {roles.map(role => (
-              <Grid item xs={12}>
-                <HFTextField label={role.title} name={role.key} endAdornment={endAdornment} />
-              </Grid>
-            ))}
+            <Grid item xs={12}>
+              <HFTextField label='Цена(будет удалено)' name='cheeseCoin' endAdornment={endAdornment} />
+            </Grid>
+            <Grid item xs={12}>
+              <HFTextField label='Физ. лица' name='individual' endAdornment={endAdornment} />
+            </Grid>
+            <Grid item xs={12}>
+              <HFTextField label='Юр. лица нал' name='company' endAdornment={endAdornment} />
+            </Grid>
+            <Grid item xs={12}>
+                <HFTextField label='Юр. лица безнал' name='companyByCash' endAdornment={endAdornment} />
+            </Grid>
           </Grid>
         </Box>
       </form>
