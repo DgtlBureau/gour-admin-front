@@ -55,6 +55,7 @@ function CreateProductView() {
       cheeseCoin: 0,
       individual: 0,
       company: 0,
+      companyByCash: 0,
       collective: 0,
     },
     categoriesIds: {},
@@ -118,7 +119,7 @@ function CreateProductView() {
 
     [fistImage, secondImage, thirdImage].forEach(it => it && images.push(it.id));
 
-    const { cheeseCoin, ...discounts } = price;
+    const { cheeseCoin,company,companyByCash,individual, ...discounts } = price;
 
     const roleDiscounts = Object.keys(discounts).reduce((acc, key) => {
       const role = clientRoles.find(clientRole => clientRole.key === key);
@@ -147,6 +148,9 @@ function CreateProductView() {
       },
       price: {
         cheeseCoin: +cheeseCoin,
+        company: +company,
+        companyByCash: +companyByCash,
+        individual: +individual,
       },
       roleDiscounts,
       images,

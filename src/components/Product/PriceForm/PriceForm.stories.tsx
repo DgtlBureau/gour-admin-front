@@ -18,6 +18,9 @@ export const DefaultProductPriceForm = Template.bind({});
 DefaultProductPriceForm.args = {
   defaultValues: {
     cheeseCoin: 0,
+    company: 0,
+    companyByCash: 0,
+    individual: 0,
     companyDiscount: 0,
     collectiveDiscount: 0,
   },
