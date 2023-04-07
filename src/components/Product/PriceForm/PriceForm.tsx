@@ -52,10 +52,10 @@ export function PriceProductForm({ roles, defaultValues, onChange }: PriceProduc
               <HFTextField label='Физ. лица' name='individual' endAdornment={endAdornment} />
             </Grid>
             <Grid item xs={12}>
-              <HFTextField label='Юр. лица нал' name='company' endAdornment={endAdornment} />
+              <HFTextField label='Юр. лица нал' name='companyByCash' endAdornment={endAdornment} />
             </Grid>
             <Grid item xs={12}>
-                <HFTextField label='Юр. лица безнал' name='companyByCash' endAdornment={endAdornment} />
+              <HFTextField label='Юр. лица безнал' name='company' endAdornment={endAdornment} />
             </Grid>
           </Grid>
         </Box>
